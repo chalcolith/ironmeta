@@ -59,9 +59,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="IronMeta.ironmeta" />
     <None Include="IronMeta.snk" />
   </ItemGroup>
