@@ -41,8 +41,8 @@ namespace IronMeta
         public bool Process(string fileName)
         {
             // get base filename
-            string baseFname, nameSpace;
-            GetFileAndNamespace(ref fileName, out baseFname, out nameSpace);
+            string baseFname, bareFname, nameSpace;
+            GetFileAndNamespace(ref fileName, out baseFname, out bareFname, out nameSpace);
 
             string outputFName = baseFname + ".cs";
 
@@ -75,7 +75,7 @@ namespace IronMeta
                     throw new ParseException(0, "Unknown parse error.");
 
                 // analyze
-                GenerateInfo info = new GenerateInfo(fileName, matcher, nameSpace);
+                GenerateInfo info = new GenerateInfo(bareFname, matcher, nameSpace);
                 ironMetaFile.AssignLineNumbers(matcher);
                 ironMetaFile.Analyze(info);
 
@@ -128,7 +128,7 @@ namespace IronMeta
 
         static Regex baseFileRegex = new Regex(@"^(.*\\([^\\\.]+))(\.[^\.]+)?$", RegexOptions.Compiled);
 
-        private void GetFileAndNamespace(ref string fname, out string fileBase, out string nameSpace)
+        private void GetFileAndNamespace(ref string fname, out string fileBase, out string fileBare, out string nameSpace)
         {
             FileInfo fi = new FileInfo(fname);
             fname = fi.FullName;
@@ -138,6 +138,7 @@ namespace IronMeta
             {
                 fileBase = match.Groups[1].Value;
                 nameSpace = match.Groups[2].Value;
+                fileBare = match.Groups[2].Value + match.Groups[3].Value;
             }
             else
             {

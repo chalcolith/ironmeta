@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 5/14/2009 11:26:04 PM UTC
+// IronMeta Generated Calc: 15/05/2009 12:15:12 AM UTC
 
 using System;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace Calc
             Combinator _disj_0_ = null;
             {
                 _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Additive), new MatchItem('+', CONV), new MatchItem(Multiplicative) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 33 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 33 "Calc.ironmeta"
        { return _IM_Result.Results.Aggregate((total, n) => total + n); }
 #line default
 });
@@ -106,7 +106,7 @@ namespace Calc
             Combinator _disj_0_ = null;
             {
                 _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Additive), new MatchItem('-', CONV), new MatchItem(Multiplicative) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 34 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 34 "Calc.ironmeta"
        { return _IM_Result.Results.Aggregate((total, n) => total - n); }
 #line default
 });
@@ -152,7 +152,7 @@ namespace Calc
             Combinator _disj_0_ = null;
             {
                 _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem('*', CONV), new MatchItem(Number) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 39 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 39 "Calc.ironmeta"
             { return _IM_Result.Results.Aggregate((p, n) => p * n); }
 #line default
 });
@@ -175,7 +175,7 @@ namespace Calc
             Combinator _disj_0_ = null;
             {
                 _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem('/', CONV), new MatchItem(Number) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 40 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 40 "Calc.ironmeta"
           { return _IM_Result.Results.Aggregate((q, n) => q / n); }
 #line default
 });
@@ -203,7 +203,7 @@ namespace Calc
                 var a = new CalcMatcherMatchItem();
                 var b = new CalcMatcherMatchItem();
                 _disj_0_ = _ARGS(_AND(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op)), _VAR(_ANY(), second)), _args, _ACTION(_AND(_AND(_VAR(_REF(first, "first", this), a), _CALL(KW, new List<MatchItem> { op })), _VAR(_REF(second, "second", this), b)), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 42 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 42 "Calc.ironmeta"
                                { return new List<int> { a, b }; }
 #line default
 }));
@@ -227,7 +227,7 @@ namespace Calc
             {
                 var digits = new CalcMatcherMatchItem();
                 _disj_0_ = _ACTION(_AND(_VAR(_PLUS(_CALL(Digit)), digits), _STAR(_CALL(Whitespace))), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 44 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 44 "Calc.ironmeta"
           { return digits.Results.Aggregate(0, (sum, n) => sum*10 + n); }
 #line default
 });
@@ -271,7 +271,7 @@ namespace Calc
             Combinator _disj_0_ = null;
             {
                 _disj_0_ = _ACTION(_OR(_OR(_OR(_OR(_OR(_OR(_OR(_OR(_OR(_LITERAL('0'), _LITERAL('1')), _LITERAL('2')), _LITERAL('3')), _LITERAL('4')), _LITERAL('5')), _LITERAL('6')), _LITERAL('7')), _LITERAL('8')), _LITERAL('9')), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 48 "C:\Documents and Settings\gtisher\My Documents\Visual Studio 2008\Projects\IronMeta\Calc\Calc.ironmeta"
+#line 48 "Calc.ironmeta"
          { return (int)_IM_Result - '0'; }
 #line default
 });
