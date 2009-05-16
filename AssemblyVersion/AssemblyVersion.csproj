@@ -58,25 +58,25 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>cd ..\..\..
+svn revert Calc\Calc.cs
 for /f usebackq %25%25i in (`AssemblyVersion\bin\$(ConfigurationName)\AssemblyVersion IronMeta\bin\$(ConfigurationName)\IronMeta.exe`) do set IronMetaVersion=%25%25i
 if errorlevel 1 goto error
-rem svn commit . --message "IronMeta build %25IronMetaVersion%25"
-if errorlevel 1 goto error
-rem svn tag https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/%25IronMetaVersion%25
+svn copy https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/%25IronMetaVersion%25 --message "IronMeta automated build %25IronMetaVersion%25"
 if errorlevel 1 goto error
 set IronMetaRelease=IronMeta_Win32_%25IronMetaVersion%25
 if errorlevel 1 goto error
-if exist %25IronMetaRelease%25 rmdir /s /q %25IronMetaRelease%25
+if not exist Releases mkdir Releases
+if exist Releases\%25IronMetaRelease%25 rmdir /s /q Releases\%25IronMetaRelease%25
 if errorlevel 1 goto error
-mkdir %25IronMetaRelease%25
+mkdir Releases\%25IronMetaRelease%25
 if errorlevel 1 goto error
-copy IronMeta.Matcher\bin\$(ConfigurationName)\IronMeta.Matcher.dll %25IronMetaRelease%25
-copy IronMeta\bin\$(ConfigurationName)\IronMeta.exe %25IronMetaRelease%25
-copy Calc\Calc.ironmeta %25IronMetaRelease%25
-copy Docs\latex\refman.pdf "%25IronMetaRelease%25\IronMeta User Manual.pdf"
-Resources\zip-3.0-bin\bin\zip -r %25IronMetaRelease%25.zip %25IronMetaRelease%25
+copy IronMeta.Matcher\bin\$(ConfigurationName)\IronMeta.Matcher.dll Releases\%25IronMetaRelease%25
+copy IronMeta\bin\$(ConfigurationName)\IronMeta.exe Releases\%25IronMetaRelease%25
+copy Calc\Calc.ironmeta Releases\%25IronMetaRelease%25
+copy Docs\latex\refman.pdf "Releases\%25IronMetaRelease%25\IronMeta User Manual.pdf"
+Resources\zip-3.0-bin\bin\zip -r Releases\%25IronMetaRelease%25.zip Releases\%25IronMetaRelease%25
 if errorlevel 1 goto error
-rmdir /s /q %25IronMetaRelease%25
+rmdir /s /q Releases\%25IronMetaRelease%25
 
 goto done
 
