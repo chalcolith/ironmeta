@@ -16,7 +16,7 @@ IronMeta is available under the terms of the \ref BSDLicense "BSD License".
 
 \section contributors Contributors
 
-IronMeta 1.0 was written entirely by Gordon Tisher.
+IronMeta 1.1 was written entirely by Gordon Tisher.
 
 \section features Features
 
@@ -68,7 +68,7 @@ If you come across a bug in IronMeta, please fill out a bug report at the <a hre
 
 In order to build IronMeta, you must download the source code using a \htmlonly <a href="http://subversion.tigris.org">Subversion</a> \endhtmlonly \latexonly Subversion \endlatexonly client.  The following branches are available:
 
- - Version 1.0: this branch contains the latest stable release of IronMeta: \code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/1.0 \endcode
+ - Version 1.1: this branch contains the latest stable release of IronMeta: \code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/1.1 \endcode
  - HEAD: Check out this branch to get the very latest code.  This branch is where new development takes place.  Note that code in this branch may not always work correctly!\code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk \endcode
 
 The top folder of the source code contains a Visual Studio 2008 solution file called \c IronMeta.sln.  This includes three projects:
