@@ -94,6 +94,12 @@ namespace Calc
             Assert.True(res.Success && res.Result == 10);
         }
 
+        [Fact]
+        public void Test_Zero()
+        {
+            Assert.True(matcher.Match("zero", "Zero").Success);
+        }
+
     } // class Tests
 
 } // namespace Calc

@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 16/05/2009 5:34:08 AM UTC
+// IronMeta Generated Calc: 16/05/2009 7:56:43 AM UTC
 
 using System.Collections.Generic;
 using System;
@@ -413,6 +413,39 @@ namespace Calc
             _KW_Body_ = _disj_0_;
 
             foreach (var _res_ in _KW_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        private int _Zero_Body__Index_ = -1;
+
+        protected virtual IEnumerable<MatchItem> Zero(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _Zero_Body_ = null;
+
+            if (_Zero_Body__Index_ == -1 || PredefinedCombinators[_Zero_Body__Index_] == null)
+            {
+                if (_Zero_Body__Index_ == -1)
+                {
+                    _Zero_Body__Index_ = PredefinedCombinators.Count;
+                    PredefinedCombinators.Add(null);
+                }
+
+                Combinator _disj_0_ = null;
+                {
+                    _disj_0_ = _AND(_LITERAL("ze"), _LITERAL("ro"));
+                }
+
+                PredefinedCombinators[_Zero_Body__Index_] = _disj_0_;
+            }
+
+            _Zero_Body_ = PredefinedCombinators[_Zero_Body__Index_];
+
+
+            foreach (var _res_ in _Zero_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 

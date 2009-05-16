@@ -850,14 +850,23 @@ namespace IronMeta
         /// \internal
         protected static Combinator _LITERAL(TInput item) { return new LiteralCombinator(item); }
 
+        
+        /// \internal
+        protected static Combinator _LITERAL(IEnumerable<TInput> items) { return new LiteralCombinator(items); }
+
         /// \internal
         private class LiteralCombinator : Combinator
         {
-            TInput item;
+            IEnumerable<TInput> items;
 
             public LiteralCombinator(TInput item)
             {
-                this.item = item;
+                this.items = new List<TInput> { item };
+            }
+
+            public LiteralCombinator(IEnumerable<TInput> items)
+            {
+                this.items = items;
             }
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -869,9 +878,27 @@ namespace IronMeta
                 {
                     if (_inputs != null)
                     {
-                        element = _inputs.ElementAt(_index);
-                        if (element.Inputs.Last().Equals(item))
-                            res = element;
+                        int curIndex = _index;
+                        List<TResult> results = new List<TResult>();
+
+                        foreach (var item in items)
+                        {
+                            element = _inputs.ElementAt(curIndex);
+                            if (element.Inputs.Last().Equals(item))
+                                results.Add(element.Results.Last());
+                            ++curIndex;
+                        }
+
+                        if (results.Any())
+                        {
+                            res = new MatchItem
+                                {
+                                    InputStream = _inputs,
+                                    Results = results,
+                                    StartIndex = _index,
+                                    NextIndex = curIndex
+                                };
+                        }
                     }
                 }
                 catch (ArgumentOutOfRangeException)
@@ -881,24 +908,15 @@ namespace IronMeta
 
                 if (res != null)
                 {
-                    var newRes = new MatchItem
-                        {
-                            InputStream = _inputs,
-                            Results = res.Results,
-                            StartIndex = _index,
-                            NextIndex = _index + 1,
-                            Production = res.Production
-                        };
-
-                    WriteIndent(_index, indent, -1, "_LITERAL({0}): {1}", item, newRes);
-                    yield return newRes;
+                    WriteIndent(_index, indent, -1, "_LITERAL({0}): {1}", items, res);
+                    yield return res;
                 }
                 else
                 {
                     if (_memo != null)
-                        _memo.AddError(_index, string.Format("Expected {0}", item));
+                        _memo.AddError(_index, string.Format("Expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
 
-                    WriteIndent(_index, indent, -1, "_LITERAL({0}): FAIL: '{1}'", item, element != null ? element.Inputs.Last().ToString() : "<EOF>");
+                    WriteIndent(_index, indent, -1, "_LITERAL({0}): FAIL: '{1}'", items, element != null ? element.Inputs.Last().ToString() : "<EOF>");
                     yield break;
                 }
             }
