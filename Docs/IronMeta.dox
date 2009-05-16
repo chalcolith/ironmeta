@@ -186,10 +186,10 @@ In this case, the rule \c Expression has no parameters, and matches by calling a
 
 \section langInput Matching Input
 
-You can use the period \c "." to match any item of input, or you can use arbitrary C# expressions.  The C# expressions may be a string literal, a character literal, or any other expression that is surrounded by parentheses:
+You can use the period \c "." to match any item of input, or you can use arbitrary C# expressions.  The C# expressions may be a string literal, a character literal, or any other expression that is surrounded by curly braces:
 
 \code
-    MyPattern = 'a' "b" (3.14159) (new MyClass());
+    MyPattern = 'a' "b" {3.14159} {new MyClass()};
 \endcode
 
 IronMeta will use the standard C# \c Equals() method to match the items.
