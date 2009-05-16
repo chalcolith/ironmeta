@@ -68,7 +68,7 @@ namespace IronMeta
         /// <summary>
         /// Construct a new Matcher object.
         /// </summary>
-        /// <param name="convertItem">A delgate that holds a function that converts from the item type to the output type.</param>
+        /// <param name="convertItem">A delegate that holds a function that converts from the input type to the output type.</param>
         /// <param name="strictPEG">Whether or not to use strict Parsing Expression Grammar semantics.</param>
         protected Matcher(Func<TInput, TResult> convertItem, bool strictPEG)
         {
@@ -249,9 +249,11 @@ namespace IronMeta
         /// The iterator that it returns is used to give all solutions to the parse.
         /// A failed parse will return an iterator with NO items in it.
         /// </summary>
-        /// <param name="inputs">The item stream to match against.</param>
-        /// <param name="index">The current index in the item stream.</param>
-        /// <param name="memo">Information about previous matches.</param>
+        /// <param name="indent">For internal use: tracing indent level.</param>
+        /// <param name="_inputs">The item stream to match against.</param>
+        /// <param name="_index">The current index in the item stream.</param>
+        /// <param name="_args">The stream of parameters passed to the rule.</param>
+        /// <param name="_memo">Information about previous matches.</param>
         /// <returns>A series of match items containing the possible results of the production's match action (if there is no action, simply returns the conversion of the last item).</returns>
         protected delegate IEnumerable<MatchItem> Production(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo);
 
@@ -391,7 +393,7 @@ namespace IronMeta
             public int NextIndex { get; set; }
 
             /// <summary>
-            /// Sometime's we're passing a production in arguments.
+            /// Sometimes we're passing a production in arguments.
             /// </summary>
             public Production Production { get; set; }
 
@@ -560,6 +562,7 @@ namespace IronMeta
         /// \internal
         /// <summary>
         /// Stores memoization and error-handling information.
+        /// Implements Warth and Millstein's algorithm for handling left-recursion.
         /// </summary>
         protected class Memo
         {
@@ -1255,10 +1258,10 @@ namespace IronMeta
                     {
                         WriteIndent(_index, indent, i++, "_CONDITION(): {0}", res);
                         yield return res;
-
-                        if (_memo.StrictPEG)
-                            yield break;
                     }
+
+                    if (_memo.StrictPEG)
+                        yield break;
                 }
             }
         }
@@ -1406,7 +1409,12 @@ namespace IronMeta
                 if (call != null)
                 {
                     foreach (var res in call.Match(indent, _inputs, _index, _args, _memo))
+                    {
                         yield return res;
+
+                        if (_memo.StrictPEG)
+                            yield break;
+                    }
                 }
                 else
                 {
@@ -1537,6 +1545,7 @@ namespace IronMeta
 
 
         /// \internal
+        /// <summary>Implements Warth and Millstein's algorithm for handling left-recursion.</summary>
         private class CallItemCombinator : Combinator
         {
             MatchItem v;

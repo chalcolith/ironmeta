@@ -63,7 +63,7 @@ namespace IronMeta
                 yield return _res;
         }
 
-        private static Combinator _Whitespace_Body_ = null;
+        private Combinator _Whitespace_Body_ = null;
 
         /// \internal
         /// <summary>
@@ -78,7 +78,7 @@ namespace IronMeta
                 yield return _res;
         }
 
-        private static Combinator _EOL_Body_ = null;
+        private Combinator _EOL_Body_ = null;
 
         /// \internal
         /// <summary>
@@ -93,7 +93,7 @@ namespace IronMeta
                 yield return _res;
         }
 
-        private static Combinator _EOF_Body_ = null;
+        private Combinator _EOF_Body_ = null;
 
         #endregion
 

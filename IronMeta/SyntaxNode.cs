@@ -32,7 +32,7 @@ namespace IronMeta
 {
 
     /// <summary>
-    /// An exception class for errors during analysis.
+    /// An exception class for errors during parsing.
     /// </summary>
     public class ParseException : Exception
     {
