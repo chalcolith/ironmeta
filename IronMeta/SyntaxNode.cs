@@ -723,7 +723,7 @@ namespace IronMeta
         {
             // check for override and whether or not we can have a static top combinator
             bool isOverride = false;
-            bool predefinedCombinator = true;
+            bool cachedCombinator = true;
 
             foreach (RuleNode rule in rules[ruleName])
             {
@@ -732,14 +732,14 @@ namespace IronMeta
 
                 foreach (var vn in rule.VariableNames)
                     if (!info.RuleNames.Contains(vn))
-                        predefinedCombinator = false;
+                        cachedCombinator = false;
             }
 
             // build the function
             string topCombinator = string.Format("_{0}_Body_", ruleName);
             StringBuilder sb = new StringBuilder();
 
-            if (predefinedCombinator)
+            if (cachedCombinator)
             {
                 sb.AppendLine(Indent(indent, "private int {0}_Index_ = -1;", topCombinator));
                 sb.AppendLine();
@@ -751,14 +751,14 @@ namespace IronMeta
             sb.AppendLine(Indent(indent + 1, "Combinator {0} = null;", topCombinator));
             sb.AppendLine();
 
-            if (predefinedCombinator)
+            if (cachedCombinator)
             {
-                sb.AppendLine(Indent(indent + 1, "if ({0}_Index_ == -1 || PredefinedCombinators[{0}_Index_] == null)", topCombinator));
+                sb.AppendLine(Indent(indent + 1, "if ({0}_Index_ == -1 || CachedCombinators[{0}_Index_] == null)", topCombinator));
                 sb.AppendLine(Indent(indent + 1, "{{"));
                 sb.AppendLine(Indent(indent + 2, "if ({0}_Index_ == -1)", topCombinator));
                 sb.AppendLine(Indent(indent + 2, "{{"));
-                sb.AppendLine(Indent(indent + 3, "{0}_Index_ = PredefinedCombinators.Count;", topCombinator));
-                sb.AppendLine(Indent(indent + 3, "PredefinedCombinators.Add(null);"));
+                sb.AppendLine(Indent(indent + 3, "{0}_Index_ = CachedCombinators.Count;", topCombinator));
+                sb.AppendLine(Indent(indent + 3, "CachedCombinators.Add(null);"));
                 sb.AppendLine(Indent(indent + 2, "}}"));
                 sb.AppendLine();
 
@@ -796,14 +796,14 @@ namespace IronMeta
                     topDisjunct = disj;
             }
 
-            if (predefinedCombinator)
+            if (cachedCombinator)
             {
                 --indent;
 
-                sb.AppendLine(Indent(indent + 2, "PredefinedCombinators[{0}_Index_] = {1};", topCombinator, topDisjunct));
+                sb.AppendLine(Indent(indent + 2, "CachedCombinators[{0}_Index_] = {1};", topCombinator, topDisjunct));
                 sb.AppendLine(Indent(indent + 1, "}}"));
                 sb.AppendLine();
-                sb.AppendLine(Indent(indent + 1, "{0} = PredefinedCombinators[{0}_Index_];", topCombinator));
+                sb.AppendLine(Indent(indent + 1, "{0} = CachedCombinators[{0}_Index_];", topCombinator));
                 sb.AppendLine();
             }
             else

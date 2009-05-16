@@ -32,7 +32,7 @@ IronMeta 1.1 was written entirely by Gordon Tisher.
     - get the result or result list of an expression they are bound to.
     - fold a result list into the parameters of a rule.
     - match a rule passed as a parameter.
- - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Warth and Millstein's <a href="http://portal.acm.org/citation.cfm?id=1328408.1328424">algorithm</a>, for all rules, even within parameter matching.
+ - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Warth, Douglass and Millstein's <a href="http://portal.acm.org/citation.cfm?id=1328408.1328424">algorithm</a>, for all rules, even within parameter matching.
 
 Current limitations:
 
@@ -207,6 +207,20 @@ To specify a choice between alternatives, separate them with \c "|".
 
 \note Unlike in other parser generator formalisms, separating expressions with a carriage return does NOT mean they are alternatives!  You must always use the \c "|".
 
+
+
+\section langOperators Other Operators
+
+You can modify the meaning of patterns with the following operators:
+
+ - \c "?" as a suffix will match zero or one times.
+ - \c "*" as a suffix will match zero or more times.
+ - \c "+" as a suffix will match one or more times.
+ 
+In strict PEG mode these operators are all greedy -- they will match as many times a possible and then return that result.  If you want your parsers to be able to backtrack, you will need to disable strict PEG mode.
+
+ - \c "&" as a prefix will match an expression but NOT advance the match position.  This allows for unlimited lookahead.
+ - \c "~" as a prefix will match if the expression does NOT match.  It will not advance the match position.
 
 
 \section langVarCondAction Variables, Conditions and Actions

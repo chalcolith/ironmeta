@@ -37,7 +37,8 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
     Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
 
-    Multiplicative = Multiply | Divide | Number(DecimalDigit);
+    Multiplicative = Multiply | Divide;
+    Multiplicative = Number(DecimalDigit);
     
     Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
     Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };

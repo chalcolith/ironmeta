@@ -56,14 +56,26 @@ namespace IronMeta
         /// <summary>Matches any whitespace character.</summary>
         protected virtual IEnumerable<MatchItem> Whitespace(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
-            if (_Whitespace_Body_ == null)
-                _Whitespace_Body_ = _OR(_CALL(EOL), _CONDITION(_ANY(), (_mi_) => (System.Char.IsWhiteSpace(_mi_.Inputs.Last()))));
+            Combinator _Whitespace_Body_ = null;
+
+            if (_Whitespace_Body__Index_ == -1 || CachedCombinators[_Whitespace_Body__Index_] == null)
+            {
+                if (_Whitespace_Body__Index_ == -1)
+                {
+                    _Whitespace_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                CachedCombinators[_Whitespace_Body__Index_] = _OR(_CALL(EOL), _CONDITION(_ANY(), (_mi_) => (System.Char.IsWhiteSpace(_mi_.Inputs.Last()))));
+            }
+
+            _Whitespace_Body_ = CachedCombinators[_Whitespace_Body__Index_];
 
             foreach (MatchItem _res in _Whitespace_Body_.Match(_indent, _inputs, _index, null, _memo))
                 yield return _res;
         }
 
-        private Combinator _Whitespace_Body_ = null;
+        private int _Whitespace_Body__Index_ = -1;
 
         /// \internal
         /// <summary>
@@ -71,14 +83,26 @@ namespace IronMeta
         /// </summary>
         protected virtual IEnumerable<MatchItem> EOL(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
-            if (_EOL_Body_ == null)
-                _EOL_Body_ = _ACTION(_OR(_OR(_AND(_LITERAL('\r'), _LITERAL('\n')), _LITERAL('\n')), _AND(_LITERAL('\r'), _NOT(_LITERAL('\n')))), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.NextIndex); return default(TResult); });
+            Combinator _EOL_Body_ = null;
+
+            if (_EOL_Body__Index_ == -1 || CachedCombinators[_EOL_Body__Index_] == null)
+            {
+                if (_EOL_Body__Index_ == -1)
+                {
+                    _EOL_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                CachedCombinators[_EOL_Body__Index_] = _ACTION(_OR(_OR(_AND(_LITERAL('\r'), _LITERAL('\n')), _LITERAL('\n')), _AND(_LITERAL('\r'), _NOT(_LITERAL('\n')))), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.NextIndex); return default(TResult); });
+            }
+
+            _EOL_Body_ = CachedCombinators[_EOL_Body__Index_];
 
             foreach (MatchItem _res in _EOL_Body_.Match(_indent, _inputs, _index, null, _memo))
                 yield return _res;
         }
 
-        private Combinator _EOL_Body_ = null;
+        private int _EOL_Body__Index_ = -1;
 
         /// \internal
         /// <summary>
@@ -86,14 +110,26 @@ namespace IronMeta
         /// </summary>
         protected virtual IEnumerable<MatchItem> EOF(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
-            if (_EOF_Body_ == null)
-                _EOF_Body_ = _ACTION(_NOT(_ANY()), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.StartIndex); return default(TResult); });
+            Combinator _EOF_Body_ = null;
+
+            if (_EOF_Body__Index_ == -1 || CachedCombinators[_EOF_Body__Index_] == null)
+            {
+                if (_EOF_Body__Index_ == -1)
+                {
+                    _EOF_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                CachedCombinators[_EOF_Body__Index_] = _ACTION(_NOT(_ANY()), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.StartIndex); return default(TResult); });
+            }
+
+            _EOF_Body_ = CachedCombinators[_EOF_Body__Index_];
 
             foreach (MatchItem _res in _EOF_Body_.Match(_indent, _inputs, _index, null, _memo))
                 yield return _res;
         }
 
-        private Combinator _EOF_Body_ = null;
+        private int _EOF_Body__Index_ = -1;
 
         #endregion
 

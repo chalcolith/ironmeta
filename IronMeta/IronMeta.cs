@@ -1,4 +1,4 @@
-// IronMeta Generated IronMeta: 5/15/2009 7:00:13 PM UTC
+// IronMeta Generated IronMeta: 16/05/2009 3:48:05 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -69,12 +69,12 @@ namespace IronMeta
         {
             Combinator _FilePreamble_Body_ = null;
 
-            if (_FilePreamble_Body__Index_ == -1 || PredefinedCombinators[_FilePreamble_Body__Index_] == null)
+            if (_FilePreamble_Body__Index_ == -1 || CachedCombinators[_FilePreamble_Body__Index_] == null)
             {
                 if (_FilePreamble_Body__Index_ == -1)
                 {
-                    _FilePreamble_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _FilePreamble_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -82,10 +82,10 @@ namespace IronMeta
                     _disj_0_ = _PLUS(_CALL(UsingStatement));
                 }
 
-                PredefinedCombinators[_FilePreamble_Body__Index_] = _disj_0_;
+                CachedCombinators[_FilePreamble_Body__Index_] = _disj_0_;
             }
 
-            _FilePreamble_Body_ = PredefinedCombinators[_FilePreamble_Body__Index_];
+            _FilePreamble_Body_ = CachedCombinators[_FilePreamble_Body__Index_];
 
 
             foreach (var _res_ in _FilePreamble_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -412,12 +412,12 @@ namespace IronMeta
         {
             Combinator _PrefixedTerm_Body_ = null;
 
-            if (_PrefixedTerm_Body__Index_ == -1 || PredefinedCombinators[_PrefixedTerm_Body__Index_] == null)
+            if (_PrefixedTerm_Body__Index_ == -1 || CachedCombinators[_PrefixedTerm_Body__Index_] == null)
             {
                 if (_PrefixedTerm_Body__Index_ == -1)
                 {
-                    _PrefixedTerm_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _PrefixedTerm_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -425,10 +425,10 @@ namespace IronMeta
                     _disj_0_ = _OR(_OR(_CALL(AndTerm), _CALL(NotTerm)), _CALL(PostfixedTerm));
                 }
 
-                PredefinedCombinators[_PrefixedTerm_Body__Index_] = _disj_0_;
+                CachedCombinators[_PrefixedTerm_Body__Index_] = _disj_0_;
             }
 
-            _PrefixedTerm_Body_ = PredefinedCombinators[_PrefixedTerm_Body__Index_];
+            _PrefixedTerm_Body_ = CachedCombinators[_PrefixedTerm_Body__Index_];
 
 
             foreach (var _res_ in _PrefixedTerm_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -493,12 +493,12 @@ namespace IronMeta
         {
             Combinator _PostfixedTerm_Body_ = null;
 
-            if (_PostfixedTerm_Body__Index_ == -1 || PredefinedCombinators[_PostfixedTerm_Body__Index_] == null)
+            if (_PostfixedTerm_Body__Index_ == -1 || CachedCombinators[_PostfixedTerm_Body__Index_] == null)
             {
                 if (_PostfixedTerm_Body__Index_ == -1)
                 {
-                    _PostfixedTerm_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _PostfixedTerm_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -506,10 +506,10 @@ namespace IronMeta
                     _disj_0_ = _OR(_OR(_OR(_CALL(StarTerm), _CALL(PlusTerm)), _CALL(QuestionTerm)), _CALL(Term));
                 }
 
-                PredefinedCombinators[_PostfixedTerm_Body__Index_] = _disj_0_;
+                CachedCombinators[_PostfixedTerm_Body__Index_] = _disj_0_;
             }
 
-            _PostfixedTerm_Body_ = PredefinedCombinators[_PostfixedTerm_Body__Index_];
+            _PostfixedTerm_Body_ = CachedCombinators[_PostfixedTerm_Body__Index_];
 
 
             foreach (var _res_ in _PostfixedTerm_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -598,12 +598,12 @@ namespace IronMeta
         {
             Combinator _Term_Body_ = null;
 
-            if (_Term_Body__Index_ == -1 || PredefinedCombinators[_Term_Body__Index_] == null)
+            if (_Term_Body__Index_ == -1 || CachedCombinators[_Term_Body__Index_] == null)
             {
                 if (_Term_Body__Index_ == -1)
                 {
-                    _Term_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Term_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -611,10 +611,10 @@ namespace IronMeta
                     _disj_0_ = _OR(_OR(_OR(_OR(_CALL(ParenTerm), _CALL(AnyTerm)), _CALL(RuleCall)), _CALL(CallOrVar)), _CALL(Literal));
                 }
 
-                PredefinedCombinators[_Term_Body__Index_] = _disj_0_;
+                CachedCombinators[_Term_Body__Index_] = _disj_0_;
             }
 
-            _Term_Body_ = PredefinedCombinators[_Term_Body__Index_];
+            _Term_Body_ = CachedCombinators[_Term_Body__Index_];
 
 
             foreach (var _res_ in _Term_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -655,12 +655,12 @@ namespace IronMeta
         {
             Combinator _AnyTerm_Body_ = null;
 
-            if (_AnyTerm_Body__Index_ == -1 || PredefinedCombinators[_AnyTerm_Body__Index_] == null)
+            if (_AnyTerm_Body__Index_ == -1 || CachedCombinators[_AnyTerm_Body__Index_] == null)
             {
                 if (_AnyTerm_Body__Index_ == -1)
                 {
-                    _AnyTerm_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _AnyTerm_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -672,10 +672,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_AnyTerm_Body__Index_] = _disj_0_;
+                CachedCombinators[_AnyTerm_Body__Index_] = _disj_0_;
             }
 
-            _AnyTerm_Body_ = PredefinedCombinators[_AnyTerm_Body__Index_];
+            _AnyTerm_Body_ = CachedCombinators[_AnyTerm_Body__Index_];
 
 
             foreach (var _res_ in _AnyTerm_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -717,12 +717,12 @@ namespace IronMeta
         {
             Combinator _ParameterList_Body_ = null;
 
-            if (_ParameterList_Body__Index_ == -1 || PredefinedCombinators[_ParameterList_Body__Index_] == null)
+            if (_ParameterList_Body__Index_ == -1 || CachedCombinators[_ParameterList_Body__Index_] == null)
             {
                 if (_ParameterList_Body__Index_ == -1)
                 {
-                    _ParameterList_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _ParameterList_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -734,10 +734,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_ParameterList_Body__Index_] = _disj_0_;
+                CachedCombinators[_ParameterList_Body__Index_] = _disj_0_;
             }
 
-            _ParameterList_Body_ = PredefinedCombinators[_ParameterList_Body__Index_];
+            _ParameterList_Body_ = CachedCombinators[_ParameterList_Body__Index_];
 
 
             foreach (var _res_ in _ParameterList_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -754,12 +754,12 @@ namespace IronMeta
         {
             Combinator _Parameter_Body_ = null;
 
-            if (_Parameter_Body__Index_ == -1 || PredefinedCombinators[_Parameter_Body__Index_] == null)
+            if (_Parameter_Body__Index_ == -1 || CachedCombinators[_Parameter_Body__Index_] == null)
             {
                 if (_Parameter_Body__Index_ == -1)
                 {
-                    _Parameter_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Parameter_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -767,10 +767,10 @@ namespace IronMeta
                     _disj_0_ = _OR(_CALL(CallOrVar), _CALL(Literal));
                 }
 
-                PredefinedCombinators[_Parameter_Body__Index_] = _disj_0_;
+                CachedCombinators[_Parameter_Body__Index_] = _disj_0_;
             }
 
-            _Parameter_Body_ = PredefinedCombinators[_Parameter_Body__Index_];
+            _Parameter_Body_ = CachedCombinators[_Parameter_Body__Index_];
 
 
             foreach (var _res_ in _Parameter_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -787,12 +787,12 @@ namespace IronMeta
         {
             Combinator _CallOrVar_Body_ = null;
 
-            if (_CallOrVar_Body__Index_ == -1 || PredefinedCombinators[_CallOrVar_Body__Index_] == null)
+            if (_CallOrVar_Body__Index_ == -1 || CachedCombinators[_CallOrVar_Body__Index_] == null)
             {
                 if (_CallOrVar_Body__Index_ == -1)
                 {
-                    _CallOrVar_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _CallOrVar_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -804,10 +804,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_CallOrVar_Body__Index_] = _disj_0_;
+                CachedCombinators[_CallOrVar_Body__Index_] = _disj_0_;
             }
 
-            _CallOrVar_Body_ = PredefinedCombinators[_CallOrVar_Body__Index_];
+            _CallOrVar_Body_ = CachedCombinators[_CallOrVar_Body__Index_];
 
 
             foreach (var _res_ in _CallOrVar_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -824,12 +824,12 @@ namespace IronMeta
         {
             Combinator _Literal_Body_ = null;
 
-            if (_Literal_Body__Index_ == -1 || PredefinedCombinators[_Literal_Body__Index_] == null)
+            if (_Literal_Body__Index_ == -1 || CachedCombinators[_Literal_Body__Index_] == null)
             {
                 if (_Literal_Body__Index_ == -1)
                 {
-                    _Literal_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Literal_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -841,10 +841,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_Literal_Body__Index_] = _disj_0_;
+                CachedCombinators[_Literal_Body__Index_] = _disj_0_;
             }
 
-            _Literal_Body_ = PredefinedCombinators[_Literal_Body__Index_];
+            _Literal_Body_ = CachedCombinators[_Literal_Body__Index_];
 
 
             foreach (var _res_ in _Literal_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -885,12 +885,12 @@ namespace IronMeta
         {
             Combinator _CSharpCodeItem_Body_ = null;
 
-            if (_CSharpCodeItem_Body__Index_ == -1 || PredefinedCombinators[_CSharpCodeItem_Body__Index_] == null)
+            if (_CSharpCodeItem_Body__Index_ == -1 || CachedCombinators[_CSharpCodeItem_Body__Index_] == null)
             {
                 if (_CSharpCodeItem_Body__Index_ == -1)
                 {
-                    _CSharpCodeItem_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _CSharpCodeItem_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -898,10 +898,10 @@ namespace IronMeta
                     _disj_0_ = _OR(_OR(_OR(_AND(_AND(_LITERAL('{'), _STAR(_AND(_NOT(_LITERAL('}')), _OR(_OR(_OR(_CALL(CSharpCodeItem), _CALL(Comment)), _CALL(EOL)), _ANY())))), _LITERAL('}')), _AND(_AND(_LITERAL('('), _STAR(_AND(_NOT(_LITERAL(')')), _OR(_OR(_OR(_CALL(CSharpCodeItem), _CALL(Comment)), _CALL(EOL)), _ANY())))), _LITERAL(')'))), _AND(_AND(_LITERAL('\"'), _STAR(_OR(_OR(_AND(_LITERAL('\x5c'), _LITERAL('\x5c')), _AND(_LITERAL('\x5c'), _LITERAL('\"'))), _AND(_NOT(_LITERAL('\"')), _OR(_CALL(EOL), _ANY()))))), _LITERAL('\"'))), _AND(_AND(_LITERAL('\''), _STAR(_OR(_OR(_AND(_LITERAL('\x5c'), _LITERAL('\x5c')), _AND(_LITERAL('\x5c'), _LITERAL('\''))), _AND(_NOT(_LITERAL('\'')), _OR(_CALL(EOL), _ANY()))))), _LITERAL('\'')));
                 }
 
-                PredefinedCombinators[_CSharpCodeItem_Body__Index_] = _disj_0_;
+                CachedCombinators[_CSharpCodeItem_Body__Index_] = _disj_0_;
             }
 
-            _CSharpCodeItem_Body_ = PredefinedCombinators[_CSharpCodeItem_Body__Index_];
+            _CSharpCodeItem_Body_ = CachedCombinators[_CSharpCodeItem_Body__Index_];
 
 
             foreach (var _res_ in _CSharpCodeItem_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -977,12 +977,12 @@ namespace IronMeta
         {
             Combinator _Identifier_Body_ = null;
 
-            if (_Identifier_Body__Index_ == -1 || PredefinedCombinators[_Identifier_Body__Index_] == null)
+            if (_Identifier_Body__Index_ == -1 || CachedCombinators[_Identifier_Body__Index_] == null)
             {
                 if (_Identifier_Body__Index_ == -1)
                 {
-                    _Identifier_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Identifier_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -1002,10 +1002,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_Identifier_Body__Index_] = _disj_0_;
+                CachedCombinators[_Identifier_Body__Index_] = _disj_0_;
             }
 
-            _Identifier_Body_ = PredefinedCombinators[_Identifier_Body__Index_];
+            _Identifier_Body_ = CachedCombinators[_Identifier_Body__Index_];
 
 
             foreach (var _res_ in _Identifier_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -1046,12 +1046,12 @@ namespace IronMeta
         {
             Combinator _Comment_Body_ = null;
 
-            if (_Comment_Body__Index_ == -1 || PredefinedCombinators[_Comment_Body__Index_] == null)
+            if (_Comment_Body__Index_ == -1 || CachedCombinators[_Comment_Body__Index_] == null)
             {
                 if (_Comment_Body__Index_ == -1)
                 {
-                    _Comment_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Comment_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -1063,10 +1063,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_Comment_Body__Index_] = _disj_0_;
+                CachedCombinators[_Comment_Body__Index_] = _disj_0_;
             }
 
-            _Comment_Body_ = PredefinedCombinators[_Comment_Body__Index_];
+            _Comment_Body_ = CachedCombinators[_Comment_Body__Index_];
 
 
             foreach (var _res_ in _Comment_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -1108,12 +1108,12 @@ namespace IronMeta
         {
             Combinator _Whitespace_Body_ = null;
 
-            if (_Whitespace_Body__Index_ == -1 || PredefinedCombinators[_Whitespace_Body__Index_] == null)
+            if (_Whitespace_Body__Index_ == -1 || CachedCombinators[_Whitespace_Body__Index_] == null)
             {
                 if (_Whitespace_Body__Index_ == -1)
                 {
-                    _Whitespace_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Whitespace_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -1129,10 +1129,10 @@ namespace IronMeta
 }));
                 }
 
-                PredefinedCombinators[_Whitespace_Body__Index_] = _disj_0_;
+                CachedCombinators[_Whitespace_Body__Index_] = _disj_0_;
             }
 
-            _Whitespace_Body_ = PredefinedCombinators[_Whitespace_Body__Index_];
+            _Whitespace_Body_ = CachedCombinators[_Whitespace_Body__Index_];
 
 
             foreach (var _res_ in _Whitespace_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -1149,12 +1149,12 @@ namespace IronMeta
         {
             Combinator _EOL_Body_ = null;
 
-            if (_EOL_Body__Index_ == -1 || PredefinedCombinators[_EOL_Body__Index_] == null)
+            if (_EOL_Body__Index_ == -1 || CachedCombinators[_EOL_Body__Index_] == null)
             {
                 if (_EOL_Body__Index_ == -1)
                 {
-                    _EOL_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _EOL_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -1169,10 +1169,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_EOL_Body__Index_] = _disj_0_;
+                CachedCombinators[_EOL_Body__Index_] = _disj_0_;
             }
 
-            _EOL_Body_ = PredefinedCombinators[_EOL_Body__Index_];
+            _EOL_Body_ = CachedCombinators[_EOL_Body__Index_];
 
 
             foreach (var _res_ in _EOL_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -1189,12 +1189,12 @@ namespace IronMeta
         {
             Combinator _EOF_Body_ = null;
 
-            if (_EOF_Body__Index_ == -1 || PredefinedCombinators[_EOF_Body__Index_] == null)
+            if (_EOF_Body__Index_ == -1 || CachedCombinators[_EOF_Body__Index_] == null)
             {
                 if (_EOF_Body__Index_ == -1)
                 {
-                    _EOF_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _EOF_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -1206,10 +1206,10 @@ namespace IronMeta
 });
                 }
 
-                PredefinedCombinators[_EOF_Body__Index_] = _disj_0_;
+                CachedCombinators[_EOF_Body__Index_] = _disj_0_;
             }
 
-            _EOF_Body_ = PredefinedCombinators[_EOF_Body__Index_];
+            _EOF_Body_ = CachedCombinators[_EOF_Body__Index_];
 
 
             foreach (var _res_ in _EOF_Body_.Match(_indent+1, _inputs, _index, null, _memo))

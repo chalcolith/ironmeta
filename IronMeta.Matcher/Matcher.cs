@@ -165,8 +165,8 @@ namespace IronMeta
         public IEnumerable<MatchResult> AllMatches(IEnumerable<TInput> inputStream, string productionName)
         {
             // clear the predefined combinators
-            for (int i = 0; i < predefinedCombinators.Count; ++i)
-                predefinedCombinators[i] = null;
+            for (int i = 0; i < cachedCombinators.Count; ++i)
+                cachedCombinators[i] = null;
 
             // find the production
             Production production = null;
@@ -747,9 +747,9 @@ namespace IronMeta
         } // class Combinator
 
 
-        private List<Combinator> predefinedCombinators = new List<Combinator>();
+        private List<Combinator> cachedCombinators = new List<Combinator>();
 
-        protected List<Combinator> PredefinedCombinators { get { return predefinedCombinators; } }
+        protected List<Combinator> CachedCombinators { get { return cachedCombinators; } }
 
 
         //////////////////////////////////////////

@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 16/05/2009 8:46:03 AM UTC
+// IronMeta Generated Calc: 16/05/2009 3:49:23 PM UTC
 
 using System.Collections.Generic;
 using System;
@@ -44,12 +44,12 @@ namespace Calc
         {
             Combinator _Expression_Body_ = null;
 
-            if (_Expression_Body__Index_ == -1 || PredefinedCombinators[_Expression_Body__Index_] == null)
+            if (_Expression_Body__Index_ == -1 || CachedCombinators[_Expression_Body__Index_] == null)
             {
                 if (_Expression_Body__Index_ == -1)
                 {
-                    _Expression_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Expression_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -57,10 +57,10 @@ namespace Calc
                     _disj_0_ = _CALL(Additive);
                 }
 
-                PredefinedCombinators[_Expression_Body__Index_] = _disj_0_;
+                CachedCombinators[_Expression_Body__Index_] = _disj_0_;
             }
 
-            _Expression_Body_ = PredefinedCombinators[_Expression_Body__Index_];
+            _Expression_Body_ = CachedCombinators[_Expression_Body__Index_];
 
 
             foreach (var _res_ in _Expression_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -77,12 +77,12 @@ namespace Calc
         {
             Combinator _Additive_Body_ = null;
 
-            if (_Additive_Body__Index_ == -1 || PredefinedCombinators[_Additive_Body__Index_] == null)
+            if (_Additive_Body__Index_ == -1 || CachedCombinators[_Additive_Body__Index_] == null)
             {
                 if (_Additive_Body__Index_ == -1)
                 {
-                    _Additive_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Additive_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -90,10 +90,10 @@ namespace Calc
                     _disj_0_ = _OR(_OR(_CALL(Add), _CALL(Sub)), _CALL(Multiplicative));
                 }
 
-                PredefinedCombinators[_Additive_Body__Index_] = _disj_0_;
+                CachedCombinators[_Additive_Body__Index_] = _disj_0_;
             }
 
-            _Additive_Body_ = PredefinedCombinators[_Additive_Body__Index_];
+            _Additive_Body_ = CachedCombinators[_Additive_Body__Index_];
 
 
             foreach (var _res_ in _Additive_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -138,12 +138,12 @@ namespace Calc
         {
             Combinator _Add_Body_ = null;
 
-            if (_Add_Body__Index_ == -1 || PredefinedCombinators[_Add_Body__Index_] == null)
+            if (_Add_Body__Index_ == -1 || CachedCombinators[_Add_Body__Index_] == null)
             {
                 if (_Add_Body__Index_ == -1)
                 {
-                    _Add_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Add_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -155,10 +155,10 @@ namespace Calc
 });
                 }
 
-                PredefinedCombinators[_Add_Body__Index_] = _disj_0_;
+                CachedCombinators[_Add_Body__Index_] = _disj_0_;
             }
 
-            _Add_Body_ = PredefinedCombinators[_Add_Body__Index_];
+            _Add_Body_ = CachedCombinators[_Add_Body__Index_];
 
 
             foreach (var _res_ in _Add_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -175,12 +175,12 @@ namespace Calc
         {
             Combinator _Sub_Body_ = null;
 
-            if (_Sub_Body__Index_ == -1 || PredefinedCombinators[_Sub_Body__Index_] == null)
+            if (_Sub_Body__Index_ == -1 || CachedCombinators[_Sub_Body__Index_] == null)
             {
                 if (_Sub_Body__Index_ == -1)
                 {
-                    _Sub_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Sub_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -192,10 +192,10 @@ namespace Calc
 });
                 }
 
-                PredefinedCombinators[_Sub_Body__Index_] = _disj_0_;
+                CachedCombinators[_Sub_Body__Index_] = _disj_0_;
             }
 
-            _Sub_Body_ = PredefinedCombinators[_Sub_Body__Index_];
+            _Sub_Body_ = CachedCombinators[_Sub_Body__Index_];
 
 
             foreach (var _res_ in _Sub_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -212,23 +212,27 @@ namespace Calc
         {
             Combinator _Multiplicative_Body_ = null;
 
-            if (_Multiplicative_Body__Index_ == -1 || PredefinedCombinators[_Multiplicative_Body__Index_] == null)
+            if (_Multiplicative_Body__Index_ == -1 || CachedCombinators[_Multiplicative_Body__Index_] == null)
             {
                 if (_Multiplicative_Body__Index_ == -1)
                 {
-                    _Multiplicative_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Multiplicative_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_OR(_CALL(Multiply), _CALL(Divide)), _CALL(Number, new List<MatchItem> { new MatchItem(DecimalDigit) }));
+                    _disj_0_ = _OR(_CALL(Multiply), _CALL(Divide));
+                }
+                Combinator _disj_1_ = null;
+                {
+                    _disj_1_ = _CALL(Number, new List<MatchItem> { new MatchItem(DecimalDigit) });
                 }
 
-                PredefinedCombinators[_Multiplicative_Body__Index_] = _disj_0_;
+                CachedCombinators[_Multiplicative_Body__Index_] = _OR(_disj_0_, _disj_1_);
             }
 
-            _Multiplicative_Body_ = PredefinedCombinators[_Multiplicative_Body__Index_];
+            _Multiplicative_Body_ = CachedCombinators[_Multiplicative_Body__Index_];
 
 
             foreach (var _res_ in _Multiplicative_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -245,27 +249,27 @@ namespace Calc
         {
             Combinator _Multiply_Body_ = null;
 
-            if (_Multiply_Body__Index_ == -1 || PredefinedCombinators[_Multiply_Body__Index_] == null)
+            if (_Multiply_Body__Index_ == -1 || CachedCombinators[_Multiply_Body__Index_] == null)
             {
                 if (_Multiply_Body__Index_ == -1)
                 {
-                    _Multiply_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Multiply_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("*", CONV), new MatchItem(Number), new MatchItem(DecimalDigit) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 42 "Calc.ironmeta"
+#line 43 "Calc.ironmeta"
                { return _IM_Result.Results.Aggregate((p, n) => p * n); }
 #line default
 });
                 }
 
-                PredefinedCombinators[_Multiply_Body__Index_] = _disj_0_;
+                CachedCombinators[_Multiply_Body__Index_] = _disj_0_;
             }
 
-            _Multiply_Body_ = PredefinedCombinators[_Multiply_Body__Index_];
+            _Multiply_Body_ = CachedCombinators[_Multiply_Body__Index_];
 
 
             foreach (var _res_ in _Multiply_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -282,27 +286,27 @@ namespace Calc
         {
             Combinator _Divide_Body_ = null;
 
-            if (_Divide_Body__Index_ == -1 || PredefinedCombinators[_Divide_Body__Index_] == null)
+            if (_Divide_Body__Index_ == -1 || CachedCombinators[_Divide_Body__Index_] == null)
             {
                 if (_Divide_Body__Index_ == -1)
                 {
-                    _Divide_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Divide_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("/", CONV), new MatchItem(Number), new MatchItem(DecimalDigit) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 43 "Calc.ironmeta"
+#line 44 "Calc.ironmeta"
              { return _IM_Result.Results.Aggregate((q, n) => q / n); }
 #line default
 });
                 }
 
-                PredefinedCombinators[_Divide_Body__Index_] = _disj_0_;
+                CachedCombinators[_Divide_Body__Index_] = _disj_0_;
             }
 
-            _Divide_Body_ = PredefinedCombinators[_Divide_Body__Index_];
+            _Divide_Body_ = CachedCombinators[_Divide_Body__Index_];
 
 
             foreach (var _res_ in _Divide_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -326,7 +330,7 @@ namespace Calc
                 var a = new CalcMatcherMatchItem();
                 var b = new CalcMatcherMatchItem();
                 _disj_0_ = _ARGS(_AND(_AND(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op)), _VAR(_ANY(), second)), _VAR(_QUES(_ANY()), type)), _args, _ACTION(_AND(_AND(_VAR(_REF(first, "first", this), a), _CALL(KW, new List<MatchItem> { op })), _VAR(_CALL(second, new List<MatchItem> { type }), b)), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 45 "Calc.ironmeta"
+#line 46 "Calc.ironmeta"
                                           { return new List<int> { a, b }; }
 #line default
 }));
@@ -351,7 +355,7 @@ namespace Calc
                 var type = new CalcMatcherMatchItem();
                 var digits = new CalcMatcherMatchItem();
                 _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_PLUS(_REF(type, "type", this)), digits), _STAR(_CALL(Whitespace))), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 47 "Calc.ironmeta"
+#line 48 "Calc.ironmeta"
                    { return digits.Results.Aggregate(0, (sum, n) => sum*10 + n); }
 #line default
 }));
@@ -373,12 +377,12 @@ namespace Calc
         {
             Combinator _DecimalNumber_Body_ = null;
 
-            if (_DecimalNumber_Body__Index_ == -1 || PredefinedCombinators[_DecimalNumber_Body__Index_] == null)
+            if (_DecimalNumber_Body__Index_ == -1 || CachedCombinators[_DecimalNumber_Body__Index_] == null)
             {
                 if (_DecimalNumber_Body__Index_ == -1)
                 {
-                    _DecimalNumber_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _DecimalNumber_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -386,10 +390,10 @@ namespace Calc
                     _disj_0_ = _CALL(Number, new List<MatchItem> { new MatchItem(DecimalDigit) });
                 }
 
-                PredefinedCombinators[_DecimalNumber_Body__Index_] = _disj_0_;
+                CachedCombinators[_DecimalNumber_Body__Index_] = _disj_0_;
             }
 
-            _DecimalNumber_Body_ = PredefinedCombinators[_DecimalNumber_Body__Index_];
+            _DecimalNumber_Body_ = CachedCombinators[_DecimalNumber_Body__Index_];
 
 
             foreach (var _res_ in _DecimalNumber_Body_.Match(_indent+1, _inputs, _index, null, _memo))
@@ -426,12 +430,12 @@ namespace Calc
         {
             Combinator _Zero_Body_ = null;
 
-            if (_Zero_Body__Index_ == -1 || PredefinedCombinators[_Zero_Body__Index_] == null)
+            if (_Zero_Body__Index_ == -1 || CachedCombinators[_Zero_Body__Index_] == null)
             {
                 if (_Zero_Body__Index_ == -1)
                 {
-                    _Zero_Body__Index_ = PredefinedCombinators.Count;
-                    PredefinedCombinators.Add(null);
+                    _Zero_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
                 }
 
                 Combinator _disj_0_ = null;
@@ -439,10 +443,10 @@ namespace Calc
                     _disj_0_ = _AND(_LITERAL("ze"), _LITERAL("ro"));
                 }
 
-                PredefinedCombinators[_Zero_Body__Index_] = _disj_0_;
+                CachedCombinators[_Zero_Body__Index_] = _disj_0_;
             }
 
-            _Zero_Body_ = PredefinedCombinators[_Zero_Body__Index_];
+            _Zero_Body_ = CachedCombinators[_Zero_Body__Index_];
 
 
             foreach (var _res_ in _Zero_Body_.Match(_indent+1, _inputs, _index, null, _memo))
