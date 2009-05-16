@@ -723,7 +723,7 @@ namespace IronMeta
         {
             // check for override and whether or not we can have a static top combinator
             bool isOverride = false;
-            bool staticCombinator = true;
+            bool predefinedCombinator = true;
 
             foreach (RuleNode rule in rules[ruleName])
             {
@@ -732,34 +732,37 @@ namespace IronMeta
 
                 foreach (var vn in rule.VariableNames)
                     if (!info.RuleNames.Contains(vn))
-                        staticCombinator = false;
+                        predefinedCombinator = false;
             }
-
-            // leave this off for now; we need some way of resetting these between matches
-            staticCombinator = false;
 
             // build the function
             string topCombinator = string.Format("_{0}_Body_", ruleName);
             StringBuilder sb = new StringBuilder();
 
-            if (staticCombinator)
+            if (predefinedCombinator)
             {
-                sb.AppendLine(Indent(indent, "private Combinator {0} = null;", topCombinator));
+                sb.AppendLine(Indent(indent, "private int {0}_Index_ = -1;", topCombinator));
                 sb.AppendLine();
             }
 
             sb.AppendLine(Indent(indent, "protected {0} IEnumerable<MatchItem> {1}(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)", isOverride ? "override" : "virtual", ruleName));
             sb.AppendLine(Indent(indent, "{{"));
-            if (staticCombinator)
+            
+            sb.AppendLine(Indent(indent + 1, "Combinator {0} = null;", topCombinator));
+            sb.AppendLine();
+
+            if (predefinedCombinator)
             {
-                sb.AppendLine(Indent(indent + 1, "if ({0} == null)", topCombinator));
+                sb.AppendLine(Indent(indent + 1, "if ({0}_Index_ == -1 || PredefinedCombinators[{0}_Index_] == null)", topCombinator));
                 sb.AppendLine(Indent(indent + 1, "{{"));
-                ++indent;
-            }
-            else
-            {
-                sb.AppendLine(Indent(indent + 1, "Combinator {0} = null;", topCombinator));
+                sb.AppendLine(Indent(indent + 2, "if ({0}_Index_ == -1)", topCombinator));
+                sb.AppendLine(Indent(indent + 2, "{{"));
+                sb.AppendLine(Indent(indent + 3, "{0}_Index_ = PredefinedCombinators.Count;", topCombinator));
+                sb.AppendLine(Indent(indent + 3, "PredefinedCombinators.Add(null);"));
+                sb.AppendLine(Indent(indent + 2, "}}"));
                 sb.AppendLine();
+
+                ++indent;
             }
 
             // build each disjunct
@@ -793,12 +796,19 @@ namespace IronMeta
                     topDisjunct = disj;
             }
 
-            sb.AppendLine(Indent(indent+1, "{0} = {1};", topCombinator, topDisjunct));
-
-            if (staticCombinator)
+            if (predefinedCombinator)
             {
                 --indent;
+
+                sb.AppendLine(Indent(indent + 2, "PredefinedCombinators[{0}_Index_] = {1};", topCombinator, topDisjunct));
                 sb.AppendLine(Indent(indent + 1, "}}"));
+                sb.AppendLine();
+                sb.AppendLine(Indent(indent + 1, "{0} = PredefinedCombinators[{0}_Index_];", topCombinator));
+                sb.AppendLine();
+            }
+            else
+            {
+                sb.AppendLine(Indent(indent+1, "{0} = {1};", topCombinator, topDisjunct));
             }
 
             sb.AppendLine();
@@ -1010,11 +1020,11 @@ namespace IronMeta
                 var usn = node as UsingStatementNode;
                 if (usn != null)
                 {
-                    if (usn.Text == "System")
+                    if (usn.Text == "using System;")
                         usingSystem = true;
-                    else if (usn.Text == "System.Collections.Generic")
+                    else if (usn.Text == "using System.Collections.Generic;")
                         usingGeneric = true;
-                    else if (usn.Text == "System.Linq")
+                    else if (usn.Text == "using System.Linq;")
                         usingLinq = true;
                 }
             }

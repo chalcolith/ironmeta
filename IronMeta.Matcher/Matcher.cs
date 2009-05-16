@@ -39,47 +39,42 @@ namespace IronMeta
     /// <summary>
     /// Base class for IronMeta matchers.
     /// </summary>
-    /// <typeparam name="TInput"></typeparam>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TInput">The type of input to the matcher.</typeparam>
+    /// <typeparam name="TResult">The type each match will result in.</typeparam>
     public abstract class Matcher<TInput, TResult>
     {
 
+        /// \internal
         /// <summary>
         /// A function that converts from the item type to the output type.
         /// </summary>
         protected Func<TInput, TResult> CONV;
 
+        /// \internal
         /// <summary>
         /// Controls the degree of backtracking.
         /// </summary>
         private bool strictPEG = true;
 
-        protected bool StrictPEG
+        /// <summary>
+        /// Determines whether or not the matcher will use strict Parsing Expression Grammar semantics.
+        /// </summary>
+        public bool StrictPEG
         {
             get { return strictPEG; }
             set { strictPEG = value; }
         }
 
-
         /// <summary>
         /// Construct a new Matcher object.
         /// </summary>
         /// <param name="convertItem">A delgate that holds a function that converts from the item type to the output type.</param>
+        /// <param name="strictPEG">Whether or not to use strict Parsing Expression Grammar semantics.</param>
         protected Matcher(Func<TInput, TResult> convertItem, bool strictPEG)
         {
             this.CONV = convertItem;
             this.strictPEG = strictPEG;
-
-            Init();
         } // Matcher()
-
-
-        /// <summary>
-        /// Provided so that derived parsers can do some initialization in their preamble.
-        /// </summary>
-        protected virtual void Init()
-        {
-        }
 
 
         //////////////////////////////////////////////////////////////
@@ -151,11 +146,10 @@ namespace IronMeta
         /// <summary>
         /// Returns the result of matching a given parser production against a stream of input.
         /// If the parser is using strict PEG matching, there will only be one result.
-        /// If not, use <see cref="AllMatches">AllMatches</see> to get all the possible parses.
+        /// If not, use <see cref="AllMatches()">AllMatches()</see> to get all the possible parses.
         /// </summary>
         /// <param name="inputStream">The input to the parser.</param>
         /// <param name="productionName">The production (i.e. rule) of the parser to use.</param>
-        /// <returns></returns>
         public MatchResult Match(IEnumerable<TInput> inputStream, string productionName)
         {
             return AllMatches(inputStream, productionName).First();
@@ -170,6 +164,10 @@ namespace IronMeta
         /// <param name="productionName">The production (i.e. rule) of the parser to use.</param>
         public IEnumerable<MatchResult> AllMatches(IEnumerable<TInput> inputStream, string productionName)
         {
+            // clear the predefined combinators
+            for (int i = 0; i < predefinedCombinators.Count; ++i)
+                predefinedCombinators[i] = null;
+
             // find the production
             Production production = null;
             try
@@ -211,6 +209,7 @@ namespace IronMeta
         } // AllMatches()
 
 
+        /// \internal
         /// <summary>
         /// Find a production with a given name.
         /// </summary>
@@ -225,6 +224,7 @@ namespace IronMeta
 
         #region Parser Combinators
 
+        /// \internal
         [Conditional("ENABLE_TRACING")]
         public static void WriteIndent(int index, int indent, int iter, string format, params object[] args)
         {
@@ -243,6 +243,7 @@ namespace IronMeta
         }
 
 
+        /// \internal
         /// <summary>
         /// A Production is a type of function that tries to match an item stream.
         /// The iterator that it returns is used to give all solutions to the parse.
@@ -255,6 +256,7 @@ namespace IronMeta
         protected delegate IEnumerable<MatchItem> Production(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo);
 
 
+        /// \internal
         /// <summary>
         /// Used in several situations:
         ///  - As input to productions, stores a single item of input.
@@ -416,6 +418,7 @@ namespace IronMeta
         } // class MatchItem
 
 
+        /// \internal
         /// <summary>
         /// A utility class used to construct a stream of match items from a stream of input items.
         /// We match against MatchItems instead of just inputs in order to be able to pass productions as parameters.
@@ -554,6 +557,7 @@ namespace IronMeta
         } // class MatchItemStream
 
 
+        /// \internal
         /// <summary>
         /// Stores memoization and error-handling information.
         /// </summary>
@@ -729,6 +733,7 @@ namespace IronMeta
         
         //////////////////////////////////////////
 
+        /// \internal
         /// <summary>
         /// A combinator contains a production delegate that is used to match against an item stream.
         /// The only reason we use this method and can't use lambda functions directly is that lambda functions cannot be iterators.
@@ -739,10 +744,17 @@ namespace IronMeta
         } // class Combinator
 
 
+        private List<Combinator> predefinedCombinators = new List<Combinator>();
+
+        protected List<Combinator> PredefinedCombinators { get { return predefinedCombinators; } }
+
+
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _EMPTY() { return new EmptyCombinator(); }
 
+        /// \internal
         private class EmptyCombinator : Combinator
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -756,9 +768,13 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _FAIL() { return new FailCombinator(null); }
+
+        /// \internal
         protected static Combinator _FAIL(string message) { return new FailCombinator(message); }
 
+        /// \internal
         private class FailCombinator : Combinator
         {
             string message;
@@ -782,8 +798,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _ANY() { return new AnyCombinator(); }
 
+        /// \internal
         private class AnyCombinator : Combinator
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -792,7 +810,8 @@ namespace IronMeta
 
                 try 
                 {
-                    res = _inputs.ElementAt(_index);
+                    if (_inputs != null)
+                        res = _inputs.ElementAt(_index);
                 }
                 catch (ArgumentOutOfRangeException) 
                 {
@@ -828,8 +847,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _LITERAL(TInput item) { return new LiteralCombinator(item); }
 
+        /// \internal
         private class LiteralCombinator : Combinator
         {
             TInput item;
@@ -846,9 +867,12 @@ namespace IronMeta
 
                 try
                 {
-                    element = _inputs.ElementAt(_index);
-                    if (element.Inputs.Last().Equals(item))
-                        res = element;
+                    if (_inputs != null)
+                    {
+                        element = _inputs.ElementAt(_index);
+                        if (element.Inputs.Last().Equals(item))
+                            res = element;
+                    }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -883,8 +907,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _AND(Combinator a, Combinator b) { return new AndCombinator(a, b); }
 
+        /// \internal
         private class AndCombinator : Combinator
         {
             Combinator a, b;
@@ -927,8 +953,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _OR(Combinator a, Combinator b) { return new OrCombinator(a, b); }
 
+        /// \internal
         private class OrCombinator : Combinator
         {
             Combinator a, b;
@@ -968,8 +996,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _STAR(Combinator a) { return new StarCombinator(a); }
 
+        /// \internal
         private class StarCombinator : Combinator
         {
             Combinator a;
@@ -1061,15 +1091,19 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _PLUS(Combinator a) { return _AND(a, _STAR(a)); }
 
+        /// \internal
         protected static Combinator _QUES(Combinator a) { return _OR(a, _EMPTY()); }
 
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _LOOK(Combinator a) { return new LookCombinator(a); }
 
+        /// \internal
         private class LookCombinator : Combinator
         {
             Combinator a;
@@ -1101,8 +1135,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _NOT(Combinator a) { return new NotCombinator(a); }
 
+        /// \internal
         private class NotCombinator : Combinator
         {
             Combinator a;
@@ -1138,8 +1174,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _VAR(Combinator a, MatchItem v) { return new VarCombinator(a, v); }
 
+        /// \internal
         private class VarCombinator : Combinator
         {
             Combinator a;
@@ -1173,8 +1211,10 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _CONDITION(Combinator a, Func<MatchItem, bool> condition) { return new ConditionCombinator(a, condition); }
 
+        /// \internal
         private class ConditionCombinator : Combinator
         {
             Combinator a;
@@ -1208,8 +1248,10 @@ namespace IronMeta
         
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _ACTION(Combinator a, Func<MatchItem, TResult> action) { return new ActionCombinatorSingle(a, action); }
 
+        /// \internal
         private class ActionCombinatorSingle : Combinator
         {
             Combinator a;
@@ -1246,9 +1288,10 @@ namespace IronMeta
             }
         }
 
-        // FIXME
+        /// \internal
         protected static Combinator _ACTION(Combinator a, Func<MatchItem, IEnumerable<TResult>> action) { return new ActionCombinatorList(a, action); }
 
+        /// \internal
         private class ActionCombinatorList : Combinator
         {
             Combinator a;
@@ -1288,12 +1331,16 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _REF(MatchItem v, string name, Matcher<TInput, TResult> matcher) { return new RefCombinator(v, name, matcher); }
 
+        /// \internal
         protected static Combinator _REF(MatchItem v, string name) { return new RefCombinator(v, name, null); }
 
+        /// \internal
         protected static Combinator _REF(MatchItem v) { return new RefCombinator(v, "", null); }
 
+        /// \internal
         private class RefCombinator : Combinator
         {
             MatchItem v;
@@ -1350,15 +1397,22 @@ namespace IronMeta
 
                     try
                     {
-                        foreach (TInput var_item in v.Inputs)
+                        if (_inputs != null)
                         {
-                            MatchItem input_item = _inputs.ElementAt(nextIndex++);
-
-                            if (!input_item.Inputs.Last().Equals(var_item))
+                            foreach (TInput var_item in v.Inputs)
                             {
-                                matched = false;
-                                break;
+                                MatchItem input_item = _inputs.ElementAt(nextIndex++);
+
+                                if (!input_item.Inputs.Last().Equals(var_item))
+                                {
+                                    matched = false;
+                                    break;
+                                }
                             }
+                        }
+                        else
+                        {
+                            matched = false;
                         }
 
                         if (!matched)
@@ -1391,11 +1445,13 @@ namespace IronMeta
 
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _ARGS(Combinator arg_pattern, IEnumerable<MatchItem> actual_args, Combinator body_pattern)
         {
             return new ArgsCombinator(arg_pattern, actual_args, body_pattern);
         }
 
+        /// \internal
         private class ArgsCombinator : Combinator
         {
             Combinator arg_pattern;
@@ -1443,22 +1499,26 @@ namespace IronMeta
         
         //////////////////////////////////////////
 
+        /// \internal
         protected static Combinator _CALL(Production p, IEnumerable<MatchItem> actual_args) 
         {
             return new CallItemCombinator(new MatchItem { Production = p }, actual_args); 
         }
 
+        /// \internal
         protected static Combinator _CALL(Production p) 
         {
             return new CallItemCombinator(new MatchItem { Production = p }, null); 
         }
 
+        /// \internal
         protected static Combinator _CALL(MatchItem v, IEnumerable<MatchItem> actual_args) 
         { 
             return new CallItemCombinator(v, actual_args); 
         }
 
-        
+
+        /// \internal
         private class CallItemCombinator : Combinator
         {
             MatchItem v;
@@ -1683,6 +1743,7 @@ namespace IronMeta
         } // CallItemCombinator()
 
 
+        /// \internal
         protected IEnumerable<MatchItem> STR(IEnumerable<TInput> inputs)
         {
             return new MatchItemStream(inputs, CONV);

@@ -26,162 +26,161 @@
 ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMeta.SyntaxNode>
 {
 
-	IronMetaFile = Spacing FilePreamble?:pre IronMetaParser*:parsers EOF
-				-> { return new IronMetaFileNode(_IM_StartIndex, pre, parsers); };
+    IronMetaFile = Spacing FilePreamble?:pre IronMetaParser*:parsers EOF
+                -> { return new IronMetaFileNode(_IM_StartIndex, pre, parsers); };
 
-	FilePreamble = ( UsingStatement )+;
-	
-	UsingStatement = KW("using") QualifiedIdentifier:id KW(";")
-				-> { return new UsingStatementNode(_IM_StartIndex, _IM_GetText(id)); };
-	
-	
-	IronMetaParser = KW("ironMeta") ParserDeclaration:decl ParserBody:body
-				-> { return new ParserNode(_IM_StartIndex, decl, body); };
-	
-	ParserDeclaration = GenericIdentifier:name BaseClassDeclaration?:bc
-				-> { return new ParserDeclarationNode(_IM_StartIndex, name, bc); };
-	
-	BaseClassDeclaration = KW(":") GenericIdentifier:id
-				-> { return id; };
-	
-	
-	
-	ParserBody = KW("{") Rule*:rules KW("}")
-				-> { return new ParserBodyNode(_IM_StartIndex, rules); };
-	
-	Rule = KW("override")?:ovr Identifier:name Disjunction?:parms KW("=") Disjunction:body (KW(",") | KW(";"))
-				-> {
-						bool isOverride = ovr.Results.Any();
-						SyntaxNode pNode = parms.Results.Any() ? (SyntaxNode)parms : null;
-						return new RuleNode(_IM_StartIndex, isOverride, name, pNode, body);
-					};
-	
-	Disjunction = Disjunction:a KW("|") ActionExpression:b
-					-> { return new DisjunctionExpNode(_IM_StartIndex, a, b); } 
-				| ActionExpression;
-	
-	ActionExpression = FailExpression;
-		
-	ActionExpression = SequenceExpression:exp ((KW("->") | KW("=>")) &'{' CSharpCode:action)
-					-> { return new ActionExpNode(_IM_StartIndex, exp, action); }
-				| SequenceExpression;
+    FilePreamble = ( UsingStatement )+;
+    
+    UsingStatement = KW("using") QualifiedIdentifier:id KW(";")
+                -> { return new UsingStatementNode(_IM_StartIndex, _IM_GetText(id)); };
+    
+    IronMetaParser = KW("ironMeta") ParserDeclaration:decl ParserBody:body
+                -> { return new ParserNode(_IM_StartIndex, decl, body); };
+    
+    ParserDeclaration = GenericIdentifier:name BaseClassDeclaration?:bc
+                -> { return new ParserDeclarationNode(_IM_StartIndex, name, bc); };
+    
+    BaseClassDeclaration = KW(":") GenericIdentifier:id
+                -> { return id; };
+    
+    
+    
+    ParserBody = KW("{") Rule*:rules KW("}")
+                -> { return new ParserBodyNode(_IM_StartIndex, rules); };
+    
+    Rule = KW("override")?:ovr Identifier:name Disjunction?:parms KW("=") Disjunction:body (KW(",") | KW(";"))
+                -> {
+                        bool isOverride = ovr.Results.Any();
+                        SyntaxNode pNode = parms.Results.Any() ? (SyntaxNode)parms : null;
+                        return new RuleNode(_IM_StartIndex, isOverride, name, pNode, body);
+                    };
+    
+    Disjunction = Disjunction:a KW("|") ActionExpression:b
+                    -> { return new DisjunctionExpNode(_IM_StartIndex, a, b); } 
+                | ActionExpression;
+    
+    ActionExpression = FailExpression;
+        
+    ActionExpression = SequenceExpression:exp ((KW("->") | KW("=>")) &'{' CSharpCode:action)
+                    -> { return new ActionExpNode(_IM_StartIndex, exp, action); }
+                | SequenceExpression;
 
-	FailExpression = KW("!") (&'\"' CSharpCode:str)?
-					-> { return new FailExpNode(_IM_StartIndex, str); };
+    FailExpression = KW("!") (&'\"' CSharpCode:str)?
+                    -> { return new FailExpNode(_IM_StartIndex, str); };
 
-	SequenceExpression = SequenceExpression:a ConditionExpression:b 
-					-> { return new SequenceExpNode(_IM_StartIndex, a, b); }
-				| ConditionExpression;
-	
-	ConditionExpression = BoundTerm:exp KW("??") &'(' CSharpCode:cond
-					-> { return new ConditionExpNode(_IM_StartIndex, exp, cond); }
-				| BoundTerm;
-	
-	BoundTerm = PrefixedTerm:exp KW(":") Identifier:id
-					-> { return new BoundExpNode(_IM_StartIndex, exp, id); }
-				| KW(":") Identifier:id
-					-> { return new BoundExpNode(_IM_StartIndex, new AnyExpNode(_IM_StartIndex), id); }
-				| PrefixedTerm;
-	
-	
-	PrefixedTerm = AndTerm | NotTerm | PostfixedTerm;
-	
-	AndTerm = KW("&") PrefixedTerm:exp
-			-> { return new PrefixedExpNode(_IM_StartIndex, exp, "LOOK"); };
-	
-	NotTerm = KW("~") PrefixedTerm:exp
-			-> { return new PrefixedExpNode(_IM_StartIndex, exp, "NOT"); };
-	
-	
-	PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term;
-	
-	StarTerm = PostfixedTerm:exp KW("*")
-			-> { return new PostfixedExpNode(_IM_StartIndex, exp, "STAR"); };
-	
-	PlusTerm = PostfixedTerm:exp KW("+")
-			-> { return new PostfixedExpNode(_IM_StartIndex, exp, "PLUS"); };
-	
-	QuestionTerm = PostfixedTerm:exp ('?' ~'?' Spacing)
-			-> { return new PostfixedExpNode(_IM_StartIndex, exp, "QUES"); }; 
-	
-	
-	Term = ParenTerm | AnyTerm | RuleCall | CallOrVar | Literal;
-	
-	ParenTerm = KW("(") Disjunction:exp KW(")")
-			-> { return exp; };
-	
-	AnyTerm = KW(".")
-			-> { return new AnyExpNode(_IM_StartIndex); };
-	
-	RuleCall = QualifiedIdentifier:name KW("(") ParameterList?:p KW(")")
-			-> { return new RuleCallExpNode(_IM_StartIndex, _IM_GetText(name), p); };
-	
-	ParameterList = Parameter (KW(",") Parameter)* 
-			-> { return _IM_Result.Results.Where(child => child is CallOrVarExpNode || child is LiteralExpNode); };
-			
-	Parameter = CallOrVar | Literal;
-			
-	CallOrVar = QualifiedIdentifier
-			-> { return new CallOrVarExpNode(_IM_StartIndex, _IM_Result); };
+    SequenceExpression = SequenceExpression:a ConditionExpression:b 
+                    -> { return new SequenceExpNode(_IM_StartIndex, a, b); }
+                | ConditionExpression;
+    
+    ConditionExpression = BoundTerm:exp KW("??") &'(' CSharpCode:cond
+                    -> { return new ConditionExpNode(_IM_StartIndex, exp, cond); }
+                | BoundTerm;
+    
+    BoundTerm = PrefixedTerm:exp KW(":") Identifier:id
+                    -> { return new BoundExpNode(_IM_StartIndex, exp, id); }
+                | KW(":") Identifier:id
+                    -> { return new BoundExpNode(_IM_StartIndex, new AnyExpNode(_IM_StartIndex), id); }
+                | PrefixedTerm;
+    
+    
+    PrefixedTerm = AndTerm | NotTerm | PostfixedTerm;
+    
+    AndTerm = KW("&") PrefixedTerm:exp
+            -> { return new PrefixedExpNode(_IM_StartIndex, exp, "LOOK"); };
+    
+    NotTerm = KW("~") PrefixedTerm:exp
+            -> { return new PrefixedExpNode(_IM_StartIndex, exp, "NOT"); };
+    
+    
+    PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term;
+    
+    StarTerm = PostfixedTerm:exp KW("*")
+            -> { return new PostfixedExpNode(_IM_StartIndex, exp, "STAR"); };
+    
+    PlusTerm = PostfixedTerm:exp KW("+")
+            -> { return new PostfixedExpNode(_IM_StartIndex, exp, "PLUS"); };
+    
+    QuestionTerm = PostfixedTerm:exp ('?' ~'?' Spacing)
+            -> { return new PostfixedExpNode(_IM_StartIndex, exp, "QUES"); }; 
+    
+    
+    Term = ParenTerm | AnyTerm | RuleCall | CallOrVar | Literal;
+    
+    ParenTerm = KW("(") Disjunction:exp KW(")")
+            -> { return exp; };
+    
+    AnyTerm = KW(".")
+            -> { return new AnyExpNode(_IM_StartIndex); };
+    
+    RuleCall = QualifiedIdentifier:name KW("(") ParameterList?:p KW(")")
+            -> { return new RuleCallExpNode(_IM_StartIndex, _IM_GetText(name), p); };
+    
+    ParameterList = Parameter (KW(",") Parameter)* 
+            -> { return _IM_Result.Results.Where(child => child is CallOrVarExpNode || child is LiteralExpNode); };
+            
+    Parameter = CallOrVar | Literal;
+            
+    CallOrVar = QualifiedIdentifier
+            -> { return new CallOrVarExpNode(_IM_StartIndex, _IM_Result); };
 
-	Literal = CSharpCode
-			-> { return new LiteralExpNode(_IM_StartIndex, _IM_Result); };
+    Literal = CSharpCode
+            -> { return new LiteralExpNode(_IM_StartIndex, _IM_Result); };
 
-	
-	CSharpCode = CSharpCodeItem:code Spacing
-			-> { return new CSharpNode(_IM_StartIndex, _IM_GetText(code)); };
+    
+    CSharpCode = CSharpCodeItem:code Spacing
+            -> { return new CSharpNode(_IM_StartIndex, _IM_GetText(code)); };
 
-	CSharpCodeItem = '{' ((~'}') (CSharpCodeItem | Comment | EOL | .))* '}'
-				   | '(' ((~')') (CSharpCodeItem | Comment | EOL | .))* ')'
-				   | '\"' ( ('\x5c' '\x5c') | ('\x5c' '\"') | ((~'\"') (EOL | .)) )* '\"'
-				   | '\'' ( ('\x5c' '\x5c') | ('\x5c' '\'') | ((~'\'') (EOL | .)) )* '\'';
-
-
-	GenericIdentifier = QualifiedIdentifier:id (KW("<") (GenericIdentifier (KW(",") GenericIdentifier)*):p KW(">"))?
-			-> {
-					List<string> pl = p.Results
-										.Where(node => node is IdentifierNode)
-										.Select(node => ((IdentifierNode)node).Text).ToList();
-					IdentifierNode idn = (IdentifierNode)id;
-					return new IdentifierNode(_IM_StartIndex, idn.Name, idn.Qualifiers, pl);
-				};
-
-	QualifiedIdentifier = (Identifier KW("."))*:quals Identifier:name
-			-> {
-					var ql = quals.Results.Where(node => node is IdentifierNode).Select(node => ((IdentifierNode)node).Text).ToList();
-					return new IdentifierNode(_IM_StartIndex, ((IdentifierNode)name).Name, ql, null);
-				};
-	
-	Identifier = (. ?? (_IM_Result == '_' || System.Char.IsLetter(_IM_Result))) 
-				 (. ?? (_IM_Result == '_' || System.Char.IsLetterOrDigit(_IM_Result)))*
-				 Spacing
-			-> { return new IdentifierNode(_IM_StartIndex, _IM_GetText(_IM_Result).Trim()); };
+    CSharpCodeItem = '{' ((~'}') (CSharpCodeItem | Comment | EOL | .))* '}'
+                   | '(' ((~')') (CSharpCodeItem | Comment | EOL | .))* ')'
+                   | '\"' ( ('\x5c' '\x5c') | ('\x5c' '\"') | ((~'\"') (EOL | .)) )* '\"'
+                   | '\'' ( ('\x5c' '\x5c') | ('\x5c' '\'') | ((~'\'') (EOL | .)) )* '\'';
 
 
-	Spacing = (Comment | Whitespace)*:nodes
-			-> { return new SpacingNode(_IM_StartIndex, nodes); };
-	
-	Comment = ( '/' '/' (~('\r'|'\n') .)* (EOL|EOF)
-				| '/' '*' (~('*' '/') (EOL | .))* '*' '/' )
-			-> { return new CommentNode(_IM_StartIndex, _IM_GetText(_IM_Result)); };
+    GenericIdentifier = QualifiedIdentifier:id (KW("<") (GenericIdentifier (KW(",") GenericIdentifier)*):p KW(">"))?
+            -> {
+                    List<string> pl = p.Results
+                                        .Where(node => node is IdentifierNode)
+                                        .Select(node => ((IdentifierNode)node).Text).ToList();
+                    IdentifierNode idn = (IdentifierNode)id;
+                    return new IdentifierNode(_IM_StartIndex, idn.Name, idn.Qualifiers, pl);
+                };
+
+    QualifiedIdentifier = (Identifier KW("."))*:quals Identifier:name
+            -> {
+                    var ql = quals.Results.Where(node => node is IdentifierNode).Select(node => ((IdentifierNode)node).Text).ToList();
+                    return new IdentifierNode(_IM_StartIndex, ((IdentifierNode)name).Name, ql, null);
+                };
+    
+    Identifier = (. ?? (_IM_Result == '_' || System.Char.IsLetter(_IM_Result))) 
+                 (. ?? (_IM_Result == '_' || System.Char.IsLetterOrDigit(_IM_Result)))*
+                 Spacing
+            -> { return new IdentifierNode(_IM_StartIndex, _IM_GetText(_IM_Result).Trim()); };
 
 
-	KW .*:kw = kw:str Spacing
-			-> { return new KeywordNode(_IM_StartIndex, _IM_GetText(_IM_Result)); };
-	
-	
-	// EOL needs to be first, as otherwise it won't add the position to the list	
-	override Whitespace = EOL | . ?? (System.Char.IsWhiteSpace(_IM_Result)) 
-								-> { return new TokenNode(_IM_StartIndex, TokenNode.TokenType.WHITESPACE); };
+    Spacing = (Comment | Whitespace)*:nodes
+            -> { return new SpacingNode(_IM_StartIndex, nodes); };
+    
+    Comment = ( '/' '/' (~('\r'|'\n') .)* (EOL|EOF)
+                | '/' '*' (~('*' '/') (EOL | .))* '*' '/' )
+            -> { return new CommentNode(_IM_StartIndex, _IM_GetText(_IM_Result)); };
 
 
-	override EOL = ('\r' '\n' | '\r' ~'\n' | '\n') 
-			-> {
-					_IM_LineBeginPositions.Add(_IM_NextIndex);
-					return new TokenNode(_IM_StartIndex, TokenNode.TokenType.EOL); 
-				};
-	
-	override EOF = ~. 
-			-> { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, TokenNode.TokenType.EOF); };
-	
+    KW .*:kw = kw:str Spacing
+            -> { return new KeywordNode(_IM_StartIndex, _IM_GetText(_IM_Result)); };
+    
+    
+    // EOL needs to be first, as otherwise it won't add the position to the list    
+    override Whitespace = EOL | . ?? (System.Char.IsWhiteSpace(_IM_Result)) 
+                                -> { return new TokenNode(_IM_StartIndex, TokenNode.TokenType.WHITESPACE); };
+
+
+    override EOL = ('\r' '\n' | '\r' ~'\n' | '\n') 
+            -> {
+                    _IM_LineBeginPositions.Add(_IM_NextIndex);
+                    return new TokenNode(_IM_StartIndex, TokenNode.TokenType.EOL); 
+                };
+    
+    override EOF = ~. 
+            -> { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, TokenNode.TokenType.EOF); };
+    
 }

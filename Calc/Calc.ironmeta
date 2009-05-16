@@ -23,26 +23,31 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Linq;
+
 ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
 {
-	Expression = Additive;
-	
-	Additive = Add | Sub | Multiplicative;
-		
-	Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
-	Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
+    Expression = Additive;
+    
+    Additive = Add | Sub | Multiplicative;
+        
+    DecimalDigit = .:c ?? ( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+    
+    Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
+    Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
 
-	Multiplicative = Multiply | Divide;
-	Multiplicative = Number;
-	
-	Multiply = BinaryOp(Multiplicative, '*', Number) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
-	Divide = BinaryOp(Multiplicative, '/', Number) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
-	
-	BinaryOp :first :op :second = first:a KW(op) second:b -> { return new List<int> { a, b }; };
-	
-	Number = Digit+:digits base.Whitespace* -> { return digits.Results.Aggregate(0, (sum, n) => sum*10 + n); };
-	
-	KW .*:str = str:res Whitespace*;
-	
-	Digit = ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9') -> { return (int)_IM_Result - '0'; };
+    Multiplicative = Multiply | Divide | Number(DecimalDigit);
+    
+    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
+    
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
+    
+    Number :type = type+:digits base.Whitespace* -> { return digits.Results.Aggregate(0, (sum, n) => sum*10 + n); };
+    
+    DecimalNumber = Number(DecimalDigit);
+    
+    KW .*:str = str Whitespace*;
+    
 }

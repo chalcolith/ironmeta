@@ -37,7 +37,7 @@ namespace Calc
         public void Test_Number()
         {
             var s = "321";
-            CalcMatcher.MatchResult res = matcher.Match(s, "Number");
+            CalcMatcher.MatchResult res = matcher.Match(s, "DecimalNumber");
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 321);
         }
 
@@ -85,6 +85,13 @@ namespace Calc
             var s = "12 / 3";
             var res = matcher.Match(s, "Expression");
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 4);
+        }
+
+        [Fact]
+        public void Test_Precedence()
+        {
+            var res = matcher.Match("4 + 3 * 2", "Expression");
+            Assert.True(res.Success && res.Result == 10);
         }
 
     } // class Tests

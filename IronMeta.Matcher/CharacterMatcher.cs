@@ -33,6 +33,7 @@ namespace IronMeta
 
     public abstract class CharacterMatcher<TResult> : Matcher<char, TResult>
     {
+        /// \internal
         /// <summary>
         /// A set of positions of the beginnings of lines in the item stream.
         /// </summary>
@@ -51,6 +52,8 @@ namespace IronMeta
         #region Character Combinators
 
         // Whitespace = (EOL | :c ?? (System.Char.IsSpace(c)))
+        /// \internal
+        /// <summary>Matches any whitespace character.</summary>
         protected virtual IEnumerable<MatchItem> Whitespace(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
             if (_Whitespace_Body_ == null)
@@ -62,6 +65,7 @@ namespace IronMeta
 
         private static Combinator _Whitespace_Body_ = null;
 
+        /// \internal
         /// <summary>
         /// Matches end-of-line, and records the start position of the next line.
         /// </summary>
@@ -76,6 +80,7 @@ namespace IronMeta
 
         private static Combinator _EOL_Body_ = null;
 
+        /// \internal
         /// <summary>
         /// Matches the end of input.
         /// </summary>
@@ -97,8 +102,10 @@ namespace IronMeta
         private int[] LineBeginsArray = null;
 
         /// <summary>
-        /// Get the line number of the given index.
+        /// Get the line number of the given index.  This will only work if you have used CharacterMatcher.EOL as your end-of-line rule.
         /// </summary>
+        /// <param name="index">The index in the input stream.</param>
+        /// <param name="offset">The offset in the line.</param>
         public int GetLineNumber(int index, out int offset)
         {
             // assume we're all done parsing
@@ -109,13 +116,18 @@ namespace IronMeta
             }
 
             // find line
-            for (int i = 0; i < LineBeginsArray.Length; ++i)
+            int foundPos = Array.BinarySearch(LineBeginsArray, index);
+
+            if (foundPos >= 0)
             {
-                if (LineBeginsArray[i] >= index)
-                {
-                    offset = i > 0 ? index - LineBeginsArray[i - 1] : index;
-                    return i + 1;
-                }
+                offset = 0;
+                return foundPos + 1;
+            }
+            else if (~foundPos < LineBeginsArray.Length)
+            {
+                int firstLarger = ~foundPos;
+                offset = firstLarger > 0 ? index - LineBeginsArray[firstLarger-1] : index;
+                return firstLarger;
             }
 
             offset = index - LineBeginsArray[LineBeginsArray.Length - 1];
@@ -129,7 +141,7 @@ namespace IronMeta
         }
 
         /// <summary>
-        /// Gets a line of text.
+        /// Gets a line of text from your input stream.  This will only work properly if you have used CharacterMatcher.EOL as your end-of-line rule.
         /// </summary>
         public string GetLine(IEnumerable<char> stream, int lineNumber)
         {
@@ -141,7 +153,7 @@ namespace IronMeta
             }
 
             if (lineNumber < 0 || lineNumber > LineBeginsArray.Length - 1)
-                return null;
+                return "";
 
             // find line
             int startIndex = LineBeginsArray[lineNumber];
@@ -161,7 +173,9 @@ namespace IronMeta
             return sb.ToString();
         }
 
-
+        /// <summary>
+        /// Can be used in an IronMeta condition or action to get a string corresponding to the input matched by an expression.
+        /// </summary>
         protected string _IM_GetText(MatchItem item)
         {
             return string.Join("", item.Inputs.Select(i => i.ToString()).ToArray());

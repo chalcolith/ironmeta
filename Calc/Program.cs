@@ -37,7 +37,7 @@ namespace Calc
         private static void Main(string[] args)
         {
             Tests t = new Tests();
-            t.Test_Divide();
+            t.Test_Number();
         }
 
     }
