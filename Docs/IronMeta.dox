@@ -2,7 +2,7 @@
 
 \mainpage IronMeta User Manual
 
-IronMeta provides a programming language and application for generating pattern matchers on arbitrary streams of objects.  It is an implementation of Alessandro Warth's \htmlonly <a href="http://www.cs.ucla.edu/~awarth/ometa/">OMeta</a> \endhtmlonly \latexonly OMeta\footnote{http://www.cs.ucla.edu/~awarth/ometa/} \endlatexonly system for C# on .NET.
+IronMeta provides a programming language and application for generating pattern matchers on arbitrary streams of objects.  It is an implementation of Alessandro Warth's <a href="http://www.cs.ucla.edu/~awarth/ometa/">OMeta</a> system for C# on .NET.
 
 IronMeta is available under the terms of the \ref BSDLicense "BSD License".
 
@@ -14,10 +14,14 @@ IronMeta is available under the terms of the \ref BSDLicense "BSD License".
  - \ref ironMetaLanguage "The IronMeta Language"
  - \ref ironMetaGrammar "The IronMeta Grammar"
 
+\section contributors Contributors
+
+IronMeta 1.0 was written entirely by Gordon Tisher.
+
 \section features Features
 
  - Although the most common use for IronMeta is to build parsers on streams of text for use in compiling or other text processing, IronMeta can generate pattern matchers (more accurately, transducers) for any input and output type.  You can use C# syntax directly in grammar rules to specify objects to match.
- - IronMeta-generated parsers can function with strict \htmlonly <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</a> \endhtmlonly \latexonly Parsing Expression Grammar\footnote{http://en.wikipedia.org/wiki/Parsing_expression_grammar} \endlatexonly semantics, or can function as fully-backtracking recursive-descent parsers.
+ - IronMeta-generated parsers can function with strict <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</a> semantics, or can function as fully-backtracking recursive-descent parsers.
  - Generated parsers are implemented as C# partial classes, allowing you to keep ancillary code in a separate file from your grammar.
  - Unrestricted use of C# in semantic conditions and match actions.
  - Pass rules as parameters: you can pass rules as parameters to other rules.
@@ -26,7 +30,7 @@ IronMeta is available under the terms of the \ref BSDLicense "BSD License".
     - get the result or result list of an expression they are bound to.
     - fold a result list into the parameters of a rule.
     - match a rule passed as a parameter.
- - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Warth and Millstein's \htmlonly <a href="http://portal.acm.org/citation.cfm?id=1328408.1328424">algorithm</a>\endhtmlonly \latexonly algorithm\footnote{http://portal.acm.org/citation.cfm?id=1328408.1328424}\endlatexonly, for all rules, even within parameter matching.
+ - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Warth and Millstein's <a href="http://portal.acm.org/citation.cfm?id=1328408.1328424">algorithm</a>, for all rules, even within parameter matching.
 
 Current limitations:
 
@@ -36,7 +40,7 @@ Current limitations:
 
 IronMeta is currently only available for Windows.
 
-You can download a zip file containing IronMeta binaries at SourceForge: .
+You can download a zip file containing IronMeta binaries at the <a href="https://sourceforge.net/projects/ironmeta/">SourceForge site</a>.
 
 
 
@@ -48,7 +52,7 @@ In order to use an IronMeta-generated parser in your C# program, do the followin
 
  - Compile the C# file.  If your parser is named \c Foo, the generated class will be named \c Foo.FooMatcher.
  - Create an object of type \c Foo.FooMatcher.
- - If you wish to use the parser as a fully-backtracking recursive-descent parser, set the \c Matcher<TInput,TResult>::StrictPEG property to \c true.
+ - If you wish to use the parser as a fully-backtracking recursive-descent parser, set the \c Matcher<TInput,TResult>::StrictPEG property to \c false.
  - Create an \c IEnumerable&lt;TInput&gt; with your input data.
  - Call the function \c Matcher<TInput,TResult>::Match() or \c Matcher<TInput,TResult>::AllMatches(), with your input stream and the name of the top-level rule you wish to use.  These return an object (or \c IEnumerable) of type \c Matcher<TInput,TResult>::MatchResult, which contains information about the possible results.
 
@@ -57,14 +61,14 @@ In order to use an IronMeta-generated parser in your C# program, do the followin
 
 \section reportingBugs Reporting Bugs
 
-If you come across a bug in IronMeta, please fill out a bug report at the \htmlonly <a href="https://sourceforge.net/tracker/?group_id=261882&atid=1127483">SourceForge bug tracker</a>. \endhtmlonly \latexonly SourceForge Bug Tracker\footnote{https://sourceforge.net/tracker/?group_id=261882&atid=1127483}. \endlatexonly
+If you come across a bug in IronMeta, please fill out a bug report at the <a href="https://sourceforge.net/tracker/?group_id=261882&atid=1127483">SourceForge bug tracker</a>.
 
 
 \section buildIronMeta Contributing to IronMeta
 
 In order to build IronMeta, you must download the source code using a \htmlonly <a href="http://subversion.tigris.org">Subversion</a> \endhtmlonly \latexonly Subversion \endlatexonly client.  The following branches are available:
 
- - Version 1.xxx: this branch contains the latest stable release of IronMeta: \code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/1.xxx \endcode
+ - Version 1.0: this branch contains the latest stable release of IronMeta: \code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/1.0 \endcode
  - HEAD: Check out this branch to get the very latest code.  This branch is where new development takes place.  Note that code in this branch may not always work correctly!\code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk \endcode
 
 The top folder of the source code contains a Visual Studio 2008 solution file called \c IronMeta.sln.  This includes three projects:
@@ -73,7 +77,7 @@ The top folder of the source code contains a Visual Studio 2008 solution file ca
  - \c IronMeta: the main IronMeta program.
  - \c Calc: an example of the usual calculator program, made purposely more complicated so as to demonstrate some of IronMeta's advanced features.
 
-Please send patches to the project admin listed at the \htmlonly <a href="https://sourceforge.net/projects/ironmeta/">SourceForge website</a> \endhtmlonly \latexonly SourceForge website\footnote{https://sourceforge.net/projects/ironmeta/} \endlatexonly or the IronMeta Development list, also available from SourceForge.
+Please send patches to the project admin listed at the <a href="https://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the IronMeta Development list, also available from SourceForge.
 
 
 
@@ -197,7 +201,7 @@ IronMeta will use the standard C# \c Equals() method to match the items.
 
 As is probably obvious from the other rules, you write a sequence of patterns by simply writing them one after the other, separated by whitespace.
 
-To represent a choice between alternatives, separate them with \c "|".
+To specify a choice between alternatives, separate them with \c "|".
 
 \note Unlike in other parser generator formalisms, separating expressions with a carriage return does NOT mean they are alternatives!  You must always use the \c "|".
 
@@ -214,7 +218,7 @@ Here things get more interesting.  This rule has only one expression, the period
 
 However, this rule will not actually match any character, because it contains a \em condition.  A condition is written with \c "??" followed by a C# expression in parentheses.  The C# expression must evaluate to a \c bool value.  Once the expression matches (in this case it will match anything), it is bound to the variable \c c, which is then available for use in your C# code.
 
-The rule also contains an \em action.  Actions are written with \c "->" followed by a C# block surrounded by curly braces.  This block must contain a \c return statement that returns a value of the output type, or a \c List<> of the output type.
+The rule also contains an \em action.  Actions are written with \c "-\>" followed by a C# block surrounded by curly braces.  This block must contain a \c return statement that returns a value of the output type, or a \c List<> of the output type.
 
 In this case, the variable \c c is explicitly cast to an \c int in order to force the variable to return its result, because otherwise C# would implicitly cast it to \c char because of the \c '0' in the expression.
 
@@ -243,24 +247,23 @@ IronMeta variables are very flexible.  They contain implicit cast operators to:
  - A \c List<> of the input type.
  - A \c List<> of the output type.
  
-\note If your input and output types are the same, the implicit cast operators will only return the \em inputs, and you will need to use the explicit variable properties below.
-
-You can also use variables in a pattern, in which case they will match whatever input they matched when they were bound.  Or, if they were bound to a rule in a parameter pattern (see below), they will call that rule.  You can even pass parameters to them.
-
-You can also get various properties of the variables directly:
+If your input and output types are the same, the implicit cast operators will only return the \em inputs, and you will need to use the explicit variable properties:
 
  - \c c.Inputs returns the list of inputs that the parse pattern matched.
  - \c c.Results returns the list of results that resulted from the match.
  - \c c.StartIndex returns the index in the input stream at which the pattern started matching.
  - \c c.NextIndex returns the first index in the input stream \em after the pattern match ended.
 
+You can also use variables in a pattern, in which case they will match whatever input they matched when they were bound.  Or, if they were bound to a rule in a parameter pattern (see below), they will call that rule.  You can even pass parameters to them.
+
+
 \subsection langBuiltinVars Built-In Variables
 
 IronMeta automatically defines some variables for use in your C# code:
 
  - \c _IM_Result: bound to the entire expression that your condition or action applies to.
- - \c _IM_StartIndex: the index at which the match starts.
- - \c _IM_NextIndex: the index after the match ends.
+ - \c _IM_StartIndex: an \c int that holds the index at which the match starts.
+ - \c _IM_NextIndex: an \c int that holds the index after the match ends.
 
 
 \section langMultiple Multiple Rule Bodies
@@ -293,7 +296,7 @@ This rule demonstrates how to match parameters.  The parameter part of a rule is
     BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
 \endcode
 
-These rules show that you can pass rules as parameters to other rules.  To match against them, just capture them in a variable in your parameter pattern, and then use the variable as an expression in your pattern.  You can pass pass parameters as usual.
+These rules show that you can pass rules as parameters to other rules.  To match against them, just capture them in a variable in your parameter pattern, and then use the variable as an expression in your pattern.  You can pass parameters as usual.
 
 
 \section langListFolding List Folding
@@ -329,7 +332,7 @@ In this case, the \c CharacterMatcher class contains a rule called \c Whitespace
 The \c CharacterMatcher class provides the following rules:
 
  - \c Whitespace: matches a whitespace character.
- - \c EOL: matches end-of-line.  This function is useful in that it allows for getting the line number of matches.
+ - \c EOL: matches end-of-line.  This function is useful in that it records the positions of the ends of lines for use later.
  - \c EOF: matched end-of-file.
 
 It also provides the following utility functions:

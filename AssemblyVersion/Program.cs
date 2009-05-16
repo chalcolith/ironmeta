@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.IO;
 
 namespace AssemblyVersion
 {
@@ -13,7 +14,8 @@ namespace AssemblyVersion
         {
             foreach (string fname in args)
             {
-                Assembly asm = Assembly.LoadFile(fname);
+                FileInfo fi = new FileInfo(fname);
+                Assembly asm = Assembly.LoadFile(fi.FullName);
                 AssemblyName aname = new AssemblyName(asm.FullName);
                 Console.WriteLine(aname.Version);
             }
