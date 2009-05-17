@@ -74,6 +74,7 @@ if errorlevel 1 goto error
 copy ..\IronMeta.Matcher\bin\$(ConfigurationName)\IronMeta.Matcher.dll %25IronMetaRelease%25
 copy ..\IronMeta\bin\$(ConfigurationName)\IronMeta.exe %25IronMetaRelease%25
 copy ..\Calc\Calc.ironmeta %25IronMetaRelease%25
+copy ..\License.txt %25IronMetaRelease%25
 copy ..\Docs\latex\refman.pdf "%25IronMetaRelease%25\IronMeta User Manual.pdf"
 ..\Resources\zip-3.0-bin\bin\zip -r %25IronMetaRelease%25.zip %25IronMetaRelease%25
 if errorlevel 1 goto error
