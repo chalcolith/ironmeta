@@ -164,7 +164,7 @@ namespace IronMeta
         public void Test_Literal()
         {
             Assert.True(MatchGreedy("{ blah blah { theth ( htiehti ) } }", "Literal"));
-            Assert.True(MatchGreedy("( {hth} )", "Literal"));
+            Assert.False(MatchGreedy("( {hth} )", "Literal"));
             Assert.True(MatchGreedy("\" theithiehtien \\\" htiehtieh\"", "Literal"));
             Assert.True(MatchGreedy("' theihtwn \" thieht\\' t'", "Literal"));
 

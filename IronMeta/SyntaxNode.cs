@@ -378,8 +378,11 @@ namespace IronMeta
         {
             if (text.Contains('.'))
             {
-                if (text.StartsWith("base."))
+                if (text.ToUpper().StartsWith("BASE."))
                     text = text.Substring(5);
+                else if (text.ToUpper().StartsWith("SUPER."))
+                    text = text.Substring(6);
+
                 info.RuleNames.Add(text);
             }
             else
@@ -418,8 +421,10 @@ namespace IronMeta
 
         public override void Analyze(GenerateInfo info)
         {
-            if (RuleName.StartsWith("base."))
+            if (RuleName.ToUpper().StartsWith("BASE."))
                 RuleName = RuleName.Substring(5);
+            else if (RuleName.ToUpper().StartsWith("SUPER."))
+                RuleName = RuleName.Substring(6);
 
             base.Analyze(info);
         }
