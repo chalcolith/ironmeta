@@ -236,6 +236,8 @@ namespace IronMeta
 
         #region Parser Combinators
 
+        private static int FUNC_ID = 1;
+
         /// \internal
         [Conditional("ENABLE_TRACING")]
         public static void WriteIndent(int index, int indent, int iter, string format, params object[] args)
@@ -774,8 +776,10 @@ namespace IronMeta
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 MatchItem res = new MatchItem(_inputs, _index);
-                WriteIndent(_index, indent, -1, "_EMPTY(): {0}", res);
+                WriteIndent(_index, indent, func_id, "_EMPTY(): {0}", res);
                 yield return res;
             }
         }
@@ -802,10 +806,12 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 if (_memo != null && !string.IsNullOrEmpty(message))
                     _memo.AddError(_index, message);
 
-                WriteIndent(_index, indent, -1, "_FAIL()");
+                WriteIndent(_index, indent, func_id, "_FAIL()");
                 yield break;
             }
         }
@@ -821,6 +827,8 @@ namespace IronMeta
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 MatchItem res = null;
 
                 try 
@@ -844,7 +852,7 @@ namespace IronMeta
                             Production = res.Production
                         };
 
-                    WriteIndent(_index, indent, -1, "_ANY(): {0}", newRes);
+                    WriteIndent(_index, indent, func_id, "_ANY(): {0}", newRes);
 
                     yield return newRes;
                 }
@@ -853,7 +861,7 @@ namespace IronMeta
                     if (_memo != null)
                         _memo.AddError(_index, "Expected input");
 
-                    WriteIndent(_index, indent, -1, "_ANY(): FAIL");
+                    WriteIndent(_index, indent, func_id, "_ANY(): FAIL");
                     yield break;
                 }
             }
@@ -886,6 +894,8 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 MatchItem element = null;
                 MatchItem res = null;
 
@@ -923,7 +933,7 @@ namespace IronMeta
 
                 if (res != null)
                 {
-                    WriteIndent(_index, indent, -1, "_LITERAL({0}): {1}", items, res);
+                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): {1}", items, res);
                     yield return res;
                 }
                 else
@@ -931,7 +941,7 @@ namespace IronMeta
                     if (_memo != null)
                         _memo.AddError(_index, string.Format("Expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
 
-                    WriteIndent(_index, indent, -1, "_LITERAL({0}): FAIL: '{1}'", items, element != null ? element.Inputs.Last().ToString() : "<EOF>");
+                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL: '{1}'", items, element != null ? element.Inputs.Last().ToString() : "<EOF>");
                     yield break;
                 }
             }
@@ -956,9 +966,10 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_AND()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
+                WriteIndent(_index, indent, func_id, "_AND()");
+
                 foreach (MatchItem res_a in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     foreach (MatchItem res_b in b.Match(indent + 1, _inputs, res_a.NextIndex, null, _memo))
@@ -970,7 +981,7 @@ namespace IronMeta
                             StartIndex = _index, NextIndex = res_b.NextIndex
                         };
 
-                        WriteIndent(_index, indent, i++, " AND(): {0}", newRes);
+                        WriteIndent(_index, indent, func_id, " AND(): {0}", newRes);
                         yield return newRes;
 
                         if (_memo.StrictPEG)
@@ -1002,13 +1013,14 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_OR()");
+                int func_id = FUNC_ID++;
+
+                WriteIndent(_index, indent, func_id, "_OR()");
 
                 // ordered choice; must try A totally first instead of interleaving...
-                int i = 0;
                 foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
-                    WriteIndent(_index, indent, i++, " OR(): {0}", res);
+                    WriteIndent(_index, indent, func_id, " OR(): {0}", res);
                     yield return res;
 
                     if (_memo.StrictPEG)
@@ -1017,7 +1029,7 @@ namespace IronMeta
 
                 foreach (MatchItem res in b.Match(indent + 1, _inputs, _index, null, _memo))
                 {
-                    WriteIndent(_index, indent, i++, " OR(): {0}", res);
+                    WriteIndent(_index, indent, func_id, " OR(): {0}", res);
                     yield return res;
 
                     if (_memo.StrictPEG)
@@ -1050,7 +1062,9 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_STAR()");
+                int func_id = FUNC_ID++;
+
+                WriteIndent(_index, indent, func_id, "_STAR()");
 
                 var resultStack = new Stack<StarRecord>();
 
@@ -1148,20 +1162,21 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_LOOK()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
-                foreach (MatchItem res in a.Match(indent+1, _inputs, _index, null, _memo))
+                WriteIndent(_index, indent, func_id, "_LOOK()");
+
+                foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     var newRes = new MatchItem(_inputs, _index);
-                    WriteIndent(_index, indent, i++, " LOOK(): {0}", newRes);
+                    WriteIndent(_index, indent, func_id, " LOOK(): {0}", newRes);
                     yield return newRes;
 
                     if (_memo.StrictPEG)
                         yield break;
                 }
 
-                WriteIndent(_index, indent, -1, " LOOK(): FAIL");
+                WriteIndent(_index, indent, func_id, " LOOK(): FAIL");
             }
         }
 
@@ -1183,22 +1198,26 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_NOT()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
+                WriteIndent(_index, indent, func_id, "_NOT()");
+
+                bool matched = false;
                 foreach (MatchItem res in a.Match(indent+1, _inputs, _index, null, _memo))
                 {
+                    matched = true;
+
                     if (_memo != null)
                         _memo.AddError(_index, string.Format("Unexpected ", string.Join("", res.Results.Select(item => item != null ? item.ToString() : "").ToArray())));
 
-                    WriteIndent(_index, indent, i++, " NOT(): FAIL");
+                    WriteIndent(_index, indent, func_id, " NOT(): matched; FAIL");
                     yield break;
                 }
 
-                if (i == 0)
+                if (!matched)
                 {
                     var newRes = new MatchItem(_inputs, _index);
-                    WriteIndent(_index, indent, i++, " NOT(): {0}", newRes);
+                    WriteIndent(_index, indent, func_id, " NOT(): {0}", newRes);
                     yield return newRes;
                 }
             }
@@ -1224,14 +1243,15 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_VAR()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
-                foreach (MatchItem res in a.Match(indent+1, _inputs, _index, null, _memo))
+                WriteIndent(_index, indent, func_id, "_VAR()");
+
+                foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     v.CopyFrom(res);
 
-                    WriteIndent(_index, indent, i++, " VAR(): {0}", res);
+                    WriteIndent(_index, indent, func_id, " VAR(): {0}", res);
 
                     yield return res;
 
@@ -1261,14 +1281,15 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_CONDITION()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
-                foreach (MatchItem res in a.Match(indent+1, _inputs, _index, null, _memo))
+                WriteIndent(_index, indent, func_id, "_CONDITION()");
+
+                foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     if (condition(res))
                     {
-                        WriteIndent(_index, indent, i++, "_CONDITION(): {0}", res);
+                        WriteIndent(_index, indent, func_id, " CONDITION(): {0}", res);
                         yield return res;
                     }
 
@@ -1298,9 +1319,10 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_ACTION()");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
+                WriteIndent(_index, indent, func_id, "_ACTION()");
+
                 foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     var newRes = new MatchItem
@@ -1312,7 +1334,7 @@ namespace IronMeta
                             Production = res.Production
                         };
 
-                    WriteIndent(_index, indent, i++, " ACTION(): {0}", newRes);
+                    WriteIndent(_index, indent, func_id, " ACTION(): {0}", newRes);
                     yield return newRes;
 
                     if (_memo.StrictPEG)
@@ -1338,9 +1360,10 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_ACTION(list)");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
+                WriteIndent(_index, indent, func_id, "_ACTION(list)");
+
                 foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
                 {
                     var newRes = new MatchItem
@@ -1352,7 +1375,7 @@ namespace IronMeta
                             Production = res.Production
                         };
 
-                    WriteIndent(_index, indent, i++, " ACTION(list): {0}", newRes);
+                    WriteIndent(_index, indent, func_id, " ACTION(list): {0}", newRes);
                     yield return newRes;
 
                     if (_memo.StrictPEG)
@@ -1393,6 +1416,8 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 // if we have a production, 
                 if (v.Production != null && call == null)
                 {
@@ -1435,7 +1460,7 @@ namespace IronMeta
 
                     try
                     {
-                        if (_inputs != null)
+                        if (_inputs != null && v.Inputs.Any())
                         {
                             foreach (TInput var_item in v.Inputs)
                             {
@@ -1467,12 +1492,12 @@ namespace IronMeta
                         res.Results = v.Results;
                         res.NextIndex = nextIndex;
 
-                        WriteIndent(_index, indent, -1, "_REF({1}): {0}", res, name);
+                        WriteIndent(_index, indent, func_id, "_REF({1}): {0}", res, name);
                         yield return res;
                     }
                     else
                     {
-                        WriteIndent(_index, indent, -1, "_REF({0}): FAIL", name);
+                        WriteIndent(_index, indent, func_id, "_REF({0}): FAIL", name);
                         yield break;
                     }
                 }
@@ -1507,29 +1532,28 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
-                WriteIndent(_index, indent, -1, "_ARGS(args)");
+                int func_id = FUNC_ID++;
 
-                int i = 0;
+                WriteIndent(_index, indent, func_id, "_ARGS(args)");
 
                 if (arg_memo != null)
                     arg_memo.StrictPEG = _memo.StrictPEG;
 
                 foreach (MatchItem arg_result in arg_pattern.Match(indent+1, actual_args, 0, null, arg_memo))
                 {
-                    WriteIndent(_index, indent, i++, " ARGS(pattern): {0}", arg_result);
+                    WriteIndent(_index, indent, func_id, " ARGS(pattern): {0}", arg_result);
 
-                    int j = 0;
                     foreach (MatchItem body_result in body_pattern.Match(indent+1, _inputs, _index, null, _memo))
                     {
-                        WriteIndent(_index, indent, j++, " ARGS(): {0}", body_result);
+                        WriteIndent(_index, indent, func_id, " ARGS(): {0}", body_result);
                         yield return body_result;
 
                         if (_memo.StrictPEG)
                             yield break;
                     }
 
-                    // cut after the first arg match
-                    yield break;
+                    if (_memo.StrictPEG)
+                        yield break;
                 }
             }
         }
@@ -1557,7 +1581,7 @@ namespace IronMeta
 
 
         /// \internal
-        /// <summary>Implements Warth and Millstein's algorithm for handling left-recursion.</summary>
+        /// <summary>Implements Warth et al's algorithm for handling left-recursion.</summary>
         private class CallItemCombinator : Combinator
         {
             MatchItem v;
@@ -1584,6 +1608,8 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 // recall
                 Memo.MemoResult mr = _memo[_index, CallSignature];
                 Memo.HeadInfo h = _memo.Heads.ContainsKey(_index) ? _memo.Heads[_index] : null;
@@ -1601,6 +1627,8 @@ namespace IronMeta
                     {
                         h.EvalSet.Remove(CallSignature);
                         mr.LR = null;
+
+                        WriteIndent(_index, indent, func_id, "_CALL({0}): eval involved rule", CallSignature);
                         mr.Result = v.Production(indent, _inputs, _index, actual_args, _memo);
                     }
                 }
@@ -1616,12 +1644,11 @@ namespace IronMeta
                     mr = new Memo.MemoResult { LR = lr, Result = finalResult };
                     _memo[_index, CallSignature] = mr;
 
-                    WriteIndent(_index, indent, -1, "_CALL({0}): NO MEMO: creating MR {1}", CallSignature, mr);
+                    WriteIndent(_index, indent, func_id, "_CALL({0}): NO MEMO: creating MR {1}", CallSignature, mr);
 
                     // get a result from the body of the rule
                     _memo.LRStack.Push(lr);
 
-                    int i = 0;
                     foreach (MatchItem res in v.Production(indent, _inputs, _index, actual_args, _memo))
                     {
                         // while we are growing, don't try to re-grow
@@ -1637,7 +1664,7 @@ namespace IronMeta
                         {
                             if (!lr.Head.CallSignature.Equals(CallSignature))
                             {
-                                WriteIndent(_index, indent, i++, " CALL({0}): not growing involved rule: {1}", CallSignature, res);
+                                WriteIndent(_index, indent, func_id, " CALL({0}): not growing involved rule: {1}", CallSignature, res);
                                 yield return res;
 
                                 if (_memo.StrictPEG)
@@ -1645,15 +1672,18 @@ namespace IronMeta
                             }
                             else
                             {
-                                WriteIndent(_index, indent, i++, " CALL({0}): growing: {1}", CallSignature, res);
+                                WriteIndent(_index, indent, func_id, " CALL({0}): growing: {1}", CallSignature, res);
 
                                 if (_memo.Heads.ContainsKey(_index))
                                     _memo.Heads[_index] = lr.Head;
                                 else
                                     _memo.Heads.Add(_index, lr.Head);
 
-                                foreach (MatchItem growRes in GrowLR(indent + 1, _inputs, _index, _memo, lr.Head, finalResult, null))
+                                bool grown = false;
+                                lr.Head.EvalSet = new HashSet<string>(lr.Head.InvolvedSet);
+                                foreach (MatchItem growRes in GrowLR(indent + 1, _inputs, _index, _memo, lr.Head, finalResult, res))
                                 {
+                                    grown = true;
                                     _memo.Heads[_index] = null;
 
                                     // assign result
@@ -1663,14 +1693,18 @@ namespace IronMeta
                                         yield break;
 
                                     _memo.Heads[_index] = lr.Head;
+                                    lr.Head.EvalSet = new HashSet<string>(lr.Head.InvolvedSet);
                                 }
+
+                                if (!grown)
+                                    yield return res;
 
                                 _memo.Heads[_index] = null;
                             }
                         }
                         else
                         {
-                            WriteIndent(_index, indent, i++, " CALL({0}): no lr; not growing: {1}", CallSignature, res);
+                            WriteIndent(_index, indent, func_id, " CALL({0}): no lr; not growing; memoized: {1}", CallSignature, res);
                             yield return res;
 
                             if (_memo.StrictPEG)
@@ -1682,25 +1716,17 @@ namespace IronMeta
                         _memo.LRStack.Push(lr);
                     }
 
-                    WriteIndent(_index, indent, i++, " CALL({0}): final memoized: {{{1}}}", CallSignature, string.Join(" || ", finalResult.Select(r => r.ToString()).ToArray()));
+                    WriteIndent(_index, indent, func_id, " CALL({0}): final memoized: {{{1}}}", CallSignature, string.Join(" || ", finalResult.Select(r => r.ToString()).ToArray()));
 
                     mr.LR = null;
                     _memo.LRStack.Pop();
-
-                    foreach (MatchItem res in finalResult)
-                    {
-                        yield return res;
-                        if (_memo.StrictPEG)
-                            yield break;
-                    }
                 }
                 else
                 {
-                    WriteIndent(_index, indent, -1, "_CALL({0}): MR is {1}", CallSignature, mr);
-
-                    int i = 0;
                     if (mr.LR != null)
                     {
+                        WriteIndent(_index, indent, func_id, "_CALL({0}): detected LR in {1}", CallSignature, mr);
+
                         // detected left-recursion; generate set of involved calls
                         if (mr.LR.Head == null)
                             mr.LR.Head = new Memo.HeadInfo(CallSignature);
@@ -1716,7 +1742,7 @@ namespace IronMeta
                                 break;
                             }
                         }
-                        WriteIndent(_index, indent, i++, " CALL({0}): {1}: need to grow; fail!", CallSignature, mr.LR.Head);
+                        WriteIndent(_index, indent, func_id, " CALL({0}): {1}: need to grow; fail!", CallSignature, mr.LR.Head);
 
                         yield break;
                     }
@@ -1725,7 +1751,7 @@ namespace IronMeta
                         // no left-recursion; return memo result
                         foreach (MatchItem res in mr.Result)
                         {
-                            WriteIndent(_index, indent, i++, " CALL({0}): recorded: {1}", CallSignature, res);
+                            WriteIndent(_index, indent, func_id, " CALL({0}): recorded: {1}", CallSignature, res);
 
                             yield return res;
 
@@ -1736,26 +1762,28 @@ namespace IronMeta
                 }
             } // Match()
 
-
+            
             private IEnumerable<MatchItem> GrowLR(int indent, IEnumerable<MatchItem> _inputs, int _index, Memo _memo, Memo.HeadInfo _head, List<MatchItem> finalResult, MatchItem prevResult)
             {
-                WriteIndent(_index, indent, -1, "_GrowLR({1}): prev: {0}", prevResult, CallSignature);
+                int func_id = FUNC_ID++;
 
-                int i = 0;
-                _head.EvalSet = new HashSet<string>(_head.InvolvedSet);
-                foreach (MatchItem res in v.Production(indent + 1, _inputs, _index, actual_args, _memo))
+                WriteIndent(_index, indent, func_id, ":GrowLR({1}): prev: {0}", prevResult, CallSignature);
+
+                foreach (MatchItem res in v.Production(indent, _inputs, _index, actual_args, _memo))
                 {
                     if (prevResult == null || res.NextIndex > prevResult.NextIndex)
                     {
-                        WriteIndent(_index, indent, i++, " GrowLR({1}): memoizing: {0}", res, CallSignature);
+                        WriteIndent(_index, indent, func_id, " GrowLR({1}): memoizing: {0}", res, CallSignature);
 
                         if (_memo.StrictPEG)
                             finalResult.Clear();
                         finalResult.Insert(0, res);
 
-                        foreach (MatchItem subRes in GrowLR(indent + 1, _inputs, _index, _memo, _head, finalResult, res))
+                        bool grown = false;
+                        foreach (MatchItem subRes in GrowLR(indent, _inputs, _index, _memo, _head, finalResult, res))
                         {
-                            WriteIndent(_index, indent, i++, " GrowLR({1}): grew to: {0}", subRes, CallSignature);
+                            grown = true;
+                            WriteIndent(_index, indent, func_id, " GrowLR({1}): grew to: {0}", subRes, CallSignature);
                             
                             if (_memo.StrictPEG)
                                 finalResult.Clear();
@@ -1766,15 +1794,22 @@ namespace IronMeta
                             if (_memo.StrictPEG)
                                 yield break;
                         }
+
+                        if (!grown)
+                            yield return res;
                     }
                     else
                     {
-                        WriteIndent(_index, indent, i++, " GrowLR({1}): giving up: {0}", string.Join(" || ", finalResult.Select(r => r.ToString()).ToArray()), CallSignature);
+                        WriteIndent(_index, indent, func_id, " GrowLR({1}): giving up: {0}", string.Join(" || ", finalResult.Select(r => r.ToString()).ToArray()), CallSignature);
                         yield return prevResult;
 
                         if (_memo.StrictPEG)
                             yield break;
                     }
+
+                    if (_memo.StrictPEG)
+                        yield break;
+
                     _head.EvalSet = new HashSet<string>(_head.InvolvedSet);
                 }
             } // GrowLR()

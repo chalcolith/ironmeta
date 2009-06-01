@@ -111,7 +111,7 @@ namespace IronMeta
 
                 var sb = new StringBuilder();
                 sb.AppendFormat("{0}({1}): {4}{2}\n\n{3}\n", fileName, lineNumber, pe.Message, line, prefix);
-                for (int i = 0; i < lineOffset + 1; ++i)
+                for (int i = 0; i < lineOffset; ++i)
                     sb.Append(" ");
                 sb.AppendLine("^");
 
@@ -163,7 +163,6 @@ namespace IronMeta
 
         static void Main(string[] args)
         {
-            //
             Program program = new Program();
 
             foreach (string arg in args)

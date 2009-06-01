@@ -48,8 +48,32 @@ namespace Calc
 
         private static void Main(string[] args)
         {
-            Tests t = new Tests();
-            t.Test_Number();
+            //Tests t = new Tests();
+            //t.Test_Expression();
+
+            string input;
+
+            CalcMatcher matcher = new CalcMatcher(c => (int)c, true);
+
+            do
+            {
+                Console.Write("Enter an arithmatic expression (using only integers); Enter to quit: ");
+                input = Console.ReadLine();
+
+                if (!string.IsNullOrEmpty(input))
+                {
+                    CalcMatcher.MatchResult result = matcher.Match(input, "Expression");
+                    if (result.Success)
+                    {
+                        Console.WriteLine("Result: " + result.Result);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: " + result.Error);
+                    }
+                }
+            }
+            while (!string.IsNullOrEmpty(input));
         }
 
     }

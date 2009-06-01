@@ -180,6 +180,7 @@ namespace IronMeta
             Assert.True(MatchGreedy("One.Two.Three()", "RuleCall"));
             Assert.False(MatchGreedy("One.Two", "RuleCall"));
             Assert.False(MatchGreedy("", "RuleCall"));
+            Assert.False(MatchGreedy("Rule(P1; 'p2')", "RuleCall"));
         }
 
         [Fact]
@@ -204,7 +205,7 @@ namespace IronMeta
         {
             Assert.True(MatchGreedy("and?", "QuestionTerm"));
             Assert.False(MatchGreedy("and", "QuestionTerm"));
-            Assert.False(MatchGreedy("and??", "QuestionTerm"));
+            Assert.True(MatchGreedy("and??", "QuestionTerm"));
             Assert.False(MatchGreedy("", "QuestionTerm"));
         }
 

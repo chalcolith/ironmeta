@@ -1,0 +1,13 @@
+﻿1.2:
+	
+	- Added a simple interactive shell to the Calc program.
+	- Fixed a bug that caused redundant evaluation of involved rules.
+	- Fixed a bug with parsers that don't declare a base class.
+	- Added "::=" as alternative to "=" for rules.
+	- Changed condition operator to single question mark to conform to other OMetas.
+	- C# object literals must be surrounded by curly braces.
+
+1.1:
+	- Can now handle IEnumerable literals (e.g. strings, for a matcher of characters).
+
+1.0: Initial release

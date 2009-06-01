@@ -355,6 +355,8 @@ namespace IronMeta
             : base(index)
         {
             this.text = string.Join("", children.Select(child => child.Text).ToArray());
+            if (this.text.StartsWith("{") && this.text.EndsWith("}"))
+                this.text = this.text.Substring(1, this.text.Length - 2);
         }
 
         public override string Generate(int indent, GenerateInfo info)
@@ -554,7 +556,10 @@ namespace IronMeta
             if (LineNumber == 0)
                 throw new Exception("Line numbers have not been assigned.");
 
-            return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})", Children.First().Generate(indent, info), info.MatchItemClass, condition, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            if (condition.Contains("_IM_") || condition.Contains("_IM_Start") || condition.Contains("_IM_Next"))
+                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})", Children.First().Generate(indent, info), info.MatchItemClass, condition, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            else
+                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})", Children.First().Generate(indent, info), info.MatchItemClass, condition, LineNumber, info.InputFile, SingleIndent(LineOffset));
         }
     }
 
@@ -604,7 +609,10 @@ namespace IronMeta
             if (LineNumber == 0)
                 throw new Exception("Line numbers have not been assigned.");
 
-            return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})", Children.First().Generate(indent, info), info.MatchItemClass, action, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            if (action.Contains("_IM_Result") || action.Contains("_IM_Start") || action.Contains("_IM_Next"))
+                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})", Children.First().Generate(indent, info), info.MatchItemClass, action, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            else
+                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})", Children.First().Generate(indent, info), info.MatchItemClass, action, LineNumber, info.InputFile, SingleIndent(LineOffset));
         }
     }
 
@@ -881,7 +889,7 @@ namespace IronMeta
             : base(index)
         {
             this.nameNode = nameNode;
-            this.baseClass = baseClass.Text;
+            this.baseClass = baseClass != null ? baseClass.Text : null;
         }
 
         public override void Analyze(GenerateInfo info)
@@ -894,7 +902,11 @@ namespace IronMeta
 
                 info.InputType = idNode.Parameters[0];
                 info.ResultType = idNode.Parameters[1];
-                info.BaseClass = baseClass;
+
+                if (baseClass != null)
+                    info.BaseClass = baseClass;
+                else
+                    info.BaseClass = string.Format("IronMeta.Matcher<{0}, {1}>", info.InputType, info.ResultType);
             }
             else
             {

@@ -46,17 +46,23 @@ namespace Calc
         CalcMatcher matcher = new CalcMatcher(c => (int)c, true);
 
         [Fact]
-        public void Test_Number()
-        {
-            var s = "321";
-            CalcMatcher.MatchResult res = matcher.Match(s, "DecimalNumber");
-            Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 321);
-        }
-
-        [Fact]
         public void Test_Empty()
         {
             Assert.False(matcher.Match("", "Additive").Success);
+        }
+
+        [Fact]
+        public void Test_List()
+        {
+            Assert.True(matcher.Match("zero", "Zero").Success);
+        }
+
+        [Fact]
+        public void Test_Expression()
+        {
+            var s = "1 + 1";
+            var res = matcher.Match(s, "Expression");
+            Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 2);
         }
 
         [Fact]
@@ -104,12 +110,6 @@ namespace Calc
         {
             var res = matcher.Match("4 + 3 * 2", "Expression");
             Assert.True(res.Success && res.Result == 10);
-        }
-
-        [Fact]
-        public void Test_Zero()
-        {
-            Assert.True(matcher.Match("zero", "Zero").Success);
         }
 
     } // class Tests
