@@ -357,15 +357,20 @@ namespace IronMeta
                 {
                     if (inputItems != null)
                     {
-                        return inputItems.Cast<TInput>();
+                        foreach (TInput item in inputItems.Cast<TInput>())
+                            yield return item;
                     }
                     else if (inputStream != null && StartIndex >= 0 && NextIndex >= 0)
                     {
-                        return inputStream.Where((item, index) => index >= StartIndex && index < NextIndex).SelectMany(item => item.Inputs);
+                        for (int i = StartIndex; i < NextIndex; ++i)
+                        {
+                            foreach (TInput item in inputStream.ElementAt(i).Inputs)
+                                yield return item;
+                        }
                     }
                     else
                     {
-                        return Enumerable.Empty<TInput>();
+                        yield break;
                     }
                 }
 
@@ -551,13 +556,15 @@ namespace IronMeta
 
             public IEnumerator<MatchItem> GetEnumerator()
             {
-                int index = 0;
+                throw new Exception("Don't even think about it.");
 
-                foreach (TInput item in inputs)
-                {
-                    FillItems(index);
-                    yield return items[index++];
-                }
+                //int index = 0;
+
+                //foreach (TInput item in inputs)
+                //{
+                //    FillItems(index);
+                //    yield return items[index++];
+                //}
             }
 
             #endregion
