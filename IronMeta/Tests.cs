@@ -114,11 +114,11 @@ namespace IronMeta
         [Fact]
         public void Test_Spacing()
         {
-            Assert.True(MatchGreedy("", "Spacing"));
-            Assert.True(MatchGreedy("      \t\n\r  ", "Spacing"));
-            Assert.True(MatchGreedy("   /* asdf */   ", "Spacing"));
-            Assert.True(MatchGreedy("\t\t\t// asdf", "Spacing"));
-            Assert.False(MatchGreedy("asdf", "Spacing"));
+            Assert.True(MatchGreedy("", "SP"));
+            Assert.True(MatchGreedy("      \t\n\r  ", "SP"));
+            Assert.True(MatchGreedy("   /* asdf */   ", "SP"));
+            Assert.True(MatchGreedy("\t\t\t// asdf", "SP"));
+            Assert.False(MatchGreedy("asdf", "SP"));
         }
 
         [Fact]

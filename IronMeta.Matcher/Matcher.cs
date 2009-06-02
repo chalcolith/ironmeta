@@ -35,7 +35,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-//#define ENABLE_TRACING
+#define ENABLE_TRACING
 #define ENABLE_ERROR_HANDLING
 
 using System;
@@ -940,7 +940,7 @@ namespace IronMeta
 
                 if (res != null)
                 {
-                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): {1}", items, res);
+                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): {1}", string.Join("", items.Select(i => i.ToString()).ToArray()), res);
                     yield return res;
                 }
                 else
@@ -948,7 +948,7 @@ namespace IronMeta
                     if (_memo != null)
                         _memo.AddError(_index, string.Format("Expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
 
-                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL: '{1}'", items, element != null ? element.Inputs.Last().ToString() : "<EOF>");
+                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL: '{1}'", string.Join("", items.Select(i => i.ToString()).ToArray()), element != null ? element.Inputs.Last().ToString() : "<EOF>");
                     yield break;
                 }
             }
