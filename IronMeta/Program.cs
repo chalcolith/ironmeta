@@ -81,7 +81,7 @@ namespace IronMeta
                 if (!match.Success)
                     throw new SyntaxException(match.ErrorIndex, match.Error);
 
-                var ironMetaFile = match.Result as IronMetaFileNode;
+                SyntaxNode ironMetaFile = match.Result as IronMetaFileNode;
 
                 if (ironMetaFile == null)
                     throw new ParseException(0, "Unknown parse error.");
@@ -90,6 +90,9 @@ namespace IronMeta
                 GenerateInfo info = new GenerateInfo(bareFname, matcher, nameSpace);
                 ironMetaFile.AssignLineNumbers(matcher);
                 ironMetaFile.Analyze(info);
+
+                // optimize
+                SyntaxNode.Optimize(ironMetaFile);
 
                 // generate
                 code = ironMetaFile.Generate(0, info);
@@ -163,10 +166,17 @@ namespace IronMeta
 
         static void Main(string[] args)
         {
-            Program program = new Program();
+            try
+            {
+                Program program = new Program();
 
-            foreach (string arg in args)
-                program.Process(arg);
+                foreach (string arg in args)
+                    program.Process(arg);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
         }
 
     } // class Program

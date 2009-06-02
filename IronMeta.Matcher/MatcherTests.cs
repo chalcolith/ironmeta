@@ -197,6 +197,25 @@ namespace IronMeta.Matcher
             Assert.False(Apply("b", "Literal"));
         }
 
+
+        protected IEnumerable<MatchItem> FoldedLiteral(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            var body = _LITERAL("foo");
+
+            foreach (var res in body.Match(_indent + 1, _inputs, _index, _args, _memo))
+                yield return res;
+        }
+
+
+        [Fact]
+        public void TestFoldedLiteral()
+        {
+            Assert.True(Apply("foo", "FoldedLiteral"));
+            Assert.False(Apply("bar", "FoldedLiteral"));
+            Assert.False(Apply("fo", "FoldedLiteral"));
+        }
+
+
         #endregion
 
 
@@ -234,6 +253,31 @@ namespace IronMeta.Matcher
             Assert.False(Apply("ba", "AndAB"));
             Assert.False(Apply("a", "AndAB"));
             Assert.False(Apply("b", "AndAB"));
+        }
+
+        protected IEnumerable<MatchItem> AndBacktrack(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            var body = _AND(_LITERAL('a'), _OR(_LITERAL('b'), _LITERAL('c')), _LITERAL('d'));
+            foreach (var res in body.Match(indent + 1, _inputs, _index, null, _memo))
+                yield return res;
+        }
+
+        [Fact]
+        public void TestAndBacktrack()
+        {
+            bool oldStrict = StrictPEG;
+
+            try
+            {
+                StrictPEG = false;
+
+                Assert.True(Apply("abd", "AndBacktrack"));
+                Assert.True(Apply("acd", "AndBacktrack"));
+            }
+            finally
+            {
+                StrictPEG = oldStrict;
+            }
         }
 
         #endregion

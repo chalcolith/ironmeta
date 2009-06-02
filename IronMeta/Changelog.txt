@@ -1,5 +1,8 @@
-﻿1.2:
-	
+﻿1.3: Optimization pass
+	- IronMeta is now about an order of magnitude faster.
+	- Fixed a bug when handling C# string literals.
+
+1.2: Bug fixes and miscellaneous enhancements.	
 	- Added a simple interactive shell to the Calc program.
 	- Fixed a bug that caused redundant evaluation of involved rules.
 	- Fixed a bug with parsers that don't declare a base class.

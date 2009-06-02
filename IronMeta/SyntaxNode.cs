@@ -191,6 +191,58 @@ namespace IronMeta
                 sb.Append(" ");
             return sb.ToString();
         }
+
+
+        public static void Optimize(SyntaxNode rootNode)
+        {
+            FoldOrs(rootNode);
+            FoldAnds(rootNode);
+        }
+
+        static void FoldAnds(SyntaxNode node)
+        {
+            foreach (SyntaxNode child in node.Children)
+                FoldAnds(child);
+
+            if (node is SequenceExpNode && node.children != null)
+            {
+                List<SyntaxNode> newChildren = new List<SyntaxNode>();
+
+                foreach (SyntaxNode child in node.children)
+                {
+                    SequenceExpNode seq = child as SequenceExpNode;
+                    if (seq != null)
+                        newChildren.AddRange(seq.Children);
+                    else
+                        newChildren.Add(child);
+                }
+
+                node.children = newChildren;
+            }
+        }
+
+        static void FoldOrs(SyntaxNode node)
+        {
+            foreach (SyntaxNode child in node.Children)
+                FoldOrs(child);
+
+            if (node is DisjunctionExpNode && node.children != null)
+            {
+                List<SyntaxNode> newChildren = new List<SyntaxNode>();
+
+                foreach (SyntaxNode child in node.children)
+                {
+                    DisjunctionExpNode disj = child as DisjunctionExpNode;
+                    if (disj != null)
+                        newChildren.AddRange(disj.children);
+                    else
+                        newChildren.Add(child);
+                }
+
+                node.children = newChildren;
+            }
+        }
+
     }
 
     /// <summary>
@@ -578,13 +630,10 @@ namespace IronMeta
         {
             string result = null;
 
-            foreach (SyntaxNode child in Children)
-            {
-                if (result != null)
-                    result = string.Format("_AND({0}, {1})", result, child.Generate(indent, info));
-                else
-                    result = child.Generate(indent, info);
-            }
+            if (Children.Count() == 1)
+                result = Children.First().Generate(indent, info);
+            else
+                result = string.Format("_AND({0})", string.Join(", ", Children.Select(n => n.Generate(indent, info)).ToArray()));
 
             return result;
         }
@@ -650,13 +699,10 @@ namespace IronMeta
         {
             string result = null;
 
-            foreach (SyntaxNode child in Children)
-            {
-                if (result != null)
-                    result = string.Format("_OR({0}, {1})", result, child.Generate(indent, info));
-                else
-                    result = child.Generate(indent, info);
-            }
+            if (Children.Count() == 1)
+                result = Children.First().Generate(indent, info);
+            else
+                result = string.Format("_OR({0})", string.Join(", ", Children.Select(n => n.Generate(indent, info)).ToArray()));
 
             return result;
         }

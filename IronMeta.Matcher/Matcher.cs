@@ -35,7 +35,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#define ENABLE_TRACING
+//#define ENABLE_TRACING
 #define ENABLE_ERROR_HANDLING
 
 using System;
@@ -283,11 +283,6 @@ namespace IronMeta
         {
             public MatchItem()
             {
-                inputItems = null;
-                inputStream = null;
-                results = null;
-                StartIndex = -1;
-                NextIndex = -1;
             }
 
             public MatchItem(IEnumerable<MatchItem> inputStream, int index)
@@ -428,14 +423,26 @@ namespace IronMeta
 
             public override string ToString()
             {
-                if (Production != null)
-                    return string.Format("{{ {0} }}", Production.Method.Name);
+                if (id == null)
+                {
+                    if (Production != null)
+                    {
+                        id = string.Format("{{ {0} }}", Production.Method.Name);
+                    }
+                    else
+                    {
+                        string inputs = string.Join(",", Inputs.Select(item => item.ToString()).ToArray());
+                        string results = string.Join(",", Results.Select(r => r != null ? r.ToString() : "<null>").ToArray());
 
-                string inputs = string.Join(",", Inputs.Select(item => item.ToString()).ToArray());
-                string results = string.Join(",", Results.Select(r => r != null ? r.ToString() : "<null>").ToArray());
+                        id = string.Format("{0}-{1} [{2}] -> [{3}]", StartIndex, NextIndex, inputs, results);
+                    }
+                }
 
-                return string.Format("{0}-{1} [{2}] -> [{3}]", StartIndex, NextIndex, inputs, results);
+                return id;
             }
+
+            private string id = null;
+
         } // class MatchItem
 
 
@@ -556,15 +563,7 @@ namespace IronMeta
 
             public IEnumerator<MatchItem> GetEnumerator()
             {
-                throw new Exception("Don't even think about it.");
-
-                //int index = 0;
-
-                //foreach (TInput item in inputs)
-                //{
-                //    FillItems(index);
-                //    yield return items[index++];
-                //}
+                throw new NotImplementedException();
             }
 
             #endregion
@@ -903,32 +902,47 @@ namespace IronMeta
             {
                 int func_id = FUNC_ID++;
 
-                MatchItem element = null;
                 MatchItem res = null;
 
                 try
                 {
                     if (_inputs != null)
                     {
-                        int curIndex = _index;
-                        List<TResult> results = new List<TResult>();
+                        int inputIndex = _index;
+                        MatchItem inputItem = null;
+                        IEnumerable<TResult> results = Enumerable.Empty<TResult>();
 
-                        foreach (var item in items)
+                        bool matches = true;
+                        int numItems = items.Count();
+                        for (int i = 0; matches && i < numItems; )
                         {
-                            element = _inputs.ElementAt(curIndex);
-                            if (element.Inputs.Last().Equals(item))
-                                results.Add(element.Results.Last());
-                            ++curIndex;
+                            inputItem = _inputs.ElementAt(inputIndex++);
+                            int numInputItems = inputItem.Inputs.Count();
+                            if (numInputItems > 0)
+                            {
+                                for (int j = 0; matches && j < numInputItems; ++j)
+                                {
+                                    if (!items.ElementAt(i++).Equals(inputItem.Inputs.ElementAt(j)))
+                                        matches = false;
+                                }
+                            }
+                            else
+                            {
+                                matches = false;
+                            }
+
+                            if (matches)
+                                results = results.Concat(inputItem.Results);
                         }
 
-                        if (results.Any())
+                        if (matches)
                         {
                             res = new MatchItem
                                 {
                                     InputStream = _inputs,
                                     Results = results,
                                     StartIndex = _index,
-                                    NextIndex = curIndex
+                                    NextIndex = inputIndex
                                 };
                         }
                     }
@@ -948,7 +962,7 @@ namespace IronMeta
                     if (_memo != null)
                         _memo.AddError(_index, string.Format("Expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
 
-                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL: '{1}'", string.Join("", items.Select(i => i.ToString()).ToArray()), element != null ? element.Inputs.Last().ToString() : "<EOF>");
+                    WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL", string.Join("", items.Select(i => i.ToString()).ToArray()));
                     yield break;
                 }
             }
@@ -958,17 +972,27 @@ namespace IronMeta
         //////////////////////////////////////////
 
         /// \internal
-        protected static Combinator _AND(Combinator a, Combinator b) { return new AndCombinator(a, b); }
+        protected static Combinator _AND(params Combinator[] combinators) { return new AndCombinator(combinators); }
 
         /// \internal
         private class AndCombinator : Combinator
         {
-            Combinator a, b;
+            Combinator[] combinators;
 
-            public AndCombinator(Combinator a, Combinator b)
+            public AndCombinator(params Combinator[] combinators)
             {
-                this.a = a;
-                this.b = b;
+                this.combinators = combinators;
+            }
+
+            private class AndRecord
+            {
+                public IEnumerator<MatchItem> Enumerator;
+                public MatchItem LastResult;
+
+                public AndRecord(IEnumerator<MatchItem> enumerator)
+                {
+                    this.Enumerator = enumerator;
+                }
             }
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -977,45 +1001,134 @@ namespace IronMeta
 
                 WriteIndent(_index, indent, func_id, "_AND()");
 
-                foreach (MatchItem res_a in a.Match(indent + 1, _inputs, _index, null, _memo))
+                var resultStack = new Stack<AndRecord>();
+
+                int curIndex = _index;
+                bool getNewMatch = true;
+
+                int curCombinator = 0;
+                IEnumerator<MatchItem> curEnumerator = null;
+
+                if (curCombinator < combinators.Length)
                 {
-                    foreach (MatchItem res_b in b.Match(indent + 1, _inputs, res_a.NextIndex, null, _memo))
+                    bool done = false;
+
+                    while (true)
                     {
-                        var newRes = new MatchItem
+                        // get the next result from our current combinator
+                        if (getNewMatch)
                         {
-                            InputStream = _inputs,
-                            Results = res_a.Results.Concat(res_b.Results),
-                            StartIndex = _index, NextIndex = res_b.NextIndex
-                        };
+                            if (curCombinator < combinators.Length)
+                            {
+                                IEnumerable<MatchItem> curResults = combinators[curCombinator++].Match(indent + 1, _inputs, curIndex, null, _memo);
+                                curEnumerator = curResults.GetEnumerator();
+                                resultStack.Push(new AndRecord(curEnumerator));
+                            }
+                            else
+                            {
+                                done = true;
+                            }
+                        }
+                        else
+                        {
+                            if (resultStack.Count > 0)
+                                curEnumerator = resultStack.Peek().Enumerator;
+                            else
+                                break;
+                        }
 
-                        WriteIndent(_index, indent, func_id, " AND(): {0}", newRes);
-                        yield return newRes;
+                        // do we have a successful match?
+                        if (done)
+                        {
+                            var resultList = Enumerable.Empty<TResult>();
+                            foreach (var prev in resultStack)
+                            {
+                                resultList = prev.LastResult.Results.Concat(resultList);
+                            }
 
-                        if (_memo.StrictPEG)
-                            yield break;
-                    }
+                            MatchItem res = new MatchItem
+                            {
+                                InputStream = _inputs,
+                                Results = resultList,
+                                StartIndex = _index,
+                                NextIndex = curIndex
+                            };
 
-                    if (_memo.StrictPEG)
-                        yield break;
+                            yield return res;
+
+                            if (_memo.StrictPEG)
+                                yield break;
+                        }
+
+                        // do we have a match for our current combinator?
+                        if (curEnumerator.MoveNext())
+                        {
+                            getNewMatch = true;
+
+                            resultStack.Peek().LastResult = curEnumerator.Current;
+                            curIndex = curEnumerator.Current.NextIndex;
+                        }
+                        else
+                        {
+                            // backtrack
+                            done = false;
+                            resultStack.Pop();
+                            getNewMatch = false;
+                            curCombinator--;
+
+                            if (resultStack.Count > 0)
+                                curIndex = resultStack.Peek().LastResult.StartIndex;
+                            else
+                                break;
+                        }
+                    } // while true
                 }
-            }
+            } // Match()
+
+            //public override IEnumerable<MatchItem> MatchOld(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+            //{
+            //    int func_id = FUNC_ID++;
+
+            //    WriteIndent(_index, indent, func_id, "_AND()");
+
+            //    foreach (MatchItem res_a in a.Match(indent + 1, _inputs, _index, null, _memo))
+            //    {
+            //        foreach (MatchItem res_b in b.Match(indent + 1, _inputs, res_a.NextIndex, null, _memo))
+            //        {
+            //            var newRes = new MatchItem
+            //            {
+            //                InputStream = _inputs,
+            //                Results = res_a.Results.Concat(res_b.Results),
+            //                StartIndex = _index, NextIndex = res_b.NextIndex
+            //            };
+
+            //            WriteIndent(_index, indent, func_id, " AND(): {0}", newRes);
+            //            yield return newRes;
+
+            //            if (_memo.StrictPEG)
+            //                yield break;
+            //        }
+
+            //        if (_memo.StrictPEG)
+            //            yield break;
+            //    }
+            //}
         }
 
 
         //////////////////////////////////////////
 
         /// \internal
-        protected static Combinator _OR(Combinator a, Combinator b) { return new OrCombinator(a, b); }
+        protected static Combinator _OR(params Combinator[] combinators) { return new OrCombinator(combinators); }
 
         /// \internal
         private class OrCombinator : Combinator
         {
-            Combinator a, b;
+            Combinator[] combinators;
 
-            public OrCombinator(Combinator a, Combinator b)
+            public OrCombinator(params Combinator[] combinators)
             {
-                this.a = a;
-                this.b = b;
+                this.combinators = combinators;
             }
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -1025,22 +1138,16 @@ namespace IronMeta
                 WriteIndent(_index, indent, func_id, "_OR()");
 
                 // ordered choice; must try A totally first instead of interleaving...
-                foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
+                foreach (Combinator c in combinators)
                 {
-                    WriteIndent(_index, indent, func_id, " OR(): {0}", res);
-                    yield return res;
+                    foreach (MatchItem res in c.Match(indent + 1, _inputs, _index, null, _memo))
+                    {
+                        WriteIndent(_index, indent, func_id, " OR(): {0}", res);
+                        yield return res;
 
-                    if (_memo.StrictPEG)
-                        yield break;
-                }
-
-                foreach (MatchItem res in b.Match(indent + 1, _inputs, _index, null, _memo))
-                {
-                    WriteIndent(_index, indent, func_id, " OR(): {0}", res);
-                    yield return res;
-
-                    if (_memo.StrictPEG)
-                        yield break;
+                        if (_memo.StrictPEG)
+                            yield break;
+                    }
                 }
             }
         }
@@ -1063,8 +1170,13 @@ namespace IronMeta
 
             private class StarRecord
             {
-                public IEnumerator<MatchItem> Enumerator { get; set; }
-                public MatchItem LastResult { get; set; }
+                public IEnumerator<MatchItem> Enumerator;
+                public MatchItem LastResult;
+
+                public StarRecord(IEnumerator<MatchItem> enumerator)
+                {
+                    this.Enumerator = enumerator;
+                }
             }
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -1086,7 +1198,7 @@ namespace IronMeta
                     {
                         IEnumerable<MatchItem> curResults = a.Match(indent + 1, _inputs, curIndex, null, _memo);
                         curEnumerator = curResults.GetEnumerator();
-                        resultStack.Push(new StarRecord { Enumerator = curEnumerator });
+                        resultStack.Push(new StarRecord(curEnumerator));
                     }
                     else
                     {
@@ -1111,11 +1223,11 @@ namespace IronMeta
                         getNewMatch = false;
 
                         // assemble result from the rest of the stack
-                        var resultList = new List<TResult>();
+                        var resultList = Enumerable.Empty<TResult>();
 
                         foreach (var prev in resultStack)
                         {
-                            resultList.InsertRange(0, prev.LastResult.Results);
+                            resultList = prev.LastResult.Results.Concat(resultList);
                         }
 
                         MatchItem res = new MatchItem

@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 6/1/2009 11:51:29 PM UTC
+// IronMeta Generated Calc: 6/2/2009 7:48:42 PM UTC
 
 using System.Collections.Generic;
 using System;
@@ -87,7 +87,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_OR(_CALL(Add), _CALL(Sub)), _CALL(Multiplicative));
+                    _disj_0_ = _OR(_CALL(Add), _CALL(Sub), _CALL(Multiplicative));
                 }
 
                 CachedCombinators[_Additive_Body__Index_] = _disj_0_;
@@ -112,11 +112,11 @@ namespace Calc
             {
                 var c = new CalcMatcherMatchItem();
                 _disj_0_ = _ACTION(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
-#line 47 "Calc.ironmeta"
+#line 11 "Calc.ironmeta"
                    ( c >= '0' && c <= '9' )
 #line default
 );}), (_IM_Result_MI_) => { 
-#line 47 "Calc.ironmeta"
+#line 11 "Calc.ironmeta"
                    { return (int)c - '0'; }
 #line default
 });
@@ -149,7 +149,7 @@ namespace Calc
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Additive), new MatchItem('+', CONV), new MatchItem(Multiplicative) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 49 "Calc.ironmeta"
+#line 13 "Calc.ironmeta"
           { return _IM_Result.Results.Aggregate((total, n) => total + n); }
 #line default
 });
@@ -186,7 +186,7 @@ namespace Calc
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Additive), new MatchItem('-', CONV), new MatchItem(Multiplicative) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 50 "Calc.ironmeta"
+#line 14 "Calc.ironmeta"
           { return _IM_Result.Results.Aggregate((total, n) => total - n); }
 #line default
 });
@@ -260,7 +260,7 @@ namespace Calc
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("*", CONV), new MatchItem(Number), new MatchItem(DecimalDigit) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 55 "Calc.ironmeta"
+#line 19 "Calc.ironmeta"
                { return _IM_Result.Results.Aggregate((p, n) => p * n); }
 #line default
 });
@@ -297,7 +297,7 @@ namespace Calc
                 Combinator _disj_0_ = null;
                 {
                     _disj_0_ = _ACTION(_CALL(BinaryOp, new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("/", CONV), new MatchItem(Number), new MatchItem(DecimalDigit) }), (_IM_Result_MI_) => { var _IM_Result = new CalcMatcherMatchItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
-#line 57 "Calc.ironmeta"
+#line 21 "Calc.ironmeta"
              { return _IM_Result.Results.Aggregate((q, n) => q / n); }
 #line default
 });
@@ -329,8 +329,8 @@ namespace Calc
                 var type = new CalcMatcherMatchItem();
                 var a = new CalcMatcherMatchItem();
                 var b = new CalcMatcherMatchItem();
-                _disj_0_ = _ARGS(_AND(_AND(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op)), _VAR(_ANY(), second)), _VAR(_QUES(_ANY()), type)), _args, _ACTION(_AND(_AND(_VAR(_REF(first, "first", this), a), _CALL(KW, new List<MatchItem> { op })), _VAR(_CALL(second, new List<MatchItem> { type }), b)), (_IM_Result_MI_) => { 
-#line 60 "Calc.ironmeta"
+                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op), _VAR(_ANY(), second), _VAR(_QUES(_ANY()), type)), _args, _ACTION(_AND(_VAR(_REF(first, "first", this), a), _CALL(KW, new List<MatchItem> { op }), _VAR(_CALL(second, new List<MatchItem> { type }), b)), (_IM_Result_MI_) => { 
+#line 24 "Calc.ironmeta"
                                           { return new List<int> { a, b }; }
 #line default
 }));
@@ -356,7 +356,7 @@ namespace Calc
                 var n = new CalcMatcherMatchItem();
                 var Whitespace = new CalcMatcherMatchItem();
                 _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, new List<MatchItem> { type }), n), _STAR(_REF(Whitespace, "Whitespace", this))), (_IM_Result_MI_) => { 
-#line 62 "Calc.ironmeta"
+#line 26 "Calc.ironmeta"
                    { return n; }
 #line default
 }));
@@ -382,7 +382,7 @@ namespace Calc
                 var a = new CalcMatcherMatchItem();
                 var b = new CalcMatcherMatchItem();
                 _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, new List<MatchItem> { type }), a), _VAR(_REF(type, "type", this), b)), (_IM_Result_MI_) => { 
-#line 64 "Calc.ironmeta"
+#line 28 "Calc.ironmeta"
                    { return a*10 + b; }
 #line default
 }));
@@ -440,7 +440,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _LITERAL(new List<char>{ 'z', 'e', 'r', 'o' });
+                    _disj_0_ = _AND(_LITERAL("ze"), _LITERAL(new List<char>{ 'r', 'o' }));
                 }
 
                 CachedCombinators[_Zero_Body__Index_] = _disj_0_;

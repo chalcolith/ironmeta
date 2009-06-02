@@ -68,20 +68,19 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
                     };
     
     Disjunction = Disjunction:a "|" SP ActionExpression:b
-                -> { return new DisjunctionExpNode(_IM_StartIndex, a, b); } 
+                    -> { return new DisjunctionExpNode(_IM_StartIndex, a, b); } 
                 | ActionExpression;
     
-    ActionExpression = FailExpression;
-        
     ActionExpression = SequenceExpression:exp (("->" | "=>") SP &'{' CSharpCode:action)
-                -> { return new ActionExpNode(_IM_StartIndex, exp, action); }
-                | SequenceExpression;
-
+                    -> { return new ActionExpNode(_IM_StartIndex, exp, action); }
+                | SequenceExpression
+                | FailExpression;
+        
     FailExpression = "!" SP (&'\"' CSharpCode:str)?
-                -> { return new FailExpNode(_IM_StartIndex, str); };
+                    -> { return new FailExpNode(_IM_StartIndex, str); };
 
     SequenceExpression = SequenceExpression:a ConditionExpression:b 
-                -> { return new SequenceExpNode(_IM_StartIndex, a, b); }
+                    -> { return new SequenceExpNode(_IM_StartIndex, a, b); }
                 | ConditionExpression;
     
     ConditionExpression = BoundTerm:exp ('?' &'(') CSharpCode:cond
@@ -173,9 +172,6 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     Comment = (  '/' '/' (~('\r'|'\n') .)* (EOL|EOF)
                | '/' '*' (~('*' '/') (EOL | .))* '*' '/' )
             -> { return new CommentNode(_IM_StartIndex, _IM_GetText(_IM_Result)); };
-
-    //KW .*:kw = kw:str SP
-    //        -> { return new KeywordNode(_IM_StartIndex, _IM_GetText(str)); };
         
     override Whitespace = ('\r' '\n' | '\n' | '\r' ~'\n') 
             -> { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, TokenNode.TokenType.EOL); }
