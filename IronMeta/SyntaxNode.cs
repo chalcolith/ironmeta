@@ -620,10 +620,10 @@ namespace IronMeta
     /// </summary>
     public class SequenceExpNode : ExpNode
     {
-        public SequenceExpNode(int index, SyntaxNode a, SyntaxNode b)
+        public SequenceExpNode(int index, IEnumerable<SyntaxNode> children)
             : base(index)
         {
-            Children = new List<SyntaxNode> { a, b };
+            Children = children;
         }
 
         public override string Generate(int indent, GenerateInfo info)
@@ -689,6 +689,12 @@ namespace IronMeta
     /// </summary>
     public class DisjunctionExpNode : ExpNode
     {
+        public DisjunctionExpNode(int index, IEnumerable<SyntaxNode> children)
+            : base(index)
+        {
+            Children = children;
+        }
+
         public DisjunctionExpNode(int index, SyntaxNode a, SyntaxNode b)
             : base(index)
         {
