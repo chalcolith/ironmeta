@@ -69,14 +69,14 @@ namespace IronMeta
             }
 
             // parse and generate
-            DateTime startTime = DateTime.Now;
-
             var matcher = new IronMetaMatcher();
 
             try
             {
                 // parse
+                DateTime startParse = DateTime.Now;
                 var match = matcher.Match(contents, "IronMetaFile");
+                DateTime endParse = DateTime.Now;
 
                 if (!match.Success)
                     throw new SyntaxException(match.ErrorIndex, match.Error);
@@ -87,7 +87,9 @@ namespace IronMeta
                     throw new ParseException(0, "Unknown parse error.");
 
                 // analyze
-                GenerateInfo info = new GenerateInfo(bareFname, matcher, nameSpace);
+                DateTime startGen = DateTime.Now;
+
+                GenerateInfo info = new GenerateInfo(bareFname, matcher, nameSpace, contents);
                 ironMetaFile.AssignLineNumbers(matcher);
                 ironMetaFile.Analyze(info);
 
@@ -96,6 +98,10 @@ namespace IronMeta
 
                 // generate
                 code = ironMetaFile.Generate(0, info);
+                DateTime endGen = DateTime.Now;
+
+                // print times
+                Console.WriteLine(": parse: {0}; generate {1}", (endParse - startParse), (endGen - startGen));
             }
             catch (ParseException pe)
             {
@@ -130,8 +136,6 @@ namespace IronMeta
                 {
                     sw.WriteLine(code);
                 }
-
-                Console.WriteLine(": {0}", DateTime.Now - startTime);
             }
             else
             {
@@ -166,6 +170,9 @@ namespace IronMeta
 
         static void Main(string[] args)
         {
+            //Tests t = new Tests();
+            //t.Test_QualifiedIdentifier();
+
             try
             {
                 Program program = new Program();

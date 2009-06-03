@@ -342,6 +342,7 @@ namespace IronMeta
             }
 
             private IEnumerable<MatchItem> inputStream = null;
+            private IEnumerable<TInput> cachedFromStream = null;
 
             /// <summary>
             /// The inputs that this item matches, if any.
@@ -352,31 +353,34 @@ namespace IronMeta
                 {
                     if (inputItems != null)
                     {
-                        foreach (TInput item in inputItems.Cast<TInput>())
-                            yield return item;
+                        return inputItems;
                     }
-                    else if (inputStream != null && StartIndex >= 0 && NextIndex >= 0)
+                    else if (inputStream != null)
                     {
-                        for (int i = StartIndex; i < NextIndex; ++i)
+                        if (cachedFromStream == null)
                         {
-                            foreach (TInput item in inputStream.ElementAt(i).Inputs)
-                                yield return item;
+                            var cached = new List<TInput>();
+                            for (int i = StartIndex; i < NextIndex; ++i)
+                                cached.AddRange(inputStream.ElementAt(i).Inputs);
+                            cachedFromStream = cached;
                         }
+
+                        return cachedFromStream;
                     }
                     else
                     {
-                        yield break;
+                        return Enumerable.Empty<TInput>();
                     }
                 }
 
                 set
                 {
                     InputStream = null;
-                    inputItems = value.Cast<object>();
+                    inputItems = value;
                 }
             }
 
-            private IEnumerable<object> inputItems = null;
+            private IEnumerable<TInput> inputItems = null;
 
             /// <summary>
             /// The list of outputs corresponding to the inputs.
@@ -908,27 +912,32 @@ namespace IronMeta
                 {
                     if (_inputs != null)
                     {
-                        int inputIndex = _index;
-                        MatchItem inputItem = null;
+                        bool matches = true;
                         IEnumerable<TResult> results = Enumerable.Empty<TResult>();
 
-                        bool matches = true;
-                        int numItems = items.Count();
-                        for (int i = 0; matches && i < numItems; )
+                        int inputIndex = _index;
+
+                        IEnumerator<TInput> curItem = items.GetEnumerator();
+                        while (matches && curItem.MoveNext())
                         {
-                            inputItem = _inputs.ElementAt(inputIndex++);
-                            int numInputItems = inputItem.Inputs.Count();
-                            if (numInputItems > 0)
+                            MatchItem inputItem = _inputs.ElementAt(inputIndex++);
+
+                            IEnumerator<TInput> curInput = inputItem.Inputs.GetEnumerator();
+
+                            matches = curInput.MoveNext();
+                            while (matches)
                             {
-                                for (int j = 0; matches && j < numInputItems; ++j)
+                                matches = curItem.Current.Equals(curInput.Current);
+
+                                if (curInput.MoveNext())
                                 {
-                                    if (!items.ElementAt(i++).Equals(inputItem.Inputs.ElementAt(j)))
-                                        matches = false;
+                                    if (!(matches = curItem.MoveNext()))
+                                        break;
                                 }
-                            }
-                            else
-                            {
-                                matches = false;
+                                else
+                                {
+                                    break;
+                                }
                             }
 
                             if (matches)

@@ -139,15 +139,18 @@ namespace IronMeta
 
             IronMetaMatcher matcher = new IronMetaMatcher();
 
-            IronMetaMatcher.MatchResult match = matcher.Match("foo.bar.baz", "QualifiedIdentifier");
+            string inputs = "foo.bar.baz";
+            IronMetaMatcher.MatchResult match = matcher.Match(inputs, "QualifiedIdentifier");
             Assert.True(match.Success);
             Assert.True(match.Result is IdentifierNode);
 
             IdentifierNode idn = (IdentifierNode)match.Result;
-            Assert.True(idn.Name == "baz");
-            Assert.True(idn.Qualifiers.Count == 2);
-            Assert.True(idn.Qualifiers[0] == "foo");
-            Assert.True(idn.Qualifiers[1] == "bar");
+            Assert.True(idn.Name.GetText(inputs) == "baz");
+
+            List<SyntaxNode> quals = idn.Qualifiers.ToList();
+            Assert.True(quals.Count() == 2);
+            Assert.True(quals.ElementAt(0).GetText(inputs) == "foo");
+            Assert.True(quals.ElementAt(1).GetText(inputs) == "bar");
         }
 
         [Fact]
@@ -187,7 +190,7 @@ namespace IronMeta
         public void Test_ParenTerm()
         {
             Assert.True(MatchGreedy("(one)", "ParenTerm"));
-            Assert.True(MatchGreedy("(one | two) ", "ParenTerm"));
+            Assert.True(MatchGreedy("(one | two)", "ParenTerm"));
             Assert.False(MatchGreedy("one", "ParenTerm"));
             Assert.False(MatchGreedy("", "ParenTerm"));
         }
@@ -241,7 +244,7 @@ namespace IronMeta
         {
             Assert.True(MatchGreedy("&foo", "AndTerm"));
             Assert.False(MatchGreedy("foo", "AndTerm"));
-            Assert.True(MatchGreedy("&&foo", "AndTerm"));
+            //Assert.False(MatchGreedy("&&foo", "AndTerm"));
             Assert.False(MatchGreedy("", "AndTerm"));
         }
 
@@ -257,8 +260,8 @@ namespace IronMeta
         [Fact]
         public void Test_ConditionTerm()
         {
-            Assert.True(MatchGreedy("a??(true)", "ConditionExpression"));
-            Assert.True(MatchGreedy("a? ??(true)", "ConditionExpression"));
+            Assert.True(MatchGreedy("a ?(true)", "ConditionExpression"));
+            Assert.True(MatchGreedy("a? ?(true)", "ConditionExpression"));
             Assert.True(MatchGreedy("a", "ConditionExpression"));
             Assert.False(MatchGreedy("", "ConditionExpression"));
         }

@@ -78,7 +78,9 @@ namespace IronMeta
     /// </summary>
     public class GenerateInfo
     {
-        public string InputFile { get; set; }
+        public string InputFileName { get; set; }
+
+        public IEnumerable<char> InputStream { get; set; }
 
         /// <summary>Needs to be set before analysis.</summary>
         public IronMetaMatcher Matcher { get; set; }
@@ -92,6 +94,7 @@ namespace IronMeta
         /// <summary>Used by individual rules to temporarily store their variables during analysis.</summary>
         public HashSet<string> VariableNames { get; set; }
 
+        public string ClassName { get; set; }
         public string InputType { get; set; }
         public string ResultType { get; set; }
         public string BaseClass { get; set; }
@@ -99,9 +102,10 @@ namespace IronMeta
         /// <summary>Needs to be set before generation.</summary>
         public string MatchItemClass { get; set; }
 
-        public GenerateInfo(string inputFile, IronMetaMatcher matcher, string nameSpace)
+        public GenerateInfo(string inputFile, IronMetaMatcher matcher, string nameSpace, IEnumerable<char> inputs)
         {
-            InputFile = inputFile;
+            InputFileName = inputFile;
+            InputStream = inputs;
             Matcher = matcher;
             NameSpace = nameSpace;
             RuleNames = new HashSet<string>();
@@ -114,22 +118,19 @@ namespace IronMeta
     /// </summary>
     public class SyntaxNode
     {
-        protected string text;
+        protected int start, next;
+
+        private int lineNumber, lineOffset;
 
         IEnumerable<SyntaxNode> children = null;
-        protected int index;
-        int lineNumber, lineOffset;
 
-        public string Text { get { return text != null ? text : ""; } }
+        private string text = null;
         
         public IEnumerable<SyntaxNode> Children
         {
             get
             {
-                if (children == null)
-                    return Enumerable.Empty<SyntaxNode>();
-                else
-                    return children;
+                return children ?? Enumerable.Empty<SyntaxNode>();
             }
 
             internal set
@@ -138,17 +139,32 @@ namespace IronMeta
             }
         }
 
+        public int StartIndex { get { return start; } }
+        public int NextIndex { get { return next; } }
         public int LineNumber { get { return lineNumber; } }
         public int LineOffset { get { return lineOffset; } }
 
         public SyntaxNode()
-        {
-            this.index = -1;
+        {            
         }
 
-        public SyntaxNode(int index)
+        public SyntaxNode(int start, int next)
         {
-            this.index = index;
+            this.start = start;
+            this.next = next;
+        }
+
+        public string GetText(IEnumerable<char> inputs)
+        {
+            if (text == null)
+            {
+                var sb = new StringBuilder();
+                for (int i = start; i < next; ++i)
+                    sb.Append(inputs.ElementAt(i));
+                text = sb.ToString();
+            }
+
+            return text;
         }
 
         public virtual void Analyze(GenerateInfo info)
@@ -169,7 +185,7 @@ namespace IronMeta
 
         public void AssignLineNumbers(CharacterMatcher<SyntaxNode> matcher)
         {
-            lineNumber = matcher.GetLineNumber(index, out lineOffset);
+            lineNumber = matcher.GetLineNumber(start, out lineOffset);
 
             foreach (SyntaxNode child in Children)
                 child.AssignLineNumbers(matcher);
@@ -263,8 +279,8 @@ namespace IronMeta
 
         public TokenType Type { get; set; }
 
-        public TokenNode(int index, TokenType type)
-            : base(index)
+        public TokenNode(int start, int next, TokenType type)
+            : base(start, next)
         {
             this.Type = type;
         }
@@ -280,15 +296,14 @@ namespace IronMeta
     /// </summary>
     public class KeywordNode : TokenNode
     {
-        public KeywordNode(int index, string text)
-            : base(index, TokenType.KEYWORD)
+        public KeywordNode(int start, int next)
+            : base(start, next, TokenType.KEYWORD)
         {
-            this.text = text;
         }
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            return text;
+            return GetText(info.InputStream);
         }
     }
 
@@ -297,43 +312,16 @@ namespace IronMeta
     /// </summary>
     public class IdentifierNode : TokenNode
     {
-        public string Name { get; internal set; }
-        public List<string> Qualifiers { get; internal set; }
-        public List<string> Parameters { get; internal set; }
+        public SyntaxNode Name { get; set; }
+        public IEnumerable<SyntaxNode> Qualifiers { get; set; }
+        public IEnumerable<SyntaxNode> Parameters { get; set; }
 
-        public IdentifierNode(int index, string name)
-            : base(index, TokenType.IDENTIFIER)
+        public IdentifierNode(int start, int next, SyntaxNode name, IEnumerable<SyntaxNode> qualifiers, IEnumerable<SyntaxNode> parameters)
+            : base(start, next, TokenType.IDENTIFIER)
         {
-            Name = name;
-            Qualifiers = new List<string>();
-            Parameters = new List<string>();
-
-            this.text = GetText();
-        }
-
-        public IdentifierNode(int index, string name, List<string> qualifiers, List<string> parameters)
-            : base(index, TokenType.IDENTIFIER)
-        {
-            Name = name;
-            Qualifiers = qualifiers ?? new List<string>();
-            Parameters = parameters ?? new List<string>();
-
-            this.text = GetText();
-        }
-
-        private string GetText()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (string qual in Qualifiers)
-                sb.AppendFormat("{0}.", qual);
-
-            sb.Append(Name);
-
-            if (Parameters.Count > 0)
-                sb.AppendFormat("<{0}>", string.Join(", ", Parameters.ToArray()));
-
-            return sb.ToString();
+            this.Name = name ?? this;
+            this.Qualifiers = qualifiers;
+            this.Parameters = parameters;
         }
     }
 
@@ -342,10 +330,9 @@ namespace IronMeta
     /// </summary>
     public class CommentNode : TokenNode
     {
-        public CommentNode(int index, string text)
-            : base(index, TokenType.COMMENT)
+        public CommentNode(int start, int next)
+            : base(start, next, TokenType.COMMENT)
         {
-            this.text = text;
         }
     }
 
@@ -354,8 +341,8 @@ namespace IronMeta
     /// </summary>
     public class SpacingNode : SyntaxNode
     {
-        public SpacingNode(int index, List<SyntaxNode> children)
-            : base(index)
+        public SpacingNode(int start, int next, IEnumerable<SyntaxNode> children)
+            : base(start, next)
         {
             Children = children.Where(child => child != null);
         }
@@ -379,10 +366,9 @@ namespace IronMeta
     /// </summary>
     public class CSharpNode : SyntaxNode
     {
-        public CSharpNode(int index, string text)
-            : base(index)
+        public CSharpNode(int start, int next)
+            : base(start, next)
         {
-            this.text = text;
         }
     }
 
@@ -391,8 +377,8 @@ namespace IronMeta
     /// </summary>
     public abstract class ExpNode : SyntaxNode
     {
-        public ExpNode(int index)
-            : base(index)
+        public ExpNode(int start, int next)
+            : base(start, next)
         {
         }
     }
@@ -403,17 +389,19 @@ namespace IronMeta
     /// </summary>
     public class LiteralExpNode : ExpNode
     {
-        public LiteralExpNode(int index, List<SyntaxNode> children)
-            : base(index)
+        public LiteralExpNode(int start, int next, IEnumerable<SyntaxNode> children)
+            : base(start, next)
         {
-            this.text = string.Join("", children.Select(child => child.Text).ToArray());
-            if (this.text.StartsWith("{") && this.text.EndsWith("}"))
-                this.text = this.text.Substring(1, this.text.Length - 2);
         }
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            return string.Format("_LITERAL({0})", text);
+            string lit = GetText(info.InputStream);
+
+            if (lit.StartsWith("{") && lit.EndsWith("}"))
+                lit = lit.Substring(1, lit.Length - 2);
+
+            return string.Format("_LITERAL({0})", lit);
         }
     }
 
@@ -422,26 +410,32 @@ namespace IronMeta
     /// </summary>
     public class CallOrVarExpNode : ExpNode
     {
-        public CallOrVarExpNode(int index, SyntaxNode identifier)
-            : base(index)
+        SyntaxNode identifier;
+
+        string varName;
+
+        public CallOrVarExpNode(int start, int next, SyntaxNode identifier)
+            : base(start, next)
         {
-            this.text = identifier.Text;
+            this.identifier = identifier;
         }
 
         public override void Analyze(GenerateInfo info)
         {
-            if (text.Contains('.'))
-            {
-                if (text.ToUpper().StartsWith("BASE."))
-                    text = text.Substring(5);
-                else if (text.ToUpper().StartsWith("SUPER."))
-                    text = text.Substring(6);
+            varName = GetText(info.InputStream).Trim();
 
-                info.RuleNames.Add(text);
+            if (varName.Contains('.'))
+            {
+                if (varName.ToUpper().StartsWith("BASE."))
+                    varName = varName.Substring(5);
+                else if (varName.ToUpper().StartsWith("SUPER."))
+                    varName = varName.Substring(6);
+
+                info.RuleNames.Add(varName);
             }
             else
             {
-                info.VariableNames.Add(text);
+                info.VariableNames.Add(varName);
             }
 
             base.Analyze(info);
@@ -449,10 +443,10 @@ namespace IronMeta
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            if (info.RuleNames.Contains(text))
-                return string.Format("_CALL({0})", text);
+            if (info.RuleNames.Contains(varName))
+                return string.Format("_CALL({0})", varName);
             else
-                return string.Format("_REF({0}, \"{0}\", this)", text);
+                return string.Format("_REF({0}, \"{0}\", this)", varName);
         }
     }
 
@@ -461,48 +455,54 @@ namespace IronMeta
     /// </summary>
     public class RuleCallExpNode : ExpNode
     {
-        public string RuleName { get; internal set; }
-        public List<SyntaxNode> Parameters { get; internal set; }
+        SyntaxNode name;
+        IEnumerable<SyntaxNode> parameters;
 
-        public RuleCallExpNode(int index, string name, List<SyntaxNode> parameters)
-            : base(index)
+        string ruleName;
+
+        public RuleCallExpNode(int start, int next, SyntaxNode name, List<SyntaxNode> parameters)
+            : base(start, next)
         {
-            this.RuleName = name;
-            this.Parameters = parameters;
+            this.name = name;
+            this.parameters = parameters;
 
             Children = parameters;
         }
 
         public override void Analyze(GenerateInfo info)
         {
-            if (RuleName.ToUpper().StartsWith("BASE."))
-                RuleName = RuleName.Substring(5);
-            else if (RuleName.ToUpper().StartsWith("SUPER."))
-                RuleName = RuleName.Substring(6);
+            ruleName = name.GetText(info.InputStream);
+
+            if (ruleName.ToUpper().StartsWith("BASE."))
+                ruleName = ruleName.Substring(5);
+            else if (ruleName.ToUpper().StartsWith("SUPER."))
+                ruleName = ruleName.Substring(6);
 
             base.Analyze(info);
         }
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            if (Parameters != null && Parameters.Count > 0)
+            if (parameters != null && parameters.Any())
             {
                 var pList = new List<string>();
-                foreach (var p in Parameters)
+                foreach (var p in parameters)
                 {
-                    if (info.RuleNames.Contains(p.Text))
-                        pList.Add(string.Format("new MatchItem({0})", p.Text));
-                    else if (info.VariableNames.Contains(p.Text))
-                        pList.Add(p.Text);
+                    string pText = p.GetText(info.InputStream);
+
+                    if (info.RuleNames.Contains(pText))
+                        pList.Add(string.Format("new MatchItem({0})", pText));
+                    else if (info.VariableNames.Contains(pText))
+                        pList.Add(pText);
                     else
-                        pList.Add(string.Format("new MatchItem({0}, CONV)", p.Text));
+                        pList.Add(string.Format("new MatchItem({0}, CONV)", pText));
                 }
 
-                return string.Format("_CALL({0}, new List<MatchItem> {{ {1} }})", RuleName, string.Join(", ", pList.ToArray()));
+                return string.Format("_CALL({0}, new List<MatchItem> {{ {1} }})", ruleName, string.Join(", ", pList.ToArray()));
             }
             else
             {
-                return string.Format("_CALL({0})", RuleName);
+                return string.Format("_CALL({0})", ruleName);
             }
         }
     }
@@ -512,8 +512,8 @@ namespace IronMeta
     /// </summary>
     public class AnyExpNode : ExpNode
     {
-        public AnyExpNode(int index)
-            : base(index)
+        public AnyExpNode(int start, int next)
+            : base(start, next)
         {
         }
 
@@ -530,8 +530,8 @@ namespace IronMeta
     {
         string op;
 
-        public PostfixedExpNode(int index, SyntaxNode child, string op)
-            : base(index)
+        public PostfixedExpNode(int start, int next, SyntaxNode child, string op)
+            : base(start, next)
         {
             this.op = op;
             Children = new List<SyntaxNode> { child };
@@ -550,8 +550,8 @@ namespace IronMeta
     {
         string op;
 
-        public PrefixedExpNode(int index, SyntaxNode child, string op)
-            : base(index)
+        public PrefixedExpNode(int start, int next, SyntaxNode child, string op)
+            : base(start, next)
         {
             this.op = op;
             Children = new List<SyntaxNode> { child };
@@ -568,24 +568,24 @@ namespace IronMeta
     /// </summary>
     public class BoundExpNode : ExpNode
     {
-        string variable;
+        SyntaxNode variable;
 
-        public BoundExpNode(int index, SyntaxNode child, SyntaxNode variable)
-            : base(index)
+        public BoundExpNode(int start, int next, SyntaxNode child, SyntaxNode variable)
+            : base(start, next)
         {
-            this.variable = variable.Text;
+            this.variable = variable;
             Children = new List<SyntaxNode> { child };
         }
 
         public override void Analyze(GenerateInfo info)
         {
-            info.VariableNames.Add(variable);
+            info.VariableNames.Add(variable.GetText(info.InputStream).Trim());
             base.Analyze(info);
         }
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            return string.Format("_VAR({0}, {1})", Children.First().Generate(indent, info), variable);
+            return string.Format("_VAR({0}, {1})", Children.First().Generate(indent, info), variable.GetText(info.InputStream));
         }
     }
 
@@ -594,13 +594,13 @@ namespace IronMeta
     /// </summary>
     public class ConditionExpNode : ExpNode
     {
-        string condition;
+        SyntaxNode condition;
 
-        public ConditionExpNode(int index, SyntaxNode child, SyntaxNode condition)
-            : base(index)
+        public ConditionExpNode(int start, int next, SyntaxNode child, SyntaxNode condition)
+            : base(start, next)
         {
-            this.condition = condition.Text;
-            Children = new List<SyntaxNode> { child };
+            this.condition = condition;
+            Children = new List<SyntaxNode> { (ExpNode)child };
         }
 
         public override string Generate(int indent, GenerateInfo info)
@@ -608,10 +608,14 @@ namespace IronMeta
             if (LineNumber == 0)
                 throw new Exception("Line numbers have not been assigned.");
 
-            if (condition.Contains("_IM_") || condition.Contains("_IM_Start") || condition.Contains("_IM_Next"))
-                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})", Children.First().Generate(indent, info), info.MatchItemClass, condition, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            string cText = condition.GetText(info.InputStream);
+
+            if (cText.Contains("_IM_") || cText.Contains("_IM_Start") || cText.Contains("_IM_Next"))
+                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})",
+                    Children.First().Generate(indent, info), info.MatchItemClass, cText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
             else
-                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})", Children.First().Generate(indent, info), info.MatchItemClass, condition, LineNumber, info.InputFile, SingleIndent(LineOffset));
+                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})",
+                    Children.First().Generate(indent, info), info.MatchItemClass, cText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
         }
     }
 
@@ -620,8 +624,8 @@ namespace IronMeta
     /// </summary>
     public class SequenceExpNode : ExpNode
     {
-        public SequenceExpNode(int index, IEnumerable<SyntaxNode> children)
-            : base(index)
+        public SequenceExpNode(int start, int next, IEnumerable<SyntaxNode> children)
+            : base(start, next)
         {
             Children = children;
         }
@@ -644,12 +648,12 @@ namespace IronMeta
     /// </summary>
     public class ActionExpNode : ExpNode
     {
-        string action;
+        SyntaxNode action;
 
-        public ActionExpNode(int index, SyntaxNode exp, SyntaxNode action)
-            : base(index)
+        public ActionExpNode(int start, int next, SyntaxNode exp, SyntaxNode action)
+            : base(start, next)
         {
-            this.action = action.Text;
+            this.action = action;
             Children = new List<SyntaxNode> { exp };
         }
 
@@ -658,10 +662,14 @@ namespace IronMeta
             if (LineNumber == 0)
                 throw new Exception("Line numbers have not been assigned.");
 
-            if (action.Contains("_IM_Result") || action.Contains("_IM_Start") || action.Contains("_IM_Next"))
-                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})", Children.First().Generate(indent, info), info.MatchItemClass, action, LineNumber, info.InputFile, SingleIndent(LineOffset));
+            string aText = action.GetText(info.InputStream);
+
+            if (aText.Contains("_IM_Result") || aText.Contains("_IM_Start") || aText.Contains("_IM_Next"))
+                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})",
+                    Children.First().Generate(indent, info), info.MatchItemClass, aText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
             else
-                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})", Children.First().Generate(indent, info), info.MatchItemClass, action, LineNumber, info.InputFile, SingleIndent(LineOffset));
+                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})",
+                    Children.First().Generate(indent, info), info.MatchItemClass, aText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
         }
     }
 
@@ -670,17 +678,17 @@ namespace IronMeta
     /// </summary>
     public class FailExpNode : ExpNode
     {
-        string message;
+        SyntaxNode message;
 
-        public FailExpNode(int index, SyntaxNode message)
-            : base(index)
+        public FailExpNode(int start, int next, SyntaxNode message)
+            : base(start, next)
         {
-            this.message = message.Text;
+            this.message = message;
         }
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            return string.Format("_FAIL({0})", message);
+            return string.Format("_FAIL({0})", message.GetText(info.InputStream));
         }
     }
 
@@ -689,17 +697,12 @@ namespace IronMeta
     /// </summary>
     public class DisjunctionExpNode : ExpNode
     {
-        public DisjunctionExpNode(int index, IEnumerable<SyntaxNode> children)
-            : base(index)
+        public DisjunctionExpNode(int start, int next, IEnumerable<SyntaxNode> children)
+            : base(start, next)
         {
             Children = children;
         }
 
-        public DisjunctionExpNode(int index, SyntaxNode a, SyntaxNode b)
-            : base(index)
-        {
-            Children = new List<SyntaxNode> { a, b };
-        }
 
         public override string Generate(int indent, GenerateInfo info)
         {
@@ -720,17 +723,17 @@ namespace IronMeta
     public class RuleNode : SyntaxNode
     {
         public bool IsOverride { get; private set; }
-        public string Name { get; private set; }
+        public SyntaxNode Name { get; private set; }
         public SyntaxNode Parms { get; private set; }
         public SyntaxNode Body { get; private set; }
 
         public HashSet<string> VariableNames { get; private set; }
 
-        public RuleNode(int index, bool isOverride, SyntaxNode name, SyntaxNode parms, SyntaxNode body)
-            : base(index)
+        public RuleNode(int start, int next, bool isOverride, SyntaxNode name, SyntaxNode parms, SyntaxNode body)
+            : base(start, next)
         {
             IsOverride = isOverride;
-            Name = name.Text;
+            Name = name;
             Parms = parms;
             Body = body;
 
@@ -769,8 +772,8 @@ namespace IronMeta
     {
         public Dictionary<string, List<RuleNode>> rules = new Dictionary<string, List<RuleNode>>();
 
-        public ParserBodyNode(int indent, List<SyntaxNode> children)
-            : base(indent)
+        public ParserBodyNode(int start, int next, List<SyntaxNode> children)
+            : base(start, next)
         {
             Children = children;
         }
@@ -911,12 +914,14 @@ namespace IronMeta
             if (node is RuleNode)
             {
                 RuleNode rule = node as RuleNode;
-                info.RuleNames.Add(rule.Name);
-                
-                if (!rules.ContainsKey(rule.Name))
-                    rules.Add(rule.Name, new List<RuleNode>());
+                string ruleName = rule.Name.GetText(info.InputStream).Trim();
 
-                rules[rule.Name].Add(rule);
+                info.RuleNames.Add(ruleName);
+                
+                if (!rules.ContainsKey(ruleName))
+                    rules.Add(ruleName, new List<RuleNode>());
+
+                rules[ruleName].Add(rule);
             }
             else
             {
@@ -931,38 +936,42 @@ namespace IronMeta
     /// </summary>
     public class ParserDeclarationNode : SyntaxNode
     {
-        SyntaxNode nameNode;
-        string name;
-        string baseClass;
+        public SyntaxNode Name { get; private set; }
+        public SyntaxNode Base { get; private set; }
 
-        public string Name { get { return name; } }
+        string className;
+        string baseName;
 
-        public ParserDeclarationNode(int index, SyntaxNode nameNode, SyntaxNode baseClass)
-            : base(index)
+        public ParserDeclarationNode(int start, int next, SyntaxNode nameNode, SyntaxNode baseNode)
+            : base(start, next)
         {
-            this.nameNode = nameNode;
-            this.baseClass = baseClass != null ? baseClass.Text : null;
+            this.Name = nameNode;
+            this.Base = baseNode;
         }
 
         public override void Analyze(GenerateInfo info)
         {
-            IdentifierNode idNode = nameNode as IdentifierNode;
+            IdentifierNode idNode = Name as IdentifierNode;
 
-            if (idNode != null && idNode.Parameters.Count == 2)
+            if (idNode != null && idNode.Parameters.Count() == 2)
             {
-                name = idNode.Name + "Matcher";
+                className = idNode.Name.GetText(info.InputStream) + "Matcher";
+                info.ClassName = className;
+                info.MatchItemClass = className + "Item";
 
-                info.InputType = idNode.Parameters[0];
-                info.ResultType = idNode.Parameters[1];
+                info.InputType = idNode.Parameters.ElementAt(0).GetText(info.InputStream);
+                info.ResultType = idNode.Parameters.ElementAt(1).GetText(info.InputStream);
 
-                if (baseClass != null)
-                    info.BaseClass = baseClass;
+                if (Base != null)
+                    baseName = Base.GetText(info.InputStream);
                 else
-                    info.BaseClass = string.Format("IronMeta.Matcher<{0}, {1}>", info.InputType, info.ResultType);
+                    baseName = string.Format("IronMeta.Matcher<{0}, {1}>", info.InputType, info.ResultType);
+
+                info.BaseClass = baseName;
             }
             else
             {
-                throw new SemanticException(this.index, string.Format("{0}: a parser declaration must include input and output types (even if the base class includes them).", nameNode.Text));
+                throw new SemanticException(this.start, string.Format("{0}: a parser declaration must include input and output types (even if the base class includes them).", className));
             }
 
             base.Analyze(info);
@@ -970,10 +979,7 @@ namespace IronMeta
 
         public override string Generate(int indent, GenerateInfo info)
         {
-            if (!string.IsNullOrEmpty(baseClass))
-                return string.Format("{0} : {1}", name, baseClass);
-            else
-                return string.Format("{0} : IronMeta.Matcher<{1},{2}>", name, info.InputType, info.ResultType);
+            return string.Format("{0} : {1}", className, baseName);
         }
     } // class ParserDeclarationNode
 
@@ -982,8 +988,8 @@ namespace IronMeta
         ParserDeclarationNode decl;
         ParserBodyNode body;
 
-        public ParserNode(int index, SyntaxNode dNode, SyntaxNode bNode)
-            : base(index)
+        public ParserNode(int start, int next, SyntaxNode dNode, SyntaxNode bNode)
+            : base(start, next)
         {
             decl = (ParserDeclarationNode)dNode;
             body = (ParserBodyNode)bNode;
@@ -994,7 +1000,6 @@ namespace IronMeta
         public override void Analyze(GenerateInfo info)
         {
             decl.Analyze(info);
-            info.MatchItemClass = decl.Name + "MatchItem";
             base.Analyze(info);
         }
 
@@ -1002,22 +1007,20 @@ namespace IronMeta
         {
             StringBuilder sb = new StringBuilder();
 
-            string parserName = decl.Name;
-
             sb.AppendLine(Indent(indent, "public partial class {0}", decl.Generate(indent, info)));
             sb.AppendLine(Indent(indent, "{{"));
             sb.AppendLine();
 
             // constructors
             sb.AppendLine(Indent(indent + 1, "/// <summary>Default Constructor.</summary>"));
-            sb.AppendLine(Indent(indent + 1, "public {0}()", parserName));
+            sb.AppendLine(Indent(indent + 1, "public {0}()", info.ClassName));
             sb.AppendLine(Indent(indent + 2, ": base(a => default({0}), true)", info.ResultType));
             sb.AppendLine(Indent(indent + 1, "{{"));
             sb.AppendLine(Indent(indent + 1, "}}"));
             sb.AppendLine();
 
             sb.AppendLine(Indent(indent + 1, "/// <summary>Constructor.</summary>"));
-            sb.AppendLine(Indent(indent + 1, "public {0}(Func<{1},{2}> conv, bool strictPEG)", parserName, info.InputType, info.ResultType));
+            sb.AppendLine(Indent(indent + 1, "public {0}(Func<{1},{2}> conv, bool strictPEG)", info.ClassName, info.InputType, info.ResultType));
             sb.AppendLine(Indent(indent + 2, ": base(conv, strictPEG)"));
             sb.AppendLine(Indent(indent + 1, "{{"));
             sb.AppendLine(Indent(indent + 1, "}}"));
@@ -1028,7 +1031,7 @@ namespace IronMeta
 
             // body
             sb.AppendLine(body.Generate(indent + 1, info));
-            sb.AppendLine(Indent(indent, "}} // class {0}", parserName));
+            sb.AppendLine(Indent(indent, "}} // class {0}", info.ClassName));
 
             return sb.ToString();
         }
@@ -1064,13 +1067,17 @@ namespace IronMeta
 
     public class UsingStatementNode : SyntaxNode
     {
-        public string Identifier { get; set; }
+        public SyntaxNode Identifier { get; private set; }
 
-        public UsingStatementNode(int index, string identifier)
-            : base(index)
+        public UsingStatementNode(int start, int next, SyntaxNode identifier)
+            : base(start, next)
         {
-            Identifier = identifier;
-            this.text = string.Format("using {0};", identifier);
+            this.Identifier = identifier;
+        }
+
+        public override string Generate(int indent, GenerateInfo info)
+        {
+            return string.Format("using {0};", Identifier.GetText(info.InputStream));
         }
     }
 
@@ -1081,8 +1088,8 @@ namespace IronMeta
 
         List<string> usingStatements = new List<string>();
 
-        public IronMetaFileNode(int index, List<SyntaxNode> preambleNodes, List<SyntaxNode> parserNodes)
-            : base(index)
+        public IronMetaFileNode(int next, int start, List<SyntaxNode> preambleNodes, List<SyntaxNode> parserNodes)
+            : base(next, start)
         {
             this.preambleNodes = preambleNodes;
             this.parserNodes = parserNodes;
@@ -1101,11 +1108,13 @@ namespace IronMeta
                 var usn = node as UsingStatementNode;
                 if (usn != null)
                 {
-                    if (usn.Text == "using System;")
+                    string uText = usn.Identifier.GetText(info.InputStream);
+
+                    if (uText == "System")
                         usingSystem = true;
-                    else if (usn.Text == "using System.Collections.Generic;")
+                    else if (uText == "System.Collections.Generic")
                         usingGeneric = true;
-                    else if (usn.Text == "using System.Linq;")
+                    else if (uText == "System.Linq")
                         usingLinq = true;
                 }
             }
