@@ -467,6 +467,10 @@ namespace IronMeta
                 this.inputs = inputs;
                 this.conv = conv;
 
+                // doesn't seem to help
+                //items.Capacity = inputs.Count();
+                //FillItems(items.Capacity-1);
+
                 if (this.inputs == null)
                     throw new NullReferenceException("You must provide an input enumerable.");
 
@@ -646,12 +650,14 @@ namespace IronMeta
             {
                 get
                 {
-                    if (data.ContainsKey(index))
-                    {
-                        var subData = data[index];
+                    Dictionary<string, MemoResult> subData;
 
-                        if (subData.ContainsKey(call_signature))
-                            return data[index][call_signature];
+                    if (data.TryGetValue(index, out subData))
+                    {
+                        MemoResult val;
+
+                        if (subData.TryGetValue(call_signature, out val))
+                            return val;
                     }
 
                     return null;
@@ -869,7 +875,7 @@ namespace IronMeta
                 else
                 {
                     if (_memo != null)
-                        _memo.AddError(_index, "Expected input");
+                        _memo.AddError(_index, "expected input");
 
                     WriteIndent(_index, indent, func_id, "_ANY(): FAIL");
                     yield break;
@@ -969,7 +975,7 @@ namespace IronMeta
                 else
                 {
                     if (_memo != null)
-                        _memo.AddError(_index, string.Format("Expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
+                        _memo.AddError(_index, string.Format("expected {0}", string.Join("", items.Select(i => i.ToString()).ToArray())));
 
                     WriteIndent(_index, indent, func_id, "_LITERAL({0}): FAIL", string.Join("", items.Select(i => i.ToString()).ToArray()));
                     yield break;
@@ -1336,7 +1342,7 @@ namespace IronMeta
                     matched = true;
 
                     if (_memo != null)
-                        _memo.AddError(_index, string.Format("Unexpected ", string.Join("", res.Results.Select(item => item != null ? item.ToString() : "").ToArray())));
+                        _memo.AddError(_index, string.Format("unexpected ", string.Join("", res.Results.Select(item => item != null ? item.ToString() : "").ToArray())));
 
                     WriteIndent(_index, indent, func_id, " NOT(): matched; FAIL");
                     yield break;
@@ -1607,7 +1613,7 @@ namespace IronMeta
                         }
 
                         if (!matched)
-                            _memo.AddError(_index, "Expected " + string.Join("", v.Inputs.Select(i => i.ToString()).ToArray()));
+                            _memo.AddError(_index, "expected " + string.Join("", v.Inputs.Select(i => i.ToString()).ToArray()));
                     }
                     catch (ArgumentOutOfRangeException)
                     {
@@ -1721,12 +1727,13 @@ namespace IronMeta
             {
                 get
                 {
-                    if (call_signature == null)
-                        call_signature = string.Format("{0}({1})", v.Production.Method.Name, actual_args != null ? string.Join(", ", actual_args.Select(a => a.ToString()).ToArray()) : "");
-                    return call_signature;
+                    return call_signature ?? BuildCallSignature();
                 }
             }
 
+            /// <summary>
+            /// Constructor.
+            /// </summary>
             public CallItemCombinator(MatchItem v, IEnumerable<MatchItem> actual_args)
                 : base()
             {
@@ -1740,8 +1747,11 @@ namespace IronMeta
 
                 // recall
                 Memo.MemoResult mr = _memo[_index, CallSignature];
-                Memo.HeadInfo h = _memo.Heads.ContainsKey(_index) ? _memo.Heads[_index] : null;
-
+                Memo.HeadInfo h;
+                
+                if (!_memo.Heads.TryGetValue(_index, out h))
+                    h = null;
+                
                 // are we inside a grow?
                 if (h != null)
                 {
@@ -1849,7 +1859,7 @@ namespace IronMeta
                     mr.LR = null;
                     _memo.LRStack.Pop();
                 }
-                else
+                else // we have a memo record for the rule
                 {
                     if (mr.LR != null)
                     {
@@ -1858,6 +1868,7 @@ namespace IronMeta
                         // detected left-recursion; generate set of involved calls
                         if (mr.LR.Head == null)
                             mr.LR.Head = new Memo.HeadInfo(CallSignature);
+
                         foreach (var s in _memo.LRStack)
                         {
                             if (s.Head != mr.LR.Head)
@@ -1937,22 +1948,15 @@ namespace IronMeta
 
                     if (_memo.StrictPEG)
                         yield break;
-
-                    _head.EvalSet = new HashSet<string>(_head.InvolvedSet);
                 }
             } // GrowLR()
 
+            private string BuildCallSignature()
+            {
+                return call_signature = string.Format("{0}({1})", v.Production.Method.Name, actual_args != null ? string.Join(", ", actual_args.Select(a => a.ToString()).ToArray()) : "");
+            }
+
         } // CallItemCombinator()
-
-
-        /// \internal
-        protected IEnumerable<MatchItem> STR(IEnumerable<TInput> inputs)
-        {
-            return new MatchItemStream(inputs, CONV);
-        }
-
-        
-        //////////////////////////////////////////
 
         #endregion
 

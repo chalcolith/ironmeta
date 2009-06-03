@@ -68,9 +68,9 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
                     };
     
     Disjunction = ActionExpression ("|" SP ActionExpression)*
-					-> { return new DisjunctionExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(node => node is ExpNode)); };
+                    -> { return new DisjunctionExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(node => node is ExpNode)); };
         
-    ActionExpression = SequenceExpression:exp ("->" | "=>") SP &'{' CSharpCode:action SP
+    ActionExpression = SequenceExpression:exp ("=>" | "->") SP &'{' CSharpCode:action SP
                     -> { return new ActionExpNode(_IM_StartIndex, _IM_NextIndex, exp, action); }
                 | SequenceExpression
                 | FailExpression;
@@ -78,8 +78,8 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     FailExpression = "!" (&'\"' CSharpCode:str)? SP
                     -> { return new FailExpNode(_IM_StartIndex, _IM_NextIndex, str); };
 
-	SequenceExpression = ConditionExpression+
-					-> { return new SequenceExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(node => node is ExpNode)); };
+    SequenceExpression = ConditionExpression+
+                    -> { return new SequenceExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); };
     
     ConditionExpression = BoundTerm:exp ('?' &'(') CSharpCode:cond SP
                     -> { return new ConditionExpNode(_IM_StartIndex, _IM_NextIndex, exp, cond); }
@@ -90,7 +90,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
               | ":" Identifier:id SP
                     -> { return new BoundExpNode(_IM_StartIndex, _IM_NextIndex, new AnyExpNode(_IM_StartIndex, _IM_NextIndex), id); }
               | PrefixedTerm:exp SP
-					-> { return exp; };
+                    -> { return exp; };
     
     
     PrefixedTerm = AndTerm | NotTerm | PostfixedTerm;
@@ -102,7 +102,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
             -> { return new PrefixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "NOT"); };
     
     
-    PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term;
+    PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term | !"expected a pattern";
     
     StarTerm = PostfixedTerm:exp "*"
             -> { return new PostfixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "STAR"); };
@@ -129,7 +129,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
             -> { return _IM_Result.Results.Where(child => child is ExpNode); };
             
     Parameter = (CallOrVar | Literal):p SP
-			-> { return p; };
+            -> { return p; };
             
     CallOrVar = QualifiedIdentifier
             -> { return new CallOrVarExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result); };
@@ -143,38 +143,38 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
 
     CSharpCodeItem = '{' ((~'}') (CSharpCodeItem | Comment | EOL | .))* '}'
                    | '(' ((~')') (CSharpCodeItem | Comment | EOL | .))* ')'
-                   | '\"' ( ('\x5c' '\x5c') | ('\x5c' '\"') | ((~'\"') (EOL | .)) )* '\"'
-                   | '\'' ( ('\x5c' '\x5c') | ('\x5c' '\'') | ((~'\'') (EOL | .)) )* '\'';
+                   | '\"' ( ("\x5c\x5c") | ("\x5c\"") | ((~'\"') (EOL | .)) )* '\"'
+                   | '\'' ( ("\x5c\x5c") | ("\x5c\'") | ((~'\'') (EOL | .)) )* '\'';
 
 
     GenericIdentifier = QualifiedIdentifier:id ("<" SP (GenericIdentifier SP ("," SP GenericIdentifier SP)*):p ">")?
             -> {
-					var idn = (IdentifierNode) id;
-					return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, idn, idn.Qualifiers, p.Results.Where(node => node is IdentifierNode));
+                    var idn = (IdentifierNode) id;
+                    return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, idn, idn.Qualifiers, p.Results.Where(node => node is IdentifierNode));
                 };
 
     QualifiedIdentifier = (Identifier ".")*:quals Identifier:name
-            -> {
-					return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(node => node is IdentifierNode), null);
-                };
+            -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(node => node is IdentifierNode), null); };
     
-    Identifier = (. ?(_IM_Result == '_' || System.Char.IsLetter(_IM_Result))) 
-                 (. ?(_IM_Result == '_' || System.Char.IsLetterOrDigit(_IM_Result)))*
+    Identifier = IdentBegin IdentChar*
             -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, null, null, null); };
+            
+    IdentBegin = ('_' | . ?(System.Char.IsLetter(_IM_Result)));
+    
+    IdentChar = ('_' | . ?(System.Char.IsLetterOrDigit(_IM_Result)));
 
     SP = (Comment | Whitespace)* -> { return new SpacingNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); };
     
-    Comment = (  '/' '/' (~('\r'|'\n') .)* (EOL|EOF)
-               | '/' '*' (~('*' '/') (EOL | .))* '*' '/' )
+    Comment = (  "//" EOLCommentChar* (EOL|EOF)  |  "/*" BracketCommentChar* "*/" )
             -> { return new CommentNode(_IM_StartIndex, _IM_NextIndex); };
+    
+    EOLCommentChar = (~('\r' | '\n' | '\x0085' | '\x000c' | '\x2028' | '\x2029') .);
+    BracketCommentChar = (~("*/") (EOL | .));
         
-    override Whitespace = ('\r' '\n' | '\n' | '\r' ~'\n') 
-            -> { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOL); }
-            
-                        | . ?(System.Char.IsWhiteSpace(_IM_Result)) 
-            -> { return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.WHITESPACE); };
+    override Whitespace = EOL | . ?(System.Char.IsWhiteSpace(_IM_Result)) 
+                                -> { return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.WHITESPACE); };
 
-    override EOL = ('\r' '\n' | '\n' | '\r' ~'\n') 
+    override EOL = ("\x0d\x0a" | '\x0a' | '\x0d' ~'\x0a' | '\x0085' | '\x000c' | '\x2028' | '\x2029')
             -> { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOL); };
     
     override EOF = ~. 

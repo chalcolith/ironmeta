@@ -173,9 +173,9 @@ namespace IronMeta
                 child.Analyze(info);
         }
 
-        public virtual string Generate(int indent, GenerateInfo info)
+        public virtual void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return text ?? "<?>";
+            sb.Append(text ?? "<?>");
         }
 
         public override string ToString()
@@ -191,21 +191,14 @@ namespace IronMeta
                 child.AssignLineNumbers(matcher);
         }
 
-        protected string Indent(int indent, string format, params object[] args)
+        protected void Indent(int indent, StringBuilder sb)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < indent; ++i)
-                sb.Append("    ");
-            sb.Append(string.Format(format, args));
-            return sb.ToString();
+            sb.Append(' ', indent*4);
         }
 
-        protected string SingleIndent(int indent)
+        protected void Indent(int indent, char ch, StringBuilder sb)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < indent; ++i)
-                sb.Append(" ");
-            return sb.ToString();
+            sb.Append(ch, indent);
         }
 
 
@@ -285,9 +278,11 @@ namespace IronMeta
             this.Type = type;
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return "<" + Type.ToString() + ">";
+            sb.Append("<");
+            sb.Append(Type.ToString());
+            sb.Append(">");
         }
     }
 
@@ -301,9 +296,9 @@ namespace IronMeta
         {
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return GetText(info.InputStream);
+            sb.Append(GetText(info.InputStream));
         }
     }
 
@@ -347,17 +342,16 @@ namespace IronMeta
             Children = children.Where(child => child != null);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            StringBuilder sb = new StringBuilder();
-
             foreach (SyntaxNode child in Children)
             {
                 if (child is CommentNode)
-                    sb.AppendLine(Indent(indent, "{0}", child.Generate(indent, info)));
+                {
+                    Indent(indent, sb);
+                    child.Generate(indent, sb, info);
+                }
             }
-
-            return sb.ToString();
         }
     }
 
@@ -381,6 +375,11 @@ namespace IronMeta
             : base(start, next)
         {
         }
+
+        protected string DefaultVars(string itemClass)
+        {
+            return string.Format("var _IM_Result = new {0}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex;", itemClass);
+        }
     }
 
 
@@ -394,14 +393,14 @@ namespace IronMeta
         {
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
             string lit = GetText(info.InputStream);
 
             if (lit.StartsWith("{") && lit.EndsWith("}"))
                 lit = lit.Substring(1, lit.Length - 2);
 
-            return string.Format("_LITERAL({0})", lit);
+            sb.Append("_LITERAL(" + lit + ")");
         }
     }
 
@@ -441,12 +440,12 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
             if (info.RuleNames.Contains(varName))
-                return string.Format("_CALL({0})", varName);
+                sb.AppendFormat("_CALL({0})", varName);
             else
-                return string.Format("_REF({0}, \"{0}\", this)", varName);
+                sb.AppendFormat("_REF({0}, \"{0}\", this)", varName);
         }
     }
 
@@ -481,7 +480,7 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
             if (parameters != null && parameters.Any())
             {
@@ -498,11 +497,11 @@ namespace IronMeta
                         pList.Add(string.Format("new MatchItem({0}, CONV)", pText));
                 }
 
-                return string.Format("_CALL({0}, new List<MatchItem> {{ {1} }})", ruleName, string.Join(", ", pList.ToArray()));
+                sb.AppendFormat("_CALL({0}, new List<MatchItem> {{ {1} }})", ruleName, string.Join(", ", pList.ToArray()));
             }
             else
             {
-                return string.Format("_CALL({0})", ruleName);
+                sb.AppendFormat("_CALL({0})", ruleName);
             }
         }
     }
@@ -517,9 +516,9 @@ namespace IronMeta
         {
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return "_ANY()";
+            sb.Append("_ANY()");
         }
     }
 
@@ -537,9 +536,11 @@ namespace IronMeta
             Children = new List<SyntaxNode> { child };
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("_{0}({1})", op, Children.First().Generate(indent, info));
+            sb.Append("_" + op + "(");
+            Children.First().Generate(indent, sb, info);
+            sb.Append(")");
         }
     }
 
@@ -557,9 +558,11 @@ namespace IronMeta
             Children = new List<SyntaxNode> { child };
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("_{0}({1})", op, Children.First().Generate(indent, info));
+            sb.Append("_" + op + "(");
+            Children.First().Generate(indent, sb, info);
+            sb.Append(")");
         }
     }
 
@@ -583,9 +586,11 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("_VAR({0}, {1})", Children.First().Generate(indent, info), variable.GetText(info.InputStream));
+            sb.Append("_VAR(");
+            Children.First().Generate(indent, sb, info);
+            sb.Append(", " + variable.GetText(info.InputStream) + ")");
         }
     }
 
@@ -603,19 +608,24 @@ namespace IronMeta
             Children = new List<SyntaxNode> { (ExpNode)child };
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            if (LineNumber == 0)
-                throw new Exception("Line numbers have not been assigned.");
+            condition.AssignLineNumbers(info.Matcher);
 
             string cText = condition.GetText(info.InputStream);
 
+            sb.Append("_CONDITION(");
+            Children.First().Generate(indent, sb, info);
+
             if (cText.Contains("_IM_") || cText.Contains("_IM_Start") || cText.Contains("_IM_Next"))
-                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})",
-                    Children.First().Generate(indent, info), info.MatchItemClass, cText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
+                sb.AppendFormat(", (_IM_Result_MI_) => {{ {0} return (\n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), condition.LineNumber, info.InputFileName);
             else
-                return string.Format("_CONDITION({0}, (_IM_Result_MI_) => {{ return (\n#line {3} \"{4}\"\n{5}{2}\n#line default\n);}})",
-                    Children.First().Generate(indent, info), info.MatchItemClass, cText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
+                sb.AppendFormat(", (_IM_Result_MI_) => {{ return (\n#line {0} \"{1}\"\n", condition.LineNumber, info.InputFileName);
+
+            Indent(condition.LineOffset, ' ', sb);
+
+            sb.Append(cText);
+            sb.AppendFormat("\n#line default\n);}})");
         }
     }
 
@@ -630,16 +640,24 @@ namespace IronMeta
             Children = children;
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            string result = null;
-
             if (Children.Count() == 1)
-                result = Children.First().Generate(indent, info);
+            {
+                Children.First().Generate(indent, sb, info);
+            }
             else
-                result = string.Format("_AND({0})", string.Join(", ", Children.Select(n => n.Generate(indent, info)).ToArray()));
-
-            return result;
+            {
+                sb.Append("_AND(");
+                int i = 0;
+                foreach (var child in Children)
+                {
+                    if (i++ > 0)
+                        sb.Append(", ");
+                    child.Generate(indent, sb, info);
+                }
+                sb.Append(")");
+            }
         }
     }
 
@@ -657,19 +675,25 @@ namespace IronMeta
             Children = new List<SyntaxNode> { exp };
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            if (LineNumber == 0)
-                throw new Exception("Line numbers have not been assigned.");
+            action.AssignLineNumbers(info.Matcher);
 
             string aText = action.GetText(info.InputStream);
 
+            sb.Append("_ACTION(");
+            Children.First().Generate(indent, sb, info);
+            
+
             if (aText.Contains("_IM_Result") || aText.Contains("_IM_Start") || aText.Contains("_IM_Next"))
-                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ var _IM_Result = new {1}(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})",
-                    Children.First().Generate(indent, info), info.MatchItemClass, aText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
+                sb.AppendFormat(", (_IM_Result_MI_) => {{ {0} \n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), action.LineNumber, info.InputFileName);
             else
-                return string.Format("_ACTION({0}, (_IM_Result_MI_) => {{ \n#line {3} \"{4}\"\n{5}{2}\n#line default\n}})",
-                    Children.First().Generate(indent, info), info.MatchItemClass, aText, LineNumber, info.InputFileName, SingleIndent(LineOffset));
+                sb.AppendFormat(", (_IM_Result_MI_) => {{ \n#line {0} \"{1}\"\n", action.LineNumber, info.InputFileName);
+
+            Indent(action.LineOffset, ' ', sb);
+
+            sb.Append(aText);
+            sb.AppendFormat("\n#line default\n}})");
         }
     }
 
@@ -686,9 +710,9 @@ namespace IronMeta
             this.message = message;
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("_FAIL({0})", message.GetText(info.InputStream));
+            sb.AppendFormat("_FAIL({0})", message.GetText(info.InputStream));
         }
     }
 
@@ -704,16 +728,24 @@ namespace IronMeta
         }
 
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            string result = null;
-
             if (Children.Count() == 1)
-                result = Children.First().Generate(indent, info);
+            {
+                Children.First().Generate(indent, sb, info);
+            }
             else
-                result = string.Format("_OR({0})", string.Join(", ", Children.Select(n => n.Generate(indent, info)).ToArray()));
-
-            return result;
+            {
+                sb.Append("_OR(");
+                int i = 0;
+                foreach (var child in Children)
+                {
+                    if (i++ > 0)
+                        sb.Append(", ");
+                    child.Generate(indent, sb, info);
+                }
+                sb.Append(")");
+            }
         }
     }
 
@@ -754,14 +786,22 @@ namespace IronMeta
             info.VariableNames = null;
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
             info.VariableNames = VariableNames;
 
             if (Parms != null)
-                return string.Format("_ARGS({0}, _args, {1})", Parms.Generate(indent, info), Body.Generate(indent, info));
+            {
+                sb.Append("_ARGS(");
+                Parms.Generate(indent, sb, info);
+                sb.Append(", _args, ");
+                Body.Generate(indent, sb, info);
+                sb.Append(")");
+            }
             else
-                return Body.Generate(indent, info);
+            {
+                Body.Generate(indent, sb, info);
+            }
         }
     }
 
@@ -784,22 +824,18 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            var ruleStrings = new List<string>();
-
             foreach (var ruleName in rules.Keys)
             {
-                ruleStrings.Add(GenerateRule(indent, ruleName, info));
+                GenerateRule(indent, ruleName, sb, info);
             }
-
-            return string.Join("\n", ruleStrings.ToArray());
         }
 
         /// <summary>
         /// Generates the code for a rule.
         /// </summary>
-        private string GenerateRule(int indent, string ruleName, GenerateInfo info)
+        private void GenerateRule(int indent, string ruleName, StringBuilder sb, GenerateInfo info)
         {
             // check for override and whether or not we can have a static top combinator
             bool isOverride = false;
@@ -817,30 +853,26 @@ namespace IronMeta
 
             // build the function
             string topCombinator = string.Format("_{0}_Body_", ruleName);
-            StringBuilder sb = new StringBuilder();
 
             if (cachedCombinator)
             {
-                sb.AppendLine(Indent(indent, "private int {0}_Index_ = -1;", topCombinator));
-                sb.AppendLine();
+                Indent(indent, sb); sb.AppendFormat("private int {0}_Index_ = -1;\n\n", topCombinator);
             }
 
-            sb.AppendLine(Indent(indent, "protected {0} IEnumerable<MatchItem> {1}(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)", isOverride ? "override" : "virtual", ruleName));
-            sb.AppendLine(Indent(indent, "{{"));
-            
-            sb.AppendLine(Indent(indent + 1, "Combinator {0} = null;", topCombinator));
-            sb.AppendLine();
+            Indent(indent, sb); sb.AppendFormat("protected {0} IEnumerable<MatchItem> {1}(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)\n", isOverride ? "override" : "virtual", ruleName);
+            Indent(indent, sb); sb.AppendFormat("{{\n");
+
+            Indent(indent + 1, sb); sb.AppendFormat("Combinator {0} = null;\n\n", topCombinator);
 
             if (cachedCombinator)
             {
-                sb.AppendLine(Indent(indent + 1, "if ({0}_Index_ == -1 || CachedCombinators[{0}_Index_] == null)", topCombinator));
-                sb.AppendLine(Indent(indent + 1, "{{"));
-                sb.AppendLine(Indent(indent + 2, "if ({0}_Index_ == -1)", topCombinator));
-                sb.AppendLine(Indent(indent + 2, "{{"));
-                sb.AppendLine(Indent(indent + 3, "{0}_Index_ = CachedCombinators.Count;", topCombinator));
-                sb.AppendLine(Indent(indent + 3, "CachedCombinators.Add(null);"));
-                sb.AppendLine(Indent(indent + 2, "}}"));
-                sb.AppendLine();
+                Indent(indent + 1, sb); sb.AppendFormat("if ({0}_Index_ == -1 || CachedCombinators[{0}_Index_] == null)\n", topCombinator);
+                Indent(indent + 1, sb); sb.AppendFormat("{{\n");
+                Indent(indent + 2, sb); sb.AppendFormat("if ({0}_Index_ == -1)\n", topCombinator);
+                Indent(indent + 2, sb); sb.AppendFormat("{{\n");
+                Indent(indent + 3, sb); sb.AppendFormat("{0}_Index_ = CachedCombinators.Count;\n", topCombinator);
+                Indent(indent + 3, sb); sb.AppendFormat("CachedCombinators.Add(null);\n");
+                Indent(indent + 2, sb); sb.AppendFormat("}}\n\n");
 
                 ++indent;
             }
@@ -851,16 +883,22 @@ namespace IronMeta
             {
                 string disjCombinator = string.Format("_disj_{0}_", num++);
 
-                sb.AppendLine(Indent(indent+1, "Combinator {0} = null;", disjCombinator));
-                sb.AppendLine(Indent(indent+1, "{{"));
+                Indent(indent + 1, sb); sb.AppendFormat("Combinator {0} = null;\n", disjCombinator);
+                Indent(indent + 1, sb); sb.AppendFormat("{{\n");
 
                 foreach (string varName in rule.VariableNames.Distinct())
+                {
                     if (!info.RuleNames.Contains(varName))
-                        sb.AppendLine(Indent(indent+2, "var {0} = new {1}();", varName, info.MatchItemClass));
+                    {
+                        Indent(indent + 2, sb); sb.AppendFormat("var {0} = new {1}();\n", varName, info.MatchItemClass);
+                    }
+                }
 
-                sb.AppendLine(Indent(indent+2, "{0} = {1};", disjCombinator, rule.Generate(indent, info)));
+                Indent(indent + 2, sb); sb.AppendFormat("{0} = ", disjCombinator);
+                rule.Generate(indent, sb, info);
+                sb.AppendFormat(";\n");
 
-                sb.AppendLine(Indent(indent+1, "}}"));
+                Indent(indent + 1, sb); sb.AppendFormat("}}\n");
             }
             sb.AppendLine();
 
@@ -880,30 +918,25 @@ namespace IronMeta
             {
                 --indent;
 
-                sb.AppendLine(Indent(indent + 2, "CachedCombinators[{0}_Index_] = {1};", topCombinator, topDisjunct));
-                sb.AppendLine(Indent(indent + 1, "}}"));
-                sb.AppendLine();
-                sb.AppendLine(Indent(indent + 1, "{0} = CachedCombinators[{0}_Index_];", topCombinator));
-                sb.AppendLine();
+                Indent(indent + 2, sb); sb.AppendFormat("CachedCombinators[{0}_Index_] = {1};\n", topCombinator, topDisjunct);
+                Indent(indent + 1, sb); sb.AppendFormat("}}\n\n");
+                Indent(indent + 1, sb); sb.AppendFormat("{0} = CachedCombinators[{0}_Index_];\n\n", topCombinator);
             }
             else
             {
-                sb.AppendLine(Indent(indent+1, "{0} = {1};", topCombinator, topDisjunct));
+                Indent(indent + 1, sb); sb.AppendFormat("{0} = {1};\n", topCombinator, topDisjunct);
             }
 
             sb.AppendLine();
 
             // match
-            sb.AppendLine(Indent(indent+1, "foreach (var _res_ in {0}.Match(_indent+1, _inputs, _index, null, _memo))", topCombinator));
-            sb.AppendLine(Indent(indent+1, "{{"));
-            sb.AppendLine(Indent(indent+2, "yield return _res_;"));
-            sb.AppendLine();
-            sb.AppendLine(Indent(indent+2, "if (StrictPEG) yield break;"));
-            sb.AppendLine(Indent(indent+1, "}}"));
+            Indent(indent + 1, sb); sb.AppendFormat("foreach (var _res_ in {0}.Match(_indent+1, _inputs, _index, null, _memo))\n", topCombinator);
+            Indent(indent + 1, sb); sb.AppendFormat("{{\n");
+            Indent(indent + 2, sb); sb.AppendFormat("yield return _res_;\n\n");
+            Indent(indent + 2, sb); sb.AppendFormat("if (StrictPEG) yield break;\n");
+            Indent(indent + 1, sb); sb.AppendFormat("}}\n");
 
-            sb.AppendLine(Indent(indent, "}}"));
-
-            return sb.ToString();
+            Indent(indent, sb); sb.AppendFormat("}}\n\n");
         }
 
         /// <summary>
@@ -977,9 +1010,9 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("{0} : {1}", className, baseName);
+            sb.AppendFormat("{0} : {1}", className, baseName);
         }
     } // class ParserDeclarationNode
 
@@ -1003,64 +1036,60 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine(Indent(indent, "public partial class {0}", decl.Generate(indent, info)));
-            sb.AppendLine(Indent(indent, "{{"));
+            Indent(indent, sb); sb.AppendFormat("public partial class ");
+            decl.Generate(indent, sb, info);
             sb.AppendLine();
+            Indent(indent, sb); sb.AppendFormat("{{\n\n");
 
             // constructors
-            sb.AppendLine(Indent(indent + 1, "/// <summary>Default Constructor.</summary>"));
-            sb.AppendLine(Indent(indent + 1, "public {0}()", info.ClassName));
-            sb.AppendLine(Indent(indent + 2, ": base(a => default({0}), true)", info.ResultType));
-            sb.AppendLine(Indent(indent + 1, "{{"));
-            sb.AppendLine(Indent(indent + 1, "}}"));
-            sb.AppendLine();
+            Indent(indent + 1, sb); sb.AppendFormat("/// <summary>Default Constructor.</summary>\n");
+            Indent(indent + 1, sb); sb.AppendFormat("public {0}()\n", info.ClassName);
+            Indent(indent + 2, sb); sb.AppendFormat(": base(a => default({0}), true)\n", info.ResultType);
+            Indent(indent + 1, sb); sb.AppendFormat("{{\n");
+            Indent(indent + 1, sb); sb.AppendFormat("}}\n\n");
 
-            sb.AppendLine(Indent(indent + 1, "/// <summary>Constructor.</summary>"));
-            sb.AppendLine(Indent(indent + 1, "public {0}(Func<{1},{2}> conv, bool strictPEG)", info.ClassName, info.InputType, info.ResultType));
-            sb.AppendLine(Indent(indent + 2, ": base(conv, strictPEG)"));
-            sb.AppendLine(Indent(indent + 1, "{{"));
-            sb.AppendLine(Indent(indent + 1, "}}"));
-            sb.AppendLine();
+            Indent(indent + 1, sb); sb.AppendFormat("/// <summary>Constructor.</summary>\n");
+            Indent(indent + 1, sb); sb.AppendFormat("public {0}(Func<{1},{2}> conv, bool strictPEG)\n", info.ClassName, info.InputType, info.ResultType);
+            Indent(indent + 2, sb); sb.AppendFormat(": base(conv, strictPEG)\n");
+            Indent(indent + 1, sb); sb.AppendFormat("{{\n");
+            Indent(indent + 1, sb); sb.AppendFormat("}}\n\n");
 
             // match item class
             GetMatchItemClass(sb, indent+1, info);
 
             // body
-            sb.AppendLine(body.Generate(indent + 1, info));
-            sb.AppendLine(Indent(indent, "}} // class {0}", info.ClassName));
-
-            return sb.ToString();
+            body.Generate(indent + 1, sb, info);
+            sb.AppendLine();
+            Indent(indent, sb); sb.AppendFormat("}} // class {0}\n", info.ClassName);
         }
 
         private void GetMatchItemClass(StringBuilder sb, int indent, GenerateInfo info)
         {
-            sb.AppendLine(Indent(indent, "/// <summary>Utility class for referencing variables in conditions and actions.</summary>"));
-            sb.AppendLine(Indent(indent, "private class {0} : MatchItem", info.MatchItemClass));
-            sb.AppendLine(Indent(indent, "{{"));
+            Indent(indent, sb); sb.AppendFormat("/// <summary>Utility class for referencing variables in conditions and actions.</summary>\n");
+            Indent(indent, sb); sb.AppendFormat("private class {0} : MatchItem\n", info.MatchItemClass);
+            Indent(indent, sb); sb.AppendFormat("{{\n");
 
-            sb.AppendLine(Indent(indent + 1, "public {0}() : base() {{ }}", info.MatchItemClass));
+            Indent(indent + 1, sb); sb.AppendFormat("public {0}() : base() {{ }}\n", info.MatchItemClass);
             sb.AppendLine();
 
-            sb.AppendLine(Indent(indent + 1, "public {0}(MatchItem mi)", info.MatchItemClass));
-            sb.AppendLine(Indent(indent + 2, ": base(mi)"));
-            sb.AppendLine(Indent(indent + 1, "{{"));
-            sb.AppendLine(Indent(indent + 1, "}}"));
+            Indent(indent + 1, sb); sb.AppendFormat("public {0}(MatchItem mi)\n", info.MatchItemClass);
+            Indent(indent + 2, sb); sb.AppendFormat(": base(mi)\n");
+            Indent(indent + 1, sb); sb.AppendFormat("{{\n");
+            Indent(indent + 1, sb); sb.AppendFormat("}}\n");
             sb.AppendLine();
 
-            sb.AppendLine(Indent(indent + 1, "public static implicit operator {0}({1} item) {{ return item.Inputs.LastOrDefault(); }}", info.InputType, info.MatchItemClass));
-            sb.AppendLine(Indent(indent + 1, "public static implicit operator List<{0}>({1} item) {{ return item.Inputs.ToList(); }}", info.InputType, info.MatchItemClass));
+            Indent(indent + 1, sb); sb.AppendFormat("public static implicit operator {0}({1} item) {{ return item.Inputs.LastOrDefault(); }}\n", info.InputType, info.MatchItemClass);
+            Indent(indent + 1, sb); sb.AppendFormat("public static implicit operator List<{0}>({1} item) {{ return item.Inputs.ToList(); }}\n", info.InputType, info.MatchItemClass);
 
             if (!info.InputType.Equals(info.ResultType))
             {
-                sb.AppendLine(Indent(indent + 1, "public static implicit operator {0}({1} item) {{ return item.Results.LastOrDefault(); }}", info.ResultType, info.MatchItemClass));
-                sb.AppendLine(Indent(indent + 1, "public static implicit operator List<{0}>({1} item) {{ return item.Results.ToList(); }}", info.ResultType, info.MatchItemClass));
+                Indent(indent + 1, sb); sb.AppendFormat("public static implicit operator {0}({1} item) {{ return item.Results.LastOrDefault(); }}\n", info.ResultType, info.MatchItemClass);
+                Indent(indent + 1, sb); sb.AppendFormat("public static implicit operator List<{0}>({1} item) {{ return item.Results.ToList(); }}\n", info.ResultType, info.MatchItemClass);
             }
 
-            sb.AppendLine(Indent(indent, "}}"));
+            Indent(indent, sb); sb.AppendFormat("}}\n");
             sb.AppendLine();
         }
     }
@@ -1075,9 +1104,9 @@ namespace IronMeta
             this.Identifier = identifier;
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
-            return string.Format("using {0};", Identifier.GetText(info.InputStream));
+            sb.AppendFormat("using {0};", Identifier.GetText(info.InputStream));
         }
     }
 
@@ -1129,34 +1158,37 @@ namespace IronMeta
             base.Analyze(info);
         }
 
-        public override string Generate(int indent, GenerateInfo info)
+        public override void Generate(int indent, StringBuilder sb, GenerateInfo info)
         {
             if (string.IsNullOrEmpty(info.NameSpace))
                 throw new Exception("Calling code must assign a namespace before generating.");
 
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine(Indent(indent, "// IronMeta Generated {0}: {1} UTC", info.NameSpace, DateTime.UtcNow));
+            Indent(indent, sb); sb.AppendFormat("// IronMeta Generated {0}: {1} UTC\n", info.NameSpace, DateTime.UtcNow);
             sb.AppendLine();
 
             // preamble
             foreach (string us in usingStatements)
-                sb.AppendLine(Indent(indent, "{0}", us));
+            {
+                Indent(indent, sb); sb.AppendFormat("{0}\n", us);
+            }
             foreach (var pn in preambleNodes)
-                sb.AppendLine(Indent(indent, "{0}", pn.Generate(indent, info)));
+            {
+                Indent(indent, sb); pn.Generate(indent, sb, info);
+                sb.AppendLine();
+            }
             sb.AppendLine();
 
             // namespace
-            sb.AppendLine(Indent(indent, "namespace {0}", info.NameSpace));
-            sb.AppendLine(Indent(indent, "{{"));
+            Indent(indent, sb); sb.AppendFormat("namespace {0}\n", info.NameSpace);
+            Indent(indent, sb); sb.AppendFormat("{{\n");
             sb.AppendLine();
 
             foreach (var child in parserNodes)
-                sb.AppendLine(child.Generate(indent + 1, info));
+            {
+                child.Generate(indent + 1, sb, info);
+            }
 
-            sb.AppendLine(Indent(indent, "}} // namespace {0}", info.NameSpace));
-
-            return sb.ToString();
+            Indent(indent, sb); sb.AppendFormat("}} // namespace {0}\n", info.NameSpace);
         }
     }
 

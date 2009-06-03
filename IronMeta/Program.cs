@@ -97,7 +97,10 @@ namespace IronMeta
                 SyntaxNode.Optimize(ironMetaFile);
 
                 // generate
-                code = ironMetaFile.Generate(0, info);
+                StringBuilder sb = new StringBuilder();
+                ironMetaFile.Generate(0, sb, info);
+                code = sb.ToString();
+
                 DateTime endGen = DateTime.Now;
 
                 // print times
