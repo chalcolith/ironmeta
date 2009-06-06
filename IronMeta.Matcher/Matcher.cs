@@ -744,10 +744,41 @@ namespace IronMeta
                 {
                     int lastKey = errors.Keys.Last();
                     List<string> msgs = errors[lastKey];
-                    if (msgs != null && msgs.Count > 0)
+
+                    List<string> others = new List<string>();
+                    List<string> expecteds = new List<string>();
+                    foreach (var msg in msgs)
+                    {
+                        if (msg.StartsWith("expected "))
+                        {
+                            if (msg.Length > 11)
+                                expecteds.Add(msg.Substring(9));
+                        }
+                        else
+                        {
+                            others.Add(msg);
+                        }
+                    }
+
+                    if (msgs.Count > 0)
+                    {
+                        string last = msgs[msgs.Count - 1];
+                        if (last.StartsWith("expected "))
+                        {
+                            last = last.Substring(9);
+
+                            if (!expecteds.Contains(last))
+                                expecteds.Add(last);
+                        }
+                    }
+
+                    if (expecteds.Count > 0)
+                        others.Add("expected " + string.Join(" or ", expecteds.ToArray()));
+
+                    if (others.Count > 0)
                     {
                         index = lastKey;
-                        return msgs.Last();
+                        return string.Join("; ", others.ToArray());
                     }
                 }
 
@@ -788,7 +819,7 @@ namespace IronMeta
         protected static Combinator _EMPTY() { return new EmptyCombinator(); }
 
         /// \internal
-        private class EmptyCombinator : Combinator
+        private sealed class EmptyCombinator : Combinator
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
@@ -810,7 +841,7 @@ namespace IronMeta
         protected static Combinator _FAIL(string message) { return new FailCombinator(message); }
 
         /// \internal
-        private class FailCombinator : Combinator
+        private sealed class FailCombinator : Combinator
         {
             string message;
 
@@ -839,7 +870,7 @@ namespace IronMeta
         protected static Combinator _ANY() { return new AnyCombinator(); }
 
         /// \internal
-        private class AnyCombinator : Combinator
+        private sealed class AnyCombinator : Combinator
         {
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
@@ -894,7 +925,7 @@ namespace IronMeta
         protected static Combinator _LITERAL(IEnumerable<TInput> items) { return new LiteralCombinator(items); }
 
         /// \internal
-        private class LiteralCombinator : Combinator
+        private sealed class LiteralCombinator : Combinator
         {
             IEnumerable<TInput> items;
 
@@ -990,7 +1021,7 @@ namespace IronMeta
         protected static Combinator _AND(params Combinator[] combinators) { return new AndCombinator(combinators); }
 
         /// \internal
-        private class AndCombinator : Combinator
+        private sealed class AndCombinator : Combinator
         {
             Combinator[] combinators;
 
@@ -1137,7 +1168,7 @@ namespace IronMeta
         protected static Combinator _OR(params Combinator[] combinators) { return new OrCombinator(combinators); }
 
         /// \internal
-        private class OrCombinator : Combinator
+        private sealed class OrCombinator : Combinator
         {
             Combinator[] combinators;
 
@@ -1174,7 +1205,7 @@ namespace IronMeta
         protected static Combinator _STAR(Combinator a) { return new StarCombinator(a); }
 
         /// \internal
-        private class StarCombinator : Combinator
+        private sealed class StarCombinator : Combinator
         {
             Combinator a;
 
@@ -1285,7 +1316,7 @@ namespace IronMeta
         protected static Combinator _LOOK(Combinator a) { return new LookCombinator(a); }
 
         /// \internal
-        private class LookCombinator : Combinator
+        private sealed class LookCombinator : Combinator
         {
             Combinator a;
 
@@ -1321,7 +1352,7 @@ namespace IronMeta
         protected static Combinator _NOT(Combinator a) { return new NotCombinator(a); }
 
         /// \internal
-        private class NotCombinator : Combinator
+        private sealed class NotCombinator : Combinator
         {
             Combinator a;
 
@@ -1364,7 +1395,7 @@ namespace IronMeta
         protected static Combinator _VAR(Combinator a, MatchItem v) { return new VarCombinator(a, v); }
 
         /// \internal
-        private class VarCombinator : Combinator
+        private sealed class VarCombinator : Combinator
         {
             Combinator a;
             MatchItem v;
@@ -1402,7 +1433,7 @@ namespace IronMeta
         protected static Combinator _CONDITION(Combinator a, Func<MatchItem, bool> condition) { return new ConditionCombinator(a, condition); }
 
         /// \internal
-        private class ConditionCombinator : Combinator
+        private sealed class ConditionCombinator : Combinator
         {
             Combinator a;
             Func<MatchItem, bool> condition;
@@ -1440,7 +1471,7 @@ namespace IronMeta
         protected static Combinator _ACTION(Combinator a, Func<MatchItem, TResult> action) { return new ActionCombinatorSingle(a, action); }
 
         /// \internal
-        private class ActionCombinatorSingle : Combinator
+        private sealed class ActionCombinatorSingle : Combinator
         {
             Combinator a;
             Func<MatchItem, TResult> action;
@@ -1481,7 +1512,7 @@ namespace IronMeta
         protected static Combinator _ACTION(Combinator a, Func<MatchItem, IEnumerable<TResult>> action) { return new ActionCombinatorList(a, action); }
 
         /// \internal
-        private class ActionCombinatorList : Combinator
+        private sealed class ActionCombinatorList : Combinator
         {
             Combinator a;
             Func<MatchItem, IEnumerable<TResult>> action;
@@ -1531,7 +1562,7 @@ namespace IronMeta
         protected static Combinator _REF(MatchItem v) { return new RefCombinator(v, "", null); }
 
         /// \internal
-        private class RefCombinator : Combinator
+        private sealed class RefCombinator : Combinator
         {
             MatchItem v;
             string name;
@@ -1649,7 +1680,7 @@ namespace IronMeta
         }
 
         /// \internal
-        private class ArgsCombinator : Combinator
+        private sealed class ArgsCombinator : Combinator
         {
             Combinator arg_pattern;
             IEnumerable<MatchItem> actual_args;
@@ -1716,7 +1747,7 @@ namespace IronMeta
 
         /// \internal
         /// <summary>Implements Warth et al's algorithm for handling left-recursion.</summary>
-        private class CallItemCombinator : Combinator
+        private sealed class CallItemCombinator : Combinator
         {
             MatchItem v;
             IEnumerable<MatchItem> actual_args;

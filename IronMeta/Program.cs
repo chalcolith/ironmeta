@@ -62,13 +62,12 @@ namespace IronMeta
 
             // get file
             string contents = null;
-            string code = null;
             using (StreamReader sr = new StreamReader(fileName))
             {
                 contents = sr.ReadToEnd();
             }
 
-            // parse and generate
+            // parse
             var matcher = new IronMetaMatcher();
 
             try
@@ -97,9 +96,10 @@ namespace IronMeta
                 SyntaxNode.Optimize(ironMetaFile);
 
                 // generate
-                StringBuilder sb = new StringBuilder();
-                ironMetaFile.Generate(0, sb, info);
-                code = sb.ToString();
+                using (StreamWriter sw = new StreamWriter(outputFName))
+                {
+                    ironMetaFile.Generate(0, sw, info);
+                }
 
                 DateTime endGen = DateTime.Now;
 
@@ -130,19 +130,6 @@ namespace IronMeta
                 Console.WriteLine();
                 Console.WriteLine(sb.ToString());
                 return false;
-            }
-
-            // write output
-            if (!string.IsNullOrEmpty(code))
-            {
-                using (StreamWriter sw = new StreamWriter(outputFName))
-                {
-                    sw.WriteLine(code);
-                }
-            }
-            else
-            {
-                throw new Exception("Internal error: no code generated.");
             }
 
             return true;

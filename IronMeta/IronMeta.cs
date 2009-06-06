@@ -1,4 +1,4 @@
-// IronMeta Generated IronMeta: 6/3/2009 9:12:08 PM UTC
+// IronMeta Generated IronMeta: 6/5/2009 4:18:33 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -1362,4 +1362,3 @@ namespace IronMeta
 
     } // class IronMetaMatcher
 } // namespace IronMeta
-
