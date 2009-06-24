@@ -2,7 +2,10 @@
 
 \mainpage IronMeta User Manual
 
-\htmlonly <a href="http://sourceforge.net/donate/index.php?group_id=261882"><img align="right" src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" /> </a> \endhtmlonly
+\htmlonly 
+<a href="http://sourceforge.net/projects/ironmeta"><img align="right" src="http://sflogo.sourceforge.net/sflogo.php?group_id=261882&amp;type=12" width="120" height="30" alt="Get IronMeta at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+<a href="http://sourceforge.net/donate/index.php?group_id=261882"><img align="right" src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" /> </a>
+\endhtmlonly
 
 IronMeta provides a programming language and application for generating pattern matchers on arbitrary streams of objects.  It is an implementation of Alessandro Warth's <a href="http://www.cs.ucla.edu/~awarth/ometa/">OMeta</a> system for C# on .NET.
 
