@@ -96,22 +96,22 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     PrefixedTerm = AndTerm | NotTerm | PostfixedTerm;
     
     AndTerm = "&" PostfixedTerm:exp
-            -> { return new PrefixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "LOOK"); };
+            -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "LOOK"); };
     
     NotTerm = "~" PrefixedTerm:exp
-            -> { return new PrefixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "NOT"); };
+            -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "NOT"); };
     
     
     PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term | !"expected a pattern";
     
     StarTerm = PostfixedTerm:exp "*"
-            -> { return new PostfixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "STAR"); };
+            -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "STAR"); };
     
     PlusTerm = PostfixedTerm:exp "+"
-            -> { return new PostfixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "PLUS"); };
+            -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "PLUS"); };
     
     QuestionTerm = PostfixedTerm:exp ('?' ~'(')
-            -> { return new PostfixedExpNode(_IM_StartIndex, _IM_NextIndex, exp, "QUES"); }; 
+            -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "QUES"); }; 
     
     
     Term = ParenTerm | AnyTerm | RuleCall | CallOrVar | Literal;

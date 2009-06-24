@@ -799,7 +799,7 @@ namespace IronMeta
 
         /// \internal
         /// <summary>
-        /// A combinator contains a production delegate that is used to match against an item stream.
+        /// A combinator contains a virtual method that is used to match against an item stream.
         /// The only reason we use this method and can't use lambda functions directly is that lambda functions cannot be iterators.
         /// </summary>
         protected abstract class Combinator
@@ -920,7 +920,6 @@ namespace IronMeta
         /// \internal
         protected static Combinator _LITERAL(TInput item) { return new LiteralCombinator(item); }
 
-        
         /// \internal
         protected static Combinator _LITERAL(IEnumerable<TInput> items) { return new LiteralCombinator(items); }
 
@@ -1131,34 +1130,6 @@ namespace IronMeta
                 }
             } // Match()
 
-            //public override IEnumerable<MatchItem> MatchOld(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
-            //{
-            //    int func_id = FUNC_ID++;
-
-            //    WriteIndent(_index, indent, func_id, "_AND()");
-
-            //    foreach (MatchItem res_a in a.Match(indent + 1, _inputs, _index, null, _memo))
-            //    {
-            //        foreach (MatchItem res_b in b.Match(indent + 1, _inputs, res_a.NextIndex, null, _memo))
-            //        {
-            //            var newRes = new MatchItem
-            //            {
-            //                InputStream = _inputs,
-            //                Results = res_a.Results.Concat(res_b.Results),
-            //                StartIndex = _index, NextIndex = res_b.NextIndex
-            //            };
-
-            //            WriteIndent(_index, indent, func_id, " AND(): {0}", newRes);
-            //            yield return newRes;
-
-            //            if (_memo.StrictPEG)
-            //                yield break;
-            //        }
-
-            //        if (_memo.StrictPEG)
-            //            yield break;
-            //    }
-            //}
         }
 
 
@@ -1468,44 +1439,9 @@ namespace IronMeta
         //////////////////////////////////////////
 
         /// \internal
-        protected static Combinator _ACTION(Combinator a, Func<MatchItem, TResult> action) { return new ActionCombinatorSingle(a, action); }
-
-        /// \internal
-        private sealed class ActionCombinatorSingle : Combinator
-        {
-            Combinator a;
-            Func<MatchItem, TResult> action;
-
-            public ActionCombinatorSingle(Combinator a, Func<MatchItem, TResult> action)
-            {
-                this.a = a;
-                this.action = action;
-            }
-
-            public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
-            {
-                int func_id = FUNC_ID++;
-
-                WriteIndent(_index, indent, func_id, "_ACTION()");
-
-                foreach (MatchItem res in a.Match(indent + 1, _inputs, _index, null, _memo))
-                {
-                    var newRes = new MatchItem
-                        {
-                            InputStream = _inputs,
-                            Results = new List<TResult> { action(res) },
-                            StartIndex = res.StartIndex,
-                            NextIndex = res.NextIndex,
-                            Production = res.Production
-                        };
-
-                    WriteIndent(_index, indent, func_id, " ACTION(): {0}", newRes);
-                    yield return newRes;
-
-                    if (_memo.StrictPEG)
-                        yield break;
-                }
-            }
+        protected static Combinator _ACTION(Combinator a, Func<MatchItem, TResult> action) 
+        { 
+            return new ActionCombinatorList(a, (item) => new List<TResult> { action(item) });
         }
 
         /// \internal
@@ -1729,13 +1665,13 @@ namespace IronMeta
         /// \internal
         protected static Combinator _CALL(Production p, IEnumerable<MatchItem> actual_args) 
         {
-            return new CallItemCombinator(new MatchItem { Production = p }, actual_args); 
+            return new CallItemCombinator(new MatchItem(p), actual_args); 
         }
 
         /// \internal
         protected static Combinator _CALL(Production p) 
         {
-            return new CallItemCombinator(new MatchItem { Production = p }, null); 
+            return new CallItemCombinator(new MatchItem(p), null); 
         }
 
         /// \internal
@@ -1778,10 +1714,9 @@ namespace IronMeta
 
                 // recall
                 Memo.MemoResult mr = _memo[_index, CallSignature];
-                Memo.HeadInfo h;
-                
-                if (!_memo.Heads.TryGetValue(_index, out h))
-                    h = null;
+                Memo.HeadInfo h = null;
+
+                _memo.Heads.TryGetValue(_index, out h);
                 
                 // are we inside a grow?
                 if (h != null)

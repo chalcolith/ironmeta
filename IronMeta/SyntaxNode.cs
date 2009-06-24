@@ -528,35 +528,13 @@ namespace IronMeta
     }
 
     /// <summary>
-    /// Holds a QUES, PLUS or STAR expression.
+    /// Holds a QUES, PLUS, STAR, AND or NOT expression.
     /// </summary>
-    public class PostfixedExpNode : ExpNode
+    public class UnaryExpNode : ExpNode
     {
         string op;
 
-        public PostfixedExpNode(int start, int next, SyntaxNode child, string op)
-            : base(start, next)
-        {
-            this.op = op;
-            Children = new List<SyntaxNode> { child };
-        }
-
-        public override void Generate(int indent, TextWriter tw, GenerateInfo info)
-        {
-            tw.Write("_" + op + "(");
-            Children.First().Generate(indent, tw, info);
-            tw.Write(")");
-        }
-    }
-
-    /// <summary>
-    /// Holds an AND or NOT expression.
-    /// </summary>
-    public class PrefixedExpNode : ExpNode
-    {
-        string op;
-
-        public PrefixedExpNode(int start, int next, SyntaxNode child, string op)
+        public UnaryExpNode(int start, int next, SyntaxNode child, string op)
             : base(start, next)
         {
             this.op = op;
