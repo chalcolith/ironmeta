@@ -177,8 +177,8 @@ namespace IronMeta
         public IEnumerable<MatchResult> AllMatches(IEnumerable<TInput> inputStream, string productionName)
         {
             // clear the predefined combinators
-            for (int i = 0; i < cachedCombinators.Count; ++i)
-                cachedCombinators[i] = null;
+            for (int i = 0; i < CachedCombinators.Count; ++i)
+                CachedCombinators[i] = null;
 
             // find the production
             Production production = null;
@@ -268,7 +268,7 @@ namespace IronMeta
         /// <param name="_index">The current index in the item stream.</param>
         /// <param name="_args">The stream of parameters passed to the rule.</param>
         /// <param name="_memo">Information about previous matches.</param>
-        /// <returns>A series of match items containing the possible results of the production's match action (if there is no action, simply returns the conversion of the last item).</returns>
+        /// <returns>A series of match items containing the possible results of the production's match action (if there is no action, simply returns the results of the match as a list).</returns>
         protected delegate IEnumerable<MatchItem> Production(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo);
 
 
@@ -288,7 +288,6 @@ namespace IronMeta
             public MatchItem(IEnumerable<MatchItem> inputStream, int index)
             {
                 InputStream = inputStream;
-                results = null;
                 StartIndex = index;
                 NextIndex = index;
             }
@@ -302,16 +301,20 @@ namespace IronMeta
             {
                 Inputs = new List<TInput> { input };
                 Results = new List<TResult> { result };
-                StartIndex = -1;
-                NextIndex = -1;
+            }
+
+            public MatchItem(TInput input, TResult result, int start, int next)
+            {
+                Inputs = new List<TInput> { input };
+                Results = new List<TResult> { result };
+                StartIndex = start;
+                NextIndex = next;
             }
 
             public MatchItem(IEnumerable<TInput> inputs, Func<TInput, TResult> conv)
             {
                 Inputs = inputs;
-                results = inputs.Select(item => conv(item));
-                StartIndex = -1;
-                NextIndex = -1;
+                Results = inputs.Select(item => conv(item));
             }
 
             public MatchItem(MatchItem item)
@@ -321,11 +324,6 @@ namespace IronMeta
 
             public MatchItem(Production p)
             {
-                inputStream = null;
-                inputItems = null;
-                results = null;
-                StartIndex = -1;
-                NextIndex = -1;
                 Production = p;
             }
 
@@ -341,6 +339,7 @@ namespace IronMeta
                 }
             }
 
+            private IEnumerable<TInput> inputItems = null;
             private IEnumerable<MatchItem> inputStream = null;
             private IEnumerable<TInput> cachedFromStream = null;
 
@@ -375,51 +374,40 @@ namespace IronMeta
 
                 set
                 {
-                    InputStream = null;
+                    inputStream = null;
                     inputItems = value;
                 }
             }
 
-            private IEnumerable<TInput> inputItems = null;
-
             /// <summary>
             /// The list of outputs corresponding to the inputs.
             /// </summary>
-            public IEnumerable<TResult> Results 
-            {
-                get
-                {
-                    return results ?? Enumerable.Empty<TResult>();
-                }
-
-                set
-                {
-                    results = value;
-                }
-            }
-
-            private IEnumerable<TResult> results = null;
+            public IEnumerable<TResult> Results = Enumerable.Empty<TResult>();
 
             /// <summary>
             /// The index of the first item.
             /// </summary>
-            public int StartIndex { get; set; }
+            public int StartIndex = -1;
 
             /// <summary>
             /// The index after the lat item.
             /// </summary>
-            public int NextIndex { get; set; }
+            public int NextIndex = -1;
 
             /// <summary>
             /// Sometimes we're passing a production in arguments.
             /// </summary>
-            public Production Production { get; set; }
+            public Production Production = null;
 
+            /// <summary>
+            /// Copies a match item.
+            /// </summary>
+            /// <param name="item"></param>
             public void CopyFrom(MatchItem item)
             {
                 inputStream = item.inputStream;
                 inputItems = item.inputItems;
-                results = item.results;
+                Results = item.Results;
                 StartIndex = item.StartIndex;
                 NextIndex = item.NextIndex;
                 Production = item.Production;
@@ -467,15 +455,11 @@ namespace IronMeta
                 this.inputs = inputs;
                 this.conv = conv;
 
-                // doesn't seem to help
-                //items.Capacity = inputs.Count();
-                //FillItems(items.Capacity-1);
-
                 if (this.inputs == null)
-                    throw new NullReferenceException("You must provide an input enumerable.");
+                    throw new ArgumentException("You must provide an input enumerable.");
 
                 if (this.conv == null)
-                    throw new NullReferenceException("You must provide a converter function.");
+                    throw new ArgumentException("You must provide a converter function.");
             }
 
             private void FillItems(int index)
@@ -484,13 +468,7 @@ namespace IronMeta
                 {
                     TInput input = inputs.ElementAt(items.Count);
 
-                    var mi = new MatchItem
-                        {
-                            Inputs = new List<TInput> { input },
-                            Results = new List<TResult> { conv(input) },
-                            StartIndex = items.Count,
-                            NextIndex = items.Count + 1
-                        };
+                    var mi = new MatchItem(input, conv(input), items.Count, items.Count+1);
 
                     items.Add(mi);
                 }
@@ -552,8 +530,10 @@ namespace IronMeta
 
             public int Count
             {
-                get { return inputs.Count(); }
+                get { return count != -1 ? count : (count = inputs.Count()); }
             }
+
+            private int count = -1;
 
             public bool IsReadOnly
             {
@@ -590,16 +570,16 @@ namespace IronMeta
         /// \internal
         /// <summary>
         /// Stores memoization and error-handling information.
-        /// Implements Warth and Millstein's algorithm for handling left-recursion.
+        /// Implements Warth et al's algorithm for handling left-recursion.
         /// </summary>
         protected class Memo
         {
 
             public class HeadInfo
             {
-                public string CallSignature { get; set; }
-                public HashSet<string> InvolvedSet { get; set; }
-                public HashSet<string> EvalSet { get; set; }
+                public string CallSignature;
+                public HashSet<string> InvolvedSet;
+                public HashSet<string> EvalSet;
 
                 public HeadInfo(string callSignature)
                 {
@@ -616,8 +596,8 @@ namespace IronMeta
 
             public class LRInfo
             {
-                public string CallSignature { get; set; }
-                public HeadInfo Head { get; set; }
+                public string CallSignature;
+                public HeadInfo Head;
 
                 public override string ToString()
                 {
@@ -627,8 +607,8 @@ namespace IronMeta
 
             public class MemoResult
             {
-                public IEnumerable<MatchItem> Result { get; set; }
-                public LRInfo LR { get; set; }
+                public IEnumerable<MatchItem> Result;
+                public LRInfo LR;
 
                 public override string ToString()
                 {
@@ -670,11 +650,7 @@ namespace IronMeta
 
                     Dictionary<string, MemoResult> subData;
 
-                    if (data.ContainsKey(index))
-                    {
-                        subData = data[index];
-                    }
-                    else
+                    if (!data.TryGetValue(index, out subData))
                     {
                         subData = new Dictionary<string, MemoResult>();
                         data.Add(index, subData);
@@ -694,20 +670,17 @@ namespace IronMeta
             /// <summary>
             /// Stores information about the LR seeds being grown at a particular position.
             /// </summary>
-            public Dictionary<int, HeadInfo> Heads { get { return heads; } }
-            private Dictionary<int, HeadInfo> heads = new Dictionary<int, HeadInfo>();
+            public Dictionary<int, HeadInfo> Heads = new Dictionary<int, HeadInfo>();
 
             /// <summary>
             /// Stores the rule stack for growing LR seeds.
             /// </summary>
-            public Stack<LRInfo> LRStack { get { return lrStack; } }
-            private Stack<LRInfo> lrStack = new Stack<LRInfo>();
+            public Stack<LRInfo> LRStack = new Stack<LRInfo>();
 
             /// <summary>
-            /// Stores information about errors encountered during a parse.
+            /// Stores information about Errors encountered during a parse.
             /// </summary>
-            public SortedDictionary<int, List<string>> Errors { get { return errors; } }
-            private SortedDictionary<int, List<string>> errors = new SortedDictionary<int, List<string>>();
+            public SortedDictionary<int, List<string>> Errors = new SortedDictionary<int, List<string>>();
 
             /// <summary>
             /// If this is true, then the parser will implement strict PEG matching.
@@ -729,10 +702,10 @@ namespace IronMeta
             [Conditional("ENABLE_ERROR_HANDLING")]
             public void AddError(int index, string error)
             {
-                if (!errors.ContainsKey(index))
-                    errors.Add(index, new List<string>());
+                if (!Errors.ContainsKey(index))
+                    Errors.Add(index, new List<string>());
 
-                errors[index].Add(error);
+                Errors[index].Add(error);
             }
 
             /// <summary>
@@ -740,10 +713,10 @@ namespace IronMeta
             /// </summary>
             public string GetLastError(out int index)
             {
-                if (errors.Count > 0)
+                if (Errors.Count > 0)
                 {
-                    int lastKey = errors.Keys.Last();
-                    List<string> msgs = errors[lastKey];
+                    int lastKey = Errors.Keys.Last();
+                    List<string> msgs = Errors[lastKey];
 
                     List<string> others = new List<string>();
                     List<string> expecteds = new List<string>();
@@ -808,9 +781,7 @@ namespace IronMeta
         } // class Combinator
 
 
-        private List<Combinator> cachedCombinators = new List<Combinator>();
-
-        protected List<Combinator> CachedCombinators { get { return cachedCombinators; } }
+        protected List<Combinator> CachedCombinators = new List<Combinator>();
 
 
         //////////////////////////////////////////
@@ -1130,7 +1101,7 @@ namespace IronMeta
                 }
             } // Match()
 
-        }
+        } // class AndCombinator
 
 
         //////////////////////////////////////////
@@ -1269,7 +1240,7 @@ namespace IronMeta
                 } // while true
             }
 
-        } // class StarCombinator()
+        } // class StarCombinator
 
 
         //////////////////////////////////////////

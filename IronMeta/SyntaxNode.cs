@@ -45,7 +45,7 @@ namespace IronMeta
 {
 
     /// <summary>
-    /// An exception class for errors during parsing.
+    /// An exception class for Errors during parsing.
     /// </summary>
     public class ParseException : Exception
     {
@@ -1063,13 +1063,13 @@ namespace IronMeta
             Indent(indent + 1, tw); tw.Write("}\n");
             tw.WriteLine();
 
-            Indent(indent + 1, tw); tw.Write("public static implicit operator {0}({1} item) {{ return item.Inputs.LastOrDefault(); }}\n", info.InputType, info.MatchItemClass);
-            Indent(indent + 1, tw); tw.Write("public static implicit operator List<{0}>({1} item) {{ return item.Inputs.ToList(); }}\n", info.InputType, info.MatchItemClass);
+            Indent(indent + 1, tw); tw.Write("public static implicit operator {0}({1} item) {{ return item.Results.LastOrDefault(); }}\n", info.ResultType, info.MatchItemClass);
+            Indent(indent + 1, tw); tw.Write("public static implicit operator List<{0}>({1} item) {{ return item.Results.ToList(); }}\n", info.ResultType, info.MatchItemClass);
 
             if (!info.InputType.Equals(info.ResultType))
             {
-                Indent(indent + 1, tw); tw.Write("public static implicit operator {0}({1} item) {{ return item.Results.LastOrDefault(); }}\n", info.ResultType, info.MatchItemClass);
-                Indent(indent + 1, tw); tw.Write("public static implicit operator List<{0}>({1} item) {{ return item.Results.ToList(); }}\n", info.ResultType, info.MatchItemClass);
+                Indent(indent + 1, tw); tw.Write("public static implicit operator {0}({1} item) {{ return item.Inputs.LastOrDefault(); }}\n", info.InputType, info.MatchItemClass);
+                Indent(indent + 1, tw); tw.Write("public static implicit operator List<{0}>({1} item) {{ return item.Inputs.ToList(); }}\n", info.InputType, info.MatchItemClass);
             }
 
             Indent(indent, tw); tw.Write("}\n");

@@ -1,4 +1,4 @@
-// IronMeta Generated IronMeta: 6/24/2009 10:40:46 PM UTC
+// IronMeta Generated IronMeta: 6/29/2009 6:15:42 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -32,10 +32,10 @@ namespace IronMeta
             {
             }
 
-            public static implicit operator char(IronMetaMatcherItem item) { return item.Inputs.LastOrDefault(); }
-            public static implicit operator List<char>(IronMetaMatcherItem item) { return item.Inputs.ToList(); }
             public static implicit operator IronMeta.SyntaxNode(IronMetaMatcherItem item) { return item.Results.LastOrDefault(); }
             public static implicit operator List<IronMeta.SyntaxNode>(IronMetaMatcherItem item) { return item.Results.ToList(); }
+            public static implicit operator char(IronMetaMatcherItem item) { return item.Inputs.LastOrDefault(); }
+            public static implicit operator List<char>(IronMetaMatcherItem item) { return item.Inputs.ToList(); }
         }
 
         protected virtual IEnumerable<MatchItem> IronMetaFile(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)

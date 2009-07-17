@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 6/24/2009 10:40:39 PM UTC
+// IronMeta Generated Calc: 7/17/2009 4:12:36 PM UTC
 
 using System.Collections.Generic;
 using System;
@@ -32,10 +32,10 @@ namespace Calc
             {
             }
 
-            public static implicit operator char(CalcMatcherItem item) { return item.Inputs.LastOrDefault(); }
-            public static implicit operator List<char>(CalcMatcherItem item) { return item.Inputs.ToList(); }
             public static implicit operator int(CalcMatcherItem item) { return item.Results.LastOrDefault(); }
             public static implicit operator List<int>(CalcMatcherItem item) { return item.Results.ToList(); }
+            public static implicit operator char(CalcMatcherItem item) { return item.Inputs.LastOrDefault(); }
+            public static implicit operator List<char>(CalcMatcherItem item) { return item.Inputs.ToList(); }
         }
 
         private int _Expression_Body__Index_ = -1;
