@@ -64,7 +64,7 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
     Digits :type = type;
             
-    KW .*:str = str Whitespace*;
+    KW :str = str Whitespace*;
     
     Zero = "ze" {new List<char>{ 'r', 'o' }};
 }

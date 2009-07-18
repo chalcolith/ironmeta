@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 18/07/2009 2:45:09 AM UTC
+// IronMeta Generated Calc: 18/07/2009 3:27:09 AM UTC
 
 using System.Collections.Generic;
 using System;
@@ -408,7 +408,7 @@ namespace Calc
             {
                 var str = new CalcMatcherItem("str");
                 var Whitespace = new CalcMatcherItem("Whitespace");
-                _disj_0_ = _ARGS(_VAR(_STAR(_ANY()), str), _args, _AND(_REF(str, this), _STAR(_REF(Whitespace, this))));
+                _disj_0_ = _ARGS(_VAR(_ANY(), str), _args, _AND(_REF(str, this), _STAR(_REF(Whitespace, this))));
             }
 
             _KW_Body_ = _disj_0_;
