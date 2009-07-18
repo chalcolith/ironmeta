@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B3272AD1-52FB-4FAA-AC61-CE2E1A284FFA}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{2BBD9A85-33F7-411C-8E2B-49A19BD3DC05}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AssemblyVersion</RootNamespace>
-    <AssemblyName>AssemblyVersion</AssemblyName>
+    <RootNamespace>DataParserLib</RootNamespace>
+    <AssemblyName>DataParserLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,8 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="MasterPlexQTReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\IronMeta.Matcher\IronMeta.Matcher.csproj">
+      <Project>{B73467B0-F643-4738-BFB4-4F1F8CF8703C}</Project>
+      <Name>IronMeta.Matcher</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Common.ironmeta" />
+    <None Include="MasterPlexQTReport.ironmeta" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -57,34 +68,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>cd ..\..\..
-svn revert Samples\Calc\Calc.cs
-for /f usebackq %25%25i in (`AssemblyVersion\bin\$(ConfigurationName)\AssemblyVersion IronMeta\bin\$(ConfigurationName)\IronMeta.exe`) do set IronMetaVersion=%25%25i
-if errorlevel 1 goto error
-svn copy https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/tags/%25IronMetaVersion%25 --message "IronMeta automated build %25IronMetaVersion%25"
-if errorlevel 1 goto error
-set IronMetaRelease=IronMeta_Win32_%25IronMetaVersion%25
-if errorlevel 1 goto error
-if not exist Releases mkdir Releases
-cd Releases
-if exist %25IronMetaRelease%25 rmdir /s /q %25IronMetaRelease%25
-if errorlevel 1 goto error
-mkdir %25IronMetaRelease%25
-if errorlevel 1 goto error
-copy ..\IronMeta.Matcher\bin\$(ConfigurationName)\IronMeta.Matcher.dll %25IronMetaRelease%25
-copy ..\IronMeta\bin\$(ConfigurationName)\IronMeta.exe %25IronMetaRelease%25
-copy ..\Samples\Calc\Calc.ironmeta %25IronMetaRelease%25
-copy ..\License.txt %25IronMetaRelease%25
-copy ..\Docs\latex\refman.pdf "%25IronMetaRelease%25\IronMeta User Manual.pdf"
-..\Resources\zip-3.0-bin\bin\zip -r %25IronMetaRelease%25.zip %25IronMetaRelease%25
-if errorlevel 1 goto error
-rmdir /s /q %25IronMetaRelease%25
-
-goto done
-
-:error
-
-:done
-</PostBuildEvent>
+    <PreBuildEvent>..\..\..\..\..\IronMeta\bin\$(ConfigurationName)\IronMeta ..\..\Common.ironMeta
+..\..\..\..\..\IronMeta\bin\$(ConfigurationName)\IronMeta ..\..\MasterPlexQTReport.ironmeta</PreBuildEvent>
   </PropertyGroup>
 </Project>

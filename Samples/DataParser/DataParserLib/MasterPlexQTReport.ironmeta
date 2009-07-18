@@ -1,0 +1,56 @@
+//
+// MasterPlex QT Report
+//
+
+using System.Xml;
+
+ironMeta MasterPlexQTReport<char, XmlNode> : Common.CommonMatcher
+{
+	
+	Report = 
+		NewXmlDocument:xmlDoc 
+		WS "MasterPlex QT Report By Analyte" WS 
+		Headers(xmlDoc):readout 
+		Test(readout) EOF
+		-> { return xmlDoc; };
+	
+	Headers :xmlDoc = 
+		NewXmlDocElement(xmlDoc, "readout"):readout 
+		Header("Report Date", "reportDate", Date, readout)         
+		Header("Run Date", "runDate", Date, readout)               
+		Header("Report Time", "reportTime", Time, readout)         
+		Header("Run Time", "runTime", Time, readout)               
+		Header("Data File", "dataFile", Line, readout)             
+		Header("Hardware Serial No.", "serialNo", Line, readout)   
+		Header("Plate Name", "plateName", Line, readout)           
+		Header("Operator", "operator", Operator, readout)              
+		Header("Version", "version", Line, readout)  
+		Header("Analyst", "analyst", Line, readout)                
+		Header("Background", "background", Line, readout)
+		-> { return readout; };
+			
+	Test :readout = 
+		NewXmlElement(readout, "test"):test 
+		Header("Analyte Name", "name", Line, test)
+		DataHeading
+		Measurement(test)+;
+	
+	DataHeading = "Well" WS "Sample Name" WS "MFI" WS "Concentration" WS "Unit" WS "Count" WS;
+
+	Measurement :test = Number:well WS SampleName:sampleName WS Number:mfi WS Number:concentration WS Token:unit WS Number:count WS
+		-> {
+				XmlElement elem = (XmlElement)test;
+				XmlElement row = elem.OwnerDocument.CreateElement("measurement");
+				elem.AppendChild(row);
+				
+				row.SetAttribute("well", _IM_GetText(well));
+				row.SetAttribute("sample-name", _IM_GetText(sampleName));
+				row.SetAttribute("mfi", _IM_GetText(mfi));
+				row.SetAttribute("concentration", _IM_GetText(concentration));
+				row.SetAttribute("unit", _IM_GetText(unit));
+				row.SetAttribute("count", _IM_GetText(count));
+			};
+
+	Operator = (~"Version" .)+;
+	SampleName = Token ( WS "(" Number ")" )?;	
+}

@@ -327,6 +327,11 @@ namespace IronMeta
                 Production = p;
             }
 
+            public MatchItem(string productionName)
+            {
+                ProductionName = productionName;
+            }
+
             /// <summary>
             /// The input stream that we are matching against.
             /// </summary>
@@ -400,6 +405,11 @@ namespace IronMeta
             public Production Production = null;
 
             /// <summary>
+            /// Sometimes we're passing names of rules from other classes.
+            /// </summary>
+            public string ProductionName = null;
+
+            /// <summary>
             /// Copies a match item.
             /// </summary>
             /// <param name="item"></param>
@@ -411,6 +421,7 @@ namespace IronMeta
                 StartIndex = item.StartIndex;
                 NextIndex = item.NextIndex;
                 Production = item.Production;
+                ProductionName = item.ProductionName;
             }
 
             public override string ToString()
@@ -867,7 +878,8 @@ namespace IronMeta
                             Results = res.Results,
                             StartIndex = _index,
                             NextIndex = _index + 1,
-                            Production = res.Production
+                            Production = res.Production,
+                            ProductionName = res.ProductionName
                         };
 
                     WriteIndent(_index, indent, func_id, "_ANY(): {0}", newRes);
@@ -1466,6 +1478,9 @@ namespace IronMeta
         protected static Combinator _REF(MatchItem v, string name) { return new RefCombinator(v, name, null); }
 
         /// \internal
+        protected static Combinator _REF(MatchItem v, Matcher<TInput, TResult> matcher) { return new RefCombinator(v, "", matcher); }
+
+        /// \internal
         protected static Combinator _REF(MatchItem v) { return new RefCombinator(v, "", null); }
 
         /// \internal
@@ -1498,11 +1513,11 @@ namespace IronMeta
                 else if (needLookup)
                 {
                     // try to look up our name as a production
-                    if (!string.IsNullOrEmpty(name) && matcher != null)
+                    if (!string.IsNullOrEmpty(v.ProductionName) && matcher != null)
                     {
                         try
                         {
-                            Production p = Delegate.CreateDelegate(typeof(Production), matcher, name) as Production;
+                            Production p = Delegate.CreateDelegate(typeof(Production), matcher, v.ProductionName) as Production;
 
                             if (p != null)
                                 call = _CALL(p);

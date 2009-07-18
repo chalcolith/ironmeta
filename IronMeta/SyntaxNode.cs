@@ -88,12 +88,12 @@ namespace IronMeta
 
         /// <summary>Needs to be set before analysis.</summary>
         public string NameSpace { get; set; }
-
-        /// <summary>Needs to be set before individual rules are analyzed.</summary>
-        public HashSet<string> RuleNames { get; set; }
         
         /// <summary>Used by individual rules to temporarily store their variables during analysis.</summary>
         public HashSet<string> VariableNames { get; set; }
+
+        /// <summary>Stores rules that we know about for call optimization.</summary>
+        public HashSet<string> RuleNames { get; set; }
 
         public string ClassName { get; set; }
         public string InputType { get; set; }
@@ -450,7 +450,7 @@ namespace IronMeta
             if (info.RuleNames.Contains(varName))
                 tw.Write("_CALL({0})", varName);
             else
-                tw.Write("_REF({0}, \"{0}\", this)", varName);
+                tw.Write("_REF({0}, this)", varName);
         }
     }
 
@@ -475,7 +475,7 @@ namespace IronMeta
 
         public override void Analyze(GenerateInfo info)
         {
-            ruleName = name.GetText(info.InputStream);
+            ruleName = name.GetText(info.InputStream).Trim();
 
             if (ruleName.ToUpper().StartsWith("BASE."))
                 ruleName = ruleName.Substring(5);
@@ -669,14 +669,17 @@ namespace IronMeta
             
 
             if (aText.Contains("_IM_Result") || aText.Contains("_IM_Start") || aText.Contains("_IM_Next"))
-                tw.Write(", (_IM_Result_MI_) => {{ {0} \n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), action.LineNumber, info.InputFileName);
+                tw.Write(", (_IM_Result_MI_) => {{{{ {0} \n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), action.LineNumber, info.InputFileName);
             else
-                tw.Write(", (_IM_Result_MI_) => {{ \n#line {0} \"{1}\"\n", action.LineNumber, info.InputFileName);
+                tw.Write(", (_IM_Result_MI_) => {{{{ \n#line {0} \"{1}\"\n", action.LineNumber, info.InputFileName);
 
             Indent(action.LineOffset, ' ', tw);
 
             tw.Write(aText);
-            tw.Write("\n#line default\n})");
+            tw.Write("\n#line default\n}");
+            if (!aText.Contains("return"))
+                tw.Write(" return default({0});", info.ResultType);
+            tw.Write("})");
         }
     }
 
@@ -831,7 +834,7 @@ namespace IronMeta
 
                 foreach (var vn in rule.VariableNames)
                     if (!info.RuleNames.Contains(vn))
-                        cachedCombinator = false;
+                        cachedCombinator = false; 
             }
 
             // build the function
@@ -873,7 +876,7 @@ namespace IronMeta
                 {
                     if (!info.RuleNames.Contains(varName))
                     {
-                        Indent(indent + 2, tw); tw.Write("var {0} = new {1}();\n", varName, info.MatchItemClass);
+                        Indent(indent + 2, tw); tw.Write("var {0} = new {1}(\"{0}\");\n", varName, info.MatchItemClass);
                     }
                 }
 
@@ -932,10 +935,10 @@ namespace IronMeta
                 RuleNode rule = node as RuleNode;
                 string ruleName = rule.Name.GetText(info.InputStream).Trim();
 
-                info.RuleNames.Add(ruleName);
-                
                 if (!rules.ContainsKey(ruleName))
                     rules.Add(ruleName, new List<RuleNode>());
+
+                info.RuleNames.Add(ruleName);
 
                 rules[ruleName].Add(rule);
             }
@@ -1055,12 +1058,8 @@ namespace IronMeta
             Indent(indent, tw); tw.Write("{\n");
 
             Indent(indent + 1, tw); tw.Write("public {0}() : base() {{ }}\n", info.MatchItemClass);
-            tw.WriteLine();
-
-            Indent(indent + 1, tw); tw.Write("public {0}(MatchItem mi)\n", info.MatchItemClass);
-            Indent(indent + 2, tw); tw.Write(": base(mi)\n");
-            Indent(indent + 1, tw); tw.Write("{\n");
-            Indent(indent + 1, tw); tw.Write("}\n");
+            Indent(indent + 1, tw); tw.Write("public {0}(string name) : base(name) {{ }}\n", info.MatchItemClass);
+            Indent(indent + 1, tw); tw.Write("public {0}(MatchItem mi) : base(mi) {{ }}\n", info.MatchItemClass);
             tw.WriteLine();
 
             Indent(indent + 1, tw); tw.Write("public static implicit operator {0}({1} item) {{ return item.Results.LastOrDefault(); }}\n", info.ResultType, info.MatchItemClass);

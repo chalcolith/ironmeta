@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="xunit, Version=1.1.0.1323, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\xUnit.net\xunit.dll</HintPath>
+      <HintPath>..\..\Resources\xUnit.net\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +52,7 @@
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IronMeta.Matcher\IronMeta.Matcher.csproj">
+    <ProjectReference Include="..\..\IronMeta.Matcher\IronMeta.Matcher.csproj">
       <Project>{B73467B0-F643-4738-BFB4-4F1F8CF8703C}</Project>
       <Name>IronMeta.Matcher</Name>
     </ProjectReference>
@@ -69,7 +69,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>..\..\..\Resources\xUnit.net\xunit.console.exe "$(TargetDir)\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>..\..\..\..\Resources\xUnit.net\xunit.console.exe "$(TargetDir)\$(TargetFileName)"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>

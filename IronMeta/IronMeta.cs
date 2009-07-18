@@ -1,4 +1,4 @@
-// IronMeta Generated IronMeta: 6/29/2009 6:15:42 PM UTC
+// IronMeta Generated IronMeta: 7/17/2009 11:45:59 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -26,11 +26,8 @@ namespace IronMeta
         private class IronMetaMatcherItem : MatchItem
         {
             public IronMetaMatcherItem() : base() { }
-
-            public IronMetaMatcherItem(MatchItem mi)
-                : base(mi)
-            {
-            }
+            public IronMetaMatcherItem(string name) : base(name) { }
+            public IronMetaMatcherItem(MatchItem mi) : base(mi) { }
 
             public static implicit operator IronMeta.SyntaxNode(IronMetaMatcherItem item) { return item.Results.LastOrDefault(); }
             public static implicit operator List<IronMeta.SyntaxNode>(IronMetaMatcherItem item) { return item.Results.ToList(); }
@@ -44,13 +41,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var pre = new IronMetaMatcherItem();
-                var parsers = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_CALL(SP), _VAR(_QUES(_CALL(FilePreamble)), pre), _VAR(_STAR(_CALL(IronMetaParser)), parsers), _CALL(EOF)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var pre = new IronMetaMatcherItem("pre");
+                var parsers = new IronMetaMatcherItem("parsers");
+                _disj_0_ = _ACTION(_AND(_CALL(SP), _VAR(_QUES(_CALL(FilePreamble)), pre), _VAR(_STAR(_CALL(IronMetaParser)), parsers), _CALL(EOF)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 42 "IronMeta.ironmeta"
                    { return new IronMetaFileNode(_IM_StartIndex, _IM_NextIndex, pre, parsers); }
 #line default
-});
+}});
             }
 
             _IronMetaFile_Body_ = _disj_0_;
@@ -102,12 +99,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var id = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("using"), _CALL(SP), _VAR(_CALL(QualifiedIdentifier), id), _CALL(SP), _OR(_LITERAL(","), _LITERAL(";")), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var id = new IronMetaMatcherItem("id");
+                _disj_0_ = _ACTION(_AND(_LITERAL("using"), _CALL(SP), _VAR(_CALL(QualifiedIdentifier), id), _CALL(SP), _OR(_LITERAL(","), _LITERAL(";")), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 47 "IronMeta.ironmeta"
                    { return new UsingStatementNode(_IM_StartIndex, _IM_NextIndex, id); }
 #line default
-});
+}});
             }
 
             _UsingStatement_Body_ = _disj_0_;
@@ -126,13 +123,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var decl = new IronMetaMatcherItem();
-                var body = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("ironMeta"), _CALL(SP), _VAR(_CALL(ParserDeclaration), decl), _VAR(_CALL(ParserBody), body)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var decl = new IronMetaMatcherItem("decl");
+                var body = new IronMetaMatcherItem("body");
+                _disj_0_ = _ACTION(_AND(_LITERAL("ironMeta"), _CALL(SP), _VAR(_CALL(ParserDeclaration), decl), _VAR(_CALL(ParserBody), body)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 50 "IronMeta.ironmeta"
                    { return new ParserNode(_IM_StartIndex, _IM_NextIndex, decl, body); }
 #line default
-});
+}});
             }
 
             _IronMetaParser_Body_ = _disj_0_;
@@ -151,13 +148,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var name = new IronMetaMatcherItem();
-                var bc = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(GenericIdentifier), name), _CALL(SP), _VAR(_QUES(_CALL(BaseClassDeclaration)), bc)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var name = new IronMetaMatcherItem("name");
+                var bc = new IronMetaMatcherItem("bc");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(GenericIdentifier), name), _CALL(SP), _VAR(_QUES(_CALL(BaseClassDeclaration)), bc)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 53 "IronMeta.ironmeta"
                    { return new ParserDeclarationNode(_IM_StartIndex, _IM_NextIndex, name, bc); }
 #line default
-});
+}});
             }
 
             _ParserDeclaration_Body_ = _disj_0_;
@@ -176,12 +173,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var id = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL(":"), _CALL(SP), _VAR(_CALL(GenericIdentifier), id), _CALL(SP)), (_IM_Result_MI_) => { 
+                var id = new IronMetaMatcherItem("id");
+                _disj_0_ = _ACTION(_AND(_LITERAL(":"), _CALL(SP), _VAR(_CALL(GenericIdentifier), id), _CALL(SP)), (_IM_Result_MI_) => {{ 
 #line 56 "IronMeta.ironmeta"
                    { return id; }
 #line default
-});
+}});
             }
 
             _BaseClassDeclaration_Body_ = _disj_0_;
@@ -200,12 +197,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var rules = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("{"), _CALL(SP), _VAR(_STAR(_CALL(Rule)), rules), _LITERAL("}"), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var rules = new IronMetaMatcherItem("rules");
+                _disj_0_ = _ACTION(_AND(_LITERAL("{"), _CALL(SP), _VAR(_STAR(_CALL(Rule)), rules), _LITERAL("}"), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 61 "IronMeta.ironmeta"
                    { return new ParserBodyNode(_IM_StartIndex, _IM_NextIndex, rules); }
 #line default
-});
+}});
             }
 
             _ParserBody_Body_ = _disj_0_;
@@ -224,11 +221,11 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var ovr = new IronMetaMatcherItem();
-                var name = new IronMetaMatcherItem();
-                var parms = new IronMetaMatcherItem();
-                var body = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_QUES(_AND(_LITERAL("override"), _CALL(SP))), ovr), _VAR(_CALL(Identifier), name), _CALL(SP), _VAR(_QUES(_CALL(Disjunction)), parms), _OR(_LITERAL("::="), _LITERAL("=")), _CALL(SP), _VAR(_CALL(Disjunction), body), _OR(_LITERAL(","), _LITERAL(";")), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var ovr = new IronMetaMatcherItem("ovr");
+                var name = new IronMetaMatcherItem("name");
+                var parms = new IronMetaMatcherItem("parms");
+                var body = new IronMetaMatcherItem("body");
+                _disj_0_ = _ACTION(_AND(_VAR(_QUES(_AND(_LITERAL("override"), _CALL(SP))), ovr), _VAR(_CALL(Identifier), name), _CALL(SP), _VAR(_QUES(_CALL(Disjunction)), parms), _OR(_LITERAL("::="), _LITERAL("=")), _CALL(SP), _VAR(_CALL(Disjunction), body), _OR(_LITERAL(","), _LITERAL(";")), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 64 "IronMeta.ironmeta"
                    {
                         bool isOverride = ovr.Results.Any();
@@ -236,7 +233,7 @@ namespace IronMeta
                         return new RuleNode(_IM_StartIndex, _IM_NextIndex, isOverride, name, pNode, body);
                     }
 #line default
-});
+}});
             }
 
             _Rule_Body_ = _disj_0_;
@@ -265,11 +262,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_AND(_CALL(ActionExpression), _STAR(_AND(_LITERAL("|"), _CALL(SP), _CALL(ActionExpression)))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_AND(_CALL(ActionExpression), _STAR(_AND(_LITERAL("|"), _CALL(SP), _CALL(ActionExpression)))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 71 "IronMeta.ironmeta"
                        { return new DisjunctionExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(node => node is ExpNode)); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_Disjunction_Body__Index_] = _disj_0_;
@@ -292,13 +289,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                var action = new IronMetaMatcherItem();
-                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(SequenceExpression), exp), _OR(_LITERAL("=>"), _LITERAL("->")), _CALL(SP), _LOOK(_LITERAL('{')), _VAR(_CALL(CSharpCode), action), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                var action = new IronMetaMatcherItem("action");
+                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(SequenceExpression), exp), _OR(_LITERAL("=>"), _LITERAL("->")), _CALL(SP), _LOOK(_LITERAL('{')), _VAR(_CALL(CSharpCode), action), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 74 "IronMeta.ironmeta"
                        { return new ActionExpNode(_IM_StartIndex, _IM_NextIndex, exp, action); }
 #line default
-}), _CALL(SequenceExpression), _CALL(FailExpression));
+}}), _CALL(SequenceExpression), _CALL(FailExpression));
             }
 
             _ActionExpression_Body_ = _disj_0_;
@@ -317,12 +314,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var str = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("!"), _QUES(_AND(_LOOK(_LITERAL('\"')), _VAR(_CALL(CSharpCode), str))), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var str = new IronMetaMatcherItem("str");
+                _disj_0_ = _ACTION(_AND(_LITERAL("!"), _QUES(_AND(_LOOK(_LITERAL('\"')), _VAR(_CALL(CSharpCode), str))), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 79 "IronMeta.ironmeta"
                        { return new FailExpNode(_IM_StartIndex, _IM_NextIndex, str); }
 #line default
-});
+}});
             }
 
             _FailExpression_Body_ = _disj_0_;
@@ -351,11 +348,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_PLUS(_CALL(ConditionExpression)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_PLUS(_CALL(ConditionExpression)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 82 "IronMeta.ironmeta"
                        { return new SequenceExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_SequenceExpression_Body__Index_] = _disj_0_;
@@ -378,13 +375,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                var cond = new IronMetaMatcherItem();
-                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(BoundTerm), exp), _AND(_LITERAL('?'), _LOOK(_LITERAL('('))), _VAR(_CALL(CSharpCode), cond), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                var cond = new IronMetaMatcherItem("cond");
+                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(BoundTerm), exp), _AND(_LITERAL('?'), _LOOK(_LITERAL('('))), _VAR(_CALL(CSharpCode), cond), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 85 "IronMeta.ironmeta"
                        { return new ConditionExpNode(_IM_StartIndex, _IM_NextIndex, exp, cond); }
 #line default
-}), _CALL(BoundTerm));
+}}), _CALL(BoundTerm));
             }
 
             _ConditionExpression_Body_ = _disj_0_;
@@ -403,21 +400,21 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                var id = new IronMetaMatcherItem();
-                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(PrefixedTerm), exp), _LITERAL(":"), _VAR(_CALL(Identifier), id), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                var id = new IronMetaMatcherItem("id");
+                _disj_0_ = _OR(_ACTION(_AND(_VAR(_CALL(PrefixedTerm), exp), _LITERAL(":"), _VAR(_CALL(Identifier), id), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 89 "IronMeta.ironmeta"
                        { return new BoundExpNode(_IM_StartIndex, _IM_NextIndex, exp, id); }
 #line default
-}), _ACTION(_AND(_LITERAL(":"), _VAR(_CALL(Identifier), id), _CALL(SP)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+}}), _ACTION(_AND(_LITERAL(":"), _VAR(_CALL(Identifier), id), _CALL(SP)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 91 "IronMeta.ironmeta"
                        { return new BoundExpNode(_IM_StartIndex, _IM_NextIndex, new AnyExpNode(_IM_StartIndex, _IM_NextIndex), id); }
 #line default
-}), _ACTION(_AND(_VAR(_CALL(PrefixedTerm), exp), _CALL(SP)), (_IM_Result_MI_) => { 
+}}), _ACTION(_AND(_VAR(_CALL(PrefixedTerm), exp), _CALL(SP)), (_IM_Result_MI_) => {{ 
 #line 93 "IronMeta.ironmeta"
                        { return exp; }
 #line default
-}));
+}}));
             }
 
             _BoundTerm_Body_ = _disj_0_;
@@ -469,12 +466,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("&"), _VAR(_CALL(PostfixedTerm), exp)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_LITERAL("&"), _VAR(_CALL(PostfixedTerm), exp)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 99 "IronMeta.ironmeta"
                { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "LOOK"); }
 #line default
-});
+}});
             }
 
             _AndTerm_Body_ = _disj_0_;
@@ -493,12 +490,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("~"), _VAR(_CALL(PrefixedTerm), exp)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_LITERAL("~"), _VAR(_CALL(PrefixedTerm), exp)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 102 "IronMeta.ironmeta"
                { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "NOT"); }
 #line default
-});
+}});
             }
 
             _NotTerm_Body_ = _disj_0_;
@@ -550,12 +547,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _LITERAL("*")), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _LITERAL("*")), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 108 "IronMeta.ironmeta"
                { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "STAR"); }
 #line default
-});
+}});
             }
 
             _StarTerm_Body_ = _disj_0_;
@@ -574,12 +571,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _LITERAL("+")), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _LITERAL("+")), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 111 "IronMeta.ironmeta"
                { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "PLUS"); }
 #line default
-});
+}});
             }
 
             _PlusTerm_Body_ = _disj_0_;
@@ -598,12 +595,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _AND(_LITERAL('?'), _NOT(_LITERAL('(')))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(PostfixedTerm), exp), _AND(_LITERAL('?'), _NOT(_LITERAL('(')))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 114 "IronMeta.ironmeta"
                { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "QUES"); }
 #line default
-});
+}});
             }
 
             _QuestionTerm_Body_ = _disj_0_;
@@ -655,12 +652,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var exp = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_LITERAL("("), _CALL(SP), _VAR(_CALL(Disjunction), exp), _LITERAL(")")), (_IM_Result_MI_) => { 
+                var exp = new IronMetaMatcherItem("exp");
+                _disj_0_ = _ACTION(_AND(_LITERAL("("), _CALL(SP), _VAR(_CALL(Disjunction), exp), _LITERAL(")")), (_IM_Result_MI_) => {{ 
 #line 120 "IronMeta.ironmeta"
                { return exp; }
 #line default
-});
+}});
             }
 
             _ParenTerm_Body_ = _disj_0_;
@@ -689,11 +686,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_LITERAL("."), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_LITERAL("."), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 123 "IronMeta.ironmeta"
                { return new AnyExpNode(_IM_StartIndex, _IM_NextIndex); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_AnyTerm_Body__Index_] = _disj_0_;
@@ -716,13 +713,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var name = new IronMetaMatcherItem();
-                var p = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(QualifiedIdentifier), name), _LITERAL("("), _CALL(SP), _VAR(_QUES(_CALL(ParameterList)), p), _LITERAL(")")), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var name = new IronMetaMatcherItem("name");
+                var p = new IronMetaMatcherItem("p");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(QualifiedIdentifier), name), _LITERAL("("), _CALL(SP), _VAR(_QUES(_CALL(ParameterList)), p), _LITERAL(")")), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 126 "IronMeta.ironmeta"
                { return new RuleCallExpNode(_IM_StartIndex, _IM_NextIndex, name, p); }
 #line default
-});
+}});
             }
 
             _RuleCall_Body_ = _disj_0_;
@@ -751,11 +748,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_AND(_CALL(Parameter), _STAR(_AND(_LITERAL(","), _CALL(SP), _CALL(Parameter)))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_AND(_CALL(Parameter), _STAR(_AND(_LITERAL(","), _CALL(SP), _CALL(Parameter)))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 129 "IronMeta.ironmeta"
                { return _IM_Result.Results.Where(child => child is ExpNode); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_ParameterList_Body__Index_] = _disj_0_;
@@ -778,12 +775,12 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var p = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_OR(_CALL(CallOrVar), _CALL(Literal)), p), _CALL(SP)), (_IM_Result_MI_) => { 
+                var p = new IronMetaMatcherItem("p");
+                _disj_0_ = _ACTION(_AND(_VAR(_OR(_CALL(CallOrVar), _CALL(Literal)), p), _CALL(SP)), (_IM_Result_MI_) => {{ 
 #line 132 "IronMeta.ironmeta"
                { return p; }
 #line default
-});
+}});
             }
 
             _Parameter_Body_ = _disj_0_;
@@ -812,11 +809,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(QualifiedIdentifier), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(QualifiedIdentifier), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 135 "IronMeta.ironmeta"
                { return new CallOrVarExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_CallOrVar_Body__Index_] = _disj_0_;
@@ -849,11 +846,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_AND(_LOOK(_OR(_LITERAL('\"'), _LITERAL('\''), _LITERAL('{'))), _CALL(CSharpCode)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_AND(_LOOK(_OR(_LITERAL('\"'), _LITERAL('\''), _LITERAL('{'))), _CALL(CSharpCode)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 138 "IronMeta.ironmeta"
                { return new LiteralExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_Literal_Body__Index_] = _disj_0_;
@@ -886,11 +883,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(CSharpCodeItem), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(CSharpCodeItem), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 142 "IronMeta.ironmeta"
                { return new CSharpNode(_IM_StartIndex, _IM_NextIndex); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_CSharpCode_Body__Index_] = _disj_0_;
@@ -946,16 +943,16 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var id = new IronMetaMatcherItem();
-                var p = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_CALL(QualifiedIdentifier), id), _QUES(_AND(_LITERAL("<"), _CALL(SP), _VAR(_AND(_CALL(GenericIdentifier), _CALL(SP), _STAR(_AND(_LITERAL(","), _CALL(SP), _CALL(GenericIdentifier), _CALL(SP)))), p), _LITERAL(">")))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var id = new IronMetaMatcherItem("id");
+                var p = new IronMetaMatcherItem("p");
+                _disj_0_ = _ACTION(_AND(_VAR(_CALL(QualifiedIdentifier), id), _QUES(_AND(_LITERAL("<"), _CALL(SP), _VAR(_AND(_CALL(GenericIdentifier), _CALL(SP), _STAR(_AND(_LITERAL(","), _CALL(SP), _CALL(GenericIdentifier), _CALL(SP)))), p), _LITERAL(">")))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 151 "IronMeta.ironmeta"
                {
                     var idn = (IdentifierNode) id;
                     return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, idn, idn.Qualifiers, p.Results.Where(node => node is IdentifierNode));
                 }
 #line default
-});
+}});
             }
 
             _GenericIdentifier_Body_ = _disj_0_;
@@ -974,13 +971,13 @@ namespace IronMeta
 
             Combinator _disj_0_ = null;
             {
-                var quals = new IronMetaMatcherItem();
-                var name = new IronMetaMatcherItem();
-                _disj_0_ = _ACTION(_AND(_VAR(_STAR(_AND(_CALL(Identifier), _LITERAL("."))), quals), _VAR(_CALL(Identifier), name)), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                var quals = new IronMetaMatcherItem("quals");
+                var name = new IronMetaMatcherItem("name");
+                _disj_0_ = _ACTION(_AND(_VAR(_STAR(_AND(_CALL(Identifier), _LITERAL("."))), quals), _VAR(_CALL(Identifier), name)), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 157 "IronMeta.ironmeta"
                { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(node => node is IdentifierNode), null); }
 #line default
-});
+}});
             }
 
             _QualifiedIdentifier_Body_ = _disj_0_;
@@ -1009,11 +1006,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_AND(_CALL(IdentBegin), _STAR(_CALL(IdentChar))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_AND(_CALL(IdentBegin), _STAR(_CALL(IdentChar))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 160 "IronMeta.ironmeta"
                { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, null, null, null); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_Identifier_Body__Index_] = _disj_0_;
@@ -1120,11 +1117,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_STAR(_OR(_CALL(Comment), _CALL(Whitespace))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_STAR(_OR(_CALL(Comment), _CALL(Whitespace))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 166 "IronMeta.ironmeta"
                                     { return new SpacingNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_SP_Body__Index_] = _disj_0_;
@@ -1157,11 +1154,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_OR(_AND(_LITERAL("//"), _STAR(_CALL(EOLCommentChar)), _OR(_CALL(EOL), _CALL(EOF))), _AND(_LITERAL("/*"), _STAR(_CALL(BracketCommentChar)), _LITERAL("*/"))), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_OR(_AND(_LITERAL("//"), _STAR(_CALL(EOLCommentChar)), _OR(_CALL(EOL), _CALL(EOF))), _AND(_LITERAL("/*"), _STAR(_CALL(BracketCommentChar)), _LITERAL("*/"))), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 169 "IronMeta.ironmeta"
                { return new CommentNode(_IM_StartIndex, _IM_NextIndex); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_Comment_Body__Index_] = _disj_0_;
@@ -1264,11 +1261,11 @@ namespace IronMeta
 #line 174 "IronMeta.ironmeta"
                                    (System.Char.IsWhiteSpace(_IM_Result))
 #line default
-);}), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+);}), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 175 "IronMeta.ironmeta"
                                    { return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.WHITESPACE); }
 #line default
-}));
+}}));
                 }
 
                 CachedCombinators[_Whitespace_Body__Index_] = _disj_0_;
@@ -1301,11 +1298,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_OR(_LITERAL("\x0d\x0a"), _LITERAL('\x0a'), _AND(_LITERAL('\x0d'), _NOT(_LITERAL('\x0a'))), _LITERAL('\x0085'), _LITERAL('\x000c'), _LITERAL('\x2028'), _LITERAL('\x2029')), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_OR(_LITERAL("\x0d\x0a"), _LITERAL('\x0a'), _AND(_LITERAL('\x0d'), _NOT(_LITERAL('\x0a'))), _LITERAL('\x0085'), _LITERAL('\x000c'), _LITERAL('\x2028'), _LITERAL('\x2029')), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 178 "IronMeta.ironmeta"
                { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOL); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_EOL_Body__Index_] = _disj_0_;
@@ -1338,11 +1335,11 @@ namespace IronMeta
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_NOT(_ANY()), (_IM_Result_MI_) => { var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_NOT(_ANY()), (_IM_Result_MI_) => {{ var _IM_Result = new IronMetaMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 181 "IronMeta.ironmeta"
                { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOF); }
 #line default
-});
+}});
                 }
 
                 CachedCombinators[_EOF_Body__Index_] = _disj_0_;

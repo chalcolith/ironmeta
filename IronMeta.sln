@@ -5,10 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "IronMeta\IronMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Matcher", "IronMeta.Matcher\IronMeta.Matcher.csproj", "{B73467B0-F643-4738-BFB4-4F1F8CF8703C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Calc\Calc.csproj", "{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}"
-	ProjectSection(ProjectDependencies) = postProject
-		{03B94334-DB66-49B7-B311-9C583C7E8AD8} = {03B94334-DB66-49B7-B311-9C583C7E8AD8}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Samples\Calc\Calc.csproj", "{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
