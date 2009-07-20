@@ -1,0 +1,646 @@
+                                          MasterPlex QT Report By Analyte
+    Report Date: 12/9/2005                                                   Run Date: 02/11/2005
+    Report Time: 1:07:21 PM                                                  Run Time: 12:05:02 PM
+    Data File: Output.csv                                                    Hardware Serial No. : XXXX2112
+    Plate Name: 2005February11                                               Operator: 
+    MasterPlex QT Version: 2.0.7.103 adipokines.mlx                          Analyst: 
+                                                                                                  Background: 8.5
+                                                  Analyte Name: IL-6
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                       18                      8.08          pg/mL      57
+         2             <unnamed> (11850)                       17                      7.06          pg/mL      82
+         3             <unnamed> (11851)                       21                     11.10          pg/mL      69
+         4             <unnamed> (11852)                       18                      8.08          pg/mL      60
+         5             <unnamed> (11853)                       19                      9.09          pg/mL      73
+         6             <unnamed> (11854)                       20                     10.10          pg/mL      62
+         7             <unnamed> (11855)                       14                      3.94          pg/mL      56
+         8             <unnamed> (11856)                      417                    356.30          pg/mL      51
+         9             <unnamed> (11857)                       16                      6.03          pg/mL      93
+        10             <unnamed> (11858)                       17                      7.06          pg/mL      66
+        11             <unnamed> (11859)                       15                      4.99          pg/mL      93
+        12             <unnamed> (11860)                      9.5                  <12.2070          pg/mL      80
+        13             <unnamed> (11861)                       11                      0.65          pg/mL      56
+        14             <unnamed> (11862)                       17                      7.06          pg/mL      62
+        15             <unnamed> (11863)                       17                      7.06          pg/mL      68
+        16             <unnamed> (11864)                      444                    378.77          pg/mL      70
+        17             <unnamed> (11865)                       12                      1.78          pg/mL      59
+        18             <unnamed> (11866)                       18                      8.08          pg/mL      63
+        19             <unnamed> (11867)                       38                     27.64          pg/mL      72
+        20             <unnamed> (11868)                       23                     13.10          pg/mL      86
+        21             <unnamed> (11869)                       21                     11.10          pg/mL      73
+        22             <unnamed> (11870)                     13.5                      3.40          pg/mL      56
+        23             <unnamed> (11871)                       15                      4.99          pg/mL      53
+        24             <unnamed> (11872)                    417.5                    356.71          pg/mL      84
+        25             <unnamed> (11873)                     14.5                      4.46          pg/mL      64
+        26             <unnamed> (11874)                       16                      6.03          pg/mL      70
+        27             <unnamed> (11875)                       12                      1.78          pg/mL      57
+        28             <unnamed> (11876)                     23.5                     13.59          pg/mL      50
+        29             <unnamed> (11877)                       16                      6.03          pg/mL      89
+        30             <unnamed> (11878)                       15                      4.99          pg/mL      71
+        31             <unnamed> (11879)                       12                      1.78          pg/mL      56
+        32             <unnamed> (11880)                   3992.5                   3244.04          pg/mL      80
+        33             <unnamed> (11881)                       17                      7.06          pg/mL      55
+        34             <unnamed> (11882)                       16                      6.03          pg/mL      65
+        35             <unnamed> (11883)                       13                      2.87          pg/mL      50
+        36             <unnamed> (11884)                       12                      1.78          pg/mL      50
+        37             <unnamed> (11885)                       12                      1.78          pg/mL      61
+        38             <unnamed> (11886)                       16                      6.03          pg/mL      61
+     Output.csv                                    Page - 1 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        39             <unnamed> (11887)                       11                      0.65          pg/mL      68
+        40             <unnamed> (11888)                     3960                   3217.12          pg/mL      75
+        41             <unnamed> (11889)                     29.5                     19.47          pg/mL      58
+        42             <unnamed> (11890)                       24                     14.09          pg/mL      56
+        43             <unnamed> (11891)                       18                      8.08          pg/mL      53
+        44             <unnamed> (11892)                       52                     40.84          pg/mL      93
+        45             <unnamed> (11893)                       24                     14.09          pg/mL      85
+        46             <unnamed> (11894)                       19                      9.09          pg/mL      76
+        47             <unnamed> (11895)                       10                  <12.2070          pg/mL      54
+        48             <unnamed> (11896)                     4208                   3423.25          pg/mL      87
+        49             <unnamed> (11897)                       24                     14.09          pg/mL      73
+        50             <unnamed> (11898)                       34                     23.82          pg/mL      50
+        51             <unnamed> (11899)                     51.5                     40.37          pg/mL      70
+        52             <unnamed> (11900)                       37                     26.69          pg/mL      85
+        53             <unnamed> (11901)                     36.5                     26.21          pg/mL      56
+        54             <unnamed> (11902)                       48                     37.09          pg/mL      84
+        55             <unnamed> (11903)                       23                     13.10          pg/mL      58
+        56             <unnamed> (11904)                       12                      0.00          pg/mL      67
+        57             <unnamed> (11905)                     20.5                     10.60          pg/mL      74
+        58             <unnamed> (11906)                       32                     21.89          pg/mL      73
+        59             <unnamed> (11907)                       22                     12.10          pg/mL      59
+        60             <unnamed> (11908)                     17.5                      7.57          pg/mL      50
+        61             <unnamed> (11909)                    138.5                    118.88          pg/mL      74
+        62             <unnamed> (11910)                       21                     11.10          pg/mL      92
+        63             <unnamed> (11911)                       13                      2.87          pg/mL      69
+        64             <unnamed> (11912)                        8                  <12.2070          pg/mL      50
+        65             <unnamed> (11913)                       24                     14.09          pg/mL      69
+        66             <unnamed> (11914)                     28.5                     18.50          pg/mL      54
+        67             <unnamed> (11915)                     13.5                      3.40          pg/mL      60
+        68             <unnamed> (11916)                     12.5                      2.33          pg/mL      52
+        69             <unnamed> (11917)                       17                      7.06          pg/mL      82
+        70             <unnamed> (11918)                       23                     13.10          pg/mL      64
+        71             <unnamed> (11919)                       14                      3.94          pg/mL      52
+        72             <unnamed> (11920)                        9                  <12.2070          pg/mL      67
+        73             <unnamed> (11921)                       19                      9.09          pg/mL      70
+        74             <unnamed> (11922)                       18                      8.08          pg/mL      71
+        75             <unnamed> (11923)                     20.5                     10.60          pg/mL      62
+        76             <unnamed> (11924)                       21                     11.10          pg/mL      84
+        77             <unnamed> (11925)                       18                      8.08          pg/mL      81
+        78             <unnamed> (11926)                       20                     10.10          pg/mL      64
+        79             <unnamed> (11927)                        9                  <12.2070          pg/mL      70
+        80             <unnamed> (11928)                        8                  <12.2070          pg/mL      59
+        81             <unnamed> (11929)                    22097                  49430.79          pg/mL      53
+        82             <unnamed> (11930)                    13558                  13865.77          pg/mL      57
+        83             <unnamed> (11931)                     4010                   3258.55          pg/mL      53
+        84             <unnamed> (11932)                   1058.5                    879.22          pg/mL      88
+        85             <unnamed> (11933)                    247.5                    213.37          pg/mL      50
+        86             <unnamed> (11934)                       60                     48.27          pg/mL      71
+     Output.csv                                    Page - 2 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        87             <unnamed> (11935)                     20.5                     10.60          pg/mL      76
+        88             <unnamed> (11936)                        8                  <12.2070          pg/mL      60
+        89             <unnamed> (11937)                  22187.5                  50583.19          pg/mL      70
+        90             <unnamed> (11938)                    11799                  11256.53          pg/mL      67
+        91             <unnamed> (11939)                     3687                   2992.01          pg/mL      85
+        92             <unnamed> (11940)                      816                    683.57          pg/mL      50
+        93             <unnamed> (11941)                      201                    173.40          pg/mL      51
+        94             <unnamed> (11942)                     70.5                     57.93          pg/mL      82
+        95             <unnamed> (11943)                       18                      8.08          pg/mL      70
+        96             <unnamed> (11944)                      9.5                  <12.2070          pg/mL      50
+                                                                                                  Background: 2.5
+                                                Analyte Name: Insulin
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                     9957                  42978.46          pg/mL      91
+         2             <unnamed> (11850)                   7408.5                  26242.62          pg/mL      66
+         3             <unnamed> (11851)                    10824                  53549.46          pg/mL      83
+         4             <unnamed> (11852)                     9014                  35188.00          pg/mL      65
+         5             <unnamed> (11853)                   9740.5                  40934.86          pg/mL      90
+         6             <unnamed> (11854)                   8811.5                  33824.77          pg/mL      72
+         7             <unnamed> (11855)                     6771                  23543.81          pg/mL      54
+         8             <unnamed> (11856)                       44                   1423.75          pg/mL      69
+         9             <unnamed> (11857)                     7590                  27080.17          pg/mL      95
+        10             <unnamed> (11858)                     7921                  28701.44          pg/mL      89
+        11             <unnamed> (11859)                     9384                  37927.16          pg/mL     108
+        12             <unnamed> (11860)                   8641.5                  32744.49          pg/mL      80
+        13             <unnamed> (11861)                     7347                  25966.38          pg/mL      73
+        14             <unnamed> (11862)                     7786                  28024.68          pg/mL      55
+        15             <unnamed> (11863)                     9047                  35418.66          pg/mL      85
+        16             <unnamed> (11864)                       51                   1531.07          pg/mL      82
+        17             <unnamed> (11865)                     7190                  25277.53          pg/mL      84
+        18             <unnamed> (11866)                   4363.5                  15572.80          pg/mL      96
+        19             <unnamed> (11867)                     7932                  28757.58          pg/mL      60
+        20             <unnamed> (11868)                   7094.5                  24869.47          pg/mL     100
+        21             <unnamed> (11869)                     8432                  31485.51          pg/mL      73
+        22             <unnamed> (11870)                     6753                  23472.46          pg/mL      65
+        23             <unnamed> (11871)                     7185                  25255.96          pg/mL      55
+        24             <unnamed> (11872)                       62                   1682.62          pg/mL      67
+        25             <unnamed> (11873)                   7452.5                  26442.55          pg/mL      80
+        26             <unnamed> (11874)                     7985                  29030.23          pg/mL      88
+        27             <unnamed> (11875)                     8366                  31104.14          pg/mL      63
+        28             <unnamed> (11876)                     8263                  30522.64          pg/mL      69
+        29             <unnamed> (11877)                     7414                  26267.51          pg/mL     130
+        30             <unnamed> (11878)                   7949.5                  28847.21          pg/mL      84
+        31             <unnamed> (11879)                     8114                  29709.35          pg/mL      88
+        32             <unnamed> (11880)                   2503.5                  10557.08          pg/mL      92
+        33             <unnamed> (11881)                   9768.5                  41189.10          pg/mL      70
+     Output.csv                                    Page - 3 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        34             <unnamed> (11882)                    10476                  48750.97          pg/mL      86
+        35             <unnamed> (11883)                   8862.5                  34159.95          pg/mL      78
+        36             <unnamed> (11884)                     7967                  28937.23          pg/mL      63
+        37             <unnamed> (11885)                   8694.5                  33075.37          pg/mL      82
+        38             <unnamed> (11886)                     7734                  27769.83          pg/mL      84
+        39             <unnamed> (11887)                     8685                  33015.68          pg/mL      87
+        40             <unnamed> (11888)                     2555                  10693.04          pg/mL      78
+        41             <unnamed> (11889)                   8818.5                  33870.46          pg/mL      66
+        42             <unnamed> (11890)                     6479                  22415.05          pg/mL      67
+        43             <unnamed> (11891)                     6667                  23134.85          pg/mL      71
+        44             <unnamed> (11892)                     9460                  38535.09          pg/mL      89
+        45             <unnamed> (11893)                   9892.5                  42350.37          pg/mL      94
+        46             <unnamed> (11894)                    10400                  47814.47          pg/mL      78
+        47             <unnamed> (11895)                        5                  <12.2070          pg/mL      84
+        48             <unnamed> (11896)                     2930                  11681.17          pg/mL      96
+        49             <unnamed> (11897)                      702                   5274.74          pg/mL      67
+        50             <unnamed> (11898)                     1047                   6457.43          pg/mL      71
+        51             <unnamed> (11899)                     1936                   9040.12          pg/mL      77
+        52             <unnamed> (11900)                    805.5                   5648.94          pg/mL      88
+        53             <unnamed> (11901)                     1297                   7229.47          pg/mL      79
+        54             <unnamed> (11902)                     2812                  11370.26          pg/mL      81
+        55             <unnamed> (11903)                    184.5                   2800.09          pg/mL      58
+        56             <unnamed> (11904)                        3                      0.00          pg/mL      82
+        57             <unnamed> (11905)                     7035                  24619.23          pg/mL      91
+        58             <unnamed> (11906)                     2902                  11607.36          pg/mL      73
+        59             <unnamed> (11907)                   6621.5                  22958.39          pg/mL      86
+        60             <unnamed> (11908)                     7078                  24799.77          pg/mL      80
+        61             <unnamed> (11909)                     7813                  28158.26          pg/mL     111
+        62             <unnamed> (11910)                     6993                  24444.39          pg/mL     121
+        63             <unnamed> (11911)                     7167                  25178.51          pg/mL      74
+        64             <unnamed> (11912)                        3                  <12.2070          pg/mL      69
+        65             <unnamed> (11913)                   7776.5                  27977.88          pg/mL      84
+        66             <unnamed> (11914)                    10342                  47123.06          pg/mL      73
+        67             <unnamed> (11915)                     9585                  39572.82          pg/mL      88
+        68             <unnamed> (11916)                   8240.5                  30397.76          pg/mL      58
+        69             <unnamed> (11917)                   8779.5                  33617.15          pg/mL      94
+        70             <unnamed> (11918)                     8597                  32470.65          pg/mL      65
+        71             <unnamed> (11919)                     7983                  29019.88          pg/mL      85
+        72             <unnamed> (11920)                        2                  <12.2070          pg/mL      75
+        73             <unnamed> (11921)                   8305.5                  30760.60          pg/mL     108
+        74             <unnamed> (11922)                     9974                  43146.87          pg/mL      83
+        75             <unnamed> (11923)                     6965                  24328.64          pg/mL      85
+        76             <unnamed> (11924)                     8781                  33626.83          pg/mL      75
+        77             <unnamed> (11925)                     8737                  33344.52          pg/mL      97
+        78             <unnamed> (11926)                     6696                  23248.09          pg/mL      75
+        79             <unnamed> (11927)                      6.5                    270.33          pg/mL      70
+        80             <unnamed> (11928)                        2                  <12.2070          pg/mL      77
+        81             <unnamed> (11929)                    10972                  55893.33          pg/mL      60
+     Output.csv                                    Page - 4 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        82             <unnamed> (11930)                     3704                  13744.13          pg/mL      71
+        83             <unnamed> (11931)                    242.5                   3178.39          pg/mL      66
+        84             <unnamed> (11932)                       24                   1035.78          pg/mL      86
+        85             <unnamed> (11933)                        8                    426.26          pg/mL      57
+        86             <unnamed> (11934)                      3.5                  <12.2070          pg/mL     104
+        87             <unnamed> (11935)                        3                  <12.2070          pg/mL      60
+        88             <unnamed> (11936)                      2.5                  <12.2070          pg/mL      70
+        89             <unnamed> (11937)                    10174                  45225.04          pg/mL      91
+        90             <unnamed> (11938)                   2775.5                  11274.13          pg/mL      68
+        91             <unnamed> (11939)                      224                   3063.40          pg/mL      88
+        92             <unnamed> (11940)                       18                    873.52          pg/mL      76
+        93             <unnamed> (11941)                        5                  <12.2070          pg/mL      51
+        94             <unnamed> (11942)                        3                  <12.2070          pg/mL      95
+        95             <unnamed> (11943)                        2                  <12.2070          pg/mL      59
+        96             <unnamed> (11944)                        3                  <12.2070          pg/mL      78
+                                                Analyte Name: MCP-1                               Background: 2.2
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                        9                    158.90          pg/mL     120
+         2             <unnamed> (11850)                       10                    173.23          pg/mL     121
+         3             <unnamed> (11851)                       14                    222.65          pg/mL     102
+         4             <unnamed> (11852)                       12                    199.24          pg/mL      97
+         5             <unnamed> (11853)                       12                    199.24          pg/mL     127
+         6             <unnamed> (11854)                       14                    222.65          pg/mL      88
+         7             <unnamed> (11855)                        5                     84.08          pg/mL     122
+         8             <unnamed> (11856)                      218                   1140.81          pg/mL     110
+         9             <unnamed> (11857)                       10                    173.23          pg/mL     142
+        10             <unnamed> (11858)                        8                    143.38          pg/mL     132
+        11             <unnamed> (11859)                      9.5                    166.19          pg/mL     160
+        12             <unnamed> (11860)                        4                     53.88          pg/mL     123
+        13             <unnamed> (11861)                       10                    173.23          pg/mL     131
+        14             <unnamed> (11862)                       13                    211.22          pg/mL      97
+        15             <unnamed> (11863)                        9                    158.90          pg/mL     141
+        16             <unnamed> (11864)                      232                   1181.65          pg/mL     104
+        17             <unnamed> (11865)                        5                     84.08          pg/mL     103
+        18             <unnamed> (11866)                       11                    186.61          pg/mL     133
+        19             <unnamed> (11867)                       30                    364.66          pg/mL     114
+        20             <unnamed> (11868)                       16                    244.15          pg/mL     155
+        21             <unnamed> (11869)                       11                    186.61          pg/mL     119
+        22             <unnamed> (11870)                        4                     53.88          pg/mL      89
+        23             <unnamed> (11871)                        7                    126.30          pg/mL      68
+        24             <unnamed> (11872)                      238                   1198.83          pg/mL     155
+        25             <unnamed> (11873)                        7                    126.30          pg/mL     121
+        26             <unnamed> (11874)                       10                    173.23          pg/mL     125
+        27             <unnamed> (11875)                        8                    143.38          pg/mL     116
+        28             <unnamed> (11876)                        9                    158.90          pg/mL     118
+     Output.csv                                    Page - 5 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        29             <unnamed> (11877)                       11                    186.61          pg/mL     161
+        30             <unnamed> (11878)                        8                    143.38          pg/mL     123
+        31             <unnamed> (11879)                        6                    106.97          pg/mL     105
+        32             <unnamed> (11880)                   6033.5                  10775.98          pg/mL     154
+        33             <unnamed> (11881)                       14                    222.65          pg/mL     108
+        34             <unnamed> (11882)                       12                    199.24          pg/mL     121
+        35             <unnamed> (11883)                      5.5                     96.11          pg/mL     100
+        36             <unnamed> (11884)                        6                    106.97          pg/mL      98
+        37             <unnamed> (11885)                        6                    106.97          pg/mL     122
+        38             <unnamed> (11886)                        9                    158.90          pg/mL     105
+        39             <unnamed> (11887)                        5                     84.08          pg/mL     138
+        40             <unnamed> (11888)                     6093                  10897.38          pg/mL     144
+        41             <unnamed> (11889)                       15                    233.61          pg/mL     125
+        42             <unnamed> (11890)                       21                    291.99          pg/mL     112
+        43             <unnamed> (11891)                       16                    244.15          pg/mL     103
+        44             <unnamed> (11892)                       22                    300.79          pg/mL     162
+        45             <unnamed> (11893)                       28                    349.62          pg/mL     149
+        46             <unnamed> (11894)                       27                    341.88          pg/mL     127
+        47             <unnamed> (11895)                        2                  <12.2070          pg/mL     112
+        48             <unnamed> (11896)                   5846.5                  10402.77          pg/mL     128
+        49             <unnamed> (11897)                     16.5                    249.28          pg/mL     130
+        50             <unnamed> (11898)                       17                    254.32          pg/mL     103
+        51             <unnamed> (11899)                       18                    264.16          pg/mL     119
+        52             <unnamed> (11900)                       14                    222.65          pg/mL     165
+        53             <unnamed> (11901)                       13                    211.22          pg/mL     114
+        54             <unnamed> (11902)                       19                    273.70          pg/mL     135
+        55             <unnamed> (11903)                       11                    186.61          pg/mL      71
+        56             <unnamed> (11904)                        3                      0.00          pg/mL     131
+        57             <unnamed> (11905)                       18                    264.16          pg/mL     119
+        58             <unnamed> (11906)                       18                    264.16          pg/mL      91
+        59             <unnamed> (11907)                        9                    158.90          pg/mL     103
+        60             <unnamed> (11908)                       16                    244.15          pg/mL     100
+        61             <unnamed> (11909)                     35.5                    403.61          pg/mL     118
+        62             <unnamed> (11910)                       13                    211.22          pg/mL     177
+        63             <unnamed> (11911)                       10                    173.23          pg/mL     123
+        64             <unnamed> (11912)                        2                  <12.2070          pg/mL     113
+        65             <unnamed> (11913)                       17                    254.32          pg/mL     155
+        66             <unnamed> (11914)                       35                    400.20          pg/mL     111
+        67             <unnamed> (11915)                        7                    126.30          pg/mL      97
+        68             <unnamed> (11916)                      9.5                    166.19          pg/mL     106
+        69             <unnamed> (11917)                       11                    186.61          pg/mL     114
+        70             <unnamed> (11918)                       21                    291.99          pg/mL      81
+        71             <unnamed> (11919)                        9                    158.90          pg/mL     125
+        72             <unnamed> (11920)                        2                  <12.2070          pg/mL     107
+        73             <unnamed> (11921)                       11                    186.61          pg/mL     138
+        74             <unnamed> (11922)                       12                    199.24          pg/mL     141
+        75             <unnamed> (11923)                       17                    254.32          pg/mL     103
+        76             <unnamed> (11924)                     12.5                    205.30          pg/mL     124
+     Output.csv                                    Page - 6 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        77             <unnamed> (11925)                       15                    233.61          pg/mL     162
+        78             <unnamed> (11926)                        9                    158.90          pg/mL     138
+        79             <unnamed> (11927)                        2                  <12.2070          pg/mL     107
+        80             <unnamed> (11928)                        2                  <12.2070          pg/mL     129
+        81             <unnamed> (11929)                    11507                  45999.87          pg/mL      89
+        82             <unnamed> (11930)                     7140                  13289.70          pg/mL     111
+        83             <unnamed> (11931)                     1307                   3256.91          pg/mL      96
+        84             <unnamed> (11932)                      120                    814.53          pg/mL     123
+        85             <unnamed> (11933)                       13                    211.22          pg/mL     113
+        86             <unnamed> (11934)                        3                  <12.2070          pg/mL     139
+        87             <unnamed> (11935)                        2                  <12.2070          pg/mL     121
+        88             <unnamed> (11936)                        3                  <12.2070          pg/mL     111
+        89             <unnamed> (11937)                    11778                  54933.57          pg/mL     125
+        90             <unnamed> (11938)                   6499.5                  11764.52          pg/mL     108
+        91             <unnamed> (11939)                     1140                   2990.94          pg/mL     121
+        92             <unnamed> (11940)                      102                    742.99          pg/mL     125
+        93             <unnamed> (11941)                     15.5                    238.93          pg/mL      88
+        94             <unnamed> (11942)                        3                  <12.2070          pg/mL     152
+        95             <unnamed> (11943)                        2                  <12.2070          pg/mL     107
+        96             <unnamed> (11944)                        2                  <12.2070          pg/mL     103
+                                                 Analyte Name: PAI-1                               Background: 30
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                     2836                   9886.42          pg/mL      85
+         2             <unnamed> (11850)                     2553                   8701.37          pg/mL      87
+         3             <unnamed> (11851)                    439.5                   1702.24          pg/mL     106
+         4             <unnamed> (11852)                   2386.5                   8051.44          pg/mL      82
+         5             <unnamed> (11853)                     2393                   8076.23          pg/mL      91
+         6             <unnamed> (11854)                     1800                   5971.80          pg/mL      89
+         7             <unnamed> (11855)                      580                   2156.04          pg/mL      79
+         8             <unnamed> (11856)                      268                   1110.38          pg/mL      95
+         9             <unnamed> (11857)                   2208.5                   7389.14          pg/mL     116
+        10             <unnamed> (11858)                     2679                   9215.46          pg/mL     105
+        11             <unnamed> (11859)                     2255                   7559.18          pg/mL     130
+        12             <unnamed> (11860)                   2121.5                   7076.25          pg/mL      96
+        13             <unnamed> (11861)                     1558                   5183.90          pg/mL      96
+        14             <unnamed> (11862)                   1877.5                   6231.33          pg/mL      70
+        15             <unnamed> (11863)                    851.5                   2998.64          pg/mL     132
+        16             <unnamed> (11864)                    311.5                   1266.37          pg/mL      72
+        17             <unnamed> (11865)                     2612                   8939.56          pg/mL      81
+        18             <unnamed> (11866)                     2700                   9303.18          pg/mL      84
+        19             <unnamed> (11867)                       88                    368.24          pg/mL      80
+        20             <unnamed> (11868)                     2195                   7340.15          pg/mL     141
+        21             <unnamed> (11869)                     48.5                    144.32          pg/mL      94
+        22             <unnamed> (11870)                     1017                   3504.22          pg/mL      84
+        23             <unnamed> (11871)                   1707.5                   5666.88          pg/mL      72
+     Output.csv                                    Page - 7 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        24             <unnamed> (11872)                      306                   1246.92          pg/mL     115
+        25             <unnamed> (11873)                     2347                   7901.73          pg/mL     103
+        26             <unnamed> (11874)                     2996                  10609.39          pg/mL      95
+        27             <unnamed> (11875)                     1916                   6361.73          pg/mL      92
+        28             <unnamed> (11876)                     2400                   8102.98          pg/mL      85
+        29             <unnamed> (11877)                   3011.5                  10681.73          pg/mL     122
+        30             <unnamed> (11878)                     2581                   8813.86          pg/mL     121
+        31             <unnamed> (11879)                      677                   2460.56          pg/mL      98
+        32             <unnamed> (11880)                     1703                   5652.17          pg/mL      85
+        33             <unnamed> (11881)                   2178.5                   7280.50          pg/mL      76
+        34             <unnamed> (11882)                     2406                   8125.95          pg/mL      79
+        35             <unnamed> (11883)                     2493                   8463.50          pg/mL      76
+        36             <unnamed> (11884)                     2117                   7060.25          pg/mL      59
+        37             <unnamed> (11885)                     2245                   7522.44          pg/mL     103
+        38             <unnamed> (11886)                   1685.5                   5595.08          pg/mL      98
+        39             <unnamed> (11887)                      749                   2683.68          pg/mL     120
+        40             <unnamed> (11888)                     1765                   5855.83          pg/mL     113
+        41             <unnamed> (11889)                     3172                  11457.16          pg/mL      92
+        42             <unnamed> (11890)                     3639                  14045.90          pg/mL      86
+        43             <unnamed> (11891)                      676                   2457.44          pg/mL      83
+        44             <unnamed> (11892)                   2522.5                   8579.91          pg/mL      96
+        45             <unnamed> (11893)                   2545.5                   8671.40          pg/mL     122
+        46             <unnamed> (11894)                     2051                   6827.42          pg/mL     113
+        47             <unnamed> (11895)                       48                    140.94          pg/mL      85
+        48             <unnamed> (11896)                     1778                   5898.82          pg/mL     103
+        49             <unnamed> (11897)                     4389                  19868.22          pg/mL     104
+        50             <unnamed> (11898)                   2605.5                   8913.10          pg/mL      70
+        51             <unnamed> (11899)                     3587                  13728.53          pg/mL      95
+        52             <unnamed> (11900)                   1773.5                   5883.93          pg/mL      94
+        53             <unnamed> (11901)                     4579                  21889.25          pg/mL      98
+        54             <unnamed> (11902)                     4993                  27691.70          pg/mL     121
+        55             <unnamed> (11903)                     3504                  13238.68          pg/mL      68
+        56             <unnamed> (11904)                       29                      0.00          pg/mL      83
+        57             <unnamed> (11905)                     4149                  17695.17          pg/mL     102
+        58             <unnamed> (11906)                     4016                  16634.44          pg/mL      79
+        59             <unnamed> (11907)                     1260                   4249.36          pg/mL      93
+        60             <unnamed> (11908)                   5150.5                  30669.85          pg/mL      82
+        61             <unnamed> (11909)                     1299                   4370.00          pg/mL      92
+        62             <unnamed> (11910)                     3684                  14327.44          pg/mL      97
+        63             <unnamed> (11911)                   4890.5                  26024.00          pg/mL     106
+        64             <unnamed> (11912)                       30                  <12.2070          pg/mL     102
+        65             <unnamed> (11913)                     3629                  13984.21          pg/mL     105
+        66             <unnamed> (11914)                   3651.5                  14123.45          pg/mL     102
+        67             <unnamed> (11915)                     3557                  13549.17          pg/mL      84
+        68             <unnamed> (11916)                     3304                  12134.28          pg/mL      65
+        69             <unnamed> (11917)                     4495                  20957.67          pg/mL      88
+        70             <unnamed> (11918)                   4230.5                  18392.43          pg/mL      88
+        71             <unnamed> (11919)                     1768                   5865.75          pg/mL      85
+     Output.csv                                    Page - 8 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        72             <unnamed> (11920)                       31                  <12.2070          pg/mL      89
+        73             <unnamed> (11921)                     4676                  23051.15          pg/mL      89
+        74             <unnamed> (11922)                     2946                  10378.88          pg/mL     103
+        75             <unnamed> (11923)                     2792                   9694.75          pg/mL      69
+        76             <unnamed> (11924)                     4820                  24977.28          pg/mL      99
+        77             <unnamed> (11925)                     2861                   9996.64          pg/mL     101
+        78             <unnamed> (11926)                     2147                   7167.28          pg/mL      73
+        79             <unnamed> (11927)                       31                  <12.2070          pg/mL      99
+        80             <unnamed> (11928)                       31                  <12.2070          pg/mL     106
+        81             <unnamed> (11929)                     5735                  50837.47          pg/mL      93
+        82             <unnamed> (11930)                   3470.5                  13046.49          pg/mL     104
+        83             <unnamed> (11931)                      913                   3186.71          pg/mL      92
+        84             <unnamed> (11932)                    198.5                    848.16          pg/mL     116
+        85             <unnamed> (11933)                       65                    245.78          pg/mL      91
+        86             <unnamed> (11934)                       36                     47.14          pg/mL     104
+        87             <unnamed> (11935)                       29                  <12.2070          pg/mL      89
+        88             <unnamed> (11936)                       28                  <12.2070          pg/mL     103
+        89             <unnamed> (11937)                     5706                  49192.50          pg/mL      96
+        90             <unnamed> (11938)                     3274                  11977.02          pg/mL      79
+        91             <unnamed> (11939)                      873                   3064.44          pg/mL     111
+        92             <unnamed> (11940)                      162                    701.31          pg/mL      94
+        93             <unnamed> (11941)                       55                    186.36          pg/mL      75
+        94             <unnamed> (11942)                     37.5                     61.01          pg/mL     114
+        95             <unnamed> (11943)                       31                  <12.2070          pg/mL      76
+        96             <unnamed> (11944)                       30                  <12.2070          pg/mL     111
+                                               Analyte Name: Resistin                            Background: 19.6
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                   6124.5                   7672.92          pg/mL      50
+         2             <unnamed> (11850)                     5683                   6998.26          pg/mL      50
+         3             <unnamed> (11851)                   7045.5                   9173.20          pg/mL      50
+         4             <unnamed> (11852)                   5399.5                   6578.81          pg/mL      50
+         5             <unnamed> (11853)                   4509.5                   5325.58          pg/mL      50
+         6             <unnamed> (11854)                     6278                   7913.94          pg/mL      50
+         7             <unnamed> (11855)                   5525.5                   6763.95          pg/mL      50
+         8             <unnamed> (11856)                      472                    505.70          pg/mL      50
+         9             <unnamed> (11857)                   5433.5                   6628.57          pg/mL      50
+        10             <unnamed> (11858)                     5292                   6422.43          pg/mL      50
+        11             <unnamed> (11859)                     5932                   7375.45          pg/mL      50
+        12             <unnamed> (11860)                   6726.5                   8638.43          pg/mL      50
+        13             <unnamed> (11861)                   6066.5                   7582.74          pg/mL      50
+        14             <unnamed> (11862)                     5950                   7403.04          pg/mL      50
+        15             <unnamed> (11863)                     5685                   7001.25          pg/mL      50
+        16             <unnamed> (11864)                      469                    502.40          pg/mL      50
+        17             <unnamed> (11865)                     5009                   6017.54          pg/mL      50
+        18             <unnamed> (11866)                     6477                   8231.59          pg/mL      50
+     Output.csv                                    Page - 9 of 13         2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        19             <unnamed> (11867)                     5455                   6660.11          pg/mL      50
+        20             <unnamed> (11868)                   6205.5                   7799.67          pg/mL      50
+        21             <unnamed> (11869)                     4491                   5300.48          pg/mL      50
+        22             <unnamed> (11870)                   5847.5                   7246.50          pg/mL      50
+        23             <unnamed> (11871)                   5324.5                   6469.56          pg/mL      50
+        24             <unnamed> (11872)                    517.5                    555.71          pg/mL      50
+        25             <unnamed> (11873)                   6088.5                   7616.89          pg/mL      50
+        26             <unnamed> (11874)                   5899.5                   7325.73          pg/mL      50
+        27             <unnamed> (11875)                   7139.5                   9334.03          pg/mL      50
+        28             <unnamed> (11876)                     5715                   7046.26          pg/mL      60
+        29             <unnamed> (11877)                   6502.5                   8272.72          pg/mL      50
+        30             <unnamed> (11878)                     5931                   7373.91          pg/mL      50
+        31             <unnamed> (11879)                     7566                  10083.34          pg/mL      50
+        32             <unnamed> (11880)                   3866.5                   4473.95          pg/mL      50
+        33             <unnamed> (11881)                     5733                   7073.33          pg/mL      50
+        34             <unnamed> (11882)                   5464.5                   6674.06          pg/mL      50
+        35             <unnamed> (11883)                     6083                   7608.35          pg/mL      52
+        36             <unnamed> (11884)                     6481                   8238.03          pg/mL      65
+        37             <unnamed> (11885)                     5578                   6841.69          pg/mL      50
+        38             <unnamed> (11886)                   6167.5                   7740.09          pg/mL      50
+        39             <unnamed> (11887)                   6943.5                   9000.38          pg/mL      50
+        40             <unnamed> (11888)                   4488.5                   5297.09          pg/mL      50
+        41             <unnamed> (11889)                     6461                   8205.82          pg/mL      50
+        42             <unnamed> (11890)                     6324                   7986.84          pg/mL      50
+        43             <unnamed> (11891)                     8581                  12008.90          pg/mL      50
+        44             <unnamed> (11892)                   4886.5                   5845.22          pg/mL      50
+        45             <unnamed> (11893)                   6270.5                   7902.08          pg/mL      50
+        46             <unnamed> (11894)                   7630.5                  10199.56          pg/mL      50
+        47             <unnamed> (11895)                       31                      8.38          pg/mL      50
+        48             <unnamed> (11896)                     3887                   4500.46          pg/mL      50
+        49             <unnamed> (11897)                   8232.5                  11323.56          pg/mL      50
+        50             <unnamed> (11898)                    11328                  18564.13          pg/mL      51
+        51             <unnamed> (11899)                   8038.5                  10953.35          pg/mL      50
+        52             <unnamed> (11900)                   7750.5                  10417.88          pg/mL      50
+        53             <unnamed> (11901)                     8093                  11056.56          pg/mL      50
+        54             <unnamed> (11902)                     7001                   9097.59          pg/mL      50
+        55             <unnamed> (11903)                     7736                  10391.35          pg/mL      50
+        56             <unnamed> (11904)                       27                      0.00          pg/mL      50
+        57             <unnamed> (11905)                   7104.5                   9273.97          pg/mL      50
+        58             <unnamed> (11906)                    10021                  15156.99          pg/mL      50
+        59             <unnamed> (11907)                   6875.5                   8886.13          pg/mL      50
+        60             <unnamed> (11908)                     7321                   9648.92          pg/mL      51
+        61             <unnamed> (11909)                   6993.5                   9084.88          pg/mL      50
+        62             <unnamed> (11910)                     7020                   9129.83          pg/mL      50
+        63             <unnamed> (11911)                   7193.5                   9427.11          pg/mL      50
+        64             <unnamed> (11912)                       20                  <12.2070          pg/mL      51
+        65             <unnamed> (11913)                   7332.5                   9669.07          pg/mL      50
+        66             <unnamed> (11914)                     8921                  12704.14          pg/mL      50
+     Output.csv                                    Page - 10 of 13        2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        67             <unnamed> (11915)                     8060                  10993.99          pg/mL      50
+        68             <unnamed> (11916)                     6300                   7948.76          pg/mL      50
+        69             <unnamed> (11917)                     8330                  11512.62          pg/mL      50
+        70             <unnamed> (11918)                   6846.5                   8837.64          pg/mL      50
+        71             <unnamed> (11919)                     8028                  10933.53          pg/mL      50
+        72             <unnamed> (11920)                       23                  <12.2070          pg/mL      50
+        73             <unnamed> (11921)                     8419                  11686.99          pg/mL      50
+        74             <unnamed> (11922)                     6338                   8009.08          pg/mL      50
+        75             <unnamed> (11923)                   8415.5                  11680.10          pg/mL      50
+        76             <unnamed> (11924)                   6832.5                   8814.28          pg/mL      50
+        77             <unnamed> (11925)                   6756.5                   8688.02          pg/mL      50
+        78             <unnamed> (11926)                     6575                   8390.23          pg/mL      50
+        79             <unnamed> (11927)                     41.5                     21.43          pg/mL      50
+        80             <unnamed> (11928)                       18                  <12.2070          pg/mL      50
+        81             <unnamed> (11929)                  17198.5                  48641.55          pg/mL      50
+        82             <unnamed> (11930)                   9196.5                  13288.06          pg/mL      50
+        83             <unnamed> (11931)                   2752.5                   3088.81          pg/mL      50
+        84             <unnamed> (11932)                    765.5                    827.80          pg/mL      50
+        85             <unnamed> (11933)                    208.5                    213.75          pg/mL      60
+        86             <unnamed> (11934)                     73.5                     59.64          pg/mL      50
+        87             <unnamed> (11935)                       31                      8.38          pg/mL      50
+        88             <unnamed> (11936)                       20                  <12.2070          pg/mL      50
+        89             <unnamed> (11937)                    17481                  51417.75          pg/mL      50
+        90             <unnamed> (11938)                   8448.5                  11745.18          pg/mL      50
+        91             <unnamed> (11939)                   2813.5                   3162.02          pg/mL      50
+        92             <unnamed> (11940)                      678                    731.82          pg/mL      62
+        93             <unnamed> (11941)                      179                    180.56          pg/mL      50
+        94             <unnamed> (11942)                     59.5                     43.10          pg/mL      50
+        95             <unnamed> (11943)                     31.5                      9.02          pg/mL      50
+        96             <unnamed> (11944)                       17                  <12.2070          pg/mL      52
+                                                Analyte Name: TNFa                                Background: 6.1
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+         1             <unnamed> (11849)                       17                  <12.2070          pg/mL     101
+         2             <unnamed> (11850)                       16                  <12.2070          pg/mL     102
+         3             <unnamed> (11851)                       17                  <12.2070          pg/mL     108
+         4             <unnamed> (11852)                       17                  <12.2070          pg/mL      66
+         5             <unnamed> (11853)                       18                  <12.2070          pg/mL     122
+         6             <unnamed> (11854)                       18                  <12.2070          pg/mL      85
+         7             <unnamed> (11855)                     14.5                  <12.2070          pg/mL      90
+         8             <unnamed> (11856)                      963                    228.93          pg/mL      83
+         9             <unnamed> (11857)                       16                  <12.2070          pg/mL     133
+        10             <unnamed> (11858)                       14                  <12.2070          pg/mL     128
+        11             <unnamed> (11859)                       16                  <12.2070          pg/mL     127
+        12             <unnamed> (11860)                       14                  <12.2070          pg/mL     106
+        13             <unnamed> (11861)                       18                  <12.2070          pg/mL      85
+     Output.csv                                    Page - 11 of 13        2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        14             <unnamed> (11862)                       18                  <12.2070          pg/mL      63
+        15             <unnamed> (11863)                       17                  <12.2070          pg/mL     123
+        16             <unnamed> (11864)                     1012                    237.49          pg/mL      92
+        17             <unnamed> (11865)                       12                  <12.2070          pg/mL      87
+        18             <unnamed> (11866)                       17                  <12.2070          pg/mL     119
+        19             <unnamed> (11867)                       37                  <12.2070          pg/mL      82
+        20             <unnamed> (11868)                       22                  <12.2070          pg/mL     131
+        21             <unnamed> (11869)                       18                  <12.2070          pg/mL      94
+        22             <unnamed> (11870)                       14                  <12.2070          pg/mL     101
+        23             <unnamed> (11871)                       12                  <12.2070          pg/mL      62
+        24             <unnamed> (11872)                      973                    230.69          pg/mL     102
+        25             <unnamed> (11873)                       14                  <12.2070          pg/mL     104
+        26             <unnamed> (11874)                       16                  <12.2070          pg/mL      89
+        27             <unnamed> (11875)                       15                  <12.2070          pg/mL      90
+        28             <unnamed> (11876)                       14                  <12.2070          pg/mL      95
+        29             <unnamed> (11877)                       16                  <12.2070          pg/mL     125
+        30             <unnamed> (11878)                       15                  <12.2070          pg/mL     116
+        31             <unnamed> (11879)                       15                  <12.2070          pg/mL      95
+        32             <unnamed> (11880)                     8731                   1808.36          pg/mL     119
+        33             <unnamed> (11881)                       19                  <12.2070          pg/mL      94
+        34             <unnamed> (11882)                       18                  <12.2070          pg/mL      98
+        35             <unnamed> (11883)                       13                  <12.2070          pg/mL      77
+        36             <unnamed> (11884)                       14                  <12.2070          pg/mL     101
+        37             <unnamed> (11885)                     10.5                  <12.2070          pg/mL      90
+        38             <unnamed> (11886)                       17                  <12.2070          pg/mL      99
+        39             <unnamed> (11887)                       14                  <12.2070          pg/mL      94
+        40             <unnamed> (11888)                   9456.5                   2092.77          pg/mL     112
+        41             <unnamed> (11889)                       17                  <12.2070          pg/mL      99
+        42             <unnamed> (11890)                       21                  <12.2070          pg/mL      89
+        43             <unnamed> (11891)                       13                  <12.2070          pg/mL      80
+        44             <unnamed> (11892)                       15                  <12.2070          pg/mL     111
+        45             <unnamed> (11893)                       16                  <12.2070          pg/mL     102
+        46             <unnamed> (11894)                       21                  <12.2070          pg/mL      88
+        47             <unnamed> (11895)                        5                  <12.2070          pg/mL      91
+        48             <unnamed> (11896)                     9725                   2214.64          pg/mL      75
+        49             <unnamed> (11897)                       18                  <12.2070          pg/mL     101
+        50             <unnamed> (11898)                       20                  <12.2070          pg/mL      85
+        51             <unnamed> (11899)                       17                  <12.2070          pg/mL      88
+        52             <unnamed> (11900)                       23                  <12.2070          pg/mL     131
+        53             <unnamed> (11901)                       20                  <12.2070          pg/mL     111
+        54             <unnamed> (11902)                       23                  <12.2070          pg/mL     125
+        55             <unnamed> (11903)                       21                  <12.2070          pg/mL      71
+        56             <unnamed> (11904)                       11                      0.00          pg/mL     101
+        57             <unnamed> (11905)                       17                  <12.2070          pg/mL     104
+        58             <unnamed> (11906)                       24                  <12.2070          pg/mL      88
+        59             <unnamed> (11907)                       13                  <12.2070          pg/mL      76
+        60             <unnamed> (11908)                       20                  <12.2070          pg/mL      89
+        61             <unnamed> (11909)                       26                  <12.2070          pg/mL     100
+     Output.csv                                    Page - 12 of 13        2005February11 quiling1_002 adipokines.mlx
+
+    12/9/2005                                    Report By Analytes                                       1:07:21 PM
+       Well                  Sample Name                      MFI             Concentration           Unit   Count
+        62             <unnamed> (11910)                       31                  <12.2070          pg/mL     128
+        63             <unnamed> (11911)                       15                  <12.2070          pg/mL     102
+        64             <unnamed> (11912)                        6                  <12.2070          pg/mL      78
+        65             <unnamed> (11913)                       24                  <12.2070          pg/mL     105
+        66             <unnamed> (11914)                       22                  <12.2070          pg/mL      73
+        67             <unnamed> (11915)                       14                  <12.2070          pg/mL      95
+        68             <unnamed> (11916)                       13                  <12.2070          pg/mL      75
+        69             <unnamed> (11917)                       17                  <12.2070          pg/mL      88
+        70             <unnamed> (11918)                       25                  <12.2070          pg/mL      75
+        71             <unnamed> (11919)                       18                  <12.2070          pg/mL      89
+        72             <unnamed> (11920)                        6                  <12.2070          pg/mL      87
+        73             <unnamed> (11921)                       17                  <12.2070          pg/mL      97
+        74             <unnamed> (11922)                       19                  <12.2070          pg/mL      90
+        75             <unnamed> (11923)                       19                  <12.2070          pg/mL      97
+        76             <unnamed> (11924)                       17                  <12.2070          pg/mL     113
+        77             <unnamed> (11925)                       17                  <12.2070          pg/mL     103
+        78             <unnamed> (11926)                       16                  <12.2070          pg/mL      97
+        79             <unnamed> (11927)                        5                  <12.2070          pg/mL     105
+        80             <unnamed> (11928)                      6.5                  <12.2070          pg/mL     106
+        81             <unnamed> (11929)                    14058                  20094.72          pg/mL      87
+        82             <unnamed> (11930)                    13429                   8286.07          pg/mL     109
+        83             <unnamed> (11931)                    11139                   3100.55          pg/mL      87
+        84             <unnamed> (11932)                     4518                    800.87          pg/mL      93
+        85             <unnamed> (11933)                      886                    215.28          pg/mL      83
+        86             <unnamed> (11934)                      134                     48.53          pg/mL     117
+        87             <unnamed> (11935)                       31                  <12.2070          pg/mL      97
+        88             <unnamed> (11936)                        6                  <12.2070          pg/mL      94
+        89             <unnamed> (11937)                    14650                >5000.0000          pg/mL     114
+        90             <unnamed> (11938)                  13873.5                  13635.13          pg/mL     116
+        91             <unnamed> (11939)                    11333                   3271.46          pg/mL     114
+        92             <unnamed> (11940)                     4203                    747.15          pg/mL     107
+        93             <unnamed> (11941)                    769.5                    194.05          pg/mL      66
+        94             <unnamed> (11942)                      126                     45.74          pg/mL     113
+        95             <unnamed> (11943)                       25                  <12.2070          pg/mL      89
+        96             <unnamed> (11944)                        6                  <12.2070          pg/mL     105
+     Output.csv                                    Page - 13 of 13        2005February11 quiling1_002 adipokines.mlx
+

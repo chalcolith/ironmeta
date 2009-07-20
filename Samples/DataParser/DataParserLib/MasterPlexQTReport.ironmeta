@@ -9,9 +9,10 @@ ironMeta MasterPlexQTReport<char, XmlNode> : Common.CommonMatcher
 	
 	Report = 
 		NewXmlDocument:xmlDoc 
-		WS "MasterPlex QT Report By Analyte" WS 
+		WSL "MasterPlex QT Report By Analyte" WSL 
 		Headers(xmlDoc):readout 
-		Test(readout) EOF
+		Test(readout)+ 
+		EOF
 		-> { return xmlDoc; };
 	
 	Headers :xmlDoc = 
@@ -20,25 +21,32 @@ ironMeta MasterPlexQTReport<char, XmlNode> : Common.CommonMatcher
 		Header("Run Date", "runDate", Date, readout)               
 		Header("Report Time", "reportTime", Time, readout)         
 		Header("Run Time", "runTime", Time, readout)               
-		Header("Data File", "dataFile", Line, readout)             
-		Header("Hardware Serial No.", "serialNo", Line, readout)   
-		Header("Plate Name", "plateName", Line, readout)           
-		Header("Operator", "operator", Operator, readout)              
-		Header("Version", "version", Line, readout)  
-		Header("Analyst", "analyst", Line, readout)                
-		Header("Background", "background", Line, readout)
+		Header("Data File", "dataFile", Token, readout)
+		Header("Hardware Serial No.", "serialNo", Token, readout)   
+		Header("Plate Name", "plateName", Token, readout)           
+		Header("Operator", "operator", Token, readout)              
+		Header("MasterPlex QT Version", "version", Version, readout)  
+		Header("Analyst", "analyst", Token, readout)                
 		-> { return readout; };
-			
+	
+	Version = Digit+ ("." Digit+)* WS Token;
+	
 	Test :readout = 
 		NewXmlElement(readout, "test"):test 
-		Header("Analyte Name", "name", Line, test)
-		DataHeading
-		Measurement(test)+;
+		(AnalyteHeader(test) BackgroundHeader(test) | BackgroundHeader(test) AnalyteHeader(test))
+		DataHeading 
+		(Measurement(test) (PageBreak PageHeader?)?)+;
+		
+	AnalyteHeader :test = Header("Analyte Name", "name", Token, test);
+	BackgroundHeader :test = Header("Background", "background", Token, test);
 	
-	DataHeading = "Well" WS "Sample Name" WS "MFI" WS "Concentration" WS "Unit" WS "Count" WS;
+	DataHeading = "Well" WS "Sample Name" WS "MFI" WS "Concentration" WS "Unit" WS "Count" WSL;
 
-	Measurement :test = Number:well WS SampleName:sampleName WS Number:mfi WS Number:concentration WS Token:unit WS Number:count WS
+	Measurement :test = 
+		Token:well WS SampleName:sampleName WS Token:mfi WS Token:concentration WS Token:unit WS Token:count WSL
 		-> {
+				//Console.WriteLine("Measurement {0}", _IM_GetText(well));
+		
 				XmlElement elem = (XmlElement)test;
 				XmlElement row = elem.OwnerDocument.CreateElement("measurement");
 				elem.AppendChild(row);
@@ -51,6 +59,8 @@ ironMeta MasterPlexQTReport<char, XmlNode> : Common.CommonMatcher
 				row.SetAttribute("count", _IM_GetText(count));
 			};
 
-	Operator = (~"Version" .)+;
+	PageBreak = Token WS "Page" WS "-" WS Number WS "of" WS Number WS RestOfLine WSL;
+	PageHeader = Date WS "Report By Analytes" WS Time WSL DataHeading;
+
 	SampleName = Token ( WS "(" Number ")" )?;	
 }

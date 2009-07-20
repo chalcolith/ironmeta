@@ -1,4 +1,4 @@
-// IronMeta Generated Common: 18/07/2009 2:45:04 AM UTC
+// IronMeta Generated Common: 7/20/2009 9:22:09 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -144,9 +144,17 @@ namespace Common
                 var rule = new CommonMatcherItem("rule");
                 var element = new CommonMatcherItem("element");
                 var d = new CommonMatcherItem("d");
-                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), name), _VAR(_ANY(), att), _VAR(_ANY(), rule), _VAR(_ANY(), element)), _args, _ACTION(_AND(_REF(name, this), _CALL(WS), _LITERAL(":"), _CALL(WS), _VAR(_REF(rule, this), d), _CALL(WS)), (_IM_Result_MI_) => {{ 
+                var c = new CommonMatcherItem("c");
+                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), name), _VAR(_ANY(), att), _VAR(_ANY(), rule), _VAR(_ANY(), element)), _args, _ACTION(_AND(_REF(name, this), _CALL(WS), _LITERAL(":"), _CALL(WS), _OR(_AND(_VAR(_REF(rule, this), d), _CALL(WSL)), _AND(_STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+#line 29 "Common.ironMeta"
+                                                                       (c == '\n' && c == '\r' && c == '\f')
+#line default
+);})), _CALL(WSL)))), (_IM_Result_MI_) => {{ 
 #line 30 "Common.ironMeta"
-     { ((XmlElement)element).SetAttribute(_IM_GetText(att), _IM_GetText(d)); }
+     { 
+				//Console.WriteLine("header: {0}: {2}", _IM_GetText(name), _IM_GetText(att), _IM_GetText(d));
+				((XmlElement)element).SetAttribute(_IM_GetText(att), _IM_GetText(d)); 
+			}
 #line default
 } return default(XmlNode);}));
             }
@@ -167,8 +175,12 @@ namespace Common
 
             Combinator _disj_0_ = null;
             {
-                var Whitespace = new CommonMatcherItem("Whitespace");
-                _disj_0_ = _PLUS(_AND(_NOT(_REF(Whitespace, this)), _ANY()));
+                var c = new CommonMatcherItem("c");
+                _disj_0_ = _OR(_PLUS(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+#line 35 "Common.ironMeta"
+               (!char.IsWhiteSpace(c))
+#line default
+);})), _FAIL("expected Token"));
             }
 
             _Token_Body_ = _disj_0_;
@@ -181,19 +193,23 @@ namespace Common
             }
         }
 
-        protected virtual IEnumerable<MatchItem> Line(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        protected virtual IEnumerable<MatchItem> RestOfLine(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
-            Combinator _Line_Body_ = null;
+            Combinator _RestOfLine_Body_ = null;
 
             Combinator _disj_0_ = null;
             {
-                var EOL = new CommonMatcherItem("EOL");
-                _disj_0_ = _PLUS(_AND(_NOT(_REF(EOL, this)), _ANY()));
+                var c = new CommonMatcherItem("c");
+                _disj_0_ = _STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+#line 36 "Common.ironMeta"
+                    (c != '\n' && c != '\r' && c != '\f')
+#line default
+);}));
             }
 
-            _Line_Body_ = _disj_0_;
+            _RestOfLine_Body_ = _disj_0_;
 
-            foreach (var _res_ in _Line_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            foreach (var _res_ in _RestOfLine_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 
@@ -217,7 +233,7 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _CALL(Digit), _QUES(_AND(_CALL(Digit), _CALL(Digit))));
+                    _disj_0_ = _OR(_AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _CALL(Digit), _QUES(_AND(_CALL(Digit), _CALL(Digit)))), _FAIL("expected a date value"));
                 }
 
                 CachedCombinators[_Date_Body__Index_] = _disj_0_;
@@ -250,7 +266,7 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _CALL(WS), _QUES(_OR(_LITERAL("AM"), _LITERAL("PM"))));
+                    _disj_0_ = _OR(_AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _CALL(WS), _QUES(_OR(_LITERAL("AM"), _LITERAL("PM")))), _FAIL("expected a time value"));
                 }
 
                 CachedCombinators[_Time_Body__Index_] = _disj_0_;
@@ -283,7 +299,7 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _AND(_PLUS(_CALL(Digit)), _QUES(_AND(_LITERAL("."), _PLUS(_CALL(Digit)))));
+                    _disj_0_ = _OR(_AND(_PLUS(_CALL(Digit)), _QUES(_AND(_LITERAL("."), _PLUS(_CALL(Digit))))), _FAIL("expected a number"));
                 }
 
                 CachedCombinators[_Number_Body__Index_] = _disj_0_;
@@ -316,7 +332,7 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_LITERAL('0'), _LITERAL('1'), _LITERAL('2'), _LITERAL('3'), _LITERAL('4'), _LITERAL('5'), _LITERAL('6'), _LITERAL('7'), _LITERAL('8'), _LITERAL('9'));
+                    _disj_0_ = _OR(_LITERAL('0'), _LITERAL('1'), _LITERAL('2'), _LITERAL('3'), _LITERAL('4'), _LITERAL('5'), _LITERAL('6'), _LITERAL('7'), _LITERAL('8'), _LITERAL('9'), _FAIL("expected a digit"));
                 }
 
                 CachedCombinators[_Digit_Body__Index_] = _disj_0_;
@@ -339,8 +355,12 @@ namespace Common
 
             Combinator _disj_0_ = null;
             {
-                var Whitespace = new CommonMatcherItem("Whitespace");
-                _disj_0_ = _STAR(_REF(Whitespace, this));
+                var c = new CommonMatcherItem("c");
+                _disj_0_ = _STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+#line 44 "Common.ironMeta"
+            (char.IsWhiteSpace(c) && c != '\n' && c != '\r' && c != '\f')
+#line default
+);}));
             }
 
             _WS_Body_ = _disj_0_;
@@ -353,6 +373,30 @@ namespace Common
             }
         }
 
+        protected virtual IEnumerable<MatchItem> WSL(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _WSL_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var c = new CommonMatcherItem("c");
+                _disj_0_ = _STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+#line 45 "Common.ironMeta"
+             (char.IsWhiteSpace(c))
+#line default
+);}));
+            }
+
+            _WSL_Body_ = _disj_0_;
+
+            foreach (var _res_ in _WSL_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
 
     } // class CommonMatcher
+
 } // namespace Common

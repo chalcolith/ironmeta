@@ -26,17 +26,21 @@ ironMeta Common<char, XmlNode> : IronMeta.CharacterMatcher<XmlNode>
 				return child;
 			};
 	
-	Header :name :att :rule :element = name WS ":" WS rule:d WS
-		-> { ((XmlElement)element).SetAttribute(_IM_GetText(att), _IM_GetText(d)); };
+	Header :name :att :rule :element = name WS ":" WS (rule:d WSL | (.:c ?(c == '\n' && c == '\r' && c == '\f'))* WSL)
+		-> { 
+				//Console.WriteLine("header: {0}: {2}", _IM_GetText(name), _IM_GetText(att), _IM_GetText(d));
+				((XmlElement)element).SetAttribute(_IM_GetText(att), _IM_GetText(d)); 
+			};
+
+	Token = (.:c ?(!char.IsWhiteSpace(c)))+ | !"expected Token";
+	RestOfLine = (.:c ?(c != '\n' && c != '\r' && c != '\f'))*;
+		
+	Date = Digit Digit? '/' Digit Digit? '/' Digit Digit (Digit Digit)? | !"expected a date value";
+	Time = Digit Digit? ":" Digit Digit? ":" Digit Digit? WS ("AM"|"PM")? | !"expected a time value";
 	
-	Token = (~Whitespace .)+; // Whitespace is inherited from CharacterMatcher
-	Line = (~EOL .)+; // EOL is inherited from CharacterMatcher
+	Number = Digit+ ("." Digit+)? | !"expected a number";
+	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | !"expected a digit";
 	
-	Date = Digit Digit? '/' Digit Digit? '/' Digit Digit (Digit Digit)?;		
-	Time = Digit Digit? ":" Digit Digit? ":" Digit Digit? WS ("AM"|"PM")?;
-	
-	Number = Digit+ ("." Digit+)?;
-	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-	
-	WS = Whitespace*; // Whitespace is inherited from CharacterMatcher
+	WS = (.:c ?(char.IsWhiteSpace(c) && c != '\n' && c != '\r' && c != '\f'))*;
+	WSL = (.:c ?(char.IsWhiteSpace(c)))*;
 }

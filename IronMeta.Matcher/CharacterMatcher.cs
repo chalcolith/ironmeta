@@ -154,14 +154,9 @@ namespace IronMeta
         /// </summary>
         /// <param name="index">The index in the input stream.</param>
         /// <param name="offset">The offset in the line.</param>
-        public int GetLineNumber(int index, out int offset)
+        public int GetLineNumber(IEnumerable<char> stream, int index, out int offset)
         {
-            // assume we're all done parsing
-            if (LineBeginsArray == null)
-            {
-                LineBeginsArray = _IM_LineBeginPositions.ToArray();
-                Array.Sort(LineBeginsArray);
-            }
+            GetLineNumbers(stream);
 
             // find line
             int foundPos = Array.BinarySearch(LineBeginsArray, index);
@@ -182,10 +177,10 @@ namespace IronMeta
             return LineBeginsArray.Length - 1;
         }
 
-        public int GetLineNumber(int index)
+        public int GetLineNumber(IEnumerable<char> stream, int index)
         {
             int offset;
-            return GetLineNumber(index, out offset);
+            return GetLineNumber(stream, index, out offset);
         }
 
         /// <summary>
@@ -193,12 +188,7 @@ namespace IronMeta
         /// </summary>
         public string GetLine(IEnumerable<char> stream, int lineNumber)
         {
-            // assume we're all done parsing
-            if (LineBeginsArray == null)
-            {
-                LineBeginsArray = _IM_LineBeginPositions.ToArray();
-                Array.Sort(LineBeginsArray);
-            }
+            GetLineNumbers(stream);
 
             if (lineNumber < 0 || lineNumber > LineBeginsArray.Length - 1)
                 return "";
@@ -227,6 +217,33 @@ namespace IronMeta
         protected string _IM_GetText(MatchItem item)
         {
             return string.Join("", item.Inputs.Select(i => i.ToString()).ToArray());
+        }
+
+
+        private void GetLineNumbers(IEnumerable<char> stream)
+        {
+            if (LineBeginsArray == null)
+            {
+                if (_IM_LineBeginPositions.Count == 1)
+                {
+                    int index = 0;
+                    bool found_r = false;
+                    foreach (char ch in stream)
+                    {
+                        if (ch == '\r' || ch == '\n' || ch == '\f')
+                        {
+                            if (ch != '\n' || !found_r)
+                                _IM_LineBeginPositions.Add(index);
+                        }
+
+                        found_r = ch == '\r';
+                        ++index;
+                    }
+                }
+
+                LineBeginsArray = _IM_LineBeginPositions.ToArray();
+                Array.Sort(LineBeginsArray);
+            }
         }
 
         #endregion

@@ -34,7 +34,7 @@ namespace DataParser
                     else
                     {
                         int lineNumber, lineOffset;
-                        lineNumber = matcher.GetLineNumber(match.ErrorIndex, out lineOffset);
+                        lineNumber = matcher.GetLineNumber(contents, match.ErrorIndex, out lineOffset);
                         string line = matcher.GetLine(contents, lineNumber).Replace("\t", "    ");
 
                         var sb = new StringBuilder();

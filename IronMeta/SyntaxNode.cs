@@ -184,12 +184,12 @@ namespace IronMeta
             return this.GetType().Name;
         }
 
-        public void AssignLineNumbers(CharacterMatcher<SyntaxNode> matcher)
+        public virtual void AssignLineNumbers(IEnumerable<char> stream, CharacterMatcher<SyntaxNode> matcher)
         {
-            lineNumber = matcher.GetLineNumber(start, out lineOffset);
+            lineNumber = matcher.GetLineNumber(stream, start, out lineOffset);
 
             foreach (SyntaxNode child in Children)
-                child.AssignLineNumbers(matcher);
+                child.AssignLineNumbers(stream, matcher);
         }
 
         protected void Indent(int indent, TextWriter tw)
@@ -591,24 +591,47 @@ namespace IronMeta
             Children = new List<SyntaxNode> { (ExpNode)child };
         }
 
+        public override void AssignLineNumbers(IEnumerable<char> stream, CharacterMatcher<SyntaxNode> matcher)
+        {
+            condition.AssignLineNumbers(stream, matcher);
+            base.AssignLineNumbers(stream, matcher);
+        }
+
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
         {
-            condition.AssignLineNumbers(info.Matcher);
-
             string cText = condition.GetText(info.InputStream);
 
             tw.Write("_CONDITION(");
             Children.First().Generate(indent, tw, info);
 
-            if (cText.Contains("_IM_") || cText.Contains("_IM_Start") || cText.Contains("_IM_Next"))
-                tw.Write(", (_IM_Result_MI_) => {{ {0} return (\n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), condition.LineNumber, info.InputFileName);
+            bool containsReturn = cText.Contains("return");
+
+            if (containsReturn)
+                cText = " " + cText.Substring(1, cText.Length - 2) + " ";
+
+            if (containsReturn)
+            {
+                if (cText.Contains("_IM_") || cText.Contains("_IM_Start") || cText.Contains("_IM_Next"))
+                    tw.Write(", (_IM_Result_MI_) => {{ {0} {\n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), condition.LineNumber, info.InputFileName);
+                else
+                    tw.Write(", (_IM_Result_MI_) => {{ \n#line {0} \"{1}\"\n", condition.LineNumber, info.InputFileName);
+            }
             else
-                tw.Write(", (_IM_Result_MI_) => {{ return (\n#line {0} \"{1}\"\n", condition.LineNumber, info.InputFileName);
+            {
+                if (cText.Contains("_IM_") || cText.Contains("_IM_Start") || cText.Contains("_IM_Next"))
+                    tw.Write(", (_IM_Result_MI_) => {{ {0} return (\n#line {1} \"{2}\"\n", DefaultVars(info.MatchItemClass), condition.LineNumber, info.InputFileName);
+                else
+                    tw.Write(", (_IM_Result_MI_) => {{ return (\n#line {0} \"{1}\"\n", condition.LineNumber, info.InputFileName);
+            }
 
             Indent(condition.LineOffset, ' ', tw);
 
             tw.Write(cText);
-            tw.Write("\n#line default\n);})");
+
+            if (containsReturn)
+                tw.Write("\n#line default\n})");
+            else
+                tw.Write("\n#line default\n);})");
         }
     }
 
@@ -658,10 +681,14 @@ namespace IronMeta
             Children = new List<SyntaxNode> { exp };
         }
 
+        public override void AssignLineNumbers(IEnumerable<char> stream, CharacterMatcher<SyntaxNode> matcher)
+        {
+            action.AssignLineNumbers(stream, matcher);
+            base.AssignLineNumbers(stream, matcher);
+        }
+
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
         {
-            action.AssignLineNumbers(info.Matcher);
-
             string aText = action.GetText(info.InputStream);
 
             tw.Write("_ACTION(");
@@ -1047,8 +1074,8 @@ namespace IronMeta
 
             // body
             body.Generate(indent + 1, tw, info);
-            tw.WriteLine();
             Indent(indent, tw); tw.Write("}} // class {0}\n", info.ClassName);
+            tw.WriteLine();
         }
 
         private void GetMatchItemClass(TextWriter tw, int indent, GenerateInfo info)

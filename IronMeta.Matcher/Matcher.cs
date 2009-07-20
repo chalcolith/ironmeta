@@ -417,11 +417,13 @@ namespace IronMeta
             {
                 inputStream = item.inputStream;
                 inputItems = item.inputItems;
+                cachedFromStream = item.cachedFromStream;
                 Results = item.Results;
                 StartIndex = item.StartIndex;
                 NextIndex = item.NextIndex;
                 Production = item.Production;
                 ProductionName = item.ProductionName;
+                id = item.id;
             }
 
             public override string ToString()
@@ -471,17 +473,12 @@ namespace IronMeta
 
                 if (this.conv == null)
                     throw new ArgumentException("You must provide a converter function.");
-            }
 
-            private void FillItems(int index)
-            {
-                while (items.Count <= index)
+                count = 0;
+                foreach (TInput input in inputs)
                 {
-                    TInput input = inputs.ElementAt(items.Count);
-
-                    var mi = new MatchItem(input, conv(input), items.Count, items.Count+1);
-
-                    items.Add(mi);
+                    items.Add(new MatchItem(input, conv(input), count, count + 1));
+                    ++count;
                 }
             }
 
@@ -506,7 +503,6 @@ namespace IronMeta
             {
                 get
                 {
-                    FillItems(index);
                     return items[index];
                 }
                 set
@@ -541,7 +537,7 @@ namespace IronMeta
 
             public int Count
             {
-                get { return count != -1 ? count : (count = inputs.Count()); }
+                get { throw new NotImplementedException(); }
             }
 
             private int count = -1;

@@ -89,7 +89,7 @@ namespace IronMeta
                 DateTime startGen = DateTime.Now;
 
                 GenerateInfo info = new GenerateInfo(bareFname, matcher, nameSpace, contents);
-                ironMetaFile.AssignLineNumbers(matcher);
+                ironMetaFile.AssignLineNumbers(contents, matcher);
                 ironMetaFile.Analyze(info);
 
                 // optimize
@@ -118,7 +118,7 @@ namespace IronMeta
                     prefix = "Eror: ";
 
                 int lineNumber, lineOffset;
-                lineNumber = matcher.GetLineNumber(pe.Index, out lineOffset);
+                lineNumber = matcher.GetLineNumber(contents, pe.Index, out lineOffset);
                 string line = matcher.GetLine(contents, lineNumber).Replace("\t", "    ");
 
                 var sb = new StringBuilder();

@@ -41,15 +41,15 @@ Current limitations:
 
 \section changelog Changelog
 
-1.4: Bug fixes and sample
+1.4: July 18, 2009: Bug fixes and sample
 	- Fixed a bug when passing rules in a base class to another rule.
 	- Added a sample that parses a data file and produces an XmlDocument.
 
-1.3: Optimization pass
+1.3: June 2, 2009: Optimization pass
 	- IronMeta is now about an order of magnitude faster.
 	- Fixed a bug when handling C# string literals.
 
-1.2: Bug fixes and miscellaneous enhancements.	
+1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.	
 	- Added a simple interactive shell to the Calc program.
 	- Fixed a bug that caused redundant evaluation of involved rules.
 	- Fixed a bug with parsers that don't declare a base class.
@@ -60,7 +60,7 @@ Current limitations:
 1.1:
 	- Can now handle IEnumerable literals (e.g. strings, for a matcher of characters).
 
-1.0: Initial release
+1.0: May 16, 2009: Initial release
 
 \section getIronMeta Get IronMeta
 
@@ -266,7 +266,7 @@ Here things get more interesting.  This rule has only one expression, the period
 
 \note You can leave out the period if you are binding to a variable; that is, \c ":c" is equivalent to \c ".:c".
 
-However, this rule will not actually match any character, because it contains a \em condition.  A condition is written with \c "?" followed immediately by a C# expression in parentheses.  The C# expression must evaluate to a \c bool value.  Once the expression matches (in this case it will match anything), it is bound to the variable \c c, which is then available for use in your C# code.
+However, this rule will not necessarily match any character, because it contains a \em condition.  A condition is written with \c "?" followed immediately by a C# expression in parentheses.  The C# expression must evaluate to a \c bool value.  Once the expression matches (in this case it will match anything), it is bound to the variable \c c, which is then available for use in your C# code.
 
 The rule also contains an \em action.  Actions are written with \c "-\>" followed by a C# block surrounded by curly braces.  This block must contain a \c return statement that returns a value of the output type, or a \c List<> of the output type.
 

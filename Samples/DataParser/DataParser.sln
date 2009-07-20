@@ -6,8 +6,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "..\..\IronMeta\IronMeta.csproj", "{03B94334-DB66-49B7-B311-9C583C7E8AD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataParserLib", "DataParserLib\DataParserLib.csproj", "{2BBD9A85-33F7-411C-8E2B-49A19BD3DC05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03B94334-DB66-49B7-B311-9C583C7E8AD8} = {03B94334-DB66-49B7-B311-9C583C7E8AD8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataParser", "DataParser\DataParser.csproj", "{BEE26588-AC1C-49F1-A9FF-714B828B4B83}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03B94334-DB66-49B7-B311-9C583C7E8AD8} = {03B94334-DB66-49B7-B311-9C583C7E8AD8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

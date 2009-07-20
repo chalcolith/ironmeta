@@ -1,4 +1,4 @@
-// IronMeta Generated MasterPlexQTReport: 18/07/2009 2:45:05 AM UTC
+// IronMeta Generated MasterPlexQTReport: 7/20/2009 9:22:10 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -44,11 +44,11 @@ namespace MasterPlexQTReport
             {
                 var xmlDoc = new MasterPlexQTReportMatcherItem("xmlDoc");
                 var NewXmlDocument = new MasterPlexQTReportMatcherItem("NewXmlDocument");
-                var WS = new MasterPlexQTReportMatcherItem("WS");
+                var WSL = new MasterPlexQTReportMatcherItem("WSL");
                 var readout = new MasterPlexQTReportMatcherItem("readout");
                 var EOF = new MasterPlexQTReportMatcherItem("EOF");
-                _disj_0_ = _ACTION(_AND(_VAR(_REF(NewXmlDocument, this), xmlDoc), _REF(WS, this), _LITERAL("MasterPlex QT Report By Analyte"), _REF(WS, this), _VAR(_CALL(Headers, new List<MatchItem> { xmlDoc }), readout), _CALL(Test, new List<MatchItem> { readout }), _REF(EOF, this)), (_IM_Result_MI_) => {{ 
-#line 15 "MasterPlexQTReport.ironmeta"
+                _disj_0_ = _ACTION(_AND(_VAR(_REF(NewXmlDocument, this), xmlDoc), _REF(WSL, this), _LITERAL("MasterPlex QT Report By Analyte"), _REF(WSL, this), _VAR(_CALL(Headers, new List<MatchItem> { xmlDoc }), readout), _PLUS(_CALL(Test, new List<MatchItem> { readout })), _REF(EOF, this)), (_IM_Result_MI_) => {{ 
+#line 16 "MasterPlexQTReport.ironmeta"
      { return xmlDoc; }
 #line default
 }});
@@ -74,8 +74,8 @@ namespace MasterPlexQTReport
                 var readout = new MasterPlexQTReportMatcherItem("readout");
                 var Date = new MasterPlexQTReportMatcherItem("Date");
                 var Time = new MasterPlexQTReportMatcherItem("Time");
-                var Line = new MasterPlexQTReportMatcherItem("Line");
-                _disj_0_ = _ARGS(_VAR(_ANY(), xmlDoc), _args, _ACTION(_AND(_VAR(_CALL(NewXmlDocElement, new List<MatchItem> { xmlDoc, new MatchItem("readout", CONV) }), readout), _CALL(Header, new List<MatchItem> { new MatchItem("Report Date", CONV), new MatchItem("reportDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Date", CONV), new MatchItem("runDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Report Time", CONV), new MatchItem("reportTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Time", CONV), new MatchItem("runTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Data File", CONV), new MatchItem("dataFile", CONV), Line, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Hardware Serial No.", CONV), new MatchItem("serialNo", CONV), Line, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Plate Name", CONV), new MatchItem("plateName", CONV), Line, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Operator", CONV), new MatchItem("operator", CONV), new MatchItem(Operator), readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Version", CONV), new MatchItem("version", CONV), Line, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Analyst", CONV), new MatchItem("analyst", CONV), Line, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Background", CONV), new MatchItem("background", CONV), Line, readout })), (_IM_Result_MI_) => {{ 
+                var Token = new MasterPlexQTReportMatcherItem("Token");
+                _disj_0_ = _ARGS(_VAR(_ANY(), xmlDoc), _args, _ACTION(_AND(_VAR(_CALL(NewXmlDocElement, new List<MatchItem> { xmlDoc, new MatchItem("readout", CONV) }), readout), _CALL(Header, new List<MatchItem> { new MatchItem("Report Date", CONV), new MatchItem("reportDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Date", CONV), new MatchItem("runDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Report Time", CONV), new MatchItem("reportTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Time", CONV), new MatchItem("runTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Data File", CONV), new MatchItem("dataFile", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Hardware Serial No.", CONV), new MatchItem("serialNo", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Plate Name", CONV), new MatchItem("plateName", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Operator", CONV), new MatchItem("operator", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("MasterPlex QT Version", CONV), new MatchItem("version", CONV), new MatchItem(Version), readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Analyst", CONV), new MatchItem("analyst", CONV), Token, readout })), (_IM_Result_MI_) => {{ 
 #line 30 "MasterPlexQTReport.ironmeta"
      { return readout; }
 #line default
@@ -92,6 +92,28 @@ namespace MasterPlexQTReport
             }
         }
 
+        protected virtual IEnumerable<MatchItem> Version(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _Version_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var Digit = new MasterPlexQTReportMatcherItem("Digit");
+                var WS = new MasterPlexQTReportMatcherItem("WS");
+                var Token = new MasterPlexQTReportMatcherItem("Token");
+                _disj_0_ = _AND(_PLUS(_REF(Digit, this)), _STAR(_AND(_LITERAL("."), _PLUS(_REF(Digit, this)))), _REF(WS, this), _REF(Token, this));
+            }
+
+            _Version_Body_ = _disj_0_;
+
+            foreach (var _res_ in _Version_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
         protected virtual IEnumerable<MatchItem> Test(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
             Combinator _Test_Body_ = null;
@@ -100,13 +122,54 @@ namespace MasterPlexQTReport
             {
                 var readout = new MasterPlexQTReportMatcherItem("readout");
                 var test = new MasterPlexQTReportMatcherItem("test");
-                var Line = new MasterPlexQTReportMatcherItem("Line");
-                _disj_0_ = _ARGS(_VAR(_ANY(), readout), _args, _AND(_VAR(_CALL(NewXmlElement, new List<MatchItem> { readout, new MatchItem("test", CONV) }), test), _CALL(Header, new List<MatchItem> { new MatchItem("Analyte Name", CONV), new MatchItem("name", CONV), Line, test }), _CALL(DataHeading), _PLUS(_CALL(Measurement, new List<MatchItem> { test }))));
+                _disj_0_ = _ARGS(_VAR(_ANY(), readout), _args, _AND(_VAR(_CALL(NewXmlElement, new List<MatchItem> { readout, new MatchItem("test", CONV) }), test), _OR(_AND(_CALL(AnalyteHeader, new List<MatchItem> { test }), _CALL(BackgroundHeader, new List<MatchItem> { test })), _AND(_CALL(BackgroundHeader, new List<MatchItem> { test }), _CALL(AnalyteHeader, new List<MatchItem> { test }))), _CALL(DataHeading), _PLUS(_AND(_CALL(Measurement, new List<MatchItem> { test }), _QUES(_AND(_CALL(PageBreak), _QUES(_CALL(PageHeader))))))));
             }
 
             _Test_Body_ = _disj_0_;
 
             foreach (var _res_ in _Test_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        protected virtual IEnumerable<MatchItem> AnalyteHeader(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _AnalyteHeader_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var test = new MasterPlexQTReportMatcherItem("test");
+                var Token = new MasterPlexQTReportMatcherItem("Token");
+                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, new List<MatchItem> { new MatchItem("Analyte Name", CONV), new MatchItem("name", CONV), Token, test }));
+            }
+
+            _AnalyteHeader_Body_ = _disj_0_;
+
+            foreach (var _res_ in _AnalyteHeader_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        protected virtual IEnumerable<MatchItem> BackgroundHeader(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _BackgroundHeader_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var test = new MasterPlexQTReportMatcherItem("test");
+                var Token = new MasterPlexQTReportMatcherItem("Token");
+                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, new List<MatchItem> { new MatchItem("Background", CONV), new MatchItem("background", CONV), Token, test }));
+            }
+
+            _BackgroundHeader_Body_ = _disj_0_;
+
+            foreach (var _res_ in _BackgroundHeader_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 
@@ -121,7 +184,8 @@ namespace MasterPlexQTReport
             Combinator _disj_0_ = null;
             {
                 var WS = new MasterPlexQTReportMatcherItem("WS");
-                _disj_0_ = _AND(_LITERAL("Well"), _REF(WS, this), _LITERAL("Sample Name"), _REF(WS, this), _LITERAL("MFI"), _REF(WS, this), _LITERAL("Concentration"), _REF(WS, this), _LITERAL("Unit"), _REF(WS, this), _LITERAL("Count"), _REF(WS, this));
+                var WSL = new MasterPlexQTReportMatcherItem("WSL");
+                _disj_0_ = _AND(_LITERAL("Well"), _REF(WS, this), _LITERAL("Sample Name"), _REF(WS, this), _LITERAL("MFI"), _REF(WS, this), _LITERAL("Concentration"), _REF(WS, this), _LITERAL("Unit"), _REF(WS, this), _LITERAL("Count"), _REF(WSL, this));
             }
 
             _DataHeading_Body_ = _disj_0_;
@@ -142,17 +206,19 @@ namespace MasterPlexQTReport
             {
                 var test = new MasterPlexQTReportMatcherItem("test");
                 var well = new MasterPlexQTReportMatcherItem("well");
-                var Number = new MasterPlexQTReportMatcherItem("Number");
+                var Token = new MasterPlexQTReportMatcherItem("Token");
                 var WS = new MasterPlexQTReportMatcherItem("WS");
                 var sampleName = new MasterPlexQTReportMatcherItem("sampleName");
                 var mfi = new MasterPlexQTReportMatcherItem("mfi");
                 var concentration = new MasterPlexQTReportMatcherItem("concentration");
                 var unit = new MasterPlexQTReportMatcherItem("unit");
-                var Token = new MasterPlexQTReportMatcherItem("Token");
                 var count = new MasterPlexQTReportMatcherItem("count");
-                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _ACTION(_AND(_VAR(_REF(Number, this), well), _REF(WS, this), _VAR(_CALL(SampleName), sampleName), _REF(WS, this), _VAR(_REF(Number, this), mfi), _REF(WS, this), _VAR(_REF(Number, this), concentration), _REF(WS, this), _VAR(_REF(Token, this), unit), _REF(WS, this), _VAR(_REF(Number, this), count), _REF(WS, this)), (_IM_Result_MI_) => {{ 
-#line 41 "MasterPlexQTReport.ironmeta"
+                var WSL = new MasterPlexQTReportMatcherItem("WSL");
+                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _ACTION(_AND(_VAR(_REF(Token, this), well), _REF(WS, this), _VAR(_CALL(SampleName), sampleName), _REF(WS, this), _VAR(_REF(Token, this), mfi), _REF(WS, this), _VAR(_REF(Token, this), concentration), _REF(WS, this), _VAR(_REF(Token, this), unit), _REF(WS, this), _VAR(_REF(Token, this), count), _REF(WSL, this)), (_IM_Result_MI_) => {{ 
+#line 47 "MasterPlexQTReport.ironmeta"
      {
+				//Console.WriteLine("Measurement {0}", _IM_GetText(well));
+		
 				XmlElement elem = (XmlElement)test;
 				XmlElement row = elem.OwnerDocument.CreateElement("measurement");
 				elem.AppendChild(row);
@@ -178,32 +244,46 @@ namespace MasterPlexQTReport
             }
         }
 
-        private int _Operator_Body__Index_ = -1;
-
-        protected virtual IEnumerable<MatchItem> Operator(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        protected virtual IEnumerable<MatchItem> PageBreak(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
-            Combinator _Operator_Body_ = null;
+            Combinator _PageBreak_Body_ = null;
 
-            if (_Operator_Body__Index_ == -1 || CachedCombinators[_Operator_Body__Index_] == null)
+            Combinator _disj_0_ = null;
             {
-                if (_Operator_Body__Index_ == -1)
-                {
-                    _Operator_Body__Index_ = CachedCombinators.Count;
-                    CachedCombinators.Add(null);
-                }
-
-                Combinator _disj_0_ = null;
-                {
-                    _disj_0_ = _PLUS(_AND(_NOT(_LITERAL("Version")), _ANY()));
-                }
-
-                CachedCombinators[_Operator_Body__Index_] = _disj_0_;
+                var Token = new MasterPlexQTReportMatcherItem("Token");
+                var WS = new MasterPlexQTReportMatcherItem("WS");
+                var Number = new MasterPlexQTReportMatcherItem("Number");
+                var RestOfLine = new MasterPlexQTReportMatcherItem("RestOfLine");
+                var WSL = new MasterPlexQTReportMatcherItem("WSL");
+                _disj_0_ = _AND(_REF(Token, this), _REF(WS, this), _LITERAL("Page"), _REF(WS, this), _LITERAL("-"), _REF(WS, this), _REF(Number, this), _REF(WS, this), _LITERAL("of"), _REF(WS, this), _REF(Number, this), _REF(WS, this), _REF(RestOfLine, this), _REF(WSL, this));
             }
 
-            _Operator_Body_ = CachedCombinators[_Operator_Body__Index_];
+            _PageBreak_Body_ = _disj_0_;
 
+            foreach (var _res_ in _PageBreak_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
 
-            foreach (var _res_ in _Operator_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+                if (StrictPEG) yield break;
+            }
+        }
+
+        protected virtual IEnumerable<MatchItem> PageHeader(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _PageHeader_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var Date = new MasterPlexQTReportMatcherItem("Date");
+                var WS = new MasterPlexQTReportMatcherItem("WS");
+                var Time = new MasterPlexQTReportMatcherItem("Time");
+                var WSL = new MasterPlexQTReportMatcherItem("WSL");
+                _disj_0_ = _AND(_REF(Date, this), _REF(WS, this), _LITERAL("Report By Analytes"), _REF(WS, this), _REF(Time, this), _REF(WSL, this), _CALL(DataHeading));
+            }
+
+            _PageHeader_Body_ = _disj_0_;
+
+            foreach (var _res_ in _PageHeader_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 
@@ -233,6 +313,6 @@ namespace MasterPlexQTReport
             }
         }
 
-
     } // class MasterPlexQTReportMatcher
+
 } // namespace MasterPlexQTReport
