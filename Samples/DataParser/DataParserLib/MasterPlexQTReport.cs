@@ -1,4 +1,4 @@
-// IronMeta Generated MasterPlexQTReport: 7/20/2009 9:22:10 PM UTC
+// IronMeta Generated MasterPlexQTReport: 11/10/2009 8:48:18 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace MasterPlexQTReport
                 var WSL = new MasterPlexQTReportMatcherItem("WSL");
                 var readout = new MasterPlexQTReportMatcherItem("readout");
                 var EOF = new MasterPlexQTReportMatcherItem("EOF");
-                _disj_0_ = _ACTION(_AND(_VAR(_REF(NewXmlDocument, this), xmlDoc), _REF(WSL, this), _LITERAL("MasterPlex QT Report By Analyte"), _REF(WSL, this), _VAR(_CALL(Headers, new List<MatchItem> { xmlDoc }), readout), _PLUS(_CALL(Test, new List<MatchItem> { readout })), _REF(EOF, this)), (_IM_Result_MI_) => {{ 
+                _disj_0_ = _ACTION(_AND(_VAR(_REF(NewXmlDocument, this), xmlDoc), _REF(WSL, this), _LITERAL("MasterPlex QT Report By Analyte"), _REF(WSL, this), _VAR(_CALL(Headers, (new List<MatchItem> { xmlDoc})), readout), _PLUS(_CALL(Test, (new List<MatchItem> { readout}))), _REF(EOF, this)), (_IM_Result_MI_) => {{ 
 #line 16 "MasterPlexQTReport.ironmeta"
      { return xmlDoc; }
 #line default
@@ -75,7 +75,7 @@ namespace MasterPlexQTReport
                 var Date = new MasterPlexQTReportMatcherItem("Date");
                 var Time = new MasterPlexQTReportMatcherItem("Time");
                 var Token = new MasterPlexQTReportMatcherItem("Token");
-                _disj_0_ = _ARGS(_VAR(_ANY(), xmlDoc), _args, _ACTION(_AND(_VAR(_CALL(NewXmlDocElement, new List<MatchItem> { xmlDoc, new MatchItem("readout", CONV) }), readout), _CALL(Header, new List<MatchItem> { new MatchItem("Report Date", CONV), new MatchItem("reportDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Date", CONV), new MatchItem("runDate", CONV), Date, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Report Time", CONV), new MatchItem("reportTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Run Time", CONV), new MatchItem("runTime", CONV), Time, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Data File", CONV), new MatchItem("dataFile", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Hardware Serial No.", CONV), new MatchItem("serialNo", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Plate Name", CONV), new MatchItem("plateName", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Operator", CONV), new MatchItem("operator", CONV), Token, readout }), _CALL(Header, new List<MatchItem> { new MatchItem("MasterPlex QT Version", CONV), new MatchItem("version", CONV), new MatchItem(Version), readout }), _CALL(Header, new List<MatchItem> { new MatchItem("Analyst", CONV), new MatchItem("analyst", CONV), Token, readout })), (_IM_Result_MI_) => {{ 
+                _disj_0_ = _ARGS(_VAR(_ANY(), xmlDoc), _args, _ACTION(_AND(_VAR(_CALL(NewXmlDocElement, (new List<MatchItem> { xmlDoc, new MatchItem("readout", CONV)})), readout), _CALL(Header, (new List<MatchItem> { new MatchItem("Report Date", CONV), new MatchItem("reportDate", CONV), Date, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Run Date", CONV), new MatchItem("runDate", CONV), Date, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Report Time", CONV), new MatchItem("reportTime", CONV), Time, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Run Time", CONV), new MatchItem("runTime", CONV), Time, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Data File", CONV), new MatchItem("dataFile", CONV), Token, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Hardware Serial No.", CONV), new MatchItem("serialNo", CONV), Token, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Plate Name", CONV), new MatchItem("plateName", CONV), Token, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Operator", CONV), new MatchItem("operator", CONV), Token, readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("MasterPlex QT Version", CONV), new MatchItem("version", CONV), new MatchItem(Version), readout})), _CALL(Header, (new List<MatchItem> { new MatchItem("Analyst", CONV), new MatchItem("analyst", CONV), Token, readout}))), (_IM_Result_MI_) => {{ 
 #line 30 "MasterPlexQTReport.ironmeta"
      { return readout; }
 #line default
@@ -122,7 +122,7 @@ namespace MasterPlexQTReport
             {
                 var readout = new MasterPlexQTReportMatcherItem("readout");
                 var test = new MasterPlexQTReportMatcherItem("test");
-                _disj_0_ = _ARGS(_VAR(_ANY(), readout), _args, _AND(_VAR(_CALL(NewXmlElement, new List<MatchItem> { readout, new MatchItem("test", CONV) }), test), _OR(_AND(_CALL(AnalyteHeader, new List<MatchItem> { test }), _CALL(BackgroundHeader, new List<MatchItem> { test })), _AND(_CALL(BackgroundHeader, new List<MatchItem> { test }), _CALL(AnalyteHeader, new List<MatchItem> { test }))), _CALL(DataHeading), _PLUS(_AND(_CALL(Measurement, new List<MatchItem> { test }), _QUES(_AND(_CALL(PageBreak), _QUES(_CALL(PageHeader))))))));
+                _disj_0_ = _ARGS(_VAR(_ANY(), readout), _args, _AND(_VAR(_CALL(NewXmlElement, (new List<MatchItem> { readout, new MatchItem("test", CONV)})), test), _OR(_AND(_CALL(AnalyteHeader, (new List<MatchItem> { test})), _CALL(BackgroundHeader, (new List<MatchItem> { test}))), _AND(_CALL(BackgroundHeader, (new List<MatchItem> { test})), _CALL(AnalyteHeader, (new List<MatchItem> { test})))), _CALL(DataHeading), _PLUS(_AND(_CALL(Measurement, (new List<MatchItem> { test})), _QUES(_AND(_CALL(PageBreak), _QUES(_CALL(PageHeader))))))));
             }
 
             _Test_Body_ = _disj_0_;
@@ -143,7 +143,7 @@ namespace MasterPlexQTReport
             {
                 var test = new MasterPlexQTReportMatcherItem("test");
                 var Token = new MasterPlexQTReportMatcherItem("Token");
-                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, new List<MatchItem> { new MatchItem("Analyte Name", CONV), new MatchItem("name", CONV), Token, test }));
+                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, (new List<MatchItem> { new MatchItem("Analyte Name", CONV), new MatchItem("name", CONV), Token, test})));
             }
 
             _AnalyteHeader_Body_ = _disj_0_;
@@ -164,7 +164,7 @@ namespace MasterPlexQTReport
             {
                 var test = new MasterPlexQTReportMatcherItem("test");
                 var Token = new MasterPlexQTReportMatcherItem("Token");
-                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, new List<MatchItem> { new MatchItem("Background", CONV), new MatchItem("background", CONV), Token, test }));
+                _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _CALL(Header, (new List<MatchItem> { new MatchItem("Background", CONV), new MatchItem("background", CONV), Token, test})));
             }
 
             _BackgroundHeader_Body_ = _disj_0_;
@@ -184,8 +184,7 @@ namespace MasterPlexQTReport
             Combinator _disj_0_ = null;
             {
                 var WS = new MasterPlexQTReportMatcherItem("WS");
-                var WSL = new MasterPlexQTReportMatcherItem("WSL");
-                _disj_0_ = _AND(_LITERAL("Well"), _REF(WS, this), _LITERAL("Sample Name"), _REF(WS, this), _LITERAL("MFI"), _REF(WS, this), _LITERAL("Concentration"), _REF(WS, this), _LITERAL("Unit"), _REF(WS, this), _LITERAL("Count"), _REF(WSL, this));
+                _disj_0_ = _AND(_CALL(WSList, (new List<MatchItem> { new MatchItem("Well", CONV), new MatchItem("Sample Name", CONV), new MatchItem("MFI", CONV), new MatchItem("Concentration", CONV), new MatchItem("Unit", CONV), new MatchItem("Count", CONV)})), _REF(WS, this));
             }
 
             _DataHeading_Body_ = _disj_0_;
@@ -215,7 +214,7 @@ namespace MasterPlexQTReport
                 var count = new MasterPlexQTReportMatcherItem("count");
                 var WSL = new MasterPlexQTReportMatcherItem("WSL");
                 _disj_0_ = _ARGS(_VAR(_ANY(), test), _args, _ACTION(_AND(_VAR(_REF(Token, this), well), _REF(WS, this), _VAR(_CALL(SampleName), sampleName), _REF(WS, this), _VAR(_REF(Token, this), mfi), _REF(WS, this), _VAR(_REF(Token, this), concentration), _REF(WS, this), _VAR(_REF(Token, this), unit), _REF(WS, this), _VAR(_REF(Token, this), count), _REF(WSL, this)), (_IM_Result_MI_) => {{ 
-#line 47 "MasterPlexQTReport.ironmeta"
+#line 48 "MasterPlexQTReport.ironmeta"
      {
 				//Console.WriteLine("Measurement {0}", _IM_GetText(well));
 		

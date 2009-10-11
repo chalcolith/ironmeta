@@ -1,4 +1,4 @@
-// IronMeta Generated Common: 7/20/2009 9:22:09 PM UTC
+// IronMeta Generated Common: 11/10/2009 8:48:16 PM UTC
 
 using System;
 using System.Collections.Generic;
@@ -144,12 +144,13 @@ namespace Common
                 var rule = new CommonMatcherItem("rule");
                 var element = new CommonMatcherItem("element");
                 var d = new CommonMatcherItem("d");
+                var WSL = new CommonMatcherItem("WSL");
                 var c = new CommonMatcherItem("c");
-                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), name), _VAR(_ANY(), att), _VAR(_ANY(), rule), _VAR(_ANY(), element)), _args, _ACTION(_AND(_REF(name, this), _CALL(WS), _LITERAL(":"), _CALL(WS), _OR(_AND(_VAR(_REF(rule, this), d), _CALL(WSL)), _AND(_STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), name), _VAR(_ANY(), att), _VAR(_ANY(), rule), _VAR(_ANY(), element)), _args, _ACTION(_AND(_REF(name, this), _CALL(WS), _LITERAL(":"), _CALL(WS), _OR(_AND(_VAR(_REF(rule, this), d), _REF(WSL, this)), _AND(_STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
 #line 29 "Common.ironMeta"
                                                                        (c == '\n' && c == '\r' && c == '\f')
 #line default
-);})), _CALL(WSL)))), (_IM_Result_MI_) => {{ 
+);})), _REF(WSL, this)))), (_IM_Result_MI_) => {{ 
 #line 30 "Common.ironMeta"
      { 
 				//Console.WriteLine("header: {0}: {2}", _IM_GetText(name), _IM_GetText(att), _IM_GetText(d));
@@ -182,8 +183,13 @@ namespace Common
 #line default
 );})), _FAIL("expected Token"));
             }
+            Combinator _disj_1_ = null;
+            {
+                var Whitespace = new CommonMatcherItem("Whitespace");
+                _disj_1_ = _PLUS(_AND(_NOT(_REF(Whitespace, this)), _ANY()));
+            }
 
-            _Token_Body_ = _disj_0_;
+            _Token_Body_ = _OR(_disj_0_, _disj_1_);
 
             foreach (var _res_ in _Token_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
@@ -235,8 +241,12 @@ namespace Common
                 {
                     _disj_0_ = _OR(_AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _CALL(Digit), _QUES(_AND(_CALL(Digit), _CALL(Digit)))), _FAIL("expected a date value"));
                 }
+                Combinator _disj_1_ = null;
+                {
+                    _disj_1_ = _AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL('/'), _CALL(Digit), _CALL(Digit), _QUES(_AND(_CALL(Digit), _CALL(Digit))));
+                }
 
-                CachedCombinators[_Date_Body__Index_] = _disj_0_;
+                CachedCombinators[_Date_Body__Index_] = _OR(_disj_0_, _disj_1_);
             }
 
             _Date_Body_ = CachedCombinators[_Date_Body__Index_];
@@ -268,14 +278,68 @@ namespace Common
                 {
                     _disj_0_ = _OR(_AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _CALL(WS), _QUES(_OR(_LITERAL("AM"), _LITERAL("PM")))), _FAIL("expected a time value"));
                 }
+                Combinator _disj_1_ = null;
+                {
+                    _disj_1_ = _AND(_CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _LITERAL(":"), _CALL(Digit), _QUES(_CALL(Digit)), _CALL(WS), _QUES(_OR(_LITERAL("AM"), _LITERAL("PM"))));
+                }
 
-                CachedCombinators[_Time_Body__Index_] = _disj_0_;
+                CachedCombinators[_Time_Body__Index_] = _OR(_disj_0_, _disj_1_);
             }
 
             _Time_Body_ = CachedCombinators[_Time_Body__Index_];
 
 
             foreach (var _res_ in _Time_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        protected virtual IEnumerable<MatchItem> WSList(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _WSList_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var first = new CommonMatcherItem("first");
+                var rest = new CommonMatcherItem("rest");
+                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), first), _VAR(_PLUS(_ANY()), rest)), _args, _AND(_ACTION(_REF(first, this), (_IM_Result_MI_) => {{ var _IM_Result = new CommonMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+#line 41 "Common.ironMeta"
+                                   {Console.WriteLine(_IM_GetText(_IM_Result));}
+#line default
+} return default(XmlNode);}), _CALL(WS), _CALL(WSList, rest.AsList)));
+            }
+            Combinator _disj_1_ = null;
+            {
+                var last = new CommonMatcherItem("last");
+                _disj_1_ = _ARGS(_VAR(_ANY(), last), _args, _REF(last, this));
+            }
+
+            _WSList_Body_ = _OR(_disj_0_, _disj_1_);
+
+            foreach (var _res_ in _WSList_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        protected virtual IEnumerable<MatchItem> Line(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _Line_Body_ = null;
+
+            Combinator _disj_0_ = null;
+            {
+                var EOL = new CommonMatcherItem("EOL");
+                _disj_0_ = _PLUS(_AND(_NOT(_REF(EOL, this)), _ANY()));
+            }
+
+            _Line_Body_ = _disj_0_;
+
+            foreach (var _res_ in _Line_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 
@@ -299,10 +363,14 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_AND(_PLUS(_CALL(Digit)), _QUES(_AND(_LITERAL("."), _PLUS(_CALL(Digit))))), _FAIL("expected a number"));
+                    _disj_0_ = _AND(_PLUS(_CALL(Digit)), _QUES(_AND(_LITERAL("."), _PLUS(_CALL(Digit)))));
+                }
+                Combinator _disj_1_ = null;
+                {
+                    _disj_1_ = _FAIL("expected Number");
                 }
 
-                CachedCombinators[_Number_Body__Index_] = _disj_0_;
+                CachedCombinators[_Number_Body__Index_] = _OR(_disj_0_, _disj_1_);
             }
 
             _Number_Body_ = CachedCombinators[_Number_Body__Index_];
@@ -332,7 +400,7 @@ namespace Common
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_LITERAL('0'), _LITERAL('1'), _LITERAL('2'), _LITERAL('3'), _LITERAL('4'), _LITERAL('5'), _LITERAL('6'), _LITERAL('7'), _LITERAL('8'), _LITERAL('9'), _FAIL("expected a digit"));
+                    _disj_0_ = _OR(_LITERAL('0'), _LITERAL('1'), _LITERAL('2'), _LITERAL('3'), _LITERAL('4'), _LITERAL('5'), _LITERAL('6'), _LITERAL('7'), _LITERAL('8'), _LITERAL('9'));
                 }
 
                 CachedCombinators[_Digit_Body__Index_] = _disj_0_;
@@ -355,41 +423,13 @@ namespace Common
 
             Combinator _disj_0_ = null;
             {
-                var c = new CommonMatcherItem("c");
-                _disj_0_ = _STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
-#line 44 "Common.ironMeta"
-            (char.IsWhiteSpace(c) && c != '\n' && c != '\r' && c != '\f')
-#line default
-);}));
+                var Whitespace = new CommonMatcherItem("Whitespace");
+                _disj_0_ = _STAR(_REF(Whitespace, this));
             }
 
             _WS_Body_ = _disj_0_;
 
             foreach (var _res_ in _WS_Body_.Match(_indent+1, _inputs, _index, null, _memo))
-            {
-                yield return _res_;
-
-                if (StrictPEG) yield break;
-            }
-        }
-
-        protected virtual IEnumerable<MatchItem> WSL(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
-        {
-            Combinator _WSL_Body_ = null;
-
-            Combinator _disj_0_ = null;
-            {
-                var c = new CommonMatcherItem("c");
-                _disj_0_ = _STAR(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
-#line 45 "Common.ironMeta"
-             (char.IsWhiteSpace(c))
-#line default
-);}));
-            }
-
-            _WSL_Body_ = _disj_0_;
-
-            foreach (var _res_ in _WSL_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 

@@ -428,7 +428,7 @@ namespace IronMeta
         {
             varName = GetText(info.InputStream).Trim();
 
-            if (varName.Contains('.'))
+            if (varName.Contains('.') && !varName.EndsWith(".AsList"))
             {
                 if (varName.ToUpper().StartsWith("BASE."))
                     varName = varName.Substring(5);
@@ -439,7 +439,10 @@ namespace IronMeta
             }
             else
             {
-                info.VariableNames.Add(varName);
+                if (varName.EndsWith(".AsList"))
+                    info.VariableNames.Add(varName.Substring(0, varName.Length - 7));
+                else
+                    info.VariableNames.Add(varName);
             }
 
             base.Analyze(info);
@@ -492,17 +495,57 @@ namespace IronMeta
                 var pList = new List<string>();
                 foreach (var p in parameters)
                 {
-                    string pText = p.GetText(info.InputStream);
+                    string pText = p.GetText(info.InputStream).Trim();
 
                     if (info.RuleNames.Contains(pText))
                         pList.Add(string.Format("new MatchItem({0})", pText));
-                    else if (info.VariableNames.Contains(pText))
+                    else if (info.VariableNames.Contains(pText) || pText.EndsWith(".AsList"))
                         pList.Add(pText);
                     else
                         pList.Add(string.Format("new MatchItem({0}, CONV)", pText));
                 }
 
-                tw.Write("_CALL({0}, new List<MatchItem> {{ {1} }})", ruleName, string.Join(", ", pList.ToArray()));
+                // promote variables if necessary
+                bool in_list = false;
+                string list = "";
+                foreach (string param in pList)
+                {
+                    if (param.EndsWith(".AsList"))
+                    {
+                        if (in_list)
+                        {
+                            list = list + "}).Concat(" + param + ")";
+                            in_list = false;
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(list))
+                                list = list + ".Concat(" + param + ")";
+                            else
+                                list = list + param;
+                        }
+                    }
+                    else
+                    {
+                        if (in_list)
+                        {
+                            list = list + ", " + param;
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(list))
+                                list = list + ".Concat";
+
+                            list = list + "(new List<MatchItem> { " + param;
+                            in_list = true;
+                        }
+                    }
+                }
+
+                if (in_list)
+                    list = list + "})";
+
+                tw.Write("_CALL({0}, {1})", ruleName, list);
             }
             else
             {

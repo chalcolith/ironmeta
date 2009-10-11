@@ -1,4 +1,8 @@
-﻿1.3: Optimization pass
+﻿1.4: Bug fixes and sample
+	- Fixed a bug when passing rules in a base class to another rule.
+	- Added a sample that parses a data file and produces an XmlDocument.
+
+1.3: Optimization pass
 	- IronMeta is now about an order of magnitude faster.
 	- Fixed a bug when handling C# string literals.
 

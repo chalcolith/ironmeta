@@ -40,7 +40,8 @@ ironMeta MasterPlexQTReport<char, XmlNode> : Common.CommonMatcher
 	AnalyteHeader :test = Header("Analyte Name", "name", Token, test);
 	BackgroundHeader :test = Header("Background", "background", Token, test);
 	
-	DataHeading = "Well" WS "Sample Name" WS "MFI" WS "Concentration" WS "Unit" WS "Count" WSL;
+//	DataHeading = "Well" WS "Sample Name" WS "MFI" WS "Concentration" WS "Unit" WS "Count" WS;
+	DataHeading = WSList("Well", "Sample Name", "MFI", "Concentration", "Unit", "Count") WS;
 
 	Measurement :test = 
 		Token:well WS SampleName:sampleName WS Token:mfi WS Token:concentration WS Token:unit WS Token:count WSL

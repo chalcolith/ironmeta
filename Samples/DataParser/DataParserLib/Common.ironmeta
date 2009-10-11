@@ -38,9 +38,19 @@ ironMeta Common<char, XmlNode> : IronMeta.CharacterMatcher<XmlNode>
 	Date = Digit Digit? '/' Digit Digit? '/' Digit Digit (Digit Digit)? | !"expected a date value";
 	Time = Digit Digit? ":" Digit Digit? ":" Digit Digit? WS ("AM"|"PM")? | !"expected a time value";
 	
-	Number = Digit+ ("." Digit+)? | !"expected a number";
-	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | !"expected a digit";
+	WSList :first .+:rest = (first -> {Console.WriteLine(_IM_GetText(_IM_Result));}) WS WSList(rest.AsList);
+	WSList :last = last;
 	
-	WS = (.:c ?(char.IsWhiteSpace(c) && c != '\n' && c != '\r' && c != '\f'))*;
-	WSL = (.:c ?(char.IsWhiteSpace(c)))*;
+	Token = (~Whitespace .)+; // Whitespace is inherited from CharacterMatcher
+	Line = (~EOL .)+; // EOL is inherited from CharacterMatcher
+	
+	Date = Digit Digit? '/' Digit Digit? '/' Digit Digit (Digit Digit)?;		
+	Time = Digit Digit? ":" Digit Digit? ":" Digit Digit? WS ("AM"|"PM")?;
+	
+	Number = Digit+ ("." Digit+)?;
+	Number = !"expected Number";
+	
+	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+	
+	WS = Whitespace*; // Whitespace is inherited from CharacterMatcher
 }

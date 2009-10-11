@@ -389,6 +389,26 @@ namespace IronMeta
             /// </summary>
             public IEnumerable<TResult> Results = Enumerable.Empty<TResult>();
 
+            public IEnumerable<MatchItem> AsList
+            {
+                get
+                {
+                    List<MatchItem> list = new List<MatchItem>();
+                    IEnumerator<TInput> i = Inputs.GetEnumerator();
+                    IEnumerator<TResult> r = Results.GetEnumerator();
+
+                    bool i_ok = i.MoveNext(), r_ok = r.MoveNext();
+                    while (i_ok || r_ok)
+                    {
+                        list.Add(new MatchItem(i_ok ? i.Current : default(TInput), r_ok ? r.Current : default(TResult)));
+                        i_ok = i.MoveNext();
+                        r_ok = r.MoveNext();
+                    }
+
+                    return list;
+                }
+            }
+
             /// <summary>
             /// The index of the first item.
             /// </summary>
