@@ -67,4 +67,5 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     KW :str = str Whitespace*;
     
     Zero = "ze" {new List<char>{ 'r', 'o' }};
+    Zero2 = Zero();
 }

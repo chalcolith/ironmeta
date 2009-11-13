@@ -95,6 +95,9 @@ namespace IronMeta
         /// <summary>Stores rules that we know about for call optimization.</summary>
         public HashSet<string> RuleNames { get; set; }
 
+        /// <summary>Holds rules that do not contain left-recursion.</summary>
+        public HashSet<string> LRSafeRules { get; set; }
+
         public string ClassName { get; set; }
         public string InputType { get; set; }
         public string ResultType { get; set; }
@@ -110,6 +113,7 @@ namespace IronMeta
             Matcher = matcher;
             NameSpace = nameSpace;
             RuleNames = new HashSet<string>();
+            LRSafeRules = new HashSet<string>();
             MatchItemClass = "!~ MatchItemClass ~!";
         }
     }
@@ -207,10 +211,14 @@ namespace IronMeta
         }
 
 
-        public static void Optimize(SyntaxNode rootNode)
+        public static void Optimize(SyntaxNode rootNode, GenerateInfo info)
         {
             FoldOrs(rootNode);
             FoldAnds(rootNode);
+
+            Dictionary<string, SyntaxNode> ruleBodies = new Dictionary<string, SyntaxNode>();
+            CollectRuleBodies(rootNode, ruleBodies, info);
+            DetectLR(ruleBodies, info);
         }
 
         static void FoldAnds(SyntaxNode node)
@@ -257,6 +265,89 @@ namespace IronMeta
             }
         }
 
+        static void CollectRuleBodies(SyntaxNode node, Dictionary<string, SyntaxNode> ruleBodies, GenerateInfo info)
+        {
+            if (node is RuleNode)
+            {
+                RuleNode rn = node as RuleNode;
+                string name = rn.Name.GetText(info.InputStream).Trim();
+
+                SyntaxNode body;
+                if (ruleBodies.TryGetValue(name, out body))
+                {
+                    List<SyntaxNode> children = new List<SyntaxNode> { body, rn.Body };
+
+                    ruleBodies[name] = new DisjunctionExpNode(-1, -1, children);
+                }
+                else
+                {
+                    ruleBodies.Add(name, rn.Body);
+                }
+            }
+            else
+            {
+                foreach (SyntaxNode child in node.Children)
+                    CollectRuleBodies(child, ruleBodies, info);
+            }
+        }
+
+        static void DetectLR(Dictionary<string, SyntaxNode> ruleBodies, GenerateInfo info)
+        {
+            foreach (var kv in ruleBodies)
+            {
+                Stack<string> rules = new Stack<string>();
+                rules.Push(kv.Key);
+
+                if (LRSafe(kv.Value, rules, ruleBodies))
+                    info.LRSafeRules.Add(kv.Key);
+            }
+        }
+
+        static bool LRSafe(SyntaxNode node, Stack<string> rules, Dictionary<string, SyntaxNode> ruleBodies)
+        {
+            if (node is RuleCallExpNode)
+            {
+                RuleCallExpNode rc = node as RuleCallExpNode;
+                if (rules.Contains(rc.RuleName))
+                {
+                    return false;
+                }
+                else
+                {
+                    rules.Push(rc.RuleName);
+                    SyntaxNode body;
+                    return ruleBodies.TryGetValue(rc.RuleName, out body) && LRSafe(body, rules, ruleBodies);
+                }
+            }
+            else if (node is CallOrVarExpNode)
+            {
+                CallOrVarExpNode cv = node as CallOrVarExpNode;
+                if (rules.Contains(cv.VarName))
+                {
+                    return false;
+                }
+                else
+                {
+                    rules.Push(cv.VarName);
+                    SyntaxNode body;
+                    return ruleBodies.TryGetValue(cv.VarName, out body) && LRSafe(body, rules, ruleBodies);
+                }
+            }
+            else if (node is DisjunctionExpNode)
+            {
+                foreach (SyntaxNode child in node.Children)
+                {
+                    if (!LRSafe(child, rules, ruleBodies))
+                        return false;
+                }
+            }
+            else if (node.Children.Any())
+            {
+                return LRSafe(node.Children.ElementAt(0), rules, ruleBodies);
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -416,7 +507,7 @@ namespace IronMeta
     {
         SyntaxNode identifier;
 
-        string varName;
+        public string VarName { get; private set; }
 
         public CallOrVarExpNode(int start, int next, SyntaxNode identifier)
             : base(start, next)
@@ -426,23 +517,23 @@ namespace IronMeta
 
         public override void Analyze(GenerateInfo info)
         {
-            varName = GetText(info.InputStream).Trim();
+            VarName = GetText(info.InputStream).Trim();
 
-            if (varName.Contains('.') && !varName.EndsWith(".AsList"))
+            if (VarName.Contains('.') && !VarName.EndsWith(".AsList"))
             {
-                if (varName.ToUpper().StartsWith("BASE."))
-                    varName = varName.Substring(5);
-                else if (varName.ToUpper().StartsWith("SUPER."))
-                    varName = varName.Substring(6);
+                if (VarName.ToUpper().StartsWith("BASE."))
+                    VarName = VarName.Substring(5);
+                else if (VarName.ToUpper().StartsWith("SUPER."))
+                    VarName = VarName.Substring(6);
 
-                info.RuleNames.Add(varName);
+                info.RuleNames.Add(VarName);
             }
             else
             {
-                if (varName.EndsWith(".AsList"))
-                    info.VariableNames.Add(varName.Substring(0, varName.Length - 7));
+                if (VarName.EndsWith(".AsList"))
+                    info.VariableNames.Add(VarName.Substring(0, VarName.Length - 7));
                 else
-                    info.VariableNames.Add(varName);
+                    info.VariableNames.Add(VarName);
             }
 
             base.Analyze(info);
@@ -450,10 +541,10 @@ namespace IronMeta
 
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
         {
-            if (info.RuleNames.Contains(varName))
-                tw.Write("_CALL({0})", varName);
+            if (info.RuleNames.Contains(VarName))
+                tw.Write("_CALL({0}, {1})", VarName, info.LRSafeRules.Contains(VarName) ? "true" : "false");
             else
-                tw.Write("_REF({0}, this)", varName);
+                tw.Write("_REF({0}, this)", VarName);
         }
     }
 
@@ -465,7 +556,7 @@ namespace IronMeta
         SyntaxNode name;
         IEnumerable<SyntaxNode> parameters;
 
-        string ruleName;
+        public string RuleName { get; private set; }
 
         public RuleCallExpNode(int start, int next, SyntaxNode name, List<SyntaxNode> parameters)
             : base(start, next)
@@ -478,12 +569,12 @@ namespace IronMeta
 
         public override void Analyze(GenerateInfo info)
         {
-            ruleName = name.GetText(info.InputStream).Trim();
+            RuleName = name.GetText(info.InputStream).Trim();
 
-            if (ruleName.ToUpper().StartsWith("BASE."))
-                ruleName = ruleName.Substring(5);
-            else if (ruleName.ToUpper().StartsWith("SUPER."))
-                ruleName = ruleName.Substring(6);
+            if (RuleName.ToUpper().StartsWith("BASE."))
+                RuleName = RuleName.Substring(5);
+            else if (RuleName.ToUpper().StartsWith("SUPER."))
+                RuleName = RuleName.Substring(6);
 
             base.Analyze(info);
         }
@@ -545,11 +636,11 @@ namespace IronMeta
                 if (in_list)
                     list = list + "})";
 
-                tw.Write("_CALL({0}, {1})", ruleName, list);
+                tw.Write("_CALL({0}, {1}, {2})", RuleName, list, info.LRSafeRules.Contains(RuleName) ? "true" : "false");
             }
             else
             {
-                tw.Write("_CALL({0})", ruleName);
+                tw.Write("_CALL({0}, {1})", RuleName, info.LRSafeRules.Contains(RuleName) ? "true" : "false");
             }
         }
     }

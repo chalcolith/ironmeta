@@ -470,6 +470,276 @@ namespace IronMeta
 
         } // class MatchItem
 
+        /// \internal
+        public class MemoizingEnumerable<T>
+            : IList<T>
+        {
+            IEnumerable<T> _val;
+            IEnumerator<T> _cur;
+            List<T> _memo = new List<T>();
+            
+            object _lock = new object();
+
+            public MemoizingEnumerable(IEnumerable<T> _val)
+            {
+                this._val = _val;
+                this._cur = _val.GetEnumerator();
+            }
+
+            void Reset()
+            {
+                _cur = _val.GetEnumerator();
+                _memo.Clear();
+            }
+
+            class MemoizingEnumerator
+                : IEnumerator<T>
+            {
+                object _lock;
+                IEnumerator<T> _cur;
+                List<T> _memo;
+                int pos;
+
+                public MemoizingEnumerator(object _lock, IEnumerator<T> _cur, List<T> _memo)
+                {
+                    this._lock = _lock;
+                    this._cur = _cur;
+                    this._memo = _memo;
+
+                    Reset();
+                }
+
+                #region IEnumerator<T> Members
+
+                public T Current
+                {
+                    get
+                    {
+                        return _memo[pos];
+                    }
+                }
+
+                #endregion
+
+                #region IDisposable Members
+
+                public void Dispose()
+                {
+                }
+
+                #endregion
+
+                #region IEnumerator Members
+
+                object System.Collections.IEnumerator.Current
+                {
+                    get { return Current; }
+                }
+
+                public bool MoveNext()
+                {
+                    ++pos;
+
+                    lock (_lock)
+                    {
+                        bool valid = _memo.Count > pos;
+
+                        while (_memo.Count <= pos)
+                        {
+                            if (valid = _cur.MoveNext())
+                                _memo.Add(_cur.Current);
+                            else
+                                break;
+                        }
+
+                        return valid;
+                    }
+                }
+
+                public void Reset()
+                {
+                    pos = -1;
+                }
+
+                #endregion
+            } // class MemoizingEnumerator
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new MemoizingEnumerator(_lock, _cur, _memo);
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            #endregion
+
+            #region IList<T> Members
+
+            public int IndexOf(T item)
+            {
+                if (_val is IList<T>)
+                {
+                    return ((IList<T>)_val).IndexOf(item);
+                }
+                else
+                {
+                    int index = 0;
+                    foreach (var t in this)
+                    {
+                        if (t.Equals(item))
+                            return index;
+                        ++index;
+                    }
+                    return -1;
+                }
+            }
+
+            public void Insert(int index, T item)
+            {
+                if (_val is IList<T>)
+                {
+                    ((IList<T>)_val).Insert(index, item);
+                    Reset();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public void RemoveAt(int index)
+            {
+                if (_val is IList<T>)
+                {
+                    ((IList<T>)_val).RemoveAt(index);
+                    Reset();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public T this[int index]
+            {
+                get
+                {
+                    if (index >= _memo.Count)
+                    {
+                        IEnumerator<T> iter = GetEnumerator();
+                        while (index >= _memo.Count)
+                        {
+                            if (!iter.MoveNext())
+                                break;
+                        }
+                    }
+
+                    return _memo[index];
+                }
+                set
+                {
+                    if (_val is IList<T>)
+                    {
+                        ((IList<T>)_val)[index] = value;
+                        Reset();
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+            }
+
+            #endregion
+
+            #region ICollection<T> Members
+
+            public void Add(T item)
+            {
+                if (_val is ICollection<T>)
+                {
+                    ((ICollection<T>)_val).Add(item);
+                    Reset();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public void Clear()
+            {
+                if (_val is ICollection<T>)
+                {
+                    ((ICollection<T>)_val).Clear();
+                    Reset();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public bool Contains(T item)
+            {
+                if (_val is ICollection<T>)
+                {
+                    return ((ICollection<T>)_val).Contains(item);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public void CopyTo(T[] array, int arrayIndex)
+            {
+                throw new NotImplementedException();
+            }
+
+            public int Count
+            {
+                get { return _val.Count(); }
+            }
+
+            public bool IsReadOnly
+            {
+                get 
+                {
+                    if (_val is ICollection<T>)
+                    {
+                        return ((ICollection<T>)_val).IsReadOnly;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            public bool Remove(T item)
+            {
+                if (_val is ICollection<T>)
+                {
+                    return ((ICollection<T>)_val).Remove(item);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            #endregion
+        } // class MemoizingEnumerable
 
         /// \internal
         /// <summary>
@@ -479,6 +749,9 @@ namespace IronMeta
         private class MatchItemStream : IList<MatchItem>
         {
             private IEnumerable<TInput> inputs;
+            private MemoizingEnumerable<TInput> inputs_memo;
+            private string sinput;
+
             private Func<TInput, TResult> conv;
 
             private List<MatchItem> items = new List<MatchItem>();
@@ -486,6 +759,8 @@ namespace IronMeta
             public MatchItemStream(IEnumerable<TInput> inputs, Func<TInput, TResult> conv)
             {
                 this.inputs = inputs;
+                this.inputs_memo = new MemoizingEnumerable<TInput>(inputs);
+                this.sinput = inputs as string;
                 this.conv = conv;
 
                 if (this.inputs == null)
@@ -493,13 +768,6 @@ namespace IronMeta
 
                 if (this.conv == null)
                     throw new ArgumentException("You must provide a converter function.");
-
-                count = 0;
-                foreach (TInput input in inputs)
-                {
-                    items.Add(new MatchItem(input, conv(input), count, count + 1));
-                    ++count;
-                }
             }
 
             #region IList<MatchItem> Members
@@ -523,6 +791,23 @@ namespace IronMeta
             {
                 get
                 {
+                    if (items.Count <= index || items[index] == null)
+                    {
+                        while (items.Count <= index)
+                            items.Add(null);
+
+                        TInput input;
+
+                        //if (sinput != null)
+                        //    input = (TInput)(object)sinput[index];
+                        //else if (inputs is IList<TInput>)
+                        //    input = ((IList<TInput>)inputs)[index];
+                        //else
+                            input = inputs_memo.ElementAt(index);
+                            
+                        items[index] = new MatchItem(input, conv(input), index, index + 1);
+                    }
+
                     return items[index];
                 }
                 set
@@ -559,8 +844,6 @@ namespace IronMeta
             {
                 get { throw new NotImplementedException(); }
             }
-
-            private int count = -1;
 
             public bool IsReadOnly
             {
@@ -634,7 +917,7 @@ namespace IronMeta
 
             public class MemoResult
             {
-                public IEnumerable<MatchItem> Result;
+                public IList<MatchItem> Result;
                 public LRInfo LR;
 
                 public override string ToString()
@@ -876,12 +1159,16 @@ namespace IronMeta
 
                 MatchItem res = null;
 
-                try 
+                try
                 {
                     if (_inputs != null)
                         res = _inputs.ElementAt(_index);
                 }
-                catch (ArgumentOutOfRangeException) 
+                catch (IndexOutOfRangeException)
+                {
+                    res = null;
+                }
+                catch (ArgumentOutOfRangeException)
                 {
                     res = null;
                 }
@@ -955,28 +1242,40 @@ namespace IronMeta
                         IEnumerator<TInput> curItem = items.GetEnumerator();
                         while (matches && curItem.MoveNext())
                         {
-                            MatchItem inputItem = _inputs.ElementAt(inputIndex++);
-
-                            IEnumerator<TInput> curInput = inputItem.Inputs.GetEnumerator();
-
-                            matches = curInput.MoveNext();
-                            while (matches)
+                            try
                             {
-                                matches = curItem.Current.Equals(curInput.Current);
+                                MatchItem inputItem = _inputs.ElementAt(inputIndex++);
+                                IEnumerator<TInput> curInput = inputItem.Inputs.GetEnumerator();
+                                matches = curInput.MoveNext();
 
-                                if (curInput.MoveNext())
+                                while (matches)
                                 {
-                                    if (!(matches = curItem.MoveNext()))
+                                    matches = curItem.Current.Equals(curInput.Current);
+
+                                    if (curInput.MoveNext())
+                                    {
+                                        if (!(matches = curItem.MoveNext()))
+                                            break;
+                                    }
+                                    else
+                                    {
                                         break;
+                                    }
                                 }
-                                else
-                                {
-                                    break;
-                                }
-                            }
 
-                            if (matches)
-                                results = results.Concat(inputItem.Results);
+                                if (matches)
+                                    results = results.Concat(inputItem.Results);
+                            }
+                            catch (IndexOutOfRangeException)
+                            {
+                                matches = false;
+                                break;
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                matches = false;
+                                break;
+                            }
                         }
 
                         if (matches)
@@ -1567,9 +1866,22 @@ namespace IronMeta
                         {
                             foreach (TInput var_item in v.Inputs)
                             {
-                                MatchItem input_item = _inputs.ElementAt(nextIndex++);
+                                try
+                                {
+                                    MatchItem input_item = _inputs.ElementAt(nextIndex++);
 
-                                if (!input_item.Inputs.Last().Equals(var_item))
+                                    if (!input_item.Inputs.Last().Equals(var_item))
+                                    {
+                                        matched = false;
+                                        break;
+                                    }
+                                }
+                                catch (IndexOutOfRangeException)
+                                {
+                                    matched = false;
+                                    break;
+                                }
+                                catch (ArgumentOutOfRangeException)
                                 {
                                     matched = false;
                                     break;
@@ -1665,15 +1977,15 @@ namespace IronMeta
         //////////////////////////////////////////
 
         /// \internal
-        protected static Combinator _CALL(Production p, IEnumerable<MatchItem> actual_args) 
+        protected static Combinator _CALL(Production p)
         {
-            return new CallItemCombinator(new MatchItem(p), actual_args); 
+            return new CallItemCombinator(new MatchItem(p), null);
         }
 
         /// \internal
-        protected static Combinator _CALL(Production p) 
+        protected static Combinator _CALL(Production p, IEnumerable<MatchItem> actual_args) 
         {
-            return new CallItemCombinator(new MatchItem(p), null); 
+            return new CallItemCombinator(new MatchItem(p), actual_args); 
         }
 
         /// \internal
@@ -1682,32 +1994,92 @@ namespace IronMeta
             return new CallItemCombinator(v, actual_args); 
         }
 
+        /// \internal
+        protected static Combinator _CALL(Production p, bool no_lr)
+        {
+            return no_lr ? new CallItemSimpleCombinator(new MatchItem(p), null) : _CALL(p);
+        }
 
         /// \internal
-        /// <summary>Implements Warth et al's algorithm for handling left-recursion.</summary>
-        private sealed class CallItemCombinator : Combinator
+        protected static Combinator _CALL(Production p, IEnumerable<MatchItem> actual_args, bool no_lr)
         {
-            MatchItem v;
-            IEnumerable<MatchItem> actual_args;
-            string call_signature;
+            return no_lr ? new CallItemSimpleCombinator(new MatchItem(p), actual_args) : _CALL(p, actual_args);
+        }
 
-            // make sure not to call this until the variable is bound
-            private string CallSignature
-            {
-                get
-                {
-                    return call_signature ?? BuildCallSignature();
-                }
-            }
+        /// \internal
+        protected static Combinator _CALL(MatchItem v, IEnumerable<MatchItem> actual_args, bool no_lr)
+        {
+            return no_lr ? new CallItemSimpleCombinator(v, actual_args) : _CALL(v, actual_args);
+        }
 
-            /// <summary>
-            /// Constructor.
-            /// </summary>
-            public CallItemCombinator(MatchItem v, IEnumerable<MatchItem> actual_args)
+
+        /// <summary>
+        /// Base class for call combinators.
+        /// </summary>
+        private class CallItemCombinatorBase : Combinator
+        {
+            protected MatchItem v;
+            protected IEnumerable<MatchItem> actual_args;
+            protected string call_signature;
+
+            public CallItemCombinatorBase(MatchItem v, IEnumerable<MatchItem> actual_args)
                 : base()
             {
                 this.v = v;
                 this.actual_args = actual_args;
+            }
+
+            protected string CallSignature { get { return call_signature ?? BuildCallSignature(); } }
+
+            private string BuildCallSignature()
+            {
+                return call_signature = string.Format("{0}({1})", v.Production.Method.Name, actual_args != null ? string.Join(", ", actual_args.Select(a => a.ToString()).ToArray()) : "");
+            }
+
+            public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
+        /// \internal
+        /// <summary>Simple call with no LR-detection.</summary>
+        private sealed class CallItemSimpleCombinator : CallItemCombinatorBase
+        {
+            public CallItemSimpleCombinator(MatchItem v, IEnumerable<MatchItem> actual_args)
+                : base(v, actual_args)
+            {
+            }
+
+            public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+            {
+                Memo.MemoResult mr = _memo[_index, CallSignature];
+
+                if (mr == null)
+                    mr = new Memo.MemoResult { Result = new MemoizingEnumerable<MatchItem>(v.Production(indent, _inputs, _index, actual_args, _memo)) };
+
+                foreach (var res in mr.Result)
+                {
+                    yield return res;
+
+                    if (_memo.StrictPEG)
+                        yield break;
+                }
+            }
+        }
+
+
+        /// \internal
+        /// <summary>Implements Warth et al's algorithm for handling left-recursion.</summary>
+        private sealed class CallItemCombinator : CallItemCombinatorBase
+        {
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            public CallItemCombinator(MatchItem v, IEnumerable<MatchItem> actual_args)
+                : base(v, actual_args)
+            {
             }
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
@@ -1726,7 +2098,7 @@ namespace IronMeta
                     // ignore uninvolved rules
                     if (mr == null && !(CallSignature.Equals(h.CallSignature) || h.InvolvedSet.Contains(CallSignature)))
                     {
-                        mr = new Memo.MemoResult { Result = Enumerable.Empty<MatchItem>() };
+                        mr = new Memo.MemoResult { Result = new MemoizingEnumerable<MatchItem>(Enumerable.Empty<MatchItem>()) };
                     }
                     // is this an involved rule?
                     else if (h.EvalSet.Contains(CallSignature))
@@ -1735,7 +2107,7 @@ namespace IronMeta
                         mr.LR = null;
 
                         WriteIndent(_index, indent, func_id, "_CALL({0}): eval involved rule", CallSignature);
-                        mr.Result = v.Production(indent, _inputs, _index, actual_args, _memo);
+                        mr.Result = new MemoizingEnumerable<MatchItem>(v.Production(indent, _inputs, _index, actual_args, _memo));
                     }
                 }
 
@@ -1745,7 +2117,8 @@ namespace IronMeta
                     var lr = new Memo.LRInfo { CallSignature = CallSignature, Head = null };
 
                     // if not, add a failing result, and mark the rule as available for growth
-                    List<MatchItem> finalResult = new List<MatchItem>();
+                    MemoizingEnumerable<MatchItem> finalResult = new MemoizingEnumerable<MatchItem>(new List<MatchItem>());
+                    //List<MatchItem> finalResult = new List<MatchItem>();
 
                     mr = new Memo.MemoResult { LR = lr, Result = finalResult };
                     _memo[_index, CallSignature] = mr;
@@ -1870,7 +2243,7 @@ namespace IronMeta
             } // Match()
 
             
-            private IEnumerable<MatchItem> GrowLR(int indent, IEnumerable<MatchItem> _inputs, int _index, Memo _memo, Memo.HeadInfo _head, List<MatchItem> finalResult, MatchItem prevResult)
+            private IEnumerable<MatchItem> GrowLR(int indent, IEnumerable<MatchItem> _inputs, int _index, Memo _memo, Memo.HeadInfo _head, IList<MatchItem> finalResult, MatchItem prevResult)
             {
                 int func_id = FUNC_ID++;
 
@@ -1918,11 +2291,6 @@ namespace IronMeta
                         yield break;
                 }
             } // GrowLR()
-
-            private string BuildCallSignature()
-            {
-                return call_signature = string.Format("{0}({1})", v.Production.Method.Name, actual_args != null ? string.Join(", ", actual_args.Select(a => a.ToString()).ToArray()) : "");
-            }
 
         } // CallItemCombinator()
 

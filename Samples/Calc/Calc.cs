@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 11/10/2009 8:48:15 PM UTC
+// IronMeta Generated Calc: 11/13/2009 1:09:29 AM UTC
 
 using System.Collections.Generic;
 using System;
@@ -51,7 +51,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _CALL(Additive);
+                    _disj_0_ = _CALL(Additive, false);
                 }
 
                 CachedCombinators[_Expression_Body__Index_] = _disj_0_;
@@ -84,7 +84,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_CALL(Add), _CALL(Sub), _CALL(Multiplicative));
+                    _disj_0_ = _OR(_CALL(Add, false), _CALL(Sub, false), _CALL(Multiplicative, false));
                 }
 
                 CachedCombinators[_Additive_Body__Index_] = _disj_0_;
@@ -145,7 +145,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Additive), new MatchItem('+', CONV), new MatchItem(Multiplicative)})), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Additive), new MatchItem('+', CONV), new MatchItem(Multiplicative)}), false), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 49 "Calc.ironmeta"
                                                      { return _IM_Result.Results.Aggregate((total, n) => total + n); }
 #line default
@@ -182,7 +182,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Additive), new MatchItem('-', CONV), new MatchItem(Multiplicative)})), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Additive), new MatchItem('-', CONV), new MatchItem(Multiplicative)}), false), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 50 "Calc.ironmeta"
                                                      { return _IM_Result.Results.Aggregate((total, n) => total - n); }
 #line default
@@ -219,11 +219,11 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _OR(_CALL(Multiply), _CALL(Divide));
+                    _disj_0_ = _OR(_CALL(Multiply, false), _CALL(Divide, false));
                 }
                 Combinator _disj_1_ = null;
                 {
-                    _disj_1_ = _CALL(Number, (new List<MatchItem> { new MatchItem(DecimalDigit)}));
+                    _disj_1_ = _CALL(Number, (new List<MatchItem> { new MatchItem(DecimalDigit)}), false);
                 }
 
                 CachedCombinators[_Multiplicative_Body__Index_] = _OR(_disj_0_, _disj_1_);
@@ -256,7 +256,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("*", CONV), new MatchItem(Number), new MatchItem(DecimalDigit)})), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("*", CONV), new MatchItem(Number), new MatchItem(DecimalDigit)}), false), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 56 "Calc.ironmeta"
                { return _IM_Result.Results.Aggregate((p, n) => p * n); }
 #line default
@@ -293,7 +293,7 @@ namespace Calc
 
                 Combinator _disj_0_ = null;
                 {
-                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("/", CONV), new MatchItem(Number), new MatchItem(DecimalDigit)})), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
+                    _disj_0_ = _ACTION(_CALL(BinaryOp, (new List<MatchItem> { new MatchItem(Multiplicative), new MatchItem("/", CONV), new MatchItem(Number), new MatchItem(DecimalDigit)}), false), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 58 "Calc.ironmeta"
                { return _IM_Result.Results.Aggregate((q, n) => q / n); }
 #line default
@@ -326,7 +326,7 @@ namespace Calc
                 var type = new CalcMatcherItem("type");
                 var a = new CalcMatcherItem("a");
                 var b = new CalcMatcherItem("b");
-                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op), _VAR(_ANY(), second), _VAR(_QUES(_ANY()), type)), _args, _ACTION(_AND(_VAR(_REF(first, this), a), _CALL(KW, (new List<MatchItem> { op})), _VAR(_CALL(second, (new List<MatchItem> { type})), b)), (_IM_Result_MI_) => {{ 
+                _disj_0_ = _ARGS(_AND(_VAR(_ANY(), first), _VAR(_ANY(), op), _VAR(_ANY(), second), _VAR(_QUES(_ANY()), type)), _args, _ACTION(_AND(_VAR(_REF(first, this), a), _CALL(KW, (new List<MatchItem> { op}), false), _VAR(_CALL(second, (new List<MatchItem> { type}), false), b)), (_IM_Result_MI_) => {{ 
 #line 60 "Calc.ironmeta"
                                                                            { return new List<int> { a, b }; }
 #line default
@@ -352,7 +352,7 @@ namespace Calc
                 var type = new CalcMatcherItem("type");
                 var n = new CalcMatcherItem("n");
                 var Whitespace = new CalcMatcherItem("Whitespace");
-                _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, (new List<MatchItem> { type})), n), _STAR(_REF(Whitespace, this))), (_IM_Result_MI_) => {{ 
+                _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, (new List<MatchItem> { type}), false), n), _STAR(_REF(Whitespace, this))), (_IM_Result_MI_) => {{ 
 #line 62 "Calc.ironmeta"
                                                  { return n; }
 #line default
@@ -378,7 +378,7 @@ namespace Calc
                 var type = new CalcMatcherItem("type");
                 var a = new CalcMatcherItem("a");
                 var b = new CalcMatcherItem("b");
-                _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, (new List<MatchItem> { type})), a), _VAR(_REF(type, this), b)), (_IM_Result_MI_) => {{ 
+                _disj_0_ = _ARGS(_VAR(_ANY(), type), _args, _ACTION(_AND(_VAR(_CALL(Digits, (new List<MatchItem> { type}), false), a), _VAR(_REF(type, this), b)), (_IM_Result_MI_) => {{ 
 #line 64 "Calc.ironmeta"
                                             { return a*10 + b; }
 #line default
@@ -447,6 +447,39 @@ namespace Calc
 
 
             foreach (var _res_ in _Zero_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        private int _Zero2_Body__Index_ = -1;
+
+        protected virtual IEnumerable<MatchItem> Zero2(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _Zero2_Body_ = null;
+
+            if (_Zero2_Body__Index_ == -1 || CachedCombinators[_Zero2_Body__Index_] == null)
+            {
+                if (_Zero2_Body__Index_ == -1)
+                {
+                    _Zero2_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                Combinator _disj_0_ = null;
+                {
+                    _disj_0_ = _CALL(Zero, true);
+                }
+
+                CachedCombinators[_Zero2_Body__Index_] = _disj_0_;
+            }
+
+            _Zero2_Body_ = CachedCombinators[_Zero2_Body__Index_];
+
+
+            foreach (var _res_ in _Zero2_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 

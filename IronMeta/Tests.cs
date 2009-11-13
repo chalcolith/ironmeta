@@ -77,6 +77,7 @@ namespace IronMeta
             char[] nc = new char[] { '\n' };
             string n = new string(nc);
 
+            Assert.True(MatchGreedy(rn, "EOL"));
             Assert.True(MatchGreedy(rnc, "EOL"));
             Assert.True(MatchGreedy("\n", "EOL"));
             Assert.True(MatchGreedy(n, "EOL"));
@@ -92,6 +93,7 @@ namespace IronMeta
             char[] rnc = new char[] { '\r', '\n' };
             string rn = new string(rnc);
 
+            Assert.True(MatchGreedy(rn, "Whitespace"));
             Assert.True(MatchGreedy(rnc, "Whitespace"));
             Assert.True(MatchGreedy(" ", "Whitespace"));
             Assert.True(MatchGreedy("\t", "Whitespace"));

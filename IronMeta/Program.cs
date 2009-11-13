@@ -93,7 +93,7 @@ namespace IronMeta
                 ironMetaFile.Analyze(info);
 
                 // optimize
-                SyntaxNode.Optimize(ironMetaFile);
+                SyntaxNode.Optimize(ironMetaFile, info);
 
                 // generate
                 using (StreamWriter sw = new StreamWriter(outputFName))
