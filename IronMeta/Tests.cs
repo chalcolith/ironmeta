@@ -290,7 +290,7 @@ namespace IronMeta
         public void Test_Calc()
         {
             Program program = new Program();
-            Assert.True(program.Process(@"..\..\..\Samples\Calc\Calc.ironmeta"));
+            Assert.True(program.Process(@"..\..\..\..\Samples\Calc\Calc.ironmeta", false));
         }
 
     } // class Tests

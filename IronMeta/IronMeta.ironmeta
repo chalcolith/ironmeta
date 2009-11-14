@@ -68,7 +68,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
                     };
     
     Disjunction = ActionExpression ("|" SP ActionExpression)*
-                    -> { return new DisjunctionExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(node => node is ExpNode)); };
+                    -> { return new DisjunctionExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(n => n is ExpNode)); };
         
     ActionExpression = SequenceExpression:exp ("=>" | "->") SP &'{' CSharpCode:action SP
                     -> { return new ActionExpNode(_IM_StartIndex, _IM_NextIndex, exp, action); }
@@ -102,7 +102,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
             -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "NOT"); };
     
     
-    PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term | !"expected a pattern";
+    PostfixedTerm = StarTerm | PlusTerm | QuestionTerm | Term | !"expected a pattern term";
     
     StarTerm = PostfixedTerm:exp "*"
             -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "STAR"); };
@@ -114,10 +114,16 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
             -> { return new UnaryExpNode(_IM_StartIndex, _IM_NextIndex, exp, "QUES"); }; 
     
     
-    Term = ParenTerm | AnyTerm | RuleCall | CallOrVar | Literal;
+    Term = ParenTerm | BracketTerm | AnyTerm | RuleCall | CallOrVar | Literal;
     
     ParenTerm = "(" SP Disjunction:exp ")"
             -> { return exp; };
+
+    BracketTerm = "[" SP ((LiteralRange | Literal) SP)+:exp "]"
+            -> { return new BracketExpNode(_IM_StartIndex, _IM_NextIndex, exp.Results.Where(n => n is LiteralExpNode || n is LiteralRangeNode)); };
+
+    LiteralRange = Literal SP ".." SP Literal
+            -> { return new LiteralRangeNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results.Where(n => n is LiteralExpNode)); };
     
     AnyTerm = "."
             -> { return new AnyExpNode(_IM_StartIndex, _IM_NextIndex); };
@@ -126,7 +132,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
             -> { return new RuleCallExpNode(_IM_StartIndex, _IM_NextIndex, name, p); };
     
     ParameterList = Parameter ("," SP Parameter)*
-            -> { return _IM_Result.Results.Where(child => child is ExpNode); };
+            -> { return _IM_Result.Results.Where(n => n is ExpNode); };
             
     Parameter = (CallOrVar | Literal):p SP
             -> { return p; };
@@ -134,7 +140,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     CallOrVar = QualifiedIdentifier
             -> { return new CallOrVarExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result); };
 
-    Literal = &('\"' | '\'' | '{') CSharpCode
+    Literal = &['\"' '\'' '{'] CSharpCode
             -> { return new LiteralExpNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); };
 
     
@@ -150,13 +156,15 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     GenericIdentifier = QualifiedIdentifier:id ("<" SP (GenericIdentifier SP ("," SP GenericIdentifier SP)*):p ">")?
             -> {
                     var idn = (IdentifierNode) id;
-                    return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, idn, idn.Qualifiers, p.Results.Where(node => node is IdentifierNode));
+                    return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, idn, idn.Qualifiers, p.Results.Where(n => n is IdentifierNode));
                 };
 
     QualifiedIdentifier = (Identifier ".")*:quals Identifier:name
-            -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(node => node is IdentifierNode), null); };
+            -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(n => n is IdentifierNode), null); };
     
-    Identifier = IdentBegin IdentChar*
+    //Identifier = IdentBegin IdentChar*
+
+    Identifier = [ '_' 'a' .. 'z' 'A' .. 'Z' ] [ '_' 'a' .. 'z' 'A' .. 'Z' '0' .. '9' ]*
             -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, null, null, null); };
             
     IdentBegin = ('_' | . ?(System.Char.IsLetter(_IM_Result)));
@@ -168,7 +176,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     Comment = (  "//" EOLCommentChar* (EOL|EOF)  |  "/*" BracketCommentChar* "*/" )
             -> { return new CommentNode(_IM_StartIndex, _IM_NextIndex); };
     
-    EOLCommentChar = (~('\r' | '\n' | '\x0085' | '\x000c' | '\x2028' | '\x2029') .);
+    EOLCommentChar = ~EOL .;
     BracketCommentChar = (~("*/") (EOL | .));
         
     override Whitespace = EOL | . ?(System.Char.IsWhiteSpace(_IM_Result)) 
@@ -179,5 +187,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     
     override EOF = ~. 
             -> { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOF); };
-    
+
+    override EOF = !"unexpected end of file";    
+
 }

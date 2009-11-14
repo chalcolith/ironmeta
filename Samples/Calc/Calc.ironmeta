@@ -43,8 +43,8 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     Expression = Additive;
     
     Additive = Add | Sub | Multiplicative;
-        
-    DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+    
+    DecimalDigit = [ '0' .. '9' ] -> { return (int)_IM_Result - '0'; };
     
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
     Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
@@ -68,4 +68,6 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     
     Zero = "ze" {new List<char>{ 'r', 'o' }};
     Zero2 = Zero();
+
+    Brack = [ 'a' .. 'z' ];
 }

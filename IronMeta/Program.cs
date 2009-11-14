@@ -50,7 +50,7 @@ namespace IronMeta
         {
         }
 
-        public bool Process(string fileName)
+        public bool Process(string fileName, bool force)
         {
             // get base filename
             string baseFname, bareFname, nameSpace;
@@ -59,6 +59,18 @@ namespace IronMeta
             string outputFName = baseFname + ".cs";
 
             Console.Write("{0} -> {1}", fileName, outputFName);
+
+            // check timestamps
+            if (!force && File.Exists(outputFName))
+            {
+                FileInfo fileInfo = new FileInfo(fileName);
+                FileInfo outputInfo = new FileInfo(outputFName);
+                if (fileInfo.LastWriteTimeUtc < outputInfo.LastWriteTimeUtc)
+                {
+                    Console.WriteLine(": up to date");
+                    return true;
+                }
+            }
 
             // get file
             string contents = null;
@@ -115,7 +127,7 @@ namespace IronMeta
                 else if (pe is SemanticException)
                     prefix = "Semantic error: ";
                 else
-                    prefix = "Eror: ";
+                    prefix = "Error: ";
 
                 int lineNumber, lineOffset;
                 lineNumber = matcher.GetLineNumber(contents, pe.Index, out lineOffset);
@@ -123,12 +135,12 @@ namespace IronMeta
 
                 var sb = new StringBuilder();
                 sb.AppendFormat("{0}({1}): {4}{2}\n\n{3}\n", fileName, lineNumber, pe.Message, line, prefix);
-                for (int i = 0; i < lineOffset; ++i)
-                    sb.Append(" ");
+                sb.Append(' ', lineOffset);
                 sb.AppendLine("^");
 
                 Console.WriteLine();
                 Console.WriteLine(sb.ToString());
+
                 return false;
             }
 
@@ -160,15 +172,18 @@ namespace IronMeta
 
         static void Main(string[] args)
         {
-            //Tests t = new Tests();
-            //t.Test_QualifiedIdentifier();
-
             try
             {
                 Program program = new Program();
 
+                bool force = false;
                 foreach (string arg in args)
-                    program.Process(arg);
+                {
+                    if (arg.Equals("--force"))
+                        force = true;
+                    else
+                        program.Process(arg, force);
+                }
             }
             catch (Exception e)
             {

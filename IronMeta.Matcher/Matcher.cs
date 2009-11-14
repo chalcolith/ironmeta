@@ -299,14 +299,14 @@ namespace IronMeta
 
             public MatchItem(TInput input, TResult result)
             {
-                Inputs = new List<TInput> { input };
-                Results = new List<TResult> { result };
+                Inputs = new TInput[] { input };
+                Results = new TResult[] { result };
             }
 
             public MatchItem(TInput input, TResult result, int start, int next)
             {
-                Inputs = new List<TInput> { input };
-                Results = new List<TResult> { result };
+                Inputs = new TInput[] { input };
+                Results = new TResult[] { result };
                 StartIndex = start;
                 NextIndex = next;
             }
@@ -340,13 +340,22 @@ namespace IronMeta
                 set
                 {
                     inputStream = value;
+
+                    if (inputStream is MatchItemStream)
+                        underlyingStream = ((MatchItemStream)inputStream).Inputs;
+                    else
+                        underlyingStream = null;
+
                     inputItems = null;
+                    cachedFromStream = null;
                 }
             }
 
             private IEnumerable<TInput> inputItems = null;
             private IEnumerable<MatchItem> inputStream = null;
+            private IEnumerable<TInput> underlyingStream = null;
             private IEnumerable<TInput> cachedFromStream = null;
+            private static IEnumerable<TInput> emptyInputs = Enumerable.Empty<TInput>();
 
             /// <summary>
             /// The inputs that this item matches, if any.
@@ -363,17 +372,30 @@ namespace IronMeta
                     {
                         if (cachedFromStream == null)
                         {
-                            var cached = new List<TInput>();
-                            for (int i = StartIndex; i < NextIndex; ++i)
-                                cached.AddRange(inputStream.ElementAt(i).Inputs);
-                            cachedFromStream = cached;
+                            if (underlyingStream != null)
+                            {
+                                cachedFromStream = underlyingStream.Skip(StartIndex).Take(NextIndex - StartIndex);
+                            }
+                            else
+                            {
+                                for (int i = StartIndex; i < NextIndex; ++i)
+                                {
+                                    if (cachedFromStream == null)
+                                        cachedFromStream = inputStream.ElementAt(i).Inputs;
+                                    else
+                                        cachedFromStream = cachedFromStream.Concat(inputStream.ElementAt(i).Inputs);
+                                }
+                            }
                         }
+
+                        if (cachedFromStream == null)
+                            cachedFromStream = emptyInputs;
 
                         return cachedFromStream;
                     }
                     else
                     {
-                        return Enumerable.Empty<TInput>();
+                        return emptyInputs;
                     }
                 }
 
@@ -387,7 +409,9 @@ namespace IronMeta
             /// <summary>
             /// The list of outputs corresponding to the inputs.
             /// </summary>
-            public IEnumerable<TResult> Results = Enumerable.Empty<TResult>();
+            public IEnumerable<TResult> Results = emptyResults;
+
+            private static IEnumerable<TResult> emptyResults = Enumerable.Empty<TResult>();
 
             public IEnumerable<MatchItem> AsList
             {
@@ -456,10 +480,17 @@ namespace IronMeta
                     }
                     else
                     {
-                        string inputs = string.Join(",", Inputs.Select(item => item.ToString()).ToArray());
-                        string results = string.Join(",", Results.Select(r => r != null ? r.ToString() : "<null>").ToArray());
+                        try
+                        {
+                            string inputs = string.Join(",", Inputs.Select(i => i != null ? i.ToString() : "<null>").ToArray());
+                            string results = string.Join(",", Results.Select(r => r != null ? r.ToString() : "<null>").ToArray());
 
-                        id = string.Format("{0}-{1} [{2}] -> [{3}]", StartIndex, NextIndex, inputs, results);
+                            id = string.Format("{0}-{1} [{2}] -> [{3}]", StartIndex, NextIndex, inputs, results);
+                        }
+                        catch
+                        {
+                            throw;
+                        }
                     }
                 }
 
@@ -468,6 +499,13 @@ namespace IronMeta
 
             private string id = null;
 
+            public override int GetHashCode()
+            {
+                return hash_code;
+            }
+
+            private int hash_code = HASH_CODE++;
+            private static int HASH_CODE = 0;
         } // class MatchItem
 
         /// \internal
@@ -756,6 +794,17 @@ namespace IronMeta
 
             private List<MatchItem> items = new List<MatchItem>();
 
+            public IEnumerable<TInput> Inputs 
+            { 
+                get 
+                {
+                    if (sinput != null)
+                        return (IEnumerable<TInput>)(IEnumerable<char>)sinput;
+                    else
+                        return inputs_memo;
+                } 
+            }
+
             public MatchItemStream(IEnumerable<TInput> inputs, Func<TInput, TResult> conv)
             {
                 this.inputs = inputs;
@@ -793,16 +842,19 @@ namespace IronMeta
                 {
                     if (items.Count <= index || items[index] == null)
                     {
+                        if (items.Capacity <= index)
+                            items.Capacity = index * 2;
+
                         while (items.Count <= index)
                             items.Add(null);
 
                         TInput input;
 
-                        //if (sinput != null)
-                        //    input = (TInput)(object)sinput[index];
-                        //else if (inputs is IList<TInput>)
-                        //    input = ((IList<TInput>)inputs)[index];
-                        //else
+                        if (sinput != null)
+                            input = (TInput)(object)sinput[index];
+                        else if (inputs is IList<TInput>)
+                            input = ((IList<TInput>)inputs)[index];
+                        else
                             input = inputs_memo.ElementAt(index);
                             
                         items[index] = new MatchItem(input, conv(input), index, index + 1);
@@ -1216,7 +1268,7 @@ namespace IronMeta
 
             public LiteralCombinator(TInput item)
             {
-                this.items = new List<TInput> { item };
+                this.items = new TInput[] { item };
             }
 
             public LiteralCombinator(IEnumerable<TInput> items)
@@ -1235,7 +1287,7 @@ namespace IronMeta
                     if (_inputs != null)
                     {
                         bool matches = true;
-                        IEnumerable<TResult> results = Enumerable.Empty<TResult>();
+                        IEnumerable<TResult> results = null; // Enumerable.Empty<TResult>();
 
                         int inputIndex = _index;
 
@@ -1264,7 +1316,12 @@ namespace IronMeta
                                 }
 
                                 if (matches)
-                                    results = results.Concat(inputItem.Results);
+                                {
+                                    if (results == null)
+                                        results = inputItem.Results;
+                                    else
+                                        results = results.Concat(inputItem.Results);
+                                }
                             }
                             catch (IndexOutOfRangeException)
                             {
@@ -1312,6 +1369,77 @@ namespace IronMeta
         }
 
 
+        //////////////////////////////////////////
+
+        protected static Combinator _CATEGORY(IEnumerable<MatchItem> alternatives) { return new CategoryCombinator(alternatives); }
+
+        private sealed class CategoryCombinator : Combinator
+        {
+            IEnumerable<MatchItem> alternatives;
+
+            public CategoryCombinator(IEnumerable<MatchItem> alternatives)
+                : base()
+            {
+                this.alternatives = alternatives;
+            }
+
+
+            public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+            {
+                int func_id = FUNC_ID++;
+                WriteIndent(_index, indent, func_id, "_CATEGORY()");
+
+                MatchItem res = null;
+                string errstr = null;
+
+                if (_inputs != null)
+                {
+                    try
+                    {
+                        MatchItem input_item = _inputs.ElementAt(_index);
+
+                        foreach (MatchItem alt in alternatives)
+                        {
+                            if (alt.Inputs.SequenceEqual(input_item.Inputs))
+                            {
+                                res = new MatchItem
+                                    {
+                                        InputStream = _inputs,
+                                        Results = input_item.Results,
+                                        StartIndex = _index,
+                                        NextIndex = _index + 1
+                                    };
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        res = null;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        res = null;
+                    }
+                }
+
+                if (res != null)
+                {
+                    WriteIndent(_index, indent, func_id, "_CATEGORY(): {1}", res);
+                    yield return res;
+                }
+                else
+                {
+                    if (_memo != null)
+                        _memo.AddError(_index, errstr ?? string.Format("expected [{0}]", string.Join("|", alternatives.Select(i => i.ToString()).ToArray())));
+
+                    WriteIndent(_index, indent, func_id, "_CATEGORY(): FAIL");
+                    yield break;
+                }
+            }
+
+        } // class CategoryCombinator
+        
+        
         //////////////////////////////////////////
 
         /// \internal
@@ -2054,13 +2182,22 @@ namespace IronMeta
 
             public override IEnumerable<MatchItem> Match(int indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
             {
+                int func_id = FUNC_ID++;
+
                 Memo.MemoResult mr = _memo[_index, CallSignature];
 
+                WriteIndent(_index, indent, func_id, "_CALL({0}): memo {1}", CallSignature, mr != null ? mr.Result.ToString() : "<null>");
+
                 if (mr == null)
+                {
                     mr = new Memo.MemoResult { Result = new MemoizingEnumerable<MatchItem>(v.Production(indent, _inputs, _index, actual_args, _memo)) };
+                    _memo[_index, CallSignature] = mr;
+                }
 
                 foreach (var res in mr.Result)
                 {
+                    WriteIndent(_index, indent, func_id, " CALL({0}): return {1}", CallSignature, res);
+
                     yield return res;
 
                     if (_memo.StrictPEG)
@@ -2118,7 +2255,6 @@ namespace IronMeta
 
                     // if not, add a failing result, and mark the rule as available for growth
                     MemoizingEnumerable<MatchItem> finalResult = new MemoizingEnumerable<MatchItem>(new List<MatchItem>());
-                    //List<MatchItem> finalResult = new List<MatchItem>();
 
                     mr = new Memo.MemoResult { LR = lr, Result = finalResult };
                     _memo[_index, CallSignature] = mr;
@@ -2172,7 +2308,9 @@ namespace IronMeta
                                         yield break;
 
                                     _memo.Heads[_index] = lr.Head;
-                                    lr.Head.EvalSet = new HashSet<string>(lr.Head.InvolvedSet);
+                                    
+                                    lr.Head.EvalSet.Clear();
+                                    lr.Head.EvalSet.UnionWith(lr.Head.InvolvedSet);
                                 }
 
                                 if (!grown)

@@ -5,16 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}</ProjectGuid>
+    <ProjectGuid>{B77EB4CB-EC96-4BA3-9DF9-5D0F2D840DCE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Calc</RootNamespace>
-    <AssemblyName>Calc</AssemblyName>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +36,12 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit, Version=1.1.0.1323, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -46,19 +50,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calc.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\IronMeta.Matcher\IronMeta.Matcher.csproj">
       <Project>{B73467B0-F643-4738-BFB4-4F1F8CF8703C}</Project>
       <Name>IronMeta.Matcher</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\IronMeta\IronMeta.csproj">
+      <Project>{03B94334-DB66-49B7-B311-9C583C7E8AD8}</Project>
+      <Name>IronMeta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Samples\Calc\Calc.csproj">
+      <Project>{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}</Project>
+      <Name>Calc</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Calc.ironmeta" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -69,9 +78,11 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
+    <PostBuildEvent>copy /y ..\..\..\..\IronMeta\IronMeta.cs ..\..\..\..\IronMeta\IronMeta.cs.backup &gt; copylog.txt
+..\..\..\..\Resources\xUnit.net\xunit.console.exe ..\..\..\..\IronMeta.Matcher\bin\$(ConfigurationName)\IronMeta.Matcher.dll
+..\..\..\..\Resources\xUnit.net\xunit.console.exe ..\..\..\..\IronMeta\bin\$(ConfigurationName)\IronMeta.exe
+..\..\..\..\Resources\xUnit.net\xunit.console.exe ..\..\..\..\Samples\Calc\bin\$(ConfigurationName)\Calc.exe</PostBuildEvent>
   </PropertyGroup>
 </Project>

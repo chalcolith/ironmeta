@@ -129,13 +129,13 @@ namespace IronMeta
 
         IEnumerable<SyntaxNode> children = null;
 
-        private string text = null;
+        protected string text = null;
         
         public IEnumerable<SyntaxNode> Children
         {
             get
             {
-                return children ?? Enumerable.Empty<SyntaxNode>();
+                return children ?? (children = Enumerable.Empty<SyntaxNode>());
             }
 
             internal set
@@ -163,10 +163,10 @@ namespace IronMeta
         {
             if (text == null)
             {
-                var sb = new StringBuilder();
-                for (int i = start; i < next; ++i)
-                    sb.Append(inputs.ElementAt(i));
-                text = sb.ToString();
+                if (inputs is string)
+                    text = ((string)inputs).Substring(start, next - start);
+                else
+                    text = new string(inputs.Skip(start).Take(next - start).ToArray());
             }
 
             return text;
@@ -210,6 +210,22 @@ namespace IronMeta
             tw.Write(sb.ToString());
         }
 
+        protected List<string> GetMatchItemList(IEnumerable<SyntaxNode> parameters, GenerateInfo info)
+        {
+            var pList = new List<string>();
+            foreach (var p in parameters)
+            {
+                string pText = p.GetText(info.InputStream).Trim();
+
+                if (info.RuleNames.Contains(pText))
+                    pList.Add(string.Format("new MatchItem({0})", pText));
+                else if (info.VariableNames.Contains(pText) || pText.EndsWith(".AsList"))
+                    pList.Add(pText);
+                else
+                    pList.Add(string.Format("new MatchItem({0}, CONV)", pText));
+            }
+            return pList;
+        }
 
         public static void Optimize(SyntaxNode rootNode, GenerateInfo info)
         {
@@ -440,13 +456,10 @@ namespace IronMeta
 
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
         {
-            foreach (SyntaxNode child in Children)
+            foreach (SyntaxNode child in Children.OfType<CommentNode>())
             {
-                if (child is CommentNode)
-                {
-                    Indent(indent, tw);
-                    child.Generate(indent, tw, info);
-                }
+                Indent(indent, tw);
+                child.Generate(indent, tw, info);
             }
         }
     }
@@ -487,6 +500,12 @@ namespace IronMeta
         public LiteralExpNode(int start, int next, IEnumerable<SyntaxNode> children)
             : base(start, next)
         {
+        }
+
+        public LiteralExpNode(int start, int next, string text)
+            : base(start, next)
+        {
+            this.text = text;
         }
 
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
@@ -583,18 +602,7 @@ namespace IronMeta
         {
             if (parameters != null && parameters.Any())
             {
-                var pList = new List<string>();
-                foreach (var p in parameters)
-                {
-                    string pText = p.GetText(info.InputStream).Trim();
-
-                    if (info.RuleNames.Contains(pText))
-                        pList.Add(string.Format("new MatchItem({0})", pText));
-                    else if (info.VariableNames.Contains(pText) || pText.EndsWith(".AsList"))
-                        pList.Add(pText);
-                    else
-                        pList.Add(string.Format("new MatchItem({0}, CONV)", pText));
-                }
+                var pList = GetMatchItemList(parameters, info);
 
                 // promote variables if necessary
                 bool in_list = false;
@@ -658,6 +666,67 @@ namespace IronMeta
         public override void Generate(int indent, TextWriter tw, GenerateInfo info)
         {
             tw.Write("_ANY()");
+        }
+    }
+
+    public class BracketExpNode : ExpNode
+    {
+
+        public BracketExpNode(int start, int next, IEnumerable<SyntaxNode> literals)
+            : base(start, next)
+        {
+            this.Children = literals;
+        }
+
+        public override void Generate(int indent, TextWriter tw, GenerateInfo info)
+        {
+            List<SyntaxNode> literals = new List<SyntaxNode>();
+            GetLiterals(literals, Children, info);
+
+            if (literals.Count > 0)
+            {
+                string parameters = string.Join(", ", GetMatchItemList(literals, info).ToArray());
+                tw.Write("_CATEGORY(new List<MatchItem> {{ {0} }})", parameters);
+            }
+            else
+            {
+                tw.Write("_FAIL()");
+            }
+        }
+
+        private void GetLiterals(IList<SyntaxNode> list, IEnumerable<SyntaxNode> nodes, GenerateInfo info)
+        {
+            foreach (SyntaxNode node in nodes)
+            {
+                if (node is LiteralExpNode)
+                {
+                    list.Add(node);
+                    GetLiterals(list, node.Children, info);
+                }
+                else if (node is LiteralRangeNode)
+                {
+                    char first = Char.Parse(node.Children.First().GetText(info.InputStream).Trim(' ', '\''));
+                    char last = Char.Parse(node.Children.Last().GetText(info.InputStream).Trim(' ', '\''));
+
+                    for (char ch = first; ch <= last; ++ch)
+                    {
+                        list.Add(new LiteralExpNode(node.StartIndex, node.NextIndex, string.Format("'{0}'", ch)));
+                    }
+                }
+                else
+                {
+                    GetLiterals(list, node.Children, info);
+                }
+            }
+        }
+    }
+
+    public class LiteralRangeNode : ExpNode
+    {
+        public LiteralRangeNode(int start, int next, IEnumerable<SyntaxNode> literals)
+            : base(start, next)
+        {
+            this.Children = literals;
         }
     }
 

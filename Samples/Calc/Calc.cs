@@ -1,4 +1,4 @@
-// IronMeta Generated Calc: 11/13/2009 1:09:29 AM UTC
+// IronMeta Generated Calc: 11/13/2009 11:18:28 PM UTC
 
 using System.Collections.Generic;
 using System;
@@ -101,25 +101,34 @@ namespace Calc
             }
         }
 
+        private int _DecimalDigit_Body__Index_ = -1;
+
         protected virtual IEnumerable<MatchItem> DecimalDigit(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
         {
             Combinator _DecimalDigit_Body_ = null;
 
-            Combinator _disj_0_ = null;
+            if (_DecimalDigit_Body__Index_ == -1 || CachedCombinators[_DecimalDigit_Body__Index_] == null)
             {
-                var c = new CalcMatcherItem("c");
-                _disj_0_ = _ACTION(_CONDITION(_VAR(_ANY(), c), (_IM_Result_MI_) => { return (
+                if (_DecimalDigit_Body__Index_ == -1)
+                {
+                    _DecimalDigit_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                Combinator _disj_0_ = null;
+                {
+                    _disj_0_ = _ACTION(_CATEGORY(new List<MatchItem> { new MatchItem('0', CONV), new MatchItem('1', CONV), new MatchItem('2', CONV), new MatchItem('3', CONV), new MatchItem('4', CONV), new MatchItem('5', CONV), new MatchItem('6', CONV), new MatchItem('7', CONV), new MatchItem('8', CONV), new MatchItem('9', CONV) }), (_IM_Result_MI_) => {{ var _IM_Result = new CalcMatcherItem(_IM_Result_MI_); int _IM_StartIndex = _IM_Result.StartIndex; int _IM_NextIndex = _IM_Result.NextIndex; 
 #line 47 "Calc.ironmeta"
-                        ( c >= '0' && c <= '9' )
-#line default
-);}), (_IM_Result_MI_) => {{ 
-#line 47 "Calc.ironmeta"
-                                                    { return (int)c - '0'; }
+                                     { return (int)_IM_Result - '0'; }
 #line default
 }});
+                }
+
+                CachedCombinators[_DecimalDigit_Body__Index_] = _disj_0_;
             }
 
-            _DecimalDigit_Body_ = _disj_0_;
+            _DecimalDigit_Body_ = CachedCombinators[_DecimalDigit_Body__Index_];
+
 
             foreach (var _res_ in _DecimalDigit_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
@@ -480,6 +489,39 @@ namespace Calc
 
 
             foreach (var _res_ in _Zero2_Body_.Match(_indent+1, _inputs, _index, null, _memo))
+            {
+                yield return _res_;
+
+                if (StrictPEG) yield break;
+            }
+        }
+
+        private int _Brack_Body__Index_ = -1;
+
+        protected virtual IEnumerable<MatchItem> Brack(int _indent, IEnumerable<MatchItem> _inputs, int _index, IEnumerable<MatchItem> _args, Memo _memo)
+        {
+            Combinator _Brack_Body_ = null;
+
+            if (_Brack_Body__Index_ == -1 || CachedCombinators[_Brack_Body__Index_] == null)
+            {
+                if (_Brack_Body__Index_ == -1)
+                {
+                    _Brack_Body__Index_ = CachedCombinators.Count;
+                    CachedCombinators.Add(null);
+                }
+
+                Combinator _disj_0_ = null;
+                {
+                    _disj_0_ = _CATEGORY(new List<MatchItem> { new MatchItem('a', CONV), new MatchItem('b', CONV), new MatchItem('c', CONV), new MatchItem('d', CONV), new MatchItem('e', CONV), new MatchItem('f', CONV), new MatchItem('g', CONV), new MatchItem('h', CONV), new MatchItem('i', CONV), new MatchItem('j', CONV), new MatchItem('k', CONV), new MatchItem('l', CONV), new MatchItem('m', CONV), new MatchItem('n', CONV), new MatchItem('o', CONV), new MatchItem('p', CONV), new MatchItem('q', CONV), new MatchItem('r', CONV), new MatchItem('s', CONV), new MatchItem('t', CONV), new MatchItem('u', CONV), new MatchItem('v', CONV), new MatchItem('w', CONV), new MatchItem('x', CONV), new MatchItem('y', CONV), new MatchItem('z', CONV) });
+                }
+
+                CachedCombinators[_Brack_Body__Index_] = _disj_0_;
+            }
+
+            _Brack_Body_ = CachedCombinators[_Brack_Body__Index_];
+
+
+            foreach (var _res_ in _Brack_Body_.Match(_indent+1, _inputs, _index, null, _memo))
             {
                 yield return _res_;
 

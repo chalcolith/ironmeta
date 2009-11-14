@@ -197,18 +197,10 @@ namespace IronMeta
             int startIndex = LineBeginsArray[lineNumber];
             int nextIndex = (lineNumber + 1) < LineBeginsArray.Length ? LineBeginsArray[lineNumber + 1] : stream.Count();
 
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = startIndex; i < nextIndex; ++i)
-            {
-                char ch = stream.ElementAt(i);
-                if (ch == '\n' || ch == '\r')
-                    break;
-
-                sb.Append(ch);
-            }
-
-            return sb.ToString();
+            if (stream is string)
+                return ((string)stream).Substring(startIndex, nextIndex - startIndex);
+            else
+                return new string(stream.Skip(startIndex).Take(nextIndex - startIndex).ToArray());
         }
 
         /// <summary>

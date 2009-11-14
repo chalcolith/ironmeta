@@ -59,7 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="IronMeta.ironmeta" />
+    <Content Include="IronMeta.ironmeta" />
     <None Include="IronMeta.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +76,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>@copy /y ..\..\IronMeta.cs ..\..\IronMeta.cs.backup &gt; copylog.txt
-..\..\..\Resources\xUnit.net\xunit.console.exe "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
