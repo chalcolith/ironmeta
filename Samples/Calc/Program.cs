@@ -48,12 +48,9 @@ namespace Calc
 
         private static void Main(string[] args)
         {
-            //Tests t = new Tests();
-            //t.Test_Expression();
-
             string input;
 
-            CalcMatcher matcher = new CalcMatcher(c => (int)c, true);
+            CalcMatcher matcher = new CalcMatcher(c => (int)c - '0', true);
 
             do
             {

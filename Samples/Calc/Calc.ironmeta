@@ -38,13 +38,16 @@
 using System;
 using System.Linq;
 
+// This grammar is far more complicated than 
+// it needs to be, in order to demonstrate
+// the features of the IronMeta system.
 ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
 {
     Expression = Additive;
     
     Additive = Add | Sub | Multiplicative;
     
-    DecimalDigit = [ '0' .. '9' ] -> { return (int)_IM_Result - '0'; };
+    DecimalDigit = ['0' .. '9'];
     
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
     Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
@@ -52,22 +55,25 @@ ironMeta Calc<char, int> : IronMeta.CharacterMatcher<int>
     Multiplicative = Multiply | Divide;
     Multiplicative = Number(DecimalDigit);
     
-    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) 
-            -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
-    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) 
-            -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
+    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
         
     BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
     
     Number :type = Digits(type):n Whitespace* -> { return n; };
     
+    // note the left recursion
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
     Digits :type = type;
             
     KW :str = str Whitespace*;
     
+    // literal item
     Zero = "ze" {new List<char>{ 'r', 'o' }};
     Zero2 = Zero();
 
-    Brack = [ 'a' .. 'z' ];
+    // pathalogical grammar; won't ever try C
+    A = A 'a' | B;
+    B = B 'b' | A | C;
+    C = C 'c' | B | 'd';
 }

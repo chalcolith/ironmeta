@@ -105,7 +105,7 @@ namespace IronMeta
                     CachedCombinators.Add(null);
                 }
 
-                CachedCombinators[_EOL_Body__Index_] = _ACTION(_OR(_OR(_AND(_LITERAL('\r'), _LITERAL('\n')), _LITERAL('\n')), _AND(_LITERAL('\r'), _NOT(_LITERAL('\n')))), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.NextIndex); return default(TResult); });
+                CachedCombinators[_EOL_Body__Index_] = _ACTION(_OR(_OR(_LITERAL("\r\n"), _LITERAL('\n')), _AND(_LITERAL('\r'), _NOT(_LITERAL('\n')))), (_IM_Result) => { _IM_LineBeginPositions.Add(_IM_Result.NextIndex); return default(TResult); });
             }
 
             _EOL_Body_ = CachedCombinators[_EOL_Body__Index_];

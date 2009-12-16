@@ -162,9 +162,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
     QualifiedIdentifier = (Identifier ".")*:quals Identifier:name
             -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, name, quals.Results.Where(n => n is IdentifierNode), null); };
     
-    //Identifier = IdentBegin IdentChar*
-
-    Identifier = [ '_' 'a' .. 'z' 'A' .. 'Z' ] [ '_' 'a' .. 'z' 'A' .. 'Z' '0' .. '9' ]*
+    Identifier = IdentBegin IdentChar*
             -> { return new IdentifierNode(_IM_StartIndex, _IM_NextIndex, null, null, null); };
             
     IdentBegin = ('_' | . ?(System.Char.IsLetter(_IM_Result)));
@@ -173,7 +171,7 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
 
     SP = (Comment | Whitespace)* -> { return new SpacingNode(_IM_StartIndex, _IM_NextIndex, _IM_Result.Results); };
     
-    Comment = (  "//" EOLCommentChar* (EOL|EOF)  |  "/*" BracketCommentChar* "*/" )
+    Comment = (  ("//" EOLCommentChar* (EOL|EOF))  |  ("/*" BracketCommentChar* "*/") )
             -> { return new CommentNode(_IM_StartIndex, _IM_NextIndex); };
     
     EOLCommentChar = ~EOL .;
@@ -183,10 +181,10 @@ ironMeta IronMeta<char, IronMeta.SyntaxNode> : IronMeta.CharacterMatcher<IronMet
                                 -> { return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.WHITESPACE); };
 
     override EOL = ("\x0d\x0a" | '\x0a' | '\x0d' ~'\x0a' | '\x0085' | '\x000c' | '\x2028' | '\x2029')
-            -> { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOL); };
+                    -> { _IM_LineBeginPositions.Add(_IM_NextIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOL); };
     
     override EOF = ~. 
-            -> { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOF); };
+                    -> { _IM_LineBeginPositions.Add(_IM_StartIndex); return new TokenNode(_IM_StartIndex, _IM_NextIndex, TokenNode.TokenType.EOF); };
 
     override EOF = !"unexpected end of file";    
 

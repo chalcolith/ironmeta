@@ -43,7 +43,7 @@ namespace Calc
     public class Tests
     {
 
-        CalcMatcher matcher = new CalcMatcher(c => (int)c, true);
+        CalcMatcher matcher = new CalcMatcher(c => (int)c - '0', true);
 
         [Fact]
         public void Test_Empty()
@@ -110,6 +110,13 @@ namespace Calc
         {
             var res = matcher.Match("4 + 3 * 2", "Expression");
             Assert.True(res.Success && res.Result == 10);
+        }
+
+        //[Fact]
+        public void Test_HairyLR()
+        {
+            var res = matcher.Match("dcccbbaaa", "A");
+            Assert.True(res.Success && res.NextIndex == 9);
         }
 
     } // class Tests
