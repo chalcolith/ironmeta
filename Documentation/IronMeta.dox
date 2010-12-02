@@ -1,0 +1,560 @@
+/*!
+
+\mainpage IronMeta User Manual
+
+\htmlonly 
+
+<a href="http://sourceforge.net/projects/ironmeta"><img align="right" src="http://sflogo.sourceforge.net/sflogo.php?group_id=261882&amp;type=12" width="120" height="30" alt="Get IronMeta at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
+<a href="http://sourceforge.net/donate/index.php?group_id=261882"><img align="right" src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" /></a>
+
+\endhtmlonly
+
+IronMeta provides a programming language and application for generating pattern matchers on arbitrary streams of objects.  It is an implementation of Alessandro Warth's <a href="http://www.cs.ucla.edu/~awarth/ometa/">OMeta</a> system for C#.
+
+IronMeta is available under the terms of the \ref BSDLicense "BSD License".
+ 
+- \ref ironMetaLanguage "The IronMeta Language"
+- \ref ironMetaGrammar "The IronMeta Grammar"
+- <a href="https://sourceforge.net/projects/ironmeta/">The IronMeta SourceForge page</a>
+
+\section contributors Contributors
+
+IronMeta was written entirely by Gordon Tisher.
+
+\section features Features
+
+ - Although the most common use for IronMeta is to build parsers on streams of text for use in compiling or other text processing, IronMeta can generate pattern matchers (more accurately, transducers) for any input and output type.  You can use C# syntax directly in grammar rules to specify objects to match.
+ - IronMeta-generated parsers are strict <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammars</a>, which are greedy and do not backtrack.
+ - Generated parsers are implemented as C# partial classes, allowing you to keep ancillary code in a separate file from your grammar.
+ - Unrestricted use of C# in semantic conditions and match actions.
+ - Higher-order rules: you can pass rules as parameters, and then use them in a pattern.
+ - Pattern matching on rule arguments: you can apply different rule bodies depending on the number and types of parameters.
+ - Flexible variables: variables in an IronMeta rule may be used to:
+    - get the input of an expression they are bound to.
+    - get the result or result list of an expression they are bound to.
+    - match a rule passed as a parameter.
+    - pass a rule on to another rule.
+ - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Sergio Queiroz de Medeiros's unpublished algorithm for all rules, even within parameter matching.
+
+Current limitations:
+
+ - Error reporting is currently quite rudimentary, only reporting the last error that ocurred at the rightmost position in the input.
+ - Performance is quite slow, as not much optimization has been done to date.
+
+\section changelog Changelog
+
+2.0: December 4, 2010: Many internal improvements.
+    - Removed general backtracking functionality in favor of strict PEG semantics only.
+    - Changed from Warth et al's left-recursion to Sergio Queiroz de Medeiros's much simpler and more general one.
+    - Massive speedup.
+
+1.4: July 18, 2009: Bug fixes and samples.
+    - Fixed a bug when passing rules in a base class to another rule.
+    - Added a sample that parses a data file and produces an XmlDocument.
+
+1.3: June 2, 2009: Optimization pass.
+    - IronMeta is now about an order of magnitude faster.
+    - Fixed a bug when handling C# string literals.
+
+1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.	
+    - Added a simple interactive shell to the Calc program.
+    - Fixed a bug that caused redundant evaluation of involved rules.
+    - Fixed a bug with parsers that don't declare a base class.
+    - Added "::=" as alternative to "=" for rules.
+    - Changed condition operator to single question mark to conform to other OMetas.
+    - C# object literals must be surrounded by curly braces.
+
+1.1:
+    - Can now handle IEnumerable literals (e.g. strings, for a matcher of characters).
+
+1.0: May 16, 2009: Initial release
+
+\section getIronMeta Get IronMeta
+
+IronMeta is currently only available for Windows.
+
+You can download a zip file containing IronMeta binaries at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge site</a>.
+
+
+
+\section programmingWithIronMeta Programming with IronMeta
+
+In order to use IronMeta, run \c IronMeta.Generator.exe on your \ref ironMetaLanguage "IronMeta file".
+
+In order to use an IronMeta-generated parser in your C# program, do the following:
+
+ - Compile the C# file.  If your parser is named \c MyParser, the generated class will be named \c DirName.MyParser, where \c DirName is the name of the directory in which the parser file resides.
+ - Create an object of type \c MyParser, giving it an input enumerable to parse.
+ - Call the function \c GetMatch() with the top-level rule you wish to use.  This returns an object type \ref IronMeta::Matcher::MatchResult, which contains information about the result of the match.
+
+
+\section reportingBugs Reporting Bugs
+
+If you come across a bug in IronMeta, please fill out a bug report at the <a href="https://sourceforge.net/tracker/?group_id=261882&atid=1127483">SourceForge bug tracker</a>.
+
+
+\section buildIronMeta Contributing to IronMeta
+
+In order to build IronMeta, you must download the source code using a \htmlonly <a href="http://subversion.tigris.org">Subversion</a> \endhtmlonly \latexonly Subversion \endlatexonly client.  
+
+ - HEAD: Check out this branch to get the very latest code.  This branch is where new development takes place.  Note that code in this branch may not always work correctly!\code https://ironmeta.svn.sourceforge.net/svnroot/ironmeta/trunk \endcode
+
+The top folder of the source code contains a Visual Studio 2010 solution file called \c IronMeta.sln.  This includes three projects:
+
+ - \ref IronMeta::Matcher : a library that contains the main parsing functionality.
+ - \c IronMeta::Generator : the main IronMeta program.
+ - \c IronMeta::UnitTests : unit tests for the parsing library.
+ - \c Calc : an example of the usual calculator program, made purposely more complicated so as to demonstrate some of IronMeta's advanced features.
+
+Please send patches to the project admin listed at the <a href="https://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the IronMeta Development list, also available from SourceForge.
+
+
+
+\page ironMetaLanguage The IronMeta Language
+
+This section is an informal introduction to the features of the IronMeta language.  It uses the following IronMeta file named \c Calc.ironmeta, which is included in the IronMeta distribution in the Samples/Calc directory.
+
+The Calc grammar is much more complex than it needs to be in order to demonstrate some of the advanced functionality of IronMeta.
+
+\code
+// IronMeta Calculator Example
+
+using System;
+using System.Linq;
+
+ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
+{
+    Expression = Additive;
+    
+    Additive = Add | Sub | Multiplicative;
+    
+    Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
+    Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
+    
+    Multiplicative = Multiply | Divide;
+    Multiplicative = Number(DecimalDigit);
+    
+    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
+        
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
+    
+    Number :type = Digits(type):n WS* -> { return n; };
+    
+    Digits :type = Digits(type):a type:b -> { return a*10 + b; };
+    Digits :type = type;
+            
+    DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+    KW :str = str WS*;
+    WS = ' ' | '\n' | '\r' | '\t';
+}
+\endcode
+
+We will go through this example line by line to introduce the IronMeta language:
+
+
+
+\section langComments Comments
+\code
+// IronMeta Calculator Example
+\endcode
+
+You may include comments anywhere in the IronMeta file.  They may also be in the C-style form:
+
+\code
+/* C-Style Comment */
+\endcode
+
+\section langPreamble Preamble
+\code
+using System;
+using System.Linq;
+\endcode
+
+You can include C# \c using statements at the beginning of an IronMeta file.  IronMeta will automatically add \c using statements to its output to include the namespaces it needs.
+
+
+
+\section langDeclaration Parser Declaration
+
+\code
+ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
+\endcode
+
+An IronMeta parser always starts with the keyword \c ironmeta.  Then comes the name of the parser (\c Calc, in this case), and the input and output types.  The generated parser will take as input an IEnumerable of the input type, and return as output an object of the output type.
+
+In this case, the \c Calc parser will operate on a stream of \c char values, and output an \c int value.
+
+\note You must always include the input and output types.
+
+You may also optionally include a base class (its template parameters must include the internal item type, e.g. \c _MyParser_Item):
+
+\code
+ : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
+\endcode
+
+If you do not include a base class, your parser will inherit directly from \ref IronMeta::Matcher::Matcher.  The \ref IronMeta::Matcher::CharMatcher class provides some specialized functionality for dealing with streams of characters.
+
+
+
+\section langRules Rules
+
+\code
+    Expression = Additive;
+\endcode
+
+An IronMeta rule consists of a name, an pattern for matching parameters, \c "=", a pattern for matching against the main input, and a terminating semicolon \c ";" (for folks used to C#) or comma \c "," (for folks used to OMeta):
+
+In this case, the rule \c Expression has no parameters, and matches by calling another rule, \c Additive.
+
+
+\section langInput Matching Input
+
+You can use the period \c "." to match any item of input, or you can use arbitrary C# expressions.  The C# expressions may be a string literal, a character literal, or any other expression that is surrounded by curly braces:
+
+\code
+    MyPattern = 'a' "b" {3.14159} {new MyClass()};
+\endcode
+
+IronMeta will use the standard C# \c Equals() method to match the items.
+
+The pattern literal can also be an \c IEnumerable of the input type -- IronMeta does not contain any special string-matching functionality; the fact that \c string implements \c IEnumerable<char> allows us to use C# strings directly.
+
+This eliminates the need for the OMeta \c token function; just use a string literal, or if you are matching on something other than characters, use a list:
+
+\code
+    MyPattern = {new List<MyInputType>{ a, b, c }};
+\endcode
+
+
+\section langSeqDisj Sequence and Disjunction
+\code
+    Additive = Add | Sub | Multiplicative;
+\endcode
+
+As is probably obvious from the other rules, you write a sequence of patterns by simply writing them one after the other, separated by whitespace.
+
+To specify a choice between alternatives, separate them with \c "|".
+
+\note Unlike in other parser generator formalisms, separating expressions with a carriage return does NOT mean they are alternatives!  You must always use the \c "|".
+
+
+
+\section langOperators Other Operators
+
+You can modify the meaning of patterns with the following operators:
+
+ - \c "?" as a suffix will match zero or one times.
+ - \c "*" as a suffix will match zero or more times.
+ - \c "+" as a suffix will match one or more times.
+ 
+These operators are all greedy -- they will match as many times a possible and then return that result.
+
+You can stop them from matching by using the prefix operators:
+
+ - \c "&" as a prefix will match an expression but NOT advance the match position.  This allows for unlimited lookahead.
+ - \c "~" as a prefix will match if the expression does NOT match.  It will not advance the match position.
+
+
+\section langVarCondAction Conditions and Actions
+\code
+    DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+\endcode
+
+Here things get more interesting.  This rule has only one expression, the period \c ".".  This will match a single item of input.  It is then bound to the variable \c c by means of the colon \c ":".
+
+\note You can leave out the period if you are binding to a variable; that is, \c ":c" is equivalent to \c ".:c".
+
+However, this rule will not necessarily match any character, because it contains a \em condition.  A condition is written with \c "?" followed immediately by a C# expression in parentheses.  The C# expression must evaluate to a \c bool value.  Once the expression matches (in this case it will match anything), it is bound to the variable \c c, which is then available for use in your C# code.
+
+The rule also contains an \em action.  Actions are written with \c "-\>" followed by a C# block surrounded by curly braces.  This block must contain a \c return statement that returns a value of the output type, or a \c List<> of the output type.
+
+In this case, the variable \c c is explicitly cast to an \c int in order to force the variable to return its result, because otherwise C# would implicitly cast it to \c char because of the \c '0' in the expression.
+
+\note If you do not provide an action for the expression, it will simply return the results of its patterns, as a list.  Matching a single item will return \c default(TResult) by default, or you can pass a delegate or lambda function to the matcher when you create it that will convert values of the input type to the output type.
+
+Be aware that an action only applies to the last expression in an OR expression.  So the action in the following:
+
+\code
+    MyRule = One | Two | Three -> { my action };
+\endcode
+
+will only run if the expression \c Three matches!  If you want an action to apply on an OR, use parentheses:
+
+\code
+    MyRule = (One | Two | Three) -> { my action };
+\endcode
+
+
+
+\section langVariables Variables
+
+\code
+    Digits :type = Digits(type):a type:b -> { return a*10 + b; };
+\endcode
+
+Upon a successful match, variables will contain information about the results of the match of the expression they are bound to.  In this example, because \c a & \c b are used in an expression containing an integer, they will automatically evaluate to the \em results of their expressions, because the result type of the Calc grammar is \c int.
+
+IronMeta variables are very flexible.  They contain implicit cast operators to:
+
+ - A single value of the input type: this will return the last item in the list of results of the expression that the variable is bound to.
+ - A single value of the output type.
+ - A \c List<> of the input type.
+ - A \c List<> of the output type.
+ 
+If your input and output types are the same, the implicit cast operators will only return the \em inputs, and you will need to use the explicit variable properties:
+
+ - \c c.Inputs returns the list of inputs that the parse pattern matched.
+ - \c c.Results returns the list of results that resulted from the match.
+ - \c c.StartIndex returns the index in the input stream at which the pattern started matching.
+ - \c c.NextIndex returns the first index in the input stream \em after the pattern match ended.
+
+You can also use variables in a pattern, in which case they will match whatever input they matched when they were bound.  Or, if they were bound to a rule in a parameter pattern (see below), they will call that rule.  You can even pass parameters to them.
+
+
+\subsection langBuiltinVars Built-In Variables
+
+IronMeta automatically defines a variable for use in your C# code:
+
+ - \c _IM_Result: bound to the entire expression that your condition or action applies to.
+
+
+\section langMultiple Multiple Rule Bodies
+\code
+    Multiplicative = Multiply | Divide;
+    Multiplicative = Number(DecimalDigit);
+\endcode
+
+You can have multiple rule bodies; their patterns will be combined in one overall OR when that rule is called.
+
+
+
+\section langParameters Parameters
+\code
+    Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
+\endcode
+
+This rule shows that you can pass parameters to a rule.  You can pass literal match patterns, rule names, or variables.
+
+\code
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
+\endcode
+
+This rule demonstrates how to match parameters.  The parameter part of a rule is actually a matching pattern no different than that on the right-hand side of the \c "=" !  Using this fact, plus the ability to specify multiple rules with the same name, you can write rules that match differently depending on the number and kind of parameters they are passed.
+
+
+\section langProductions Rules as Arguments
+\code
+    Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
+\endcode
+
+These rules show that you can pass rules as parameters to other rules.  To match against them, just capture them in a variable in your parameter pattern, and then use the variable as an expression in your pattern.  You can pass parameters as usual.
+
+
+\section langMatchArguments Pattern Matching Arguments
+
+The example above shows that you can define different behavior depending on the parameters to a rule.
+
+
+\section langListFolding List Folding
+\code
+    KW :str = str Whitespace*;
+\endcode
+
+If you look at the rules that call this rule  (indirectly through the \c BinaryOp rule), you'll see that they pass both a single character and a string:
+
+\code
+    Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
+\endcode
+
+When matching against variables captured in parameters, variables containing single items or variables containing lists will match correctly.
+
+
+\section langRuleInheritance Rule Inheritance
+You can override rules in a base class by prefixing the rule definition by the keyword \c override.
+
+\page ironMetaGrammar The IronMeta Grammar
+
+The following is the grammar used for parsing IronMeta files themselves, presented purely for interest.
+
+\code
+using IronMeta.Generator;
+using IronMeta.Generator.AST;
+
+ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTNode<_Parser_Item>, _Parser_Item>
+{
+
+    IronMetaFile = SP Preamble?:p Grammar:g EOF -> { return new GrammarFile<_Parser_Item>(p, g); };
+
+    Preamble = Using+:u -> { return new Preamble<_Parser_Item>(u.Results); };
+
+    Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new Using<_Parser_Item>(name); };
+
+    Grammar = IRONMETA Identifier:name 
+            LESS GenericId:tinput COMMA GenericId:tresult GREATER
+            COLON GenericId:baseclass
+            BRA Rule*:rules KET
+        -> { return new Grammar<_Parser_Item>(name, tinput, tresult, baseclass, rules.Results); };
+
+    Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
+        -> { return new Rule<_Parser_Item>(name, parms.Inputs.Any() ? new Args<_Parser_Item>(parms, body) : (AST.ASTNode<_Parser_Item>)body, ovr.Inputs.Any()); };
+
+    Disjunction = ActionExp ( OR ActionExp )*
+        ->  {
+                return _IM_Result.Results
+                    .Where(node => node != null)
+                    .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new Or<_Parser_Item>(prev, cur) : cur);
+            };
+
+    ActionExp = FailExp;
+    ActionExp = SequenceExp:body ACTION &BRA CSharpCode:action -> { return new Act<_Parser_Item>(body, action); };
+    ActionExp = SequenceExp;
+
+    FailExp = BANG (&'\"' CSharpCode:msg)? -> { return new Fail<_Parser_Item>(msg); };
+
+    SequenceExp = ConditionExp+
+        ->  {
+                return _IM_Result.Results
+                    .Where(node => node != null)
+                    .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new And<_Parser_Item>(prev, cur) : cur);
+            };
+
+    ConditionExp = BoundTerm:body QUES &OPEN CSharpCode:cond -> { return new Cond<_Parser_Item>(body, cond); };
+    ConditionExp = BoundTerm;
+
+    BoundTerm = PrefixedTerm:exp COLON Identifier:id -> { return new Bind<_Parser_Item>(exp, id); };
+    BoundTerm = COLON Identifier:id -> { return new Bind<_Parser_Item>(new Any<_Parser_Item>(), id); };
+    BoundTerm = PrefixedTerm;
+
+    PrefixedTerm = LookTerm | NotTerm | PostfixedTerm;
+    LookTerm = AND_PRE PostfixedTerm:exp -> { return new Look<_Parser_Item>(exp); };
+    NotTerm = NOT_PRE PostfixedTerm:exp -> { return new Not<_Parser_Item>(exp); };
+
+    PostfixedTerm = StarTerm | PlusTerm | QuesTerm | Term;
+
+    StarTerm = Term:exp STAR -> { return new Star<_Parser_Item>(exp); };
+    PlusTerm = Term:exp PLUS -> { return new Plus<_Parser_Item>(exp); };
+    QuesTerm = Term:exp QUES ~OPEN SP -> { return new Ques<_Parser_Item>(exp); };
+
+    Term = InputClass | ParenTerm | RuleCall | CallOrVar | Literal | AnyTerm;
+
+    ParenTerm = OPEN Disjunction:exp CLOSE -> { return exp; };
+    AnyTerm = PERIOD -> { return new Any<_Parser_Item>(); };
+
+    RuleCall = Ident:name OPEN ParameterList?:p CLOSE -> { return new Call<_Parser_Item>(name, p.Results); };
+    ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
+    Parameter = CallOrVar | Literal;
+
+    CallOrVar = Identifier:id -> { return new CallOrVar<_Parser_Item>(id); };
+    Literal = &('\x22' | '\x27' | '{') CSharpCode:code -> { return code; };
+
+    InputClass = '[' SP (ClassRange | &'\x27' Literal)+:c ']' SP -> { return new InputClass<_Parser_Item>(c.Results); };
+    ClassRange = &'\x27' Literal:from SP '-' SP &'\x27' Literal:to SP ->
+        {
+            char ch_from = AST.ClassRange<_Parser_Item>.GetChar(from);
+            char ch_to = AST.ClassRange<_Parser_Item>.GetChar(to);
+
+            List<char> range = new List<char>();
+            if (ch_from > ch_to)			    
+            {
+                range.Add(ch_from);
+                range.Add(ch_to);
+            }
+            else
+            {
+                for (char ch = ch_from ; ch <= ch_to; ++ch)
+                    range.Add(ch);
+            }
+
+            return new ClassRange<_Parser_Item>(_IM_Result, range);
+        };
+
+    CSharpCode = CSharpCodeItem:code SP -> { return new Code<_Parser_Item>(code); };
+
+    CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | .))* '}';
+    CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | .))* ')';
+    CSharpCodeItem = '\x27' (~'\x27' ("\x5c\x27" | .))* '\x27'; // '
+    CSharpCodeItem = '\x22' (~'\x22' ("\x5c\x22" | .))* '\x22'; // "
+    
+    Identifier = Ident:id SP -> { return id; };
+    Ident = (IdentBegin IdentBody*):id -> { return new Idfr<_Parser_Item>(id); };
+    IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
+    IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
+
+    GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
+        -> { return new Idfr<_Parser_Item>(ids, gp); };
+
+    USING = "using" SP;
+    IRONMETA = "ironmeta" SP;
+    EQUALS = ('=' | "::=") SP;
+    OVERRIDE = "override" SP;
+    LR = "lr" SP;
+    SEMI = (';' | ',') SP;
+    BANG = '!' SP;
+    OR = '|' SP;
+    ACTION = "->" SP;
+    COLON = ':' SP;
+    COMMA = ',' SP;
+    DOT = '.';
+    PERIOD = DOT SP;
+    BRA = '{' SP;
+    KET = '}' SP;
+    OPEN = '(' SP;
+    CLOSE = ')' SP;
+    LESS = '<' SP;
+    GREATER = '>' SP;
+    QUES = '?'; // note no spacing
+    AND_PRE = '&';
+    NOT_PRE = '~';
+    STAR = '*' SP;
+    PLUS = '+' SP;
+    
+    EOL = '\r' '\n'? | '\n';
+    EOF = ~.;
+
+    SP = (WS | Comment)*;
+    WS = ' ' | '\n' | '\r' | '\t';
+    
+    Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');    
+
+}
+\endcode
+
+\page BSDLicense BSD License
+
+Copyright (c) 2009-2010, The IronMeta Project.
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions 
+are met:
+
+    - Redistributions of source code must retain the above 
+      copyright notice, this list of conditions and the following 
+      disclaimer.
+    - Redistributions in binary form must reproduce the above 
+      copyright notice, this list of conditions and the following 
+      disclaimer in the documentation and/or other materials 
+      provided with the distribution.
+    - Neither the name of the IronMeta Project nor the names of its 
+      contributors may be used to endorse or promote products 
+      derived from this software without specific prior written 
+      permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+"AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS 
+FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE 
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES; 
+LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER 
+CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT 
+LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN 
+ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE 
+POSSIBILITY OF SUCH DAMAGE.
+
+*/
