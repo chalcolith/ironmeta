@@ -9,7 +9,9 @@
 
 \endhtmlonly
 
-IronMeta provides a programming language and application for generating pattern matchers on arbitrary streams of objects.  It is an implementation of Alessandro Warth's <a href="http://www.cs.ucla.edu/~awarth/ometa/">OMeta</a> system for C#.
+IronMeta provides a programming language and application for generating pattern matchers on 
+arbitrary streams of objects.  It is an implementation of Alessandro 
+Warth's <a href="http://tinlizzie.org/ometa/">OMeta</a> system for C#.
 
 IronMeta is available under the terms of the \ref BSDLicense "BSD License".
  
@@ -34,7 +36,9 @@ IronMeta was written entirely by Gordon Tisher.
     - get the result or result list of an expression they are bound to.
     - match a rule passed as a parameter.
     - pass a rule on to another rule.
- - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Sergio Queiroz de Medeiros's unpublished algorithm for all rules, even within parameter matching.
+ - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Sergio Queiroz de Medeiros's 
+ <a href="https://lists.csail.mit.edu/pipermail/peg/2009-November/000245.html">unpublished algorithm</a> 
+ (a mirror of the paper is <a href="http://ironmeta.sourceforge.net/Left-Recursion%20in%20PEGs.pdf">here</a>) for all rules, even within parameter matching.
 
 Current limitations:
 
