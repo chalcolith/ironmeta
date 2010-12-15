@@ -633,6 +633,13 @@ namespace IronMeta.UnitTests
             Assert.Equal(4, match.NextIndex);
         }
 
+        [Fact]
+        public void TestBuildTask()
+        {
+            var match = Run("testBuildTask9", "TestBuildTasks");
+            Assert.True(match.Success);
+        }
+
         ////////////////////////////////////////
 
         MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)

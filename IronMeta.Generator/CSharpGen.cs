@@ -1043,7 +1043,7 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _start_i{0} = _arg_index;", n);
+                //tw.Write(indent); tw.WriteLine("var _start_i{0} = _arg_index;", n);
 
                 if (vars.Contains(name))
                 {
@@ -1057,7 +1057,7 @@ namespace IronMeta.Generator
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _start_i{0} = _index;", n);
+                //tw.Write(indent); tw.WriteLine("var _start_i{0} = _index;", n);
                 tw.Write(indent); tw.WriteLine("{1} _r{0};", n, tItem);
                 tw.WriteLine();
 

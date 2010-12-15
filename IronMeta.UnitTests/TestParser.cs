@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 02/12/2010 9:35:31 PM UTC
+// IronMeta TestParser Parser; Generated 15/12/2010 11:15:58 PM UTC
 //
 
 using System;
@@ -912,7 +912,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR OrLiteral
-            var _start_i3 = _index;
             _TestParser_Item _r3;
 
             _r3 = _MemoCall("OrLiteral", _index, OrLiteral, null);
@@ -1029,7 +1028,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCall
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCall", _index, SubCall, null);
@@ -1192,7 +1190,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallFail
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallFail", _index, SubCallFail, null);
@@ -1375,7 +1372,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallAny
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallAny", _index, SubCallAny, null);
@@ -1881,7 +1877,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallStar
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallStar", _index, SubCallStar, null);
@@ -1998,7 +1993,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallPlus
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallPlus", _index, SubCallPlus, null);
@@ -2081,7 +2075,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallQues
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallQues", _index, SubCallQues, null);
@@ -2171,7 +2164,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallCond
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallCond", _index, SubCallCond, null);
@@ -2199,7 +2191,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR a
-            var _start_i3 = _index;
             _TestParser_Item _r3;
 
             if (a.Production != null)
@@ -2264,7 +2255,6 @@ namespace IronMeta.UnitTests
             }
 
             // CALLORVAR a
-            var _start_i4 = _index;
             _TestParser_Item _r4;
 
             if (a.Production != null)
@@ -2304,7 +2294,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallAct
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallAct", _index, SubCallAct, null);
@@ -2339,7 +2328,6 @@ namespace IronMeta.UnitTests
             if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
 
             // CALLORVAR a
-            var _start_i4 = _arg_index;
             var _r4 = _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, a.Inputs, _args);
             if (_r4 != null) _arg_index = _r4.NextIndex;
 
@@ -2414,7 +2402,6 @@ namespace IronMeta.UnitTests
         {
 
             // CALLORVAR SubCallVar
-            var _start_i0 = _index;
             _TestParser_Item _r0;
 
             _r0 = _MemoCall("SubCallVar", _index, SubCallVar, null);
@@ -2452,7 +2439,6 @@ namespace IronMeta.UnitTests
             int _start_i3 = _index;
 
             // CALLORVAR a
-            var _start_i4 = _index;
             _TestParser_Item _r4;
 
             if (a.Production != null)
@@ -2542,7 +2528,6 @@ namespace IronMeta.UnitTests
             int _start_i1 = _index;
 
             // CALLORVAR ChoiceA
-            var _start_i2 = _index;
             _TestParser_Item _r2;
 
             _r2 = _MemoCall("ChoiceA", _index, ChoiceA, null);
@@ -2553,7 +2538,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR ChoiceB
-            var _start_i3 = _index;
             _TestParser_Item _r3;
 
             _r3 = _MemoCall("ChoiceB", _index, ChoiceB, null);
@@ -2582,7 +2566,6 @@ namespace IronMeta.UnitTests
             int _start_i0 = _index;
 
             // CALLORVAR ChoiceLR
-            var _start_i1 = _index;
             _TestParser_Item _r1;
 
             _r1 = _MemoCall("ChoiceLR", _index, ChoiceLR, null);
@@ -2619,7 +2602,6 @@ namespace IronMeta.UnitTests
             int _start_i0 = _index;
 
             // CALLORVAR ChoiceLR
-            var _start_i1 = _index;
             _TestParser_Item _r1;
 
             _r1 = _MemoCall("ChoiceLR", _index, ChoiceLR, null);
@@ -2659,7 +2641,6 @@ namespace IronMeta.UnitTests
             int _start_i1 = _index;
 
             // CALLORVAR DirectLR
-            var _start_i2 = _index;
             _TestParser_Item _r2;
 
             _r2 = _MemoCall("DirectLR", _index, DirectLR, null);
@@ -2708,7 +2689,6 @@ namespace IronMeta.UnitTests
             int _start_i1 = _index;
 
             // CALLORVAR IndirectLR_B
-            var _start_i2 = _index;
             _TestParser_Item _r2;
 
             _r2 = _MemoCall("IndirectLR_B", _index, IndirectLR_B, null);
@@ -2754,7 +2734,6 @@ namespace IronMeta.UnitTests
             int _start_i0 = _index;
 
             // CALLORVAR IndirectLR_A
-            var _start_i1 = _index;
             _TestParser_Item _r1;
 
             _r1 = _MemoCall("IndirectLR_A", _index, IndirectLR_A, null);
@@ -2794,7 +2773,6 @@ namespace IronMeta.UnitTests
             int _start_i1 = _index;
 
             // CALLORVAR PathalogicalA
-            var _start_i2 = _index;
             _TestParser_Item _r2;
 
             _r2 = _MemoCall("PathalogicalA", _index, PathalogicalA, null);
@@ -2825,7 +2803,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PathalogicalB
-            var _start_i4 = _index;
             _TestParser_Item _r4;
 
             _r4 = _MemoCall("PathalogicalB", _index, PathalogicalB, null);
@@ -2851,7 +2828,6 @@ namespace IronMeta.UnitTests
             int _start_i2 = _index;
 
             // CALLORVAR PathalogicalB
-            var _start_i3 = _index;
             _TestParser_Item _r3;
 
             _r3 = _MemoCall("PathalogicalB", _index, PathalogicalB, null);
@@ -2882,7 +2858,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR PathalogicalA
-            var _start_i5 = _index;
             _TestParser_Item _r5;
 
             _r5 = _MemoCall("PathalogicalA", _index, PathalogicalA, null);
@@ -2896,7 +2871,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PathalogicalC
-            var _start_i6 = _index;
             _TestParser_Item _r6;
 
             _r6 = _MemoCall("PathalogicalC", _index, PathalogicalC, null);
@@ -2922,7 +2896,6 @@ namespace IronMeta.UnitTests
             int _start_i2 = _index;
 
             // CALLORVAR PathalogicalC
-            var _start_i3 = _index;
             _TestParser_Item _r3;
 
             _r3 = _MemoCall("PathalogicalC", _index, PathalogicalC, null);
@@ -2953,7 +2926,6 @@ namespace IronMeta.UnitTests
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR PathalogicalB
-            var _start_i5 = _index;
             _TestParser_Item _r5;
 
             _r5 = _MemoCall("PathalogicalB", _index, PathalogicalB, null);
@@ -2971,6 +2943,15 @@ namespace IronMeta.UnitTests
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
+
+        }
+
+
+        public void TestBuildTasks(int _index, _TestParser_Args _args)
+        {
+
+            // LITERAL "testBuildTask9"
+            _ParseLiteralString(ref _index, "testBuildTask9");
 
         }
 

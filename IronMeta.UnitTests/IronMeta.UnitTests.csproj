@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IronMeta.UnitTests</RootNamespace>
     <AssemblyName>IronMeta.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,6 +49,7 @@
     <Compile Include="TestParser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="TestParser.ironmeta" />
   </ItemGroup>
   <ItemGroup>
@@ -67,10 +68,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>..\..\..\ThirdParty\xUnit.NET\xunit.console.clr4.exe "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>..\..\..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe ..\..\TestParser.ironmeta</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -79,4 +82,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="GenerateParser" BeforeTargets="CoreCompile" Inputs="TestParser.ironmeta" Outputs="TestParser.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe TestParser.ironmeta" />
+  </Target>
+  <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+  <Target Name="RunTests" AfterTargets="Build">
+    <xunit Assembly="$(TargetPath)" />
+  </Target>
 </Project>

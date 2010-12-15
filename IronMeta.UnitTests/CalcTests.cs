@@ -120,9 +120,19 @@ namespace IronMeta.UnitTests
         [Fact]
         public void Test_Precedence()
         {
-            var matcher = new Calc.Calc("4 + 3 * 2");
+            var matcher = new Calc.Calc("4 + 3 * 2 + 5");
             var res = matcher.GetMatch(matcher.Expression);
-            Assert.True(res.Success && res.Result == 10);
+            Assert.True(res.Success);
+            Assert.Equal(15, res.Result);
+        }
+
+        [Fact]
+        public void Test_Precedence2()
+        {
+            var matcher = new Calc.Calc("2 * 3 + 4 * 2");
+            var res = matcher.GetMatch(matcher.Expression);
+            Assert.True(res.Success);
+            Assert.Equal(14, res.Result);
         }
 
     } // class Tests

@@ -115,4 +115,6 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int, _TestParser_I
     PathalogicalB = PathalogicalB 'b' | PathalogicalA | PathalogicalC;
     PathalogicalC = PathalogicalC 'c' | PathalogicalB | 'd';
 
+	TestBuildTasks = "testBuildTask9";
+
 }
