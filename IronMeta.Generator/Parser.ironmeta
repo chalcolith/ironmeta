@@ -41,7 +41,7 @@ using IronMeta.Generator.AST;
 ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTNode<_Parser_Item>, _Parser_Item>
 {
 
-    IronMetaFile = SP Preamble?:p Grammar:g EOF -> { return new GrammarFile<_Parser_Item>(p, g); };
+    IronMetaFile = '\ufeff'? SP Preamble?:p Grammar:g EOF -> { return new GrammarFile<_Parser_Item>(p, g); };
 
     Preamble = Using+:u -> { return new Preamble<_Parser_Item>(u.Results); };
 

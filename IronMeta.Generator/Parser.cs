@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 02/12/2010 9:36:25 PM UTC
+// IronMeta Parser Parser; Generated 16/12/2010 10:41:05 PM UTC
 //
 
 using System;
@@ -58,24 +58,48 @@ namespace IronMeta.Generator
             // AND 3
             int _start_i3 = _index;
 
+            // AND 4
+            int _start_i4 = _index;
+
+            // LITERAL '\ufeff'
+            _ParseLiteralChar(ref _index, '\ufeff');
+
+            // QUES
+            if (_results.Peek() == null) { _results.Pop(); _results.Push(new _Parser_Item(_index, _input_enumerable)); }
+
+            // AND shortcut
+            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+
             // CALLORVAR SP
-            var _start_i4 = _index;
-            _Parser_Item _r4;
+            _Parser_Item _r7;
 
-            _r4 = _MemoCall("SP", _index, SP, null);
+            _r7 = _MemoCall("SP", _index, SP, null);
 
-            if (_r4 != null) _index = _r4.NextIndex;
+            if (_r7 != null) _index = _r7.NextIndex;
+
+        label4: // AND
+            var _r4_2 = _results.Pop();
+            var _r4_1 = _results.Pop();
+
+            if (_r4_1 != null && _r4_2 != null)
+            {
+                _results.Push( new _Parser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _results.Push(null);
+                _index = _start_i4;
+            }
 
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR Preamble
-            var _start_i7 = _index;
-            _Parser_Item _r7;
+            _Parser_Item _r10;
 
-            _r7 = _MemoCall("Preamble", _index, Preamble, null);
+            _r10 = _MemoCall("Preamble", _index, Preamble, null);
 
-            if (_r7 != null) _index = _r7.NextIndex;
+            if (_r10 != null) _index = _r10.NextIndex;
 
             // QUES
             if (_results.Peek() == null) { _results.Pop(); _results.Push(new _Parser_Item(_index, _input_enumerable)); }
@@ -101,12 +125,11 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR Grammar
-            var _start_i9 = _index;
-            _Parser_Item _r9;
+            _Parser_Item _r12;
 
-            _r9 = _MemoCall("Grammar", _index, Grammar, null);
+            _r12 = _MemoCall("Grammar", _index, Grammar, null);
 
-            if (_r9 != null) _index = _r9.NextIndex;
+            if (_r12 != null) _index = _r12.NextIndex;
 
             // BIND g
             g = _results.Peek();
@@ -129,12 +152,11 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR EOF
-            var _start_i10 = _index;
-            _Parser_Item _r10;
+            _Parser_Item _r13;
 
-            _r10 = _MemoCall("EOF", _index, EOF, null);
+            _r13 = _MemoCall("EOF", _index, EOF, null);
 
-            if (_r10 != null) _index = _r10.NextIndex;
+            if (_r13 != null) _index = _r13.NextIndex;
 
         label1: // AND
             var _r1_2 = _results.Pop();
@@ -172,7 +194,6 @@ namespace IronMeta.Generator
         label2:
 
             // CALLORVAR Using
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("Using", _index, Using, null);
@@ -223,7 +244,6 @@ namespace IronMeta.Generator
             int _start_i3 = _index;
 
             // CALLORVAR USING
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("USING", _index, USING, null);
@@ -237,7 +257,6 @@ namespace IronMeta.Generator
             int _start_i6 = _index;
 
             // CALLORVAR Ident
-            var _start_i7 = _index;
             _Parser_Item _r7;
 
             _r7 = _MemoCall("Ident", _index, Ident, null);
@@ -256,7 +275,6 @@ namespace IronMeta.Generator
             int _start_i9 = _index;
 
             // CALLORVAR DOT
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("DOT", _index, DOT, null);
@@ -267,7 +285,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label9; }
 
             // CALLORVAR Ident
-            var _start_i11 = _index;
             _Parser_Item _r11;
 
             _r11 = _MemoCall("Ident", _index, Ident, null);
@@ -335,7 +352,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR SP
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("SP", _index, SP, null);
@@ -360,7 +376,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SEMI
-            var _start_i13 = _index;
             _Parser_Item _r13;
 
             _r13 = _MemoCall("SEMI", _index, SEMI, null);
@@ -435,7 +450,6 @@ namespace IronMeta.Generator
             int _start_i11 = _index;
 
             // CALLORVAR IRONMETA
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("IRONMETA", _index, IRONMETA, null);
@@ -446,7 +460,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label11; }
 
             // CALLORVAR Identifier
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("Identifier", _index, Identifier, null);
@@ -474,7 +487,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label10; }
 
             // CALLORVAR LESS
-            var _start_i15 = _index;
             _Parser_Item _r15;
 
             _r15 = _MemoCall("LESS", _index, LESS, null);
@@ -499,7 +511,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label9; }
 
             // CALLORVAR GenericId
-            var _start_i17 = _index;
             _Parser_Item _r17;
 
             _r17 = _MemoCall("GenericId", _index, GenericId, null);
@@ -527,7 +538,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label8; }
 
             // CALLORVAR COMMA
-            var _start_i18 = _index;
             _Parser_Item _r18;
 
             _r18 = _MemoCall("COMMA", _index, COMMA, null);
@@ -552,7 +562,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label7; }
 
             // CALLORVAR GenericId
-            var _start_i20 = _index;
             _Parser_Item _r20;
 
             _r20 = _MemoCall("GenericId", _index, GenericId, null);
@@ -580,7 +589,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label6; }
 
             // CALLORVAR GREATER
-            var _start_i21 = _index;
             _Parser_Item _r21;
 
             _r21 = _MemoCall("GREATER", _index, GREATER, null);
@@ -605,7 +613,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label5; }
 
             // CALLORVAR COLON
-            var _start_i22 = _index;
             _Parser_Item _r22;
 
             _r22 = _MemoCall("COLON", _index, COLON, null);
@@ -630,7 +637,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR GenericId
-            var _start_i24 = _index;
             _Parser_Item _r24;
 
             _r24 = _MemoCall("GenericId", _index, GenericId, null);
@@ -658,7 +664,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR BRA
-            var _start_i25 = _index;
             _Parser_Item _r25;
 
             _r25 = _MemoCall("BRA", _index, BRA, null);
@@ -688,7 +693,6 @@ namespace IronMeta.Generator
         label27:
 
             // CALLORVAR Rule
-            var _start_i28 = _index;
             _Parser_Item _r28;
 
             _r28 = _MemoCall("Rule", _index, Rule, null);
@@ -728,7 +732,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR KET
-            var _start_i29 = _index;
             _Parser_Item _r29;
 
             _r29 = _MemoCall("KET", _index, KET, null);
@@ -784,7 +787,6 @@ namespace IronMeta.Generator
             int _start_i5 = _index;
 
             // CALLORVAR OVERRIDE
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("OVERRIDE", _index, OVERRIDE, null);
@@ -801,7 +803,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label5; }
 
             // CALLORVAR Identifier
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("Identifier", _index, Identifier, null);
@@ -829,7 +830,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR Disjunction
-            var _start_i13 = _index;
             _Parser_Item _r13;
 
             _r13 = _MemoCall("Disjunction", _index, Disjunction, null);
@@ -860,7 +860,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR EQUALS
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("EQUALS", _index, EQUALS, null);
@@ -885,7 +884,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR Disjunction
-            var _start_i16 = _index;
             _Parser_Item _r16;
 
             _r16 = _MemoCall("Disjunction", _index, Disjunction, null);
@@ -913,7 +911,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SEMI
-            var _start_i17 = _index;
             _Parser_Item _r17;
 
             _r17 = _MemoCall("SEMI", _index, SEMI, null);
@@ -952,7 +949,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR ActionExp
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("ActionExp", _index, ActionExp, null);
@@ -971,7 +967,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR OR
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("OR", _index, OR, null);
@@ -982,7 +977,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR ActionExp
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("ActionExp", _index, ActionExp, null);
@@ -1055,7 +1049,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR FailExp
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("FailExp", _index, FailExp, null);
@@ -1075,7 +1068,6 @@ namespace IronMeta.Generator
             int _start_i6 = _index;
 
             // CALLORVAR SequenceExp
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("SequenceExp", _index, SequenceExp, null);
@@ -1089,7 +1081,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label6; }
 
             // CALLORVAR ACTION
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("ACTION", _index, ACTION, null);
@@ -1117,7 +1108,6 @@ namespace IronMeta.Generator
             int _start_i10 = _index;
 
             // CALLORVAR BRA
-            var _start_i11 = _index;
             _Parser_Item _r11;
 
             _r11 = _MemoCall("BRA", _index, BRA, null);
@@ -1147,7 +1137,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR CSharpCode
-            var _start_i13 = _index;
             _Parser_Item _r13;
 
             _r13 = _MemoCall("CSharpCode", _index, CSharpCode, null);
@@ -1186,7 +1175,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR SequenceExp
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("SequenceExp", _index, SequenceExp, null);
@@ -1208,7 +1196,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR BANG
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("BANG", _index, BANG, null);
@@ -1236,7 +1223,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR CSharpCode
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("CSharpCode", _index, CSharpCode, null);
@@ -1297,7 +1283,6 @@ namespace IronMeta.Generator
         label1:
 
             // CALLORVAR ConditionExp
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("ConditionExp", _index, ConditionExp, null);
@@ -1351,7 +1336,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR BoundTerm
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("BoundTerm", _index, BoundTerm, null);
@@ -1365,7 +1349,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR QUES
-            var _start_i7 = _index;
             _Parser_Item _r7;
 
             _r7 = _MemoCall("QUES", _index, QUES, null);
@@ -1393,7 +1376,6 @@ namespace IronMeta.Generator
             int _start_i8 = _index;
 
             // CALLORVAR OPEN
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("OPEN", _index, OPEN, null);
@@ -1423,7 +1405,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR CSharpCode
-            var _start_i11 = _index;
             _Parser_Item _r11;
 
             _r11 = _MemoCall("CSharpCode", _index, CSharpCode, null);
@@ -1459,7 +1440,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR BoundTerm
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("BoundTerm", _index, BoundTerm, null);
@@ -1491,7 +1471,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR PrefixedTerm
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("PrefixedTerm", _index, PrefixedTerm, null);
@@ -1505,7 +1484,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR COLON
-            var _start_i7 = _index;
             _Parser_Item _r7;
 
             _r7 = _MemoCall("COLON", _index, COLON, null);
@@ -1530,7 +1508,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR Identifier
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("Identifier", _index, Identifier, null);
@@ -1569,7 +1546,6 @@ namespace IronMeta.Generator
             int _start_i11 = _index;
 
             // CALLORVAR COLON
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("COLON", _index, COLON, null);
@@ -1580,7 +1556,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label11; }
 
             // CALLORVAR Identifier
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("Identifier", _index, Identifier, null);
@@ -1619,7 +1594,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PrefixedTerm
-            var _start_i15 = _index;
             _Parser_Item _r15;
 
             _r15 = _MemoCall("PrefixedTerm", _index, PrefixedTerm, null);
@@ -1642,7 +1616,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR LookTerm
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("LookTerm", _index, LookTerm, null);
@@ -1653,7 +1626,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR NotTerm
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("NotTerm", _index, NotTerm, null);
@@ -1667,7 +1639,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PostfixedTerm
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("PostfixedTerm", _index, PostfixedTerm, null);
@@ -1689,7 +1660,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR AND_PRE
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("AND_PRE", _index, AND_PRE, null);
@@ -1700,7 +1670,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR PostfixedTerm
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("PostfixedTerm", _index, PostfixedTerm, null);
@@ -1744,7 +1713,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR NOT_PRE
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("NOT_PRE", _index, NOT_PRE, null);
@@ -1755,7 +1723,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR PostfixedTerm
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("PostfixedTerm", _index, PostfixedTerm, null);
@@ -1803,7 +1770,6 @@ namespace IronMeta.Generator
             int _start_i2 = _index;
 
             // CALLORVAR StarTerm
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("StarTerm", _index, StarTerm, null);
@@ -1814,7 +1780,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i2; } else goto label2;
 
             // CALLORVAR PlusTerm
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("PlusTerm", _index, PlusTerm, null);
@@ -1828,7 +1793,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR QuesTerm
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("QuesTerm", _index, QuesTerm, null);
@@ -1842,7 +1806,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Term
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("Term", _index, Term, null);
@@ -1864,7 +1827,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR Term
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("Term", _index, Term, null);
@@ -1878,7 +1840,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR STAR
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("STAR", _index, STAR, null);
@@ -1919,7 +1880,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR Term
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("Term", _index, Term, null);
@@ -1933,7 +1893,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR PLUS
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("PLUS", _index, PLUS, null);
@@ -1980,7 +1939,6 @@ namespace IronMeta.Generator
             int _start_i3 = _index;
 
             // CALLORVAR Term
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("Term", _index, Term, null);
@@ -1994,7 +1952,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR QUES
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("QUES", _index, QUES, null);
@@ -2022,7 +1979,6 @@ namespace IronMeta.Generator
             int _start_i7 = _index;
 
             // CALLORVAR OPEN
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("OPEN", _index, OPEN, null);
@@ -2051,7 +2007,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SP
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("SP", _index, SP, null);
@@ -2102,7 +2057,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR InputClass
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("InputClass", _index, InputClass, null);
@@ -2113,7 +2067,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i4; } else goto label4;
 
             // CALLORVAR ParenTerm
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("ParenTerm", _index, ParenTerm, null);
@@ -2127,7 +2080,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i3; } else goto label3;
 
             // CALLORVAR RuleCall
-            var _start_i7 = _index;
             _Parser_Item _r7;
 
             _r7 = _MemoCall("RuleCall", _index, RuleCall, null);
@@ -2141,7 +2093,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i2; } else goto label2;
 
             // CALLORVAR CallOrVar
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("CallOrVar", _index, CallOrVar, null);
@@ -2155,7 +2106,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Literal
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("Literal", _index, Literal, null);
@@ -2169,7 +2119,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR AnyTerm
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("AnyTerm", _index, AnyTerm, null);
@@ -2194,7 +2143,6 @@ namespace IronMeta.Generator
             int _start_i2 = _index;
 
             // CALLORVAR OPEN
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("OPEN", _index, OPEN, null);
@@ -2205,7 +2153,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR Disjunction
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("Disjunction", _index, Disjunction, null);
@@ -2233,7 +2180,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR CLOSE
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("CLOSE", _index, CLOSE, null);
@@ -2269,7 +2215,6 @@ namespace IronMeta.Generator
         {
 
             // CALLORVAR PERIOD
-            var _start_i1 = _index;
             _Parser_Item _r1;
 
             _r1 = _MemoCall("PERIOD", _index, PERIOD, null);
@@ -2303,7 +2248,6 @@ namespace IronMeta.Generator
             int _start_i3 = _index;
 
             // CALLORVAR Ident
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("Ident", _index, Ident, null);
@@ -2317,7 +2261,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label3; }
 
             // CALLORVAR OPEN
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("OPEN", _index, OPEN, null);
@@ -2342,7 +2285,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR ParameterList
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("ParameterList", _index, ParameterList, null);
@@ -2373,7 +2315,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR CLOSE
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("CLOSE", _index, CLOSE, null);
@@ -2412,7 +2353,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR Parameter
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("Parameter", _index, Parameter, null);
@@ -2431,7 +2371,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR COMMA
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("COMMA", _index, COMMA, null);
@@ -2442,7 +2381,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR Parameter
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("Parameter", _index, Parameter, null);
@@ -2507,7 +2445,6 @@ namespace IronMeta.Generator
             int _start_i0 = _index;
 
             // CALLORVAR CallOrVar
-            var _start_i1 = _index;
             _Parser_Item _r1;
 
             _r1 = _MemoCall("CallOrVar", _index, CallOrVar, null);
@@ -2518,7 +2455,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Literal
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("Literal", _index, Literal, null);
@@ -2537,7 +2473,6 @@ namespace IronMeta.Generator
             _Parser_Item id = null;
 
             // CALLORVAR Identifier
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("Identifier", _index, Identifier, null);
@@ -2605,7 +2540,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR CSharpCode
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("CSharpCode", _index, CSharpCode, null);
@@ -2664,7 +2598,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR SP
-            var _start_i6 = _index;
             _Parser_Item _r6;
 
             _r6 = _MemoCall("SP", _index, SP, null);
@@ -2697,7 +2630,6 @@ namespace IronMeta.Generator
             int _start_i9 = _index;
 
             // CALLORVAR ClassRange
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("ClassRange", _index, ClassRange, null);
@@ -2725,7 +2657,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label11; }
 
             // CALLORVAR Literal
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("Literal", _index, Literal, null);
@@ -2805,7 +2736,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SP
-            var _start_i16 = _index;
             _Parser_Item _r16;
 
             _r16 = _MemoCall("SP", _index, SP, null);
@@ -2879,7 +2809,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label7; }
 
             // CALLORVAR Literal
-            var _start_i11 = _index;
             _Parser_Item _r11;
 
             _r11 = _MemoCall("Literal", _index, Literal, null);
@@ -2907,7 +2836,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label6; }
 
             // CALLORVAR SP
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("SP", _index, SP, null);
@@ -2952,7 +2880,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
             // CALLORVAR SP
-            var _start_i14 = _index;
             _Parser_Item _r14;
 
             _r14 = _MemoCall("SP", _index, SP, null);
@@ -3005,7 +2932,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR Literal
-            var _start_i18 = _index;
             _Parser_Item _r18;
 
             _r18 = _MemoCall("Literal", _index, Literal, null);
@@ -3033,7 +2959,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SP
-            var _start_i19 = _index;
             _Parser_Item _r19;
 
             _r19 = _MemoCall("SP", _index, SP, null);
@@ -3089,7 +3014,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR CSharpCodeItem
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("CSharpCodeItem", _index, CSharpCodeItem, null);
@@ -3103,7 +3027,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SP
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("SP", _index, SP, null);
@@ -3187,7 +3110,6 @@ namespace IronMeta.Generator
             int _start_i11 = _index;
 
             // CALLORVAR Comment
-            var _start_i12 = _index;
             _Parser_Item _r12;
 
             _r12 = _MemoCall("Comment", _index, Comment, null);
@@ -3198,7 +3120,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i11; } else goto label11;
 
             // CALLORVAR CSharpCodeItem
-            var _start_i13 = _index;
             _Parser_Item _r13;
 
             _r13 = _MemoCall("CSharpCodeItem", _index, CSharpCodeItem, null);
@@ -3320,7 +3241,6 @@ namespace IronMeta.Generator
             int _start_i24 = _index;
 
             // CALLORVAR Comment
-            var _start_i25 = _index;
             _Parser_Item _r25;
 
             _r25 = _MemoCall("Comment", _index, Comment, null);
@@ -3331,7 +3251,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i24; } else goto label24;
 
             // CALLORVAR CSharpCodeItem
-            var _start_i26 = _index;
             _Parser_Item _r26;
 
             _r26 = _MemoCall("CSharpCodeItem", _index, CSharpCodeItem, null);
@@ -3653,7 +3572,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR Ident
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("Ident", _index, Ident, null);
@@ -3667,7 +3585,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label1; }
 
             // CALLORVAR SP
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("SP", _index, SP, null);
@@ -3708,7 +3625,6 @@ namespace IronMeta.Generator
             int _start_i2 = _index;
 
             // CALLORVAR IdentBegin
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("IdentBegin", _index, IdentBegin, null);
@@ -3724,7 +3640,6 @@ namespace IronMeta.Generator
         label4:
 
             // CALLORVAR IdentBody
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("IdentBody", _index, IdentBody, null);
@@ -3841,7 +3756,6 @@ namespace IronMeta.Generator
             int _start_i4 = _index;
 
             // CALLORVAR Ident
-            var _start_i5 = _index;
             _Parser_Item _r5;
 
             _r5 = _MemoCall("Ident", _index, Ident, null);
@@ -3860,7 +3774,6 @@ namespace IronMeta.Generator
             int _start_i7 = _index;
 
             // CALLORVAR DOT
-            var _start_i8 = _index;
             _Parser_Item _r8;
 
             _r8 = _MemoCall("DOT", _index, DOT, null);
@@ -3871,7 +3784,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label7; }
 
             // CALLORVAR Ident
-            var _start_i9 = _index;
             _Parser_Item _r9;
 
             _r9 = _MemoCall("Ident", _index, Ident, null);
@@ -3925,7 +3837,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label2; }
 
             // CALLORVAR SP
-            var _start_i10 = _index;
             _Parser_Item _r10;
 
             _r10 = _MemoCall("SP", _index, SP, null);
@@ -3956,7 +3867,6 @@ namespace IronMeta.Generator
             int _start_i14 = _index;
 
             // CALLORVAR LESS
-            var _start_i15 = _index;
             _Parser_Item _r15;
 
             _r15 = _MemoCall("LESS", _index, LESS, null);
@@ -3970,7 +3880,6 @@ namespace IronMeta.Generator
             int _start_i16 = _index;
 
             // CALLORVAR GenericId
-            var _start_i17 = _index;
             _Parser_Item _r17;
 
             _r17 = _MemoCall("GenericId", _index, GenericId, null);
@@ -3989,7 +3898,6 @@ namespace IronMeta.Generator
             int _start_i19 = _index;
 
             // CALLORVAR COMMA
-            var _start_i20 = _index;
             _Parser_Item _r20;
 
             _r20 = _MemoCall("COMMA", _index, COMMA, null);
@@ -4000,7 +3908,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label19; }
 
             // CALLORVAR GenericId
-            var _start_i21 = _index;
             _Parser_Item _r21;
 
             _r21 = _MemoCall("GenericId", _index, GenericId, null);
@@ -4065,7 +3972,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label13; }
 
             // CALLORVAR GREATER
-            var _start_i22 = _index;
             _Parser_Item _r22;
 
             _r22 = _MemoCall("GREATER", _index, GREATER, null);
@@ -4130,7 +4036,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4167,7 +4072,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4216,7 +4120,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("SP", _index, SP, null);
@@ -4253,7 +4156,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4290,7 +4192,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4339,7 +4240,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i4 = _index;
             _Parser_Item _r4;
 
             _r4 = _MemoCall("SP", _index, SP, null);
@@ -4376,7 +4276,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4413,7 +4312,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4450,7 +4348,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4487,7 +4384,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4524,7 +4420,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4564,7 +4459,6 @@ namespace IronMeta.Generator
             int _start_i0 = _index;
 
             // CALLORVAR DOT
-            var _start_i1 = _index;
             _Parser_Item _r1;
 
             _r1 = _MemoCall("DOT", _index, DOT, null);
@@ -4575,7 +4469,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4612,7 +4505,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4649,7 +4541,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4686,7 +4577,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4723,7 +4613,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4760,7 +4649,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4797,7 +4685,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4861,7 +4748,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4898,7 +4784,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Push(null); goto label0; }
 
             // CALLORVAR SP
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("SP", _index, SP, null);
@@ -4997,7 +4882,6 @@ namespace IronMeta.Generator
             int _start_i1 = _index;
 
             // CALLORVAR WS
-            var _start_i2 = _index;
             _Parser_Item _r2;
 
             _r2 = _MemoCall("WS", _index, WS, null);
@@ -5008,7 +4892,6 @@ namespace IronMeta.Generator
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Comment
-            var _start_i3 = _index;
             _Parser_Item _r3;
 
             _r3 = _MemoCall("Comment", _index, Comment, null);
