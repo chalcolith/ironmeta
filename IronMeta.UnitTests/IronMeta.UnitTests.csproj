@@ -83,7 +83,7 @@
   </Target>
   -->
   <Target Name="GenerateParser" BeforeTargets="CoreCompile" Inputs="TestParser.ironmeta" Outputs="TestParser.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe TestParser.ironmeta" />
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe TestParser.ironmeta -o TestParser.cs" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">

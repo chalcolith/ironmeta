@@ -1,5 +1,5 @@
 //
-// IronMeta Calc Parser; Generated 02/12/2010 8:39:17 PM UTC
+// IronMeta Calc Parser; Generated 21/12/2010 9:29:05 PM UTC
 //
 
 using System;
@@ -45,7 +45,6 @@ namespace Calc
         {
 
             // CALLORVAR Additive
-            var _start_i0 = _index;
             _Calc_Item _r0;
 
             _r0 = _MemoCall("Additive", _index, Additive, null);
@@ -65,7 +64,6 @@ namespace Calc
             int _start_i1 = _index;
 
             // CALLORVAR Add
-            var _start_i2 = _index;
             _Calc_Item _r2;
 
             _r2 = _MemoCall("Add", _index, Add, null);
@@ -76,7 +74,6 @@ namespace Calc
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Sub
-            var _start_i3 = _index;
             _Calc_Item _r3;
 
             _r3 = _MemoCall("Sub", _index, Sub, null);
@@ -90,7 +87,6 @@ namespace Calc
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Multiplicative
-            var _start_i4 = _index;
             _Calc_Item _r4;
 
             _r4 = _MemoCall("Multiplicative", _index, Multiplicative, null);
@@ -159,7 +155,6 @@ namespace Calc
             int _start_i1 = _index;
 
             // CALLORVAR Multiply
-            var _start_i2 = _index;
             _Calc_Item _r2;
 
             _r2 = _MemoCall("Multiply", _index, Multiply, null);
@@ -170,7 +165,6 @@ namespace Calc
             if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Divide
-            var _start_i3 = _index;
             _Calc_Item _r3;
 
             _r3 = _MemoCall("Divide", _index, Divide, null);
@@ -360,7 +354,6 @@ namespace Calc
             int _start_i15 = _index;
 
             // CALLORVAR first
-            var _start_i17 = _index;
             _Calc_Item _r17;
 
             if (first.Production != null)
@@ -493,7 +486,6 @@ namespace Calc
         label7:
 
             // CALLORVAR WS
-            var _start_i8 = _index;
             _Calc_Item _r8;
 
             _r8 = _MemoCall("WS", _index, WS, null);
@@ -587,7 +579,6 @@ namespace Calc
             if (_results.Peek() == null) { _results.Push(null); goto label5; }
 
             // CALLORVAR type
-            var _start_i9 = _index;
             _Calc_Item _r9;
 
             if (type.Production != null)
@@ -650,7 +641,6 @@ namespace Calc
             }
 
             // CALLORVAR type
-            var _start_i13 = _index;
             _Calc_Item _r13;
 
             if (type.Production != null)
@@ -724,7 +714,6 @@ namespace Calc
             int _start_i3 = _index;
 
             // CALLORVAR str
-            var _start_i4 = _index;
             _Calc_Item _r4;
 
             if (str.Production != null)
@@ -748,7 +737,6 @@ namespace Calc
         label5:
 
             // CALLORVAR WS
-            var _start_i6 = _index;
             _Calc_Item _r6;
 
             _r6 = _MemoCall("WS", _index, WS, null);

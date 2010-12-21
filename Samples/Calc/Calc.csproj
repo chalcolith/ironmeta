@@ -112,6 +112,6 @@
   </Target>
   -->
   <Target Name="GenerateParser" BeforeTargets="CoreCompile" Inputs="Calc.ironmeta" Outputs="Calc.cs">
-    <Exec Command="..\..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe Calc.ironmeta" />
+    <Exec Command="..\..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe Calc.ironmeta -o Calc.cs" />
   </Target>
 </Project>
