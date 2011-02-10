@@ -83,6 +83,11 @@ namespace IronMeta.Generator
                 tItem = string.Format("_{0}_Item", gName);
                 tInput = gr.GetText(gr.TInput).Trim();
                 tResult = gr.GetText(gr.TResult).Trim();
+
+                if (!gBase.EndsWith("_Item>") && gBase.EndsWith(">"))
+                {
+                    gBase = gBase.Insert(gBase.Length - 1, ", " + tItem);
+                }            
             }
 
             // also analyze arguments (because they are not children)

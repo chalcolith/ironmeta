@@ -79,6 +79,9 @@ namespace IronMeta.UnitTests
 
             CalcTests calcTests = new CalcTests();
             RunTests(calcTests);
+
+            LRTests lrTests = new LRTests();
+            RunTests(lrTests);
         }
 
     } // class Program

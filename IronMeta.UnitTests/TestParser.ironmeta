@@ -1,6 +1,6 @@
 // Simple Parser
 
-ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int, _TestParser_Item>
+ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 {
 
     Literal = 'a';

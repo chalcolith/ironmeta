@@ -42,7 +42,7 @@ using System.Linq;
 // it needs to be, in order to demonstrate
 // the features of the IronMeta system.
 
-ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
+ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
 {
     Expression = Additive;
     
