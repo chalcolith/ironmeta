@@ -79,7 +79,7 @@ namespace IronMeta.Generator
                 AST.Grammar<_Parser_Item> gr = node as AST.Grammar<_Parser_Item>;
                 gName = gr.GetText(gr.Name).Trim();
                 gBase = gr.GetText(gr.Base).Trim();
-                
+
                 tItem = string.Format("_{0}_Item", gName);
                 tInput = gr.GetText(gr.TInput).Trim();
                 tResult = gr.GetText(gr.TResult).Trim();
