@@ -602,6 +602,8 @@ namespace IronMeta.Generator
                 tw.Write(indent); tw.WriteLine("_results.Push( _r{0} == null ? new {1}(_start_i{0}, _input_enumerable) : null);", n, tItem);
                 tw.Write(indent); tw.WriteLine("_index = _start_i{0};", n);
             }
+
+            tw.WriteLine();
         }
 
         #endregion
