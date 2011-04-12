@@ -55,6 +55,34 @@ namespace IronMeta.UnitTests
             Assert.True(TestParse(grammar));
         }
 
+        [Fact]
+        public void Test_TwoSlashes()
+        {
+            var literal = @"'\\'";
+            var parser = new IronMeta.Generator.Parser();
+            var result = parser.GetMatch(literal, parser.CSharpCodeItem);
+            Assert.True(result.Success);
+        }
+
+        [Fact]
+        public void Test_FromNarwhal()
+        {
+            var grammar = @"
+    ironmeta StrGrammar<char, string> : CharMatcher<string> {
+
+        CharLiteral = SQ ('\\' (['\'' '""' '\\' '0' 'a' 'b' 'f' 'n' 'r' 't' 'v'] | ['u' 'x'] DECDIGIT+) | ~SQ .):ch SQ SP;
+        StrLiteral = DQ (""\\\"""" | ~DQ .)*:str DQ;
+
+        DQ = '""';
+	    SQ = '\'';
+
+        DECDIGIT = ['0' - '9'];
+
+    }
+";
+            Assert.True(TestParse(grammar));
+        }
+
     }
 
 }
