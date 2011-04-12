@@ -51,7 +51,7 @@ namespace IronMeta.UnitTests
         [Fact]
         public void Test_CharLiteral()
         {
-            var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { DQ = '\""'; rule = DQ (""\"""" | ~DQ .)* DQ; }";
+            var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { DQ = '\""'; rule = DQ (""\\\"""" | ~DQ .)* DQ; }";
             Assert.True(TestParse(grammar));
         }
 
