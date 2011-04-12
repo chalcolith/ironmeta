@@ -49,16 +49,16 @@ namespace IronMeta.UnitTests
         [Fact]
         public void Test_Empty()
         {
-            var matcher = new Calc.Calc("");
-            Assert.False(matcher.GetMatch(matcher.Additive).Success);
+            var matcher = new Calc.Calc();
+            Assert.False(matcher.GetMatch("", matcher.Additive).Success);
         }
 
         [Fact]
         public void Test_Expression()
         {
             var s = "1 + 1";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 2);
         }
 
@@ -66,8 +66,8 @@ namespace IronMeta.UnitTests
         public void Test_Add()
         {
             var s = "2 + 3";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 5);
         }
 
@@ -75,8 +75,8 @@ namespace IronMeta.UnitTests
         public void Test_Additive()
         {
             var s = "4 - 2";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success);
             Assert.Equal(res.Result, 2);
         }
@@ -85,8 +85,8 @@ namespace IronMeta.UnitTests
         public void Test_Subtract()
         {
             var s = "123 - 20";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 103);
         }
 
@@ -94,8 +94,8 @@ namespace IronMeta.UnitTests
         public void Test_Multiplicative()
         {
             var s = "12 / 4";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Multiplicative);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Multiplicative);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 3);
         }
 
@@ -103,8 +103,8 @@ namespace IronMeta.UnitTests
         public void Test_Multiply()
         {
             var s = "3 * 4";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 12);
         }
 
@@ -112,16 +112,17 @@ namespace IronMeta.UnitTests
         public void Test_Divide()
         {
             var s = "12 / 3";
-            var matcher = new Calc.Calc(s);
-            var res = matcher.GetMatch(matcher.Expression);
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success && res.NextIndex == s.Length && res.Result == 4);
         }
 
         [Fact]
         public void Test_Precedence()
         {
-            var matcher = new Calc.Calc("4 + 3 * 2 + 5");
-            var res = matcher.GetMatch(matcher.Expression);
+            var s = "4 + 3 * 2 + 5";
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success);
             Assert.Equal(15, res.Result);
         }
@@ -129,8 +130,9 @@ namespace IronMeta.UnitTests
         [Fact]
         public void Test_Precedence2()
         {
-            var matcher = new Calc.Calc("2 * 3 + 4 * 2");
-            var res = matcher.GetMatch(matcher.Expression);
+            var s = "2 * 3 + 4 * 2";
+            var matcher = new Calc.Calc();
+            var res = matcher.GetMatch(s, matcher.Expression);
             Assert.True(res.Success);
             Assert.Equal(14, res.Result);
         }

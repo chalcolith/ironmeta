@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 10/02/2011 1:09:07 AM UTC
+// IronMeta TestParser Parser; Generated 12/04/2011 10:36:27 PM UTC
 //
 
 using System;
@@ -36,8 +36,8 @@ namespace IronMeta.UnitTests
 
     public partial class TestParser : IronMeta.Matcher.CharMatcher<int, _TestParser_Item>
     {
-        public TestParser(IEnumerable<char> inputs)
-            : base(inputs)
+        public TestParser()
+            : base()
         { }
 
 
@@ -290,6 +290,7 @@ namespace IronMeta.UnitTests
             var _r3 = _results.Pop();
             _results.Push( _r3 == null ? new _TestParser_Item(_start_i3, _input_enumerable) : null);
             _index = _start_i3;
+
         label1: // AND
             var _r1_2 = _results.Pop();
             var _r1_1 = _results.Pop();
@@ -409,6 +410,7 @@ namespace IronMeta.UnitTests
             var _r5 = _results.Pop();
             _results.Push( _r5 == null ? new _TestParser_Item(_start_i5, _input_enumerable) : null);
             _index = _start_i5;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
@@ -563,6 +565,7 @@ namespace IronMeta.UnitTests
             var _r5 = _results.Pop();
             _results.Push( _r5 == null ? new _TestParser_Item(_start_i5, _input_enumerable) : null);
             _index = _start_i5;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label4; }
 
@@ -1501,6 +1504,7 @@ namespace IronMeta.UnitTests
             var _r2 = _arg_results.Pop();
             _arg_results.Push(_r2 == null ? new _TestParser_Item(_arg_index, _arg_index, _input_enumerable, Enumerable.Empty<int>(), false) : null);
             _arg_index = _start_i2;
+
             // AND shortcut
             if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
 

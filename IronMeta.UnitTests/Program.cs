@@ -82,6 +82,9 @@ namespace IronMeta.UnitTests
 
             LRTests lrTests = new LRTests();
             RunTests(lrTests);
+
+            StringTests stringTests = new StringTests();
+            RunTests(stringTests);
         }
 
     } // class Program

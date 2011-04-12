@@ -35,6 +35,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -55,9 +56,8 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="input">Input stream.</param>
-        public CharMatcher(IEnumerable<char> input)
-            : base(input)
+        public CharMatcher()
+            : base()
         {
         }
 

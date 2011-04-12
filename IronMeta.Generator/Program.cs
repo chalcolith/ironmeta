@@ -61,8 +61,8 @@ namespace IronMeta.Generator
         /// <returns></returns>
         public Result Process(IEnumerable<char> input, TextWriter output, string nameSpace)
         {
-            Parser parser = new Parser(input);
-            Result match = parser.GetMatch(parser.IronMetaFile);
+            Parser parser = new Parser();
+            Result match = parser.GetMatch(input, parser.IronMetaFile);
 
             if (match.Success)
             {

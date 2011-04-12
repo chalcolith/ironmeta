@@ -49,8 +49,8 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestLiteral()
         {
-            var parser = new TestParser("a");
-            var match = parser.GetMatch(parser.Literal);
+            var parser = new TestParser();
+            var match = parser.GetMatch("a", parser.Literal);
 
             Assert.True(match.Success);
             Assert.Equal(0, match.StartIndex);
@@ -66,16 +66,16 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestLiteralFail()
         {
-            var parser = new TestParser("b");
-            var match = parser.GetMatch(parser.Literal);
+            var parser = new TestParser();
+            var match = parser.GetMatch("b", parser.Literal);
             Assert.False(match.Success);
         }
 
         [Fact]
         public void TestAndLiteral()
         {
-            var parser = new TestParser("ab");
-            var match = parser.GetMatch(parser.AndLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("ab", parser.AndLiteral);
 
             Assert.True(match.Success);
             Assert.Equal(0, match.StartIndex);
@@ -85,36 +85,36 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestAndLiteralFail1()
         {
-            var parser = new TestParser("a");
-            var match = parser.GetMatch(parser.AndLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("a", parser.AndLiteral);
             Assert.False(match.Success);
         }
 
         [Fact]
         public void TestAndLiteralFail2()
         {
-            var parser = new TestParser("b");
-            var match = parser.GetMatch(parser.AndLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("b", parser.AndLiteral);
             Assert.False(match.Success);
         }
 
         [Fact]
         public void TestOrLiteral()
         {
-            var parser = new TestParser("a");
-            var match = parser.GetMatch(parser.OrLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("a", parser.OrLiteral);
             Assert.True(match.Success);
 
-            parser = new TestParser("b");
-            match = parser.GetMatch(parser.OrLiteral);
+            parser = new TestParser();
+            match = parser.GetMatch("b", parser.OrLiteral);
             Assert.True(match.Success);
         }
 
         [Fact]
         public void TestOrLiteral2()
         {
-            var parser = new TestParser("ab");
-            var match = parser.GetMatch(parser.OrLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("ab", parser.OrLiteral);
             Assert.True(match.Success);
             Assert.Equal(1, match.NextIndex);
         }
@@ -122,16 +122,16 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestOrLiteralFail()
         {
-            var parser = new TestParser("ca");
-            var match = parser.GetMatch(parser.OrLiteral);
+            var parser = new TestParser();
+            var match = parser.GetMatch("ca", parser.OrLiteral);
             Assert.False(match.Success);
         }
 
         [Fact]
         public void TestLiteralString()
         {
-            var parser = new TestParser("abcd");
-            var match = parser.GetMatch(parser.LiteralString);
+            var parser = new TestParser();
+            var match = parser.GetMatch("abcd", parser.LiteralString);
             Assert.True(match.Success);
             Assert.Equal(0, match.StartIndex);
             Assert.Equal(3, match.NextIndex);
@@ -140,16 +140,16 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestLiteralStringFail()
         {
-            var parser = new TestParser("bca");
-            var match = parser.GetMatch(parser.LiteralString);
+            var parser = new TestParser();
+            var match = parser.GetMatch("bca", parser.LiteralString);
             Assert.False(match.Success);
         }
 
         [Fact]
         public void TestAndString()
         {
-            var parser = new TestParser("abcde");
-            var match = parser.GetMatch(parser.AndString);
+            var parser = new TestParser();
+            var match = parser.GetMatch("abcde", parser.AndString);
             Assert.True(match.Success);
             Assert.Equal(4, match.NextIndex);
         }
@@ -564,8 +564,8 @@ namespace IronMeta.UnitTests
         [Fact]
         public void TestCallAct()
         {
-            var parser = new TestParser("a");
-            var match = parser.GetMatch(parser.CallAct);
+            var parser = new TestParser();
+            var match = parser.GetMatch("a", parser.CallAct);
             Assert.True(match.Success);
             Assert.NotEqual(42, match.Result);
         }
@@ -644,11 +644,11 @@ namespace IronMeta.UnitTests
 
         MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)
         {
-            var parser = new TestParser(input);
+            var parser = new TestParser();
             Action<int, IEnumerable<_TestParser_Item>> production = (Action<int, IEnumerable<_TestParser_Item>>)
                 Delegate.CreateDelegate(typeof(Action<int, IEnumerable<_TestParser_Item>>), parser, productionName);
 
-            return parser.GetMatch(production);
+            return parser.GetMatch(input, production);
         }
 
     } // class MatcherTests

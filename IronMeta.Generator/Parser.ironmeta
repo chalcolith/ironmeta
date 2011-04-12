@@ -130,8 +130,8 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
 
     CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | .))* '}';
     CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | .))* ')';
-    CSharpCodeItem = '\x27' (~'\x27' ("\x5c\x27" | .))* '\x27'; // '
-    CSharpCodeItem = '\x22' (~'\x22' ("\x5c\x22" | .))* '\x22'; // "
+    CSharpCodeItem = '\x27' ("\x5c\x27" | ~'\x27' .)* '\x27';   // '
+    CSharpCodeItem = '\x22' ("\x5c\x22" | ~'\x22' .)* '\x22';   // "
     
     Identifier = Ident:id SP -> { return id; };
     Ident = (IdentBegin IdentBody*):id -> { return new Idfr<_Parser_Item>(id); };

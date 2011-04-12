@@ -1,5 +1,5 @@
 //
-// IronMeta Calc Parser; Generated 10/02/2011 1:08:04 AM UTC
+// IronMeta Calc Parser; Generated 12/04/2011 10:45:19 PM UTC
 //
 
 using System;
@@ -36,10 +36,9 @@ namespace Calc
 
     public partial class Calc : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
     {
-        public Calc(IEnumerable<char> inputs)
-            : base(inputs)
+        public Calc()
+            : base()
         { }
-
 
         public void Expression(int _index, _Calc_Args _args)
         {

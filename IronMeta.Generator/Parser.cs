@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 16/12/2010 10:41:05 PM UTC
+// IronMeta Parser Parser; Generated 12/04/2011 10:54:08 PM UTC
 //
 
 using System;
@@ -38,10 +38,9 @@ namespace IronMeta.Generator
 
     public partial class Parser : IronMeta.Matcher.CharMatcher<ASTNode<_Parser_Item>, _Parser_Item>
     {
-        public Parser(IEnumerable<char> inputs)
-            : base(inputs)
+        public Parser()
+            : base()
         { }
-
 
         public void IronMetaFile(int _index, _Parser_Args _args)
         {
@@ -1989,6 +1988,7 @@ namespace IronMeta.Generator
             var _r7 = _results.Pop();
             _results.Push( _r7 == null ? new _Parser_Item(_start_i7, _input_enumerable) : null);
             _index = _start_i7;
+
         label2: // AND
             var _r2_2 = _results.Pop();
             var _r2_1 = _results.Pop();
@@ -3100,6 +3100,7 @@ namespace IronMeta.Generator
             var _r8 = _results.Pop();
             _results.Push( _r8 == null ? new _Parser_Item(_start_i8, _input_enumerable) : null);
             _index = _start_i8;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label7; }
 
@@ -3231,6 +3232,7 @@ namespace IronMeta.Generator
             var _r21 = _results.Pop();
             _results.Push( _r21 == null ? new _Parser_Item(_start_i21, _input_enumerable) : null);
             _index = _start_i21;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label20; }
 
@@ -3352,50 +3354,51 @@ namespace IronMeta.Generator
             var _res32 = Enumerable.Empty<ASTNode<_Parser_Item>>();
         label32:
 
-            // AND 33
+            // OR 33
             int _start_i33 = _index;
-
-            // NOT 34
-            int _start_i34 = _index;
-
-            // LITERAL '\x27'
-            _ParseLiteralChar(ref _index, '\x27');
-
-            // NOT 34
-            var _r34 = _results.Pop();
-            _results.Push( _r34 == null ? new _Parser_Item(_start_i34, _input_enumerable) : null);
-            _index = _start_i34;
-            // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label33; }
-
-            // OR 36
-            int _start_i36 = _index;
 
             // LITERAL "\x5c\x27"
             _ParseLiteralString(ref _index, "\x5c\x27");
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i36; } else goto label36;
+            if (_results.Peek() == null) { _results.Pop(); _index = _start_i33; } else goto label33;
+
+            // AND 35
+            int _start_i35 = _index;
+
+            // NOT 36
+            int _start_i36 = _index;
+
+            // LITERAL '\x27'
+            _ParseLiteralChar(ref _index, '\x27');
+
+            // NOT 36
+            var _r36 = _results.Pop();
+            _results.Push( _r36 == null ? new _Parser_Item(_start_i36, _input_enumerable) : null);
+            _index = _start_i36;
+
+            // AND shortcut
+            if (_results.Peek() == null) { _results.Push(null); goto label35; }
 
             // ANY
             _ParseAny(ref _index);
 
-        label36: // OR
-            int _dummy_i36 = _index; // no-op for label
+        label35: // AND
+            var _r35_2 = _results.Pop();
+            var _r35_1 = _results.Pop();
 
-        label33: // AND
-            var _r33_2 = _results.Pop();
-            var _r33_1 = _results.Pop();
-
-            if (_r33_1 != null && _r33_2 != null)
+            if (_r35_1 != null && _r35_2 != null)
             {
-                _results.Push( new _Parser_Item(_start_i33, _index, _input_enumerable, _r33_1.Results.Concat(_r33_2.Results).Where(_NON_NULL), true) );
+                _results.Push( new _Parser_Item(_start_i35, _index, _input_enumerable, _r35_1.Results.Concat(_r35_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
                 _results.Push(null);
-                _index = _start_i33;
+                _index = _start_i35;
             }
+
+        label33: // OR
+            int _dummy_i33 = _index; // no-op for label
 
             // STAR 32
             var _r32 = _results.Pop();
@@ -3466,50 +3469,51 @@ namespace IronMeta.Generator
             var _res43 = Enumerable.Empty<ASTNode<_Parser_Item>>();
         label43:
 
-            // AND 44
+            // OR 44
             int _start_i44 = _index;
-
-            // NOT 45
-            int _start_i45 = _index;
-
-            // LITERAL '\x22'
-            _ParseLiteralChar(ref _index, '\x22');
-
-            // NOT 45
-            var _r45 = _results.Pop();
-            _results.Push( _r45 == null ? new _Parser_Item(_start_i45, _input_enumerable) : null);
-            _index = _start_i45;
-            // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label44; }
-
-            // OR 47
-            int _start_i47 = _index;
 
             // LITERAL "\x5c\x22"
             _ParseLiteralString(ref _index, "\x5c\x22");
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i47; } else goto label47;
+            if (_results.Peek() == null) { _results.Pop(); _index = _start_i44; } else goto label44;
+
+            // AND 46
+            int _start_i46 = _index;
+
+            // NOT 47
+            int _start_i47 = _index;
+
+            // LITERAL '\x22'
+            _ParseLiteralChar(ref _index, '\x22');
+
+            // NOT 47
+            var _r47 = _results.Pop();
+            _results.Push( _r47 == null ? new _Parser_Item(_start_i47, _input_enumerable) : null);
+            _index = _start_i47;
+
+            // AND shortcut
+            if (_results.Peek() == null) { _results.Push(null); goto label46; }
 
             // ANY
             _ParseAny(ref _index);
 
-        label47: // OR
-            int _dummy_i47 = _index; // no-op for label
+        label46: // AND
+            var _r46_2 = _results.Pop();
+            var _r46_1 = _results.Pop();
 
-        label44: // AND
-            var _r44_2 = _results.Pop();
-            var _r44_1 = _results.Pop();
-
-            if (_r44_1 != null && _r44_2 != null)
+            if (_r46_1 != null && _r46_2 != null)
             {
-                _results.Push( new _Parser_Item(_start_i44, _index, _input_enumerable, _r44_1.Results.Concat(_r44_2.Results).Where(_NON_NULL), true) );
+                _results.Push( new _Parser_Item(_start_i46, _index, _input_enumerable, _r46_1.Results.Concat(_r46_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
                 _results.Push(null);
-                _index = _start_i44;
+                _index = _start_i46;
             }
+
+        label44: // OR
+            int _dummy_i44 = _index; // no-op for label
 
             // STAR 43
             var _r43 = _results.Pop();
@@ -4867,6 +4871,7 @@ namespace IronMeta.Generator
             var _r0 = _results.Pop();
             _results.Push( _r0 == null ? new _Parser_Item(_start_i0, _input_enumerable) : null);
             _index = _start_i0;
+
         }
 
 
@@ -5035,6 +5040,7 @@ namespace IronMeta.Generator
             var _r6 = _results.Pop();
             _results.Push( _r6 == null ? new _Parser_Item(_start_i6, _input_enumerable) : null);
             _index = _start_i6;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label5; }
 
@@ -5172,6 +5178,7 @@ namespace IronMeta.Generator
             var _r25 = _results.Pop();
             _results.Push( _r25 == null ? new _Parser_Item(_start_i25, _input_enumerable) : null);
             _index = _start_i25;
+
             // AND shortcut
             if (_results.Peek() == null) { _results.Push(null); goto label24; }
 

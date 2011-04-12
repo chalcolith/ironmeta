@@ -94,10 +94,8 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="input">The input for the grammar to parse.</param>
-        public Matcher(IEnumerable<TInput> input)
+        public Matcher()
         {
-            this.Input = input;
         }
 
         /// <summary>
@@ -105,8 +103,9 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="production">The top-level grammar production (rule) to use.</param>
         /// <returns>The result of the match.</returns>
-        public MatchResult<TInput, TResult, TItem> GetMatch(Action<int, IEnumerable<TItem>> production)
+        public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<int, IEnumerable<TItem>> production)
         {
+            Input = input;
             _memo = new Memo<TInput, TResult, TItem>();
             var result = _MemoCall(production.Method.Name, 0, production, null);
 

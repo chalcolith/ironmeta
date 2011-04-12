@@ -252,10 +252,9 @@ namespace IronMeta.Generator
             string innerIndent = indent + "    ";
 
             // generate constructor
-            tw.Write(innerIndent); tw.WriteLine("public {0}(IEnumerable<{1}> inputs)", gName, tInput, tResult);
-            tw.Write(innerIndent); tw.WriteLine("    : base(inputs)");
+            tw.Write(innerIndent); tw.WriteLine("public {0}()", gName);
+            tw.Write(innerIndent); tw.WriteLine("    : base()");
             tw.Write(innerIndent); tw.WriteLine("{ }");
-            tw.WriteLine();
 
             // generate rules
             foreach (KeyValuePair<string, AST.ASTNode<_Parser_Item>> item in ruleBodies)

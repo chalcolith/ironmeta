@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 10/02/2011 1:08:14 AM UTC
+// IronMeta LRParser Parser; Generated 12/04/2011 10:45:39 PM UTC
 //
 
 using System;
@@ -36,10 +36,9 @@ namespace IronMeta.UnitTests
 
     public partial class LRParser : IronMeta.Matcher.CharMatcher<string, _LRParser_Item>
     {
-        public LRParser(IEnumerable<char> inputs)
-            : base(inputs)
+        public LRParser()
+            : base()
         { }
-
 
         public void A(int _index, _LRParser_Args _args)
         {

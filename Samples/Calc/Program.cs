@@ -57,8 +57,8 @@ namespace Calc
 
                 if (!string.IsNullOrEmpty(input))
                 {
-                    var matcher = new Calc(input);
-                    var result = matcher.GetMatch(matcher.Expression);
+                    var matcher = new Calc();
+                    var result = matcher.GetMatch(input, matcher.Expression);
 
                     if (result.Success)
                     {
