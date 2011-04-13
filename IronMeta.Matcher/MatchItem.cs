@@ -68,7 +68,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The production that this item is passing.
         /// </summary>
-        public Action<int, IEnumerable<TItem>> Production = null;
+        public Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> Production = null;
 
         /// <summary>
         /// The name of the production that this item is passing.
@@ -234,7 +234,7 @@ namespace IronMeta.Matcher
         /// Constructor.
         /// </summary>
         /// <param name="p">Production to pass.</param>
-        public MatchItem(Action<int, IEnumerable<TItem>> p)
+        public MatchItem(Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> p)
         {
             this.Production = p;
             this.ProductionName = p.Method.Name;

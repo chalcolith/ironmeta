@@ -48,6 +48,7 @@ namespace IronMeta.Matcher
         where TItem : MatchItem<TInput, TResult, TItem>, new()
     {
         Matcher<TInput, TResult, TItem> matcher = null;
+        Memo<TInput, TResult, TItem> memo = null;
 
         bool success = false;
         int start = -1;
@@ -66,9 +67,10 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        internal MatchResult(Matcher<TInput, TResult, TItem> matcher, bool success, int start, int next, IEnumerable<TResult> result, string error, int errorIndex)
+        internal MatchResult(Matcher<TInput, TResult, TItem> matcher, Memo<TInput, TResult, TItem> memo, bool success, int start, int next, IEnumerable<TResult> result, string error, int errorIndex)
         {
             this.matcher = matcher;
+            this.memo = memo;
             this.success = success;
             this.start = start;
             this.next = next;
@@ -80,7 +82,9 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The matcher that generated this result.
         /// </summary>
-        public Matcher<TInput, TResult, TItem> Matcher { get { return matcher; } }
+        public Matcher<TInput, TResult, TItem> Matcher { get { return matcher; } } 
+
+        public Memo<TInput, TResult, TItem> Memo { get { return memo; } }
 
         /// <summary>
         /// Whether or not the match succeeded.

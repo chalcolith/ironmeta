@@ -645,8 +645,8 @@ namespace IronMeta.UnitTests
         MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)
         {
             var parser = new TestParser();
-            Action<int, IEnumerable<_TestParser_Item>> production = (Action<int, IEnumerable<_TestParser_Item>>)
-                Delegate.CreateDelegate(typeof(Action<int, IEnumerable<_TestParser_Item>>), parser, productionName);
+            var production = (Action<Memo<char, int, _TestParser_Item>, int, IEnumerable<_TestParser_Item>>)
+                Delegate.CreateDelegate(typeof(Action<Memo<char, int, _TestParser_Item>, int, IEnumerable<_TestParser_Item>>), parser, productionName);
 
             return parser.GetMatch(input, production);
         }

@@ -51,8 +51,6 @@ namespace IronMeta.Matcher
         where TItem : MatchItem<char, TResult, TItem>, new()
     {
 
-        List<int> _line_begins = null;
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -67,23 +65,24 @@ namespace IronMeta.Matcher
         /// <param name="pos">The index in the input.</param>
         /// <param name="offset">The offset of the position after the beginning of the line.</param>
         /// <returns>The line containing a particular input index.</returns>
-        public string GetLine(int pos, out int offset)
+        public static string GetLine(Memo<char, TResult, TItem> memo, int pos, out int offset)
         {
+            var line_begins = MakeLines(memo);
             offset = 0;
 
-            int index = GetLineNumber(pos) - 1;
-            int start = _line_begins[index];
+            int index = GetLineNumber(memo, pos) - 1;
+            int start = line_begins[index];
             offset = pos - start;
 
-            int len = index + 1 < _line_begins.Count ? _line_begins[index + 1] - _line_begins[index] : _line_begins.Count - _line_begins[index];
+            int len = index + 1 < line_begins.Count ? line_begins[index + 1] - line_begins[index] : line_begins.Count - line_begins[index];
 
-            if (InputString != null)
+            if (memo.InputString != null)
             {
-                return InputString.Substring(start, len);
+                return memo.InputString.Substring(start, len);
             }
             else
             {
-                IEnumerable<char> result = InputEnumerable.Skip(start).Take(len).Cast<char>();
+                IEnumerable<char> result = memo.InputEnumerable.Skip(start).Take(len).Cast<char>();
                 return new string(result.ToArray());
             }
         }
@@ -93,16 +92,15 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="pos">The index in the input.</param>
         /// <returns>The number of the line that contains the index.</returns>
-        public int GetLineNumber(int pos)
+        public static int GetLineNumber(Memo<char, TResult, TItem> memo, int pos)
         {
-            if (_line_begins == null)
-                MakeLines();
+            var line_begins = MakeLines(memo);
 
-            int low = 0, high = _line_begins.Count - 1;
+            int low = 0, high = line_begins.Count - 1;
             int index = low + (high - low) / 2;
-            while (_line_begins[index] != pos && low < high)
+            while (line_begins[index] != pos && low < high)
             {
-                if (_line_begins[index] > pos)
+                if (line_begins[index] > pos)
                     high = index - 1;
                 else
                     low = index + 1;
@@ -115,19 +113,24 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Finds line endings.
         /// </summary>
-        private void MakeLines()
+        static List<int> MakeLines(Memo<char, TResult, TItem> memo)
         {
-            _line_begins = new List<int>();
-            _line_begins.Add(0);
+            object obj;
+            if (memo.Properties.TryGetValue("_line_begins", out obj) && obj is List<int>)
+                return (List<int>)obj;            
+
+            var line_begins = new List<int>();
+            line_begins.Add(0);
+            memo.Properties["_line_begins"] = line_begins;
 
             bool found_return = false;
             bool in_end = false;
 
-            if (InputString != null)
+            if (memo.InputString != null)
             {
-                for (int index = 0; index < InputString.Length; ++index)
+                for (int index = 0; index < memo.InputString.Length; ++index)
                 {
-                    char ch = InputString[index];
+                    char ch = memo.InputString[index];
 
                     if (ch == '\r')
                     {
@@ -144,7 +147,7 @@ namespace IronMeta.Matcher
                         found_return = false;
                         if (in_end)
                         {
-                            _line_begins.Add(index);
+                            line_begins.Add(index);
                             in_end = false;
                         }
                     }
@@ -153,7 +156,7 @@ namespace IronMeta.Matcher
             else
             {
                 int index = 0;
-                foreach (char ch in InputEnumerable)
+                foreach (char ch in memo.InputEnumerable)
                 {
                     if (ch == '\r')
                     {
@@ -170,7 +173,7 @@ namespace IronMeta.Matcher
                         found_return = false;
                         if (in_end)
                         {
-                            _line_begins.Add(index);
+                            line_begins.Add(index);
                             in_end = false;
                         }
                     }
@@ -178,6 +181,8 @@ namespace IronMeta.Matcher
                     ++index;
                 }
             }
+
+            return line_begins;
         }
 
     }  // class CharMatcher

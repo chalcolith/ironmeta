@@ -35,6 +35,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections.Generic;
 
 namespace IronMeta.Matcher
@@ -49,19 +50,38 @@ namespace IronMeta.Matcher
     public class Memo<TInput, TResult, TItem>
     {
         Dictionary<string, Dictionary<int,TItem>> table = new Dictionary<string, Dictionary<int, TItem>>();
+        Dictionary<string, object> properties = new Dictionary<string, object>();
 
-        internal IEnumerable<TInput> InputEnumerable { get; set; }
-        internal IList<TInput> InputList { get; set; }
-        internal string InputString { get; set; }
-
-        internal Stack<TItem> Results { get; set; }
-        internal Stack<TItem> ArgResults { get; set; }
-
-        internal ErrorRec LastError { get; set; }
-        internal Stack<LRRecord<TItem>> CallStack { get; set; }
-
-        public Memo()
+        /// <summary>
+        /// The input stream for the grammar to parse.
+        /// </summary>
+        public IEnumerable<TInput> Input
         {
+            get { return InputEnumerable; }
+
+            protected set
+            {
+                InputEnumerable = value;
+                InputList = InputEnumerable as IList<TInput>;
+                InputString = InputEnumerable as string;
+            }
+        }
+
+        public IEnumerable<TInput> InputEnumerable { get; set; }
+        public IList<TInput> InputList { get; set; }
+        public string InputString { get; set; }
+
+        public Stack<TItem> Results { get; set; }
+        public Stack<TItem> ArgResults { get; set; }
+
+        public ErrorRec LastError { get; set; }
+        public Stack<LRRecord<TItem>> CallStack { get; set; }
+
+        public Dictionary<string, object> Properties { get { return properties; } }
+
+        public Memo(IEnumerable<TInput> input)
+        {
+            Input = input;
             Results = new Stack<TItem>();
             ArgResults = new Stack<TItem>();
             LastError = new ErrorRec { Pos = 0, Message = "no error" };
@@ -170,6 +190,20 @@ namespace IronMeta.Matcher
             return false;
         }
 
+        /// <summary>
+        /// Sets the current error, if it is beyond or equal to the previous error.
+        /// </summary>
+        /// <param name="pos">Position of the error.</param>
+        /// <param name="message">Function to generate the message (deferred until the end for better performance).</param>
+        public void AddError(int pos, Func<string> message)
+        {
+            if (pos >= LastError.Pos)
+            {
+                LastError.Pos = pos;
+                LastError.Func = message;
+            }
+        }
+
     } // class Memo
 
     /// <summary>
@@ -201,5 +235,49 @@ namespace IronMeta.Matcher
         public TItem CurrentResult { get; set; }
 
     } // class LRRecord
+
+    /// <summary>
+    /// Stores information about errors.
+    /// </summary>
+    public class ErrorRec
+    {
+        string _msg = null;
+        Func<string> _func = null;
+
+        /// <summary>
+        /// Input index of the error.
+        /// </summary>
+        public int Pos { get; set; }
+
+        /// <summary>
+        /// The function used to generate the error message (use a lambda to defer string processing until the error needs to be printed).
+        /// </summary>
+        public Func<string> Func
+        {
+            private get { return _func; }
+
+            set
+            {
+                if ((_func = value) != null)
+                    _msg = null;
+            }
+        }
+
+        /// <summary>
+        /// The error message.
+        /// </summary>
+        public string Message
+        {
+            get
+            {
+                return _msg ?? (_msg = (Func != null ? Func() : string.Empty));
+            }
+
+            set
+            {
+                _msg = value;
+            }
+        }
+    }
 
 } // namespace IronMeta.Matcher

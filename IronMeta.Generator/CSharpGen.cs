@@ -207,7 +207,8 @@ namespace IronMeta.Generator
             tw.Write(indent); tw.WriteLine("using _{1}_Inputs = IEnumerable<{0}>;", tInput, gName);
             tw.Write(indent); tw.WriteLine("using _{1}_Results = IEnumerable<{0}>;", tResult, gName);
             tw.Write(indent); tw.WriteLine("using _{0}_Args = IEnumerable<{1}>;", gName, tItem);
-            tw.Write(indent); tw.WriteLine("using _{0}_Rule = System.Action<int, IEnumerable<{1}>>;", gName, tItem);
+            tw.Write(indent); tw.WriteLine("using _{0}_Memo = Memo<{1}, {2}, {3}>;", gName, tInput, tResult, tItem);
+            tw.Write(indent); tw.WriteLine("using _{0}_Rule = System.Action<Memo<{2}, {3}, {1}>, int, IEnumerable<{1}>>;", gName, tItem, tInput, tResult);
             tw.Write(indent); tw.WriteLine("using _{3}_Base = IronMeta.Matcher.Matcher<{0}, {1}, {2}>;", tInput, tResult, tItem, gName);
             tw.WriteLine();
         }
@@ -271,7 +272,7 @@ namespace IronMeta.Generator
         {
             // generate rule
             tw.WriteLine();
-            tw.Write(indent); tw.WriteLine("public {2}void {0}(int _index, _{1}_Args _args)", ruleName, gName, overrides.Contains(ruleName) ? "override " : "");
+            tw.Write(indent); tw.WriteLine("public {2}void {0}(_{1}_Memo _memo, int _index, _{1}_Args _args)", ruleName, gName, overrides.Contains(ruleName) ? "override " : "");
             tw.Write(indent); tw.WriteLine("{");
             tw.WriteLine();
 
@@ -459,17 +460,17 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("_ParseLiteralArgs(ref _arg_index, ref _arg_input_index, {0}, _args);", literal);
+                tw.Write(indent); tw.WriteLine("_ParseLiteralArgs(_memo, ref _arg_index, ref _arg_input_index, {0}, _args);", literal);
             }
             else
             {
                 tw.Write(indent);
                 if (literal.StartsWith("\""))
-                    tw.WriteLine("_ParseLiteralString(ref _index, {0});", literal);
+                    tw.WriteLine("_ParseLiteralString(_memo, ref _index, {0});", literal);
                 else if (literal.StartsWith("'"))
-                    tw.WriteLine("_ParseLiteralChar(ref _index, {0});", literal);
+                    tw.WriteLine("_ParseLiteralChar(_memo, ref _index, {0});", literal);
                 else
-                    tw.WriteLine("_ParseLiteralObj(ref _index, {0});", literal);
+                    tw.WriteLine("_ParseLiteralObj(_memo, ref _index, {0});", literal);
             }
 
             tw.WriteLine();
@@ -485,9 +486,9 @@ namespace IronMeta.Generator
             tw.Write(indent);
 
             if (match_args)
-                tw.WriteLine("_ParseInputClassArgs(ref _arg_index, ref _arg_input_index, _args, {0});", string.Join(", ", node.Chars.ToArray()));
+                tw.WriteLine("_ParseInputClassArgs(_memo, ref _arg_index, ref _arg_input_index, _args, {0});", string.Join(", ", node.Chars.ToArray()));
             else
-                tw.WriteLine("_ParseInputClass(ref _index, {0});", string.Join(", ", node.Chars.ToArray()));
+                tw.WriteLine("_ParseInputClass(_memo, ref _index, {0});", string.Join(", ", node.Chars.ToArray()));
 
             tw.WriteLine();
         }
@@ -502,13 +503,13 @@ namespace IronMeta.Generator
 
             tw.Write(indent);
             if (match_args)
-                tw.WriteLine("ArgResults.Push(null);");
+                tw.WriteLine("_memo.ArgResults.Push(null);");
             else
-                tw.WriteLine("Results.Push( null );");
+                tw.WriteLine("_memo.Results.Push( null );");
             
             if (!string.IsNullOrEmpty(node.Message))
             {
-                tw.Write(indent); tw.WriteLine("_AddError(_index, () => \"{0}\");", node.Message);
+                tw.Write(indent); tw.WriteLine("_memo.AddError(_index, () => \"{0}\");", node.Message);
             }
 
             tw.WriteLine();
@@ -524,9 +525,9 @@ namespace IronMeta.Generator
             tw.Write(indent);
 
             if (match_args)
-                tw.WriteLine("_ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);");
+                tw.WriteLine("_ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);");
             else
-                tw.WriteLine("_ParseAny(ref _index);");
+                tw.WriteLine("_ParseAny(_memo, ref _index);");
 
             tw.WriteLine();
         }
@@ -554,14 +555,14 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = ArgResults.Pop();", n);
-                tw.Write(indent); tw.WriteLine("ArgResults.Push(_r{0});", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("_memo.ArgResults.Push(_r{0});", n);
                 tw.Write(indent); tw.WriteLine("_arg_index = _start_i{0};", n);
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = Results.Pop();", n);
-                tw.Write(indent); tw.WriteLine("Results.Push( _r{0} != null ? new {1}(_start_i{0}, InputEnumerable) : null );", n, tItem);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("_memo.Results.Push( _r{0} != null ? new {1}(_start_i{0}, _memo.InputEnumerable) : null );", n, tItem);
                 tw.Write(indent); tw.WriteLine("_index = _start_i{0};", n);
             }
 
@@ -591,14 +592,14 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = ArgResults.Pop();", n);
-                tw.Write(indent); tw.WriteLine("ArgResults.Push(_r{0} == null ? new {1}(_arg_index, _arg_index, InputEnumerable, Enumerable.Empty<{2}>(), false) : null);", n, tItem, tResult);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("_memo.ArgResults.Push(_r{0} == null ? new {1}(_arg_index, _arg_index, _memo.InputEnumerable, Enumerable.Empty<{2}>(), false) : null);", n, tItem, tResult);
                 tw.Write(indent); tw.WriteLine("_arg_index = _start_i{0};", n);
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = Results.Pop();", n);
-                tw.Write(indent); tw.WriteLine("Results.Push( _r{0} == null ? new {1}(_start_i{0}, InputEnumerable) : null);", n, tItem);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("_memo.Results.Push( _r{0} == null ? new {1}(_start_i{0}, _memo.InputEnumerable) : null);", n, tItem);
                 tw.Write(indent); tw.WriteLine("_index = _start_i{0};", n);
             }
 
@@ -628,9 +629,9 @@ namespace IronMeta.Generator
             tw.Write(indent); 
 
             if (match_args)
-                tw.WriteLine("if (ArgResults.Peek() == null) {{ ArgResults.Pop(); _arg_index = _start_i{0}; }} else goto label{0};", n);
+                tw.WriteLine("if (_memo.ArgResults.Peek() == null) {{ _memo.ArgResults.Pop(); _arg_index = _start_i{0}; }} else goto label{0};", n);
             else
-                tw.WriteLine("if (Results.Peek() == null) {{ Results.Pop(); _index = _start_i{0}; }} else goto label{0};", n);
+                tw.WriteLine("if (_memo.Results.Peek() == null) {{ _memo.Results.Pop(); _index = _start_i{0}; }} else goto label{0};", n);
 
             tw.WriteLine();
         }
@@ -665,9 +666,9 @@ namespace IronMeta.Generator
             tw.Write(indent); 
 
             if (match_args)
-                tw.WriteLine("if (ArgResults.Peek() == null) {{ ArgResults.Push(null); goto label{0}; }}", outer_n);
+                tw.WriteLine("if (_memo.ArgResults.Peek() == null) {{ _memo.ArgResults.Push(null); goto label{0}; }}", outer_n);
             else
-                tw.WriteLine("if (Results.Peek() == null) {{ Results.Push(null); goto label{0}; }}", outer_n);
+                tw.WriteLine("if (_memo.Results.Peek() == null) {{ _memo.Results.Push(null); goto label{0}; }}", outer_n);
 
             tw.WriteLine();
         }
@@ -678,31 +679,31 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0}_2 = ArgResults.Pop();", n);
-                tw.Write(indent); tw.WriteLine("var _r{0}_1 = ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0}_2 = _memo.ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0}_1 = _memo.ArgResults.Pop();", n);
                 tw.WriteLine();
                 tw.Write(indent); tw.WriteLine("if (_r{0}_1 != null && _r{0}_2 != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    ArgResults.Push(new {1}(_start_i{0}, _arg_index, _r{0}_1.Inputs.Concat(_r{0}_2.Inputs), _r{0}_1.Results.Concat(_r{0}_2.Results).Where(_NON_NULL), false));", n, tItem);
+                tw.Write(indent); tw.WriteLine("    _memo.ArgResults.Push(new {1}(_start_i{0}, _arg_index, _r{0}_1.Inputs.Concat(_r{0}_2.Inputs), _r{0}_1.Results.Concat(_r{0}_2.Results).Where(_NON_NULL), false));", n, tItem);
                 tw.Write(indent); tw.WriteLine("}");
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    ArgResults.Push(null);");
+                tw.Write(indent); tw.WriteLine("    _memo.ArgResults.Push(null);");
                 tw.Write(indent); tw.WriteLine("    _arg_index = _start_i{0};", n);
                 tw.Write(indent); tw.WriteLine("}");
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0}_2 = Results.Pop();", n);
-                tw.Write(indent); tw.WriteLine("var _r{0}_1 = Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0}_2 = _memo.Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0}_1 = _memo.Results.Pop();", n);
                 tw.WriteLine();
                 tw.Write(indent); tw.WriteLine("if (_r{0}_1 != null && _r{0}_2 != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    Results.Push( new {1}(_start_i{0}, _index, InputEnumerable, _r{0}_1.Results.Concat(_r{0}_2.Results).Where(_NON_NULL), true) );", n, tItem);
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Push( new {1}(_start_i{0}, _index, _memo.InputEnumerable, _r{0}_1.Results.Concat(_r{0}_2.Results).Where(_NON_NULL), true) );", n, tItem);
                 tw.Write(indent); tw.WriteLine("}");
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    Results.Push(null);");
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Push(null);");
                 tw.Write(indent); tw.WriteLine("    _index = _start_i{0};", n);
                 tw.Write(indent); tw.WriteLine("}");
             }
@@ -741,7 +742,7 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.ArgResults.Pop();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    _inp{0} = _inp{0}.Concat(_r{0}.Inputs);", n);
@@ -750,12 +751,12 @@ namespace IronMeta.Generator
                 tw.Write(indent); tw.WriteLine("}");
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    ArgResults.Push(new {1}(_start_i{0}, _arg_index, _inp{0}, _res{0}.Where(_NON_NULL), false));", n, tItem);
+                tw.Write(indent); tw.WriteLine("    _memo.ArgResults.Push(new {1}(_start_i{0}, _arg_index, _inp{0}, _res{0}.Where(_NON_NULL), false));", n, tItem);
                 tw.Write(indent); tw.WriteLine("}");
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.Results.Pop();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    _res{0} = _res{0}.Concat(_r{0}.Results);", n);
@@ -763,7 +764,7 @@ namespace IronMeta.Generator
                 tw.Write(indent); tw.WriteLine("}");
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    Results.Push(new {1}(_start_i{0}, _index, InputEnumerable, _res{0}.Where(_NON_NULL), true));", n, tItem);
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Push(new {1}(_start_i{0}, _index, _memo.InputEnumerable, _res{0}.Where(_NON_NULL), true));", n, tItem);
                 tw.Write(indent); tw.WriteLine("}");
             }
 
@@ -801,7 +802,7 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = ArgResults.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.ArgResults.Pop();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    _inp{0} = _inp{0}.Concat(_r{0}.Inputs);", n);
@@ -811,14 +812,14 @@ namespace IronMeta.Generator
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    if (_arg_index > _start_i{0})", n);
-                tw.Write(indent); tw.WriteLine("        ArgResults.Push(new {1}(_start_i{0}, _arg_index, _inp{0}, _res{0}.Where(_NON_NULL), false));", n, tItem);
+                tw.Write(indent); tw.WriteLine("        _memo.ArgResults.Push(new {1}(_start_i{0}, _arg_index, _inp{0}, _res{0}.Where(_NON_NULL), false));", n, tItem);
                 tw.Write(indent); tw.WriteLine("    else");
-                tw.Write(indent); tw.WriteLine("        ArgResults.Push(null);");
+                tw.Write(indent); tw.WriteLine("        _memo.ArgResults.Push(null);");
                 tw.Write(indent); tw.WriteLine("}");
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = Results.Pop();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.Results.Pop();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    _res{0} = _res{0}.Concat(_r{0}.Results);", n);
@@ -827,9 +828,9 @@ namespace IronMeta.Generator
                 tw.Write(indent); tw.WriteLine("else");
                 tw.Write(indent); tw.WriteLine("{");
                 tw.Write(indent); tw.WriteLine("    if (_index > _start_i{0})", n);
-                tw.Write(indent); tw.WriteLine("        Results.Push(new {1}(_start_i{0}, _index, InputEnumerable, _res{0}.Where(_NON_NULL), true));", n, tItem);
+                tw.Write(indent); tw.WriteLine("        _memo.Results.Push(new {1}(_start_i{0}, _index, _memo.InputEnumerable, _res{0}.Where(_NON_NULL), true));", n, tItem);
                 tw.Write(indent); tw.WriteLine("    else");
-                tw.Write(indent); tw.WriteLine("        Results.Push(null);");
+                tw.Write(indent); tw.WriteLine("        _memo.Results.Push(null);");
                 tw.Write(indent); tw.WriteLine("}");
             }
 
@@ -846,9 +847,9 @@ namespace IronMeta.Generator
             tw.Write(indent);
 
             if (match_args)
-                tw.WriteLine("if (ArgResults.Peek() == null) {{ ArgResults.Pop(); ArgResults.Push(new {0}(_arg_index, InputEnumerable)); }}", tItem);
+                tw.WriteLine("if (_memo.ArgResults.Peek() == null) {{ _memo.ArgResults.Pop(); _memo.ArgResults.Push(new {0}(_arg_index, _memo.InputEnumerable)); }}", tItem);
             else
-                tw.WriteLine("if (Results.Peek() == null) {{ Results.Pop(); Results.Push(new {0}(_index, InputEnumerable)); }}", tItem);
+                tw.WriteLine("if (_memo.Results.Peek() == null) {{ _memo.Results.Pop(); _memo.Results.Push(new {0}(_index, _memo.InputEnumerable)); }}", tItem);
 
             tw.WriteLine();
         }
@@ -878,7 +879,7 @@ namespace IronMeta.Generator
             tw.Write(indent); tw.WriteLine("// COND");
 
             string index = match_args ? "_arg_index" : "_index";
-            string results = match_args ? "ArgResults" : "Results";
+            string results = match_args ? "_memo.ArgResults" : "_memo.Results";
 
             if (condition.Contains("return") || condition.Contains("_IM_Result"))
             {
@@ -894,6 +895,8 @@ namespace IronMeta.Generator
             {
                 tw.Write(indent); tw.WriteLine("if (!({1})) {{ {2}.Pop(); {2}.Push(null); {3} = _start_i{0}; }}", n, condition, results, index);
             }
+
+            tw.WriteLine();
         }
 
         #endregion
@@ -919,20 +922,20 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = ArgResults.Peek();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.ArgResults.Peek();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    ArgResults.Pop();");
-                tw.Write(indent); tw.WriteLine("    ArgResults.Push( new {1}(_r{0}.StartIndex, _r{0}.NextIndex, _r{0}.Inputs, _Thunk(_IM_Result => {{ {2} }}, _r{0}), false) );", n, tItem, action);
+                tw.Write(indent); tw.WriteLine("    _memo.ArgResults.Pop();");
+                tw.Write(indent); tw.WriteLine("    _memo.ArgResults.Push( new {1}(_r{0}.StartIndex, _r{0}.NextIndex, _r{0}.Inputs, _Thunk(_IM_Result => {{ {2} }}, _r{0}), false) );", n, tItem, action);
                 tw.Write(indent); tw.WriteLine("}");
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("var _r{0} = Results.Peek();", n);
+                tw.Write(indent); tw.WriteLine("var _r{0} = _memo.Results.Peek();", n);
                 tw.Write(indent); tw.WriteLine("if (_r{0} != null)", n);
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    Results.Pop();");
-                tw.Write(indent); tw.WriteLine("    Results.Push( new {2}(_r{0}.StartIndex, _r{0}.NextIndex, InputEnumerable, _Thunk(_IM_Result => {{ {1} }}, _r{0}), true) );", n, action, tItem);
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Pop();");
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Push( new {2}(_r{0}.StartIndex, _r{0}.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => {{ {1} }}, _r{0}), true) );", n, action, tItem);
                 tw.Write(indent); tw.WriteLine("}");
             }
 
@@ -965,7 +968,7 @@ namespace IronMeta.Generator
                     List<string> plist = GenerateActualParams(tw, vars, node, n, name, indent);
 
                     tw.WriteLine();
-                    tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall({0}, _index, {4}, new {2}[] {{ {1} }});",
+                    tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall(_memo, {0}, _index, {4}, new {2}[] {{ {1} }});",
                         isVar ? name + ".ProductionName" : "\"" + name + "\"", 
                         string.Join(", ", plist.ToArray()), 
                         tItem, 
@@ -974,7 +977,7 @@ namespace IronMeta.Generator
                 }
                 else
                 {
-                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall({0}, _index, {2}, null);", 
+                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, {0}, _index, {2}, null);", 
                         isVar ? name + ".ProductionName" : "\"" + name + "\"", 
                         n, 
                         isVar ? name + ".Production" : name);
@@ -1029,9 +1032,9 @@ namespace IronMeta.Generator
             tw.Write(indent);
 
             if (match_args)
-                tw.WriteLine("{0} = ArgResults.Peek();", name);
+                tw.WriteLine("{0} = _memo.ArgResults.Peek();", name);
             else
-                tw.WriteLine("{0} = Results.Peek();", name);
+                tw.WriteLine("{0} = _memo.Results.Peek();", name);
             tw.WriteLine();
 
             vars.Add(name);
@@ -1049,11 +1052,9 @@ namespace IronMeta.Generator
 
             if (match_args)
             {
-                //tw.Write(indent); tw.WriteLine("var _start_i{0} = _arg_index;", n);
-
                 if (vars.Contains(name))
                 {
-                    tw.Write(indent); tw.WriteLine("var _r{0} = _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, {1}.Inputs, _args);", n, name);
+                    tw.Write(indent); tw.WriteLine("var _r{0} = _ParseLiteralArgs(_memo, ref _arg_index, ref _arg_input_index, {1}.Inputs, _args);", n, name);
                     tw.Write(indent); tw.WriteLine("if (_r{0} != null) _arg_index = _r{0}.NextIndex;", n);
                 }
                 else
@@ -1063,7 +1064,6 @@ namespace IronMeta.Generator
             }
             else
             {
-                //tw.Write(indent); tw.WriteLine("var _start_i{0} = _index;", n);
                 tw.Write(indent); tw.WriteLine("{1} _r{0};", n, tItem);
                 tw.WriteLine();
 
@@ -1071,17 +1071,17 @@ namespace IronMeta.Generator
                 {
                     tw.Write(indent); tw.WriteLine("if ({0}.Production != null)", name);
                     tw.Write(indent); tw.WriteLine("{");
-                    tw.Write(indent); tw.WriteLine("    var _p{0} = (System.Action<int, IEnumerable<{1}>>)(object){2}.Production; // what type safety?", n, tItem, name);
-                    tw.Write(indent); tw.WriteLine("    _r{0} = _MemoCall({1}.Production.Method.Name, _index, _p{0}, null);", n, name);
+                    tw.Write(indent); tw.WriteLine("    var _p{0} = (System.Action<_{3}_Memo, int, IEnumerable<{1}>>)(object){2}.Production; // what type safety?", n, tItem, name, gName);
+                    tw.Write(indent); tw.WriteLine("    _r{0} = _MemoCall(_memo, {1}.Production.Method.Name, _index, _p{0}, null);", n, name);
                     tw.Write(indent); tw.WriteLine("}");
                     tw.Write(indent); tw.WriteLine("else");
                     tw.Write(indent); tw.WriteLine("{");
-                    tw.Write(indent); tw.WriteLine("    _r{0} = _ParseLiteralObj(ref _index, {1}.Inputs);", n, name);
+                    tw.Write(indent); tw.WriteLine("    _r{0} = _ParseLiteralObj(_memo, ref _index, {1}.Inputs);", n, name);
                     tw.Write(indent); tw.WriteLine("}");
                 }
                 else
                 {
-                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(\"{0}\", _index, {0}, null);", name, n);
+                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, \"{0}\", _index, {0}, null);", name, n);
                 }
 
                 tw.WriteLine();
@@ -1109,9 +1109,9 @@ namespace IronMeta.Generator
                 int outer_n = n++;
                 GenerateBody(tw, vars, node.Parms, ref n, ref use_args, true, indent);
 
-                tw.Write(indent); tw.WriteLine("if (ArgResults.Pop() == null)");
+                tw.Write(indent); tw.WriteLine("if (_memo.ArgResults.Pop() == null)");
                 tw.Write(indent); tw.WriteLine("{");
-                tw.Write(indent); tw.WriteLine("    Results.Push(null);");
+                tw.Write(indent); tw.WriteLine("    _memo.Results.Push(null);");
                 tw.Write(indent); tw.WriteLine("    goto label{0};", outer_n);
                 tw.Write(indent); tw.WriteLine("}");
                 tw.WriteLine();

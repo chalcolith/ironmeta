@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 13/04/2011 5:11:14 PM UTC
+// IronMeta LRParser Parser; Generated 13/04/2011 8:00:30 PM UTC
 //
 
 using System;
@@ -13,7 +13,8 @@ namespace IronMeta.UnitTests
     using _LRParser_Inputs = IEnumerable<char>;
     using _LRParser_Results = IEnumerable<string>;
     using _LRParser_Args = IEnumerable<_LRParser_Item>;
-    using _LRParser_Rule = System.Action<int, IEnumerable<_LRParser_Item>>;
+    using _LRParser_Memo = Memo<char, string, _LRParser_Item>;
+    using _LRParser_Rule = System.Action<Memo<char, string, _LRParser_Item>, int, IEnumerable<_LRParser_Item>>;
     using _LRParser_Base = IronMeta.Matcher.Matcher<char, string, _LRParser_Item>;
 
 
@@ -40,7 +41,7 @@ namespace IronMeta.UnitTests
             : base()
         { }
 
-        public void A(int _index, _LRParser_Args _args)
+        public void A(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
             _LRParser_Item a = null;
@@ -55,60 +56,60 @@ namespace IronMeta.UnitTests
             // CALLORVAR A
             _LRParser_Item _r4;
 
-            _r4 = _MemoCall("A", _index, A, null);
+            _r4 = _MemoCall(_memo, "A", _index, A, null);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
             // BIND a
-            a = Results.Peek();
+            a = _memo.Results.Peek();
 
             // AND shortcut
-            if (Results.Peek() == null) { Results.Push(null); goto label2; }
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
 
             // CALLORVAR A
             _LRParser_Item _r6;
 
-            _r6 = _MemoCall("A", _index, A, null);
+            _r6 = _MemoCall(_memo, "A", _index, A, null);
 
             if (_r6 != null) _index = _r6.NextIndex;
 
             // BIND b
-            b = Results.Peek();
+            b = _memo.Results.Peek();
 
         label2: // AND
-            var _r2_2 = Results.Pop();
-            var _r2_1 = Results.Pop();
+            var _r2_2 = _memo.Results.Pop();
+            var _r2_1 = _memo.Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                Results.Push( new _LRParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _LRParser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                Results.Push(null);
+                _memo.Results.Push(null);
                 _index = _start_i2;
             }
 
             // ACT
-            var _r1 = Results.Peek();
+            var _r1 = _memo.Results.Peek();
             if (_r1 != null)
             {
-                Results.Pop();
-                Results.Push( new _LRParser_Item(_r1.StartIndex, _r1.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return "(" + (string)a + (string)b + ")"; }, _r1), true) );
+                _memo.Results.Pop();
+                _memo.Results.Push( new _LRParser_Item(_r1.StartIndex, _r1.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return "(" + (string)a + (string)b + ")"; }, _r1), true) );
             }
 
             // OR shortcut
-            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'a'
-            _ParseLiteralChar(ref _index, 'a');
+            _ParseLiteralChar(_memo, ref _index, 'a');
 
             // ACT
-            var _r7 = Results.Peek();
+            var _r7 = _memo.Results.Peek();
             if (_r7 != null)
             {
-                Results.Pop();
-                Results.Push( new _LRParser_Item(_r7.StartIndex, _r7.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return "a"; }, _r7), true) );
+                _memo.Results.Pop();
+                _memo.Results.Push( new _LRParser_Item(_r7.StartIndex, _r7.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return "a"; }, _r7), true) );
             }
 
         label0: // OR

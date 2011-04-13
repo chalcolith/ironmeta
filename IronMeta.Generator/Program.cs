@@ -200,25 +200,17 @@ namespace IronMeta.Generator
                             }
                             else
                             {
-                                ErrorRec rec = match.Matcher.LastError;
+                                ErrorRec rec = match.Memo.LastError;
 
-                                var charMatcher = match.Matcher as CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>;
-                                if (charMatcher != null)
-                                {
-                                    int lineNum = charMatcher.GetLineNumber(rec.Pos);
-                                    Console.WriteLine("{0} ({1}): {2}", file.Name, lineNum, rec.Message);
+                                int lineNum = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLineNumber(match.Memo, rec.Pos);
+                                Console.WriteLine("{0} ({1}): {2}", file.Name, lineNum, rec.Message);
 
-                                    int offset;
-                                    string line = charMatcher.GetLine(rec.Pos, out offset);
+                                int offset;
+                                string line = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLine(match.Memo, rec.Pos, out offset);
 
-                                    Console.WriteLine();
-                                    Console.WriteLine(line.Trim());
-                                    Console.WriteLine(new string(' ', offset - 2) + '^');
-                                }
-                                else
-                                {
-                                    Console.WriteLine("{0}: {1}", file.Name, rec.Message);
-                                }
+                                Console.WriteLine();
+                                Console.WriteLine(line.Trim());
+                                Console.WriteLine(new string(' ', offset - 2) + '^');
 
                                 return 1;
                             }
