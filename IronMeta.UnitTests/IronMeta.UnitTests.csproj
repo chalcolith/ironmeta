@@ -65,6 +65,10 @@
       <Project>{CA4C60CF-396A-48BD-B468-196AE4AF2954}</Project>
       <Name>IronMeta.Matcher</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Samples\Calc\Calc.csproj">
+      <Project>{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}</Project>
+      <Name>Calc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

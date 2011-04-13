@@ -58,36 +58,58 @@ namespace IronMeta.Matcher
 
         protected readonly Func<TResult, bool> _NON_NULL = r => r != null;
 
-        protected IEnumerable<TInput> _input_enumerable;
-        protected IList<TInput> _input_list;
-        protected string _input_string;
-
-        protected Memo<TInput, TResult, TItem> _memo;
-
-        protected Stack<TItem> _results = new Stack<TItem>();
-        protected Stack<TItem> _arg_results = new Stack<TItem>();
-
-        ErrorRec _last_error = new ErrorRec { Pos = 0, Message = "no error" };
-        Stack<LRRecord<TItem>> _call_stack = new Stack<LRRecord<TItem>>();
+        private Memo<TInput, TResult, TItem> _memo;
 
         #endregion
 
         #region Properties
 
         /// <summary>
+        /// Holds the state of a parse.
+        /// </summary>
+        public Memo<TInput, TResult, TItem> Memo
+        {
+            get { return _memo ?? (_memo = new Memo<TInput, TResult, TItem>()); }
+        }
+
+        /// <summary>
         /// The input stream for the grammar to parse.
         /// </summary>
         public IEnumerable<TInput> Input
         {
-            get { return _input_enumerable; }
+            get { return InputEnumerable; }
             
             protected set
             {
-                _input_enumerable = value;
-                _input_list = _input_enumerable as IList<TInput>;
-                _input_string = _input_enumerable as string;
+                InputEnumerable = value;
+                InputList = InputEnumerable as IList<TInput>;
+                InputString = InputEnumerable as string;
             }
         }
+
+        protected IEnumerable<TInput> InputEnumerable
+        {
+            get { return Memo.InputEnumerable; }
+            private set { Memo.InputEnumerable = value; }
+        }
+
+        protected IList<TInput> InputList
+        {
+            get { return Memo.InputList; }
+            private set { Memo.InputList = value; }
+        }
+
+        protected string InputString
+        {
+            get { return Memo.InputString; }
+            private set { Memo.InputString = value; } 
+        }
+
+        protected Stack<TItem> Results { get { return Memo.Results; } }
+        protected Stack<TItem> ArgResults { get { return Memo.ArgResults; } }
+
+        public ErrorRec LastError { get { return Memo.LastError; } }
+        Stack<LRRecord<TItem>> CallStack { get { return Memo.CallStack; } }
 
         #endregion
 
@@ -106,21 +128,12 @@ namespace IronMeta.Matcher
         public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<int, IEnumerable<TItem>> production)
         {
             Input = input;
-            _memo = new Memo<TInput, TResult, TItem>();
             var result = _MemoCall(production.Method.Name, 0, production, null);
 
             if (result != null)
                 return new MatchResult<TInput, TResult, TItem>(this, true, result.StartIndex, result.NextIndex, result.Results, string.Empty, -1);
             else
                 return new MatchResult<TInput, TResult, TItem>(this, false, -1, -1, null, string.Empty, -1);
-        }
-
-        /// <summary>
-        /// Gets the error message corresponding to the rightmost failed match.
-        /// </summary>
-        public ErrorRec GetLastError()
-        {
-            return _last_error;
         }
 
         #region Internal Parser Functions
@@ -132,10 +145,10 @@ namespace IronMeta.Matcher
         /// <param name="message">Function to generate the message (deferred until the end for better performance).</param>
         protected void _AddError(int pos, Func<string> message)
         {
-            if (pos >= _last_error.Pos)
+            if (pos >= LastError.Pos)
             {
-                _last_error.Pos = pos;
-                _last_error.Func = message;
+                LastError.Pos = pos;
+                LastError.Func = message;
             }
         }
 
@@ -171,21 +184,21 @@ namespace IronMeta.Matcher
             TItem result;
 
             // if we have a memo record, use that
-            if (_memo.TryGetMemo(ruleKey, index, out result))
+            if (Memo.TryGetMemo(ruleKey, index, out result))
             {
-                _results.Push(result);
+                Results.Push(result);
                 return result;
             }
 
             // check for left-recursion
             LRRecord<TItem> record;
-            if (_memo.TryGetLRRecord(ruleKey, index, out record))
+            if (Memo.TryGetLRRecord(ruleKey, index, out record))
             {
                 record.LRDetected = true;
 
-                if (!_memo.TryGetMemo(record.CurrentExpansion, index, out result))
+                if (!Memo.TryGetMemo(record.CurrentExpansion, index, out result))
                     throw new Exception("Problem with expansion " + record.CurrentExpansion);
-                _results.Push(result);
+                Results.Push(result);
             }
             // no lr information
             else
@@ -195,15 +208,15 @@ namespace IronMeta.Matcher
                 record.NumExpansions = 0;
                 record.CurrentExpansion = ruleKey + "_lrexp_" + record.NumExpansions;
                 record.CurrentNextIndex = -1;
-                _memo.Memoize(record.CurrentExpansion, index, null);
-                _memo.StartLRRecord(ruleKey, index, record);
+                Memo.Memoize(record.CurrentExpansion, index, null);
+                Memo.StartLRRecord(ruleKey, index, record);
 
-                _call_stack.Push(record);
+                CallStack.Push(record);
 
                 while (true)
                 {
                     production(index, args);
-                    result = _results.Pop();
+                    result = Results.Pop();
 
                     // do we need to keep trying the expansions?
                     if (record.LRDetected && result != null && result.NextIndex > record.CurrentNextIndex)
@@ -211,7 +224,7 @@ namespace IronMeta.Matcher
                         record.NumExpansions = record.NumExpansions + 1;
                         record.CurrentExpansion = ruleKey + "_lrexp_" + record.NumExpansions;
                         record.CurrentNextIndex = result != null ? result.NextIndex : 0;
-                        _memo.Memoize(record.CurrentExpansion, index, result);
+                        Memo.Memoize(record.CurrentExpansion, index, result);
 
                         record.CurrentResult = result;
                     }
@@ -221,12 +234,12 @@ namespace IronMeta.Matcher
                         if (record.LRDetected)
                             result = record.CurrentResult;
 
-                        _memo.ForgetLRRecord(ruleKey, index);
-                        _results.Push(result);
+                        Memo.ForgetLRRecord(ruleKey, index);
+                        Results.Push(result);
 
                         // if there are no LR-processing rules at or above us in the stack, memoize
                         bool found_lr = false;
-                        foreach (var rec in _call_stack)
+                        foreach (var rec in CallStack)
                         {
                             if (rec.LRDetected)
                             {
@@ -236,13 +249,13 @@ namespace IronMeta.Matcher
                         }
 
                         if (!found_lr)
-                            _memo.Memoize(ruleKey, index, result);
+                            Memo.Memoize(ruleKey, index, result);
 
                         break;
                     }
                 }
 
-                _call_stack.Pop();
+                CallStack.Pop();
             }
 
             return result;
@@ -259,13 +272,13 @@ namespace IronMeta.Matcher
             {
                 foreach (var ch in str)
                 {
-                    if (_input_string != null && cur_index >= _input_string.Length)
+                    if (InputString != null && cur_index >= InputString.Length)
                     {
                         failed = true;
                         break;
                     }
 
-                    char cur_ch = _input_string != null ? _input_string[cur_index] : (char)(object)_input_enumerable.ElementAt(cur_index);
+                    char cur_ch = InputString != null ? InputString[cur_index] : (char)(object)InputEnumerable.ElementAt(cur_index);
                     ++cur_index;
 
                     if (cur_ch != ch)
@@ -286,43 +299,43 @@ namespace IronMeta.Matcher
                 {
                     StartIndex = index,
                     NextIndex = cur_index,
-                    InputEnumerable = _input_enumerable,
+                    InputEnumerable = InputEnumerable,
                 };
                 index = cur_index;
-                _results.Push(result);
+                Results.Push(result);
                 return result;
             }
 
-            _results.Push(null);
+            Results.Push(null);
             _AddError(index, () => "expected \"" + Regex.Escape(str) + "\"");
             return null;
         }
 
         protected TItem _ParseLiteralChar(ref int index, char ch)
         {
-            if (!(_input_string != null && index >= _input_string.Length))
+            if (!(InputString != null && index >= InputString.Length))
             {
                 try
                 {
-                    char cur_ch = _input_string != null ? _input_string[index] : (char)(object)_input_enumerable.ElementAt(index);
+                    char cur_ch = InputString != null ? InputString[index] : (char)(object)InputEnumerable.ElementAt(index);
                     if (cur_ch == ch)
                     {
                         TItem result = new TItem()
                         {
                             StartIndex = index,
                             NextIndex = index + 1,
-                            InputEnumerable = _input_enumerable,
+                            InputEnumerable = InputEnumerable,
                         };
 
                         ++index;
-                        _results.Push(result);
+                        Results.Push(result);
                         return result;
                     }
                 }
                 catch { }
             }
 
-            _results.Push(null);
+            Results.Push(null);
             _AddError(index, () => "expected '" + ch + "'");
 
             return null;
@@ -339,7 +352,7 @@ namespace IronMeta.Matcher
                 {
                     foreach (var input in (IEnumerable<TInput>)obj)
                     {
-                        TInput cur_input = _input_list != null ? _input_list[cur_index] : _input_enumerable.ElementAt(cur_index);
+                        TInput cur_input = InputList != null ? InputList[cur_index] : InputEnumerable.ElementAt(cur_index);
                         ++cur_index;
 
                         if (!cur_input.Equals(input))
@@ -360,9 +373,9 @@ namespace IronMeta.Matcher
                     {
                         StartIndex = index,
                         NextIndex = cur_index,
-                        InputEnumerable = _input_enumerable,
+                        InputEnumerable = InputEnumerable,
                     };
-                    _results.Push(result);
+                    Results.Push(result);
                     index = cur_index;
 
                     return result;
@@ -372,17 +385,17 @@ namespace IronMeta.Matcher
             {
                 try
                 {
-                    TInput cur_input = _input_list != null ? _input_list[index] : _input_enumerable.ElementAt(index);
+                    TInput cur_input = InputList != null ? InputList[index] : InputEnumerable.ElementAt(index);
                     if (cur_input.Equals(obj))
                     {
                         TItem result = new TItem()
                         {
                             StartIndex = index,
                             NextIndex = index + 1,
-                            InputEnumerable = _input_enumerable,
+                            InputEnumerable = InputEnumerable,
                         };
 
-                        _results.Push(result);
+                        Results.Push(result);
                         ++index;
 
                         return result;
@@ -391,7 +404,7 @@ namespace IronMeta.Matcher
                 catch { }
             }
 
-            _results.Push(null);
+            Results.Push(null);
             _AddError(index, () => "expected " + obj);
             return null;
         }
@@ -445,7 +458,7 @@ namespace IronMeta.Matcher
                         Inputs = input_list,
                     };
 
-                    _arg_results.Push(result);
+                    ArgResults.Push(result);
                     return result;
                 }
                 else
@@ -476,14 +489,14 @@ namespace IronMeta.Matcher
                             Inputs = new List<TInput> { cur_input },
                         };
 
-                        _arg_results.Push(result);
+                        ArgResults.Push(result);
                         return result;
                     }
                 }
             }
             catch { }
 
-            _arg_results.Push(null);
+            ArgResults.Push(null);
             return null;
         }
 
@@ -493,28 +506,28 @@ namespace IronMeta.Matcher
 
         protected TItem _ParseInputClass(ref int index, params char[] chars)
         {
-            if (!(_input_string != null && index >= _input_string.Length))
+            if (!(InputString != null && index >= InputString.Length))
             {
                 try
                 {
-                    TInput input = _input_list != null ? _input_list[index] : _input_enumerable.ElementAt(index);
+                    TInput input = InputList != null ? InputList[index] : InputEnumerable.ElementAt(index);
                     if (Array.IndexOf(chars, input) != -1)
                     {
                         TItem result = new TItem()
                         {
                             StartIndex = index,
                             NextIndex = index+1,
-                            InputEnumerable = _input_enumerable,
+                            InputEnumerable = InputEnumerable,
                         };
                         ++index;
-                        _results.Push(result);
+                        Results.Push(result);
                         return result;
                     }
                 }
                 catch { }
             }
 
-            _results.Push(null);
+            Results.Push(null);
             _AddError(index, () => "expected one of [" + Regex.Escape(new string(chars)) + "]");
             return null;
         }
@@ -551,13 +564,13 @@ namespace IronMeta.Matcher
                     item_index = cur_item_index;
                     input_index = cur_input_index;
 
-                    _arg_results.Push(result);
+                    ArgResults.Push(result);
                     return result;
                 }
             }
             catch { }
 
-            _arg_results.Push(null);
+            ArgResults.Push(null);
             return null;
         }
 
@@ -567,25 +580,25 @@ namespace IronMeta.Matcher
 
         protected TItem _ParseAny(ref int index)
         {
-            if (!(_input_string != null && index >= _input_string.Length))
+            if (!(InputString != null && index >= InputString.Length))
             {
                 try
                 {
-                    var _temp = _input_list != null ? _input_list[index] : _input_enumerable.ElementAt(index);
+                    var _temp = InputList != null ? InputList[index] : InputEnumerable.ElementAt(index);
                     TItem result = new TItem()
                     {
                         StartIndex = index,
                         NextIndex = index+1,
-                        InputEnumerable = _input_enumerable,
+                        InputEnumerable = InputEnumerable,
                     };
                     ++index;
-                    _results.Push(result);
+                    Results.Push(result);
                     return result;
                 }
                 catch { }
             }
 
-            _results.Push(null);
+            Results.Push(null);
             return null;
         }
 
@@ -597,13 +610,13 @@ namespace IronMeta.Matcher
                 {
                     var _temp = args.ElementAt(item_index);
                     ++item_index;
-                    _arg_results.Push(_temp);
+                    ArgResults.Push(_temp);
                     return _temp;
                 }
             }
             catch { }
 
-            _arg_results.Push(null);
+            ArgResults.Push(null);
             return null;
         }
 

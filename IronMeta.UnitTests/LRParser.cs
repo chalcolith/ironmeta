@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 12/04/2011 10:45:39 PM UTC
+// IronMeta LRParser Parser; Generated 13/04/2011 5:11:14 PM UTC
 //
 
 using System;
@@ -60,10 +60,10 @@ namespace IronMeta.UnitTests
             if (_r4 != null) _index = _r4.NextIndex;
 
             // BIND a
-            a = _results.Peek();
+            a = Results.Peek();
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // CALLORVAR A
             _LRParser_Item _r6;
@@ -73,42 +73,42 @@ namespace IronMeta.UnitTests
             if (_r6 != null) _index = _r6.NextIndex;
 
             // BIND b
-            b = _results.Peek();
+            b = Results.Peek();
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _LRParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _LRParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
             // ACT
-            var _r1 = _results.Peek();
+            var _r1 = Results.Peek();
             if (_r1 != null)
             {
-                _results.Pop();
-                _results.Push( new _LRParser_Item(_r1.StartIndex, _r1.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return "(" + (string)a + (string)b + ")"; }, _r1), true) );
+                Results.Pop();
+                Results.Push( new _LRParser_Item(_r1.StartIndex, _r1.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return "(" + (string)a + (string)b + ")"; }, _r1), true) );
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'a'
             _ParseLiteralChar(ref _index, 'a');
 
             // ACT
-            var _r7 = _results.Peek();
+            var _r7 = Results.Peek();
             if (_r7 != null)
             {
-                _results.Pop();
-                _results.Push( new _LRParser_Item(_r7.StartIndex, _r7.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return "a"; }, _r7), true) );
+                Results.Pop();
+                Results.Push( new _LRParser_Item(_r7.StartIndex, _r7.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return "a"; }, _r7), true) );
             }
 
         label0: // OR

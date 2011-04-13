@@ -200,7 +200,7 @@ namespace IronMeta.Generator
                             }
                             else
                             {
-                                ErrorRec rec = match.Matcher.GetLastError();
+                                ErrorRec rec = match.Matcher.LastError;
 
                                 var charMatcher = match.Matcher as CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>;
                                 if (charMatcher != null)

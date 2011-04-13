@@ -1,5 +1,5 @@
 //
-// IronMeta Calc Parser; Generated 12/04/2011 10:45:19 PM UTC
+// IronMeta Calc Parser; Generated 13/04/2011 5:11:13 PM UTC
 //
 
 using System;
@@ -70,7 +70,7 @@ namespace Calc
             if (_r2 != null) _index = _r2.NextIndex;
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Sub
             _Calc_Item _r3;
@@ -83,7 +83,7 @@ namespace Calc
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Multiplicative
             _Calc_Item _r4;
@@ -111,11 +111,11 @@ namespace Calc
             if (_r1 != null) _index = _r1.NextIndex;
 
             // ACT
-            var _r0 = _results.Peek();
+            var _r0 = Results.Peek();
             if (_r0 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total + n); }, _r0), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total + n); }, _r0), true) );
             }
 
         }
@@ -134,11 +134,11 @@ namespace Calc
             if (_r1 != null) _index = _r1.NextIndex;
 
             // ACT
-            var _r0 = _results.Peek();
+            var _r0 = Results.Peek();
             if (_r0 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total - n); }, _r0), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total - n); }, _r0), true) );
             }
 
         }
@@ -161,7 +161,7 @@ namespace Calc
             if (_r2 != null) _index = _r2.NextIndex;
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Divide
             _Calc_Item _r3;
@@ -174,7 +174,7 @@ namespace Calc
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALL Number
             var _start_i4 = _index;
@@ -203,11 +203,11 @@ namespace Calc
             if (_r1 != null) _index = _r1.NextIndex;
 
             // ACT
-            var _r0 = _results.Peek();
+            var _r0 = Results.Peek();
             if (_r0 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((p, n) => p * n); }, _r0), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((p, n) => p * n); }, _r0), true) );
             }
 
         }
@@ -226,11 +226,11 @@ namespace Calc
             if (_r1 != null) _index = _r1.NextIndex;
 
             // ACT
-            var _r0 = _results.Peek();
+            var _r0 = Results.Peek();
             if (_r0 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((q, n) => q / n); }, _r0), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((q, n) => q / n); }, _r0), true) );
             }
 
         }
@@ -266,83 +266,83 @@ namespace Calc
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND first
-            first = _arg_results.Peek();
+            first = ArgResults.Peek();
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label3; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label3; }
 
             // ANY
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND op
-            op = _arg_results.Peek();
+            op = ArgResults.Peek();
 
         label3: // AND
-            var _r3_2 = _arg_results.Pop();
-            var _r3_1 = _arg_results.Pop();
+            var _r3_2 = ArgResults.Pop();
+            var _r3_1 = ArgResults.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _arg_results.Push(new _Calc_Item(_start_i3, _arg_index, _r3_1.Inputs.Concat(_r3_2.Inputs), _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _Calc_Item(_start_i3, _arg_index, _r3_1.Inputs.Concat(_r3_2.Inputs), _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i3;
             }
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label2; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label2; }
 
             // ANY
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND second
-            second = _arg_results.Peek();
+            second = ArgResults.Peek();
 
         label2: // AND
-            var _r2_2 = _arg_results.Pop();
-            var _r2_1 = _arg_results.Pop();
+            var _r2_2 = ArgResults.Pop();
+            var _r2_1 = ArgResults.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _arg_results.Push(new _Calc_Item(_start_i2, _arg_index, _r2_1.Inputs.Concat(_r2_2.Inputs), _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _Calc_Item(_start_i2, _arg_index, _r2_1.Inputs.Concat(_r2_2.Inputs), _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i2;
             }
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // ANY
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // QUES
-            if (_arg_results.Peek() == null) { _arg_results.Pop(); _arg_results.Push(new _Calc_Item(_arg_index, _input_enumerable)); }
+            if (ArgResults.Peek() == null) { ArgResults.Pop(); ArgResults.Push(new _Calc_Item(_arg_index, InputEnumerable)); }
 
             // BIND type
-            type = _arg_results.Peek();
+            type = ArgResults.Peek();
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _Calc_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _Calc_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -368,10 +368,10 @@ namespace Calc
             if (_r17 != null) _index = _r17.NextIndex;
 
             // BIND a
-            a = _results.Peek();
+            a = Results.Peek();
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label15; }
+            if (Results.Peek() == null) { Results.Push(null); goto label15; }
 
             // CALL KW
             var _start_i18 = _index;
@@ -382,21 +382,21 @@ namespace Calc
             if (_r18 != null) _index = _r18.NextIndex;
 
         label15: // AND
-            var _r15_2 = _results.Pop();
-            var _r15_1 = _results.Pop();
+            var _r15_2 = Results.Pop();
+            var _r15_1 = Results.Pop();
 
             if (_r15_1 != null && _r15_2 != null)
             {
-                _results.Push( new _Calc_Item(_start_i15, _index, _input_enumerable, _r15_1.Results.Concat(_r15_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _Calc_Item(_start_i15, _index, InputEnumerable, _r15_1.Results.Concat(_r15_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i15;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label14; }
+            if (Results.Peek() == null) { Results.Push(null); goto label14; }
 
             // CALL second
             var _start_i20 = _index;
@@ -407,28 +407,28 @@ namespace Calc
             if (_r20 != null) _index = _r20.NextIndex;
 
             // BIND b
-            b = _results.Peek();
+            b = Results.Peek();
 
         label14: // AND
-            var _r14_2 = _results.Pop();
-            var _r14_1 = _results.Pop();
+            var _r14_2 = Results.Pop();
+            var _r14_1 = Results.Pop();
 
             if (_r14_1 != null && _r14_2 != null)
             {
-                _results.Push( new _Calc_Item(_start_i14, _index, _input_enumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _Calc_Item(_start_i14, _index, InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i14;
             }
 
             // ACT
-            var _r13 = _results.Peek();
+            var _r13 = Results.Peek();
             if (_r13 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r13.StartIndex, _r13.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return new List<int> { a, b }; }, _r13), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r13.StartIndex, _r13.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return new List<int> { a, b }; }, _r13), true) );
             }
 
         label0: // ARGS 0
@@ -454,11 +454,11 @@ namespace Calc
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND type
-            type = _arg_results.Peek();
+            type = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -474,10 +474,10 @@ namespace Calc
             if (_r6 != null) _index = _r6.NextIndex;
 
             // BIND n
-            n = _results.Peek();
+            n = Results.Peek();
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // STAR 7
             int _start_i7 = _index;
@@ -492,7 +492,7 @@ namespace Calc
             if (_r8 != null) _index = _r8.NextIndex;
 
             // STAR 7
-            var _r7 = _results.Pop();
+            var _r7 = Results.Pop();
             if (_r7 != null)
             {
                 _res7 = _res7.Concat(_r7.Results);
@@ -500,29 +500,29 @@ namespace Calc
             }
             else
             {
-                _results.Push(new _Calc_Item(_start_i7, _index, _input_enumerable, _res7.Where(_NON_NULL), true));
+                Results.Push(new _Calc_Item(_start_i7, _index, InputEnumerable, _res7.Where(_NON_NULL), true));
             }
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _Calc_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _Calc_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
             // ACT
-            var _r3 = _results.Peek();
+            var _r3 = Results.Peek();
             if (_r3 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r3.StartIndex, _r3.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return n; }, _r3), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r3.StartIndex, _r3.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return n; }, _r3), true) );
             }
 
         label0: // ARGS 0
@@ -552,11 +552,11 @@ namespace Calc
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND type
-            type = _arg_results.Peek();
+            type = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label1;
             }
 
@@ -572,10 +572,10 @@ namespace Calc
             if (_r7 != null) _index = _r7.NextIndex;
 
             // BIND a
-            a = _results.Peek();
+            a = Results.Peek();
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label5; }
+            if (Results.Peek() == null) { Results.Push(null); goto label5; }
 
             // CALLORVAR type
             _Calc_Item _r9;
@@ -593,35 +593,35 @@ namespace Calc
             if (_r9 != null) _index = _r9.NextIndex;
 
             // BIND b
-            b = _results.Peek();
+            b = Results.Peek();
 
         label5: // AND
-            var _r5_2 = _results.Pop();
-            var _r5_1 = _results.Pop();
+            var _r5_2 = Results.Pop();
+            var _r5_1 = Results.Pop();
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _results.Push( new _Calc_Item(_start_i5, _index, _input_enumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _Calc_Item(_start_i5, _index, InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i5;
             }
 
             // ACT
-            var _r4 = _results.Peek();
+            var _r4 = Results.Peek();
             if (_r4 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r4.StartIndex, _r4.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return a*10 + b; }, _r4), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r4.StartIndex, _r4.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return a*10 + b; }, _r4), true) );
             }
 
         label1: // ARGS 1
             _arg_input_index = _arg_index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // ARGS 10
             _arg_index = 0;
@@ -631,11 +631,11 @@ namespace Calc
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND type
-            type = _arg_results.Peek();
+            type = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label10;
             }
 
@@ -669,17 +669,17 @@ namespace Calc
             _Calc_Item c = null;
 
             // INPUT CLASS
-            _ParseInputClass(ref _index, '\x30', '\x31', '\x32', '\x33', '\x34', '\x35', '\x36', '\x37', '\x38', '\x39');
+            _ParseInputClass(ref _index, '\u0030', '\u0031', '\u0032', '\u0033', '\u0034', '\u0035', '\u0036', '\u0037', '\u0038', '\u0039');
 
             // BIND c
-            c = _results.Peek();
+            c = Results.Peek();
 
             // ACT
-            var _r0 = _results.Peek();
+            var _r0 = Results.Peek();
             if (_r0 != null)
             {
-                _results.Pop();
-                _results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return (char)c - '0'; }, _r0), true) );
+                Results.Pop();
+                Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return (char)c - '0'; }, _r0), true) );
             }
 
         }
@@ -701,11 +701,11 @@ namespace Calc
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND str
-            str = _arg_results.Peek();
+            str = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -728,7 +728,7 @@ namespace Calc
             if (_r4 != null) _index = _r4.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label3; }
+            if (Results.Peek() == null) { Results.Push(null); goto label3; }
 
             // STAR 5
             int _start_i5 = _index;
@@ -743,7 +743,7 @@ namespace Calc
             if (_r6 != null) _index = _r6.NextIndex;
 
             // STAR 5
-            var _r5 = _results.Pop();
+            var _r5 = Results.Pop();
             if (_r5 != null)
             {
                 _res5 = _res5.Concat(_r5.Results);
@@ -751,20 +751,20 @@ namespace Calc
             }
             else
             {
-                _results.Push(new _Calc_Item(_start_i5, _index, _input_enumerable, _res5.Where(_NON_NULL), true));
+                Results.Push(new _Calc_Item(_start_i5, _index, InputEnumerable, _res5.Where(_NON_NULL), true));
             }
 
         label3: // AND
-            var _r3_2 = _results.Pop();
-            var _r3_1 = _results.Pop();
+            var _r3_2 = Results.Pop();
+            var _r3_1 = Results.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _results.Push( new _Calc_Item(_start_i3, _index, _input_enumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _Calc_Item(_start_i3, _index, InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i3;
             }
 
@@ -790,7 +790,7 @@ namespace Calc
             _ParseLiteralChar(ref _index, ' ');
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i2; } else goto label2;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i2; } else goto label2;
 
             // LITERAL '\n'
             _ParseLiteralChar(ref _index, '\n');
@@ -799,7 +799,7 @@ namespace Calc
             int _dummy_i2 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // LITERAL '\r'
             _ParseLiteralChar(ref _index, '\r');
@@ -808,7 +808,7 @@ namespace Calc
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL '\t'
             _ParseLiteralChar(ref _index, '\t');

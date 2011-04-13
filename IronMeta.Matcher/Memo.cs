@@ -50,6 +50,24 @@ namespace IronMeta.Matcher
     {
         Dictionary<string, Dictionary<int,TItem>> table = new Dictionary<string, Dictionary<int, TItem>>();
 
+        internal IEnumerable<TInput> InputEnumerable { get; set; }
+        internal IList<TInput> InputList { get; set; }
+        internal string InputString { get; set; }
+
+        internal Stack<TItem> Results { get; set; }
+        internal Stack<TItem> ArgResults { get; set; }
+
+        internal ErrorRec LastError { get; set; }
+        internal Stack<LRRecord<TItem>> CallStack { get; set; }
+
+        public Memo()
+        {
+            Results = new Stack<TItem>();
+            ArgResults = new Stack<TItem>();
+            LastError = new ErrorRec { Pos = 0, Message = "no error" };
+            CallStack = new Stack<LRRecord<TItem>>();
+        }
+
         /// <summary>
         /// Memoize the result of a production at a given index.
         /// </summary>

@@ -77,13 +77,13 @@ namespace IronMeta.Matcher
 
             int len = index + 1 < _line_begins.Count ? _line_begins[index + 1] - _line_begins[index] : _line_begins.Count - _line_begins[index];
 
-            if (_input_string != null)
+            if (InputString != null)
             {
-                return _input_string.Substring(start, len);
+                return InputString.Substring(start, len);
             }
             else
             {
-                IEnumerable<char> result = _input_enumerable.Skip(start).Take(len).Cast<char>();
+                IEnumerable<char> result = InputEnumerable.Skip(start).Take(len).Cast<char>();
                 return new string(result.ToArray());
             }
         }
@@ -123,11 +123,11 @@ namespace IronMeta.Matcher
             bool found_return = false;
             bool in_end = false;
 
-            if (_input_string != null)
+            if (InputString != null)
             {
-                for (int index = 0; index < _input_string.Length; ++index)
+                for (int index = 0; index < InputString.Length; ++index)
                 {
-                    char ch = _input_string[index];
+                    char ch = InputString[index];
 
                     if (ch == '\r')
                     {
@@ -153,7 +153,7 @@ namespace IronMeta.Matcher
             else
             {
                 int index = 0;
-                foreach (char ch in _input_enumerable)
+                foreach (char ch in InputEnumerable)
                 {
                     if (ch == '\r')
                     {

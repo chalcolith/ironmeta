@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 12/04/2011 10:36:27 PM UTC
+// IronMeta TestParser Parser; Generated 13/04/2011 5:11:14 PM UTC
 //
 
 using System;
@@ -40,7 +40,6 @@ namespace IronMeta.UnitTests
             : base()
         { }
 
-
         public void Literal(int _index, _TestParser_Args _args)
         {
 
@@ -72,7 +71,7 @@ namespace IronMeta.UnitTests
         {
 
             // INPUT CLASS
-            _ParseInputClass(ref _index, '\x01', '\x02', '\x03');
+            _ParseInputClass(ref _index, '\u0001', '\u0002', '\u0003');
 
         }
 
@@ -87,22 +86,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'b'
             _ParseLiteralChar(ref _index, 'b');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -119,7 +118,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'b'
             _ParseLiteralChar(ref _index, 'b');
@@ -140,22 +139,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralString(ref _index, "ab");
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL "cd"
             _ParseLiteralString(ref _index, "cd");
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -172,7 +171,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralString(ref _index, "ab");
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL "cd"
             _ParseLiteralString(ref _index, "cd");
@@ -187,7 +186,7 @@ namespace IronMeta.UnitTests
         {
 
             // FAIL
-            _results.Push( null );
+            Results.Push( null );
             _AddError(_index, () => "This is a fail.");
 
         }
@@ -215,7 +214,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // LOOK 3
             int _start_i3 = _index;
@@ -224,41 +223,41 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'b');
 
             // LOOK 3
-            var _r3 = _results.Pop();
-            _results.Push( _r3 != null ? new _TestParser_Item(_start_i3, _input_enumerable) : null );
+            var _r3 = Results.Pop();
+            Results.Push( _r3 != null ? new _TestParser_Item(_start_i3, InputEnumerable) : null );
             _index = _start_i3;
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL "bc"
             _ParseLiteralString(ref _index, "bc");
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -278,7 +277,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // NOT 3
             int _start_i3 = _index;
@@ -287,41 +286,41 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'b');
 
             // NOT 3
-            var _r3 = _results.Pop();
-            _results.Push( _r3 == null ? new _TestParser_Item(_start_i3, _input_enumerable) : null);
+            var _r3 = Results.Pop();
+            Results.Push( _r3 == null ? new _TestParser_Item(_start_i3, InputEnumerable) : null);
             _index = _start_i3;
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -338,7 +337,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // STAR 2
             int _start_i2 = _index;
@@ -349,7 +348,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'b');
 
             // STAR 2
-            var _r2 = _results.Pop();
+            var _r2 = Results.Pop();
             if (_r2 != null)
             {
                 _res2 = _res2.Concat(_r2.Results);
@@ -357,20 +356,20 @@ namespace IronMeta.UnitTests
             }
             else
             {
-                _results.Push(new _TestParser_Item(_start_i2, _index, _input_enumerable, _res2.Where(_NON_NULL), true));
+                Results.Push(new _TestParser_Item(_start_i2, _index, InputEnumerable, _res2.Where(_NON_NULL), true));
             }
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -390,7 +389,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // STAR 3
             int _start_i3 = _index;
@@ -407,32 +406,32 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'c');
 
             // NOT 5
-            var _r5 = _results.Pop();
-            _results.Push( _r5 == null ? new _TestParser_Item(_start_i5, _input_enumerable) : null);
+            var _r5 = Results.Pop();
+            Results.Push( _r5 == null ? new _TestParser_Item(_start_i5, InputEnumerable) : null);
             _index = _start_i5;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // ANY
             _ParseAny(ref _index);
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
             // STAR 3
-            var _r3 = _results.Pop();
+            var _r3 = Results.Pop();
             if (_r3 != null)
             {
                 _res3 = _res3.Concat(_r3.Results);
@@ -440,40 +439,40 @@ namespace IronMeta.UnitTests
             }
             else
             {
-                _results.Push(new _TestParser_Item(_start_i3, _index, _input_enumerable, _res3.Where(_NON_NULL), true));
+                Results.Push(new _TestParser_Item(_start_i3, _index, InputEnumerable, _res3.Where(_NON_NULL), true));
             }
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -490,7 +489,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // PLUS 2
             int _start_i2 = _index;
@@ -501,7 +500,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'b');
 
             // PLUS 2
-            var _r2 = _results.Pop();
+            var _r2 = Results.Pop();
             if (_r2 != null)
             {
                 _res2 = _res2.Concat(_r2.Results);
@@ -510,22 +509,22 @@ namespace IronMeta.UnitTests
             else
             {
                 if (_index > _start_i2)
-                    _results.Push(new _TestParser_Item(_start_i2, _index, _input_enumerable, _res2.Where(_NON_NULL), true));
+                    Results.Push(new _TestParser_Item(_start_i2, _index, InputEnumerable, _res2.Where(_NON_NULL), true));
                 else
-                    _results.Push(null);
+                    Results.Push(null);
             }
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -545,7 +544,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // PLUS 3
             int _start_i3 = _index;
@@ -562,32 +561,32 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'c');
 
             // NOT 5
-            var _r5 = _results.Pop();
-            _results.Push( _r5 == null ? new _TestParser_Item(_start_i5, _input_enumerable) : null);
+            var _r5 = Results.Pop();
+            Results.Push( _r5 == null ? new _TestParser_Item(_start_i5, InputEnumerable) : null);
             _index = _start_i5;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // ANY
             _ParseAny(ref _index);
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
             // PLUS 3
-            var _r3 = _results.Pop();
+            var _r3 = Results.Pop();
             if (_r3 != null)
             {
                 _res3 = _res3.Concat(_r3.Results);
@@ -596,42 +595,42 @@ namespace IronMeta.UnitTests
             else
             {
                 if (_index > _start_i3)
-                    _results.Push(new _TestParser_Item(_start_i3, _index, _input_enumerable, _res3.Where(_NON_NULL), true));
+                    Results.Push(new _TestParser_Item(_start_i3, _index, InputEnumerable, _res3.Where(_NON_NULL), true));
                 else
-                    _results.Push(null);
+                    Results.Push(null);
             }
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -651,45 +650,45 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // LITERAL 'b'
             _ParseLiteralChar(ref _index, 'b');
 
             // QUES
-            if (_results.Peek() == null) { _results.Pop(); _results.Push(new _TestParser_Item(_index, _input_enumerable)); }
+            if (Results.Peek() == null) { Results.Pop(); Results.Push(new _TestParser_Item(_index, InputEnumerable)); }
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -711,7 +710,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // COND 3
             int _start_i3 = _index;
@@ -720,41 +719,41 @@ namespace IronMeta.UnitTests
             _ParseAny(ref _index);
 
             // BIND c
-            c = _results.Peek();
+            c = Results.Peek();
 
             // COND
-            if (!((char)c == 'b')) { _results.Pop(); _results.Push(null); _index = _start_i3; }
+            if (!((char)c == 'b')) { Results.Pop(); Results.Push(null); _index = _start_i3; }
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -774,7 +773,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // COND 3
             int _start_i3 = _index;
@@ -784,38 +783,38 @@ namespace IronMeta.UnitTests
 
             // COND
             Func<_TestParser_Item, bool> lambda3 = (_IM_Result) => { return (char)_IM_Result == 'b'; };
-            if (!lambda3(_results.Peek())) { _results.Pop(); _results.Push(null); _index = _start_i3; }
+            if (!lambda3(Results.Peek())) { Results.Pop(); Results.Push(null); _index = _start_i3; }
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -832,17 +831,17 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'b'
             _ParseLiteralChar(ref _index, 'b');
 
             // ACT
-            var _r2 = _results.Peek();
+            var _r2 = Results.Peek();
             if (_r2 != null)
             {
-                _results.Pop();
-                _results.Push( new _TestParser_Item(_r2.StartIndex, _r2.NextIndex, _input_enumerable, _Thunk(_IM_Result => { return 123; }, _r2), true) );
+                Results.Pop();
+                Results.Push( new _TestParser_Item(_r2.StartIndex, _r2.NextIndex, InputEnumerable, _Thunk(_IM_Result => { return 123; }, _r2), true) );
             }
 
         label0: // OR
@@ -868,7 +867,7 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // LITERAL 'a'
             _ParseLiteralChar(ref _index, 'a');
@@ -877,22 +876,22 @@ namespace IronMeta.UnitTests
             int _dummy_i1 = _index; // no-op for label
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -912,7 +911,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // CALLORVAR OrLiteral
             _TestParser_Item _r3;
@@ -922,36 +921,36 @@ namespace IronMeta.UnitTests
             if (_r3 != null) _index = _r3.NextIndex;
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -971,9 +970,9 @@ namespace IronMeta.UnitTests
             // LITERAL 'a'
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -984,22 +983,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
@@ -1057,28 +1056,28 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // LITERAL 'b'
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'b', _args);
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1089,22 +1088,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
@@ -1172,11 +1171,11 @@ namespace IronMeta.UnitTests
             _arg_input_index = 0;
 
             // FAIL
-            _arg_results.Push(null);
+            ArgResults.Push(null);
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1215,9 +1214,9 @@ namespace IronMeta.UnitTests
             // INPUT CLASS
             _ParseInputClassArgs(ref _arg_index, ref _arg_input_index, _args, 'a', 'b');
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1228,22 +1227,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
@@ -1272,12 +1271,12 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // LOOK 1
-            var _r1 = _results.Pop();
-            _results.Push( _r1 != null ? new _TestParser_Item(_start_i1, _input_enumerable) : null );
+            var _r1 = Results.Pop();
+            Results.Push( _r1 != null ? new _TestParser_Item(_start_i1, InputEnumerable) : null );
             _index = _start_i1;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // CALL SubCallClass
             var _start_i3 = _index;
@@ -1289,16 +1288,16 @@ namespace IronMeta.UnitTests
             if (_r3 != null) _index = _r3.NextIndex;
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -1318,9 +1317,9 @@ namespace IronMeta.UnitTests
             // ANY
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1331,22 +1330,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
@@ -1404,33 +1403,33 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // LOOK 2
-            var _r2 = _arg_results.Pop();
-            _arg_results.Push(_r2);
+            var _r2 = ArgResults.Pop();
+            ArgResults.Push(_r2);
             _arg_index = _start_i2;
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // ANY
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1441,22 +1440,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label5; }
+            if (Results.Peek() == null) { Results.Push(null); goto label5; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label5: // AND
-            var _r5_2 = _results.Pop();
-            var _r5_1 = _results.Pop();
+            var _r5_2 = Results.Pop();
+            var _r5_1 = Results.Pop();
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i5, _index, _input_enumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i5, _index, InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i5;
             }
 
@@ -1501,33 +1500,33 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // NOT 2
-            var _r2 = _arg_results.Pop();
-            _arg_results.Push(_r2 == null ? new _TestParser_Item(_arg_index, _arg_index, _input_enumerable, Enumerable.Empty<int>(), false) : null);
+            var _r2 = ArgResults.Pop();
+            ArgResults.Push(_r2 == null ? new _TestParser_Item(_arg_index, _arg_index, InputEnumerable, Enumerable.Empty<int>(), false) : null);
             _arg_index = _start_i2;
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // LITERAL 'b'
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'b', _args);
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1538,22 +1537,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label5; }
+            if (Results.Peek() == null) { Results.Push(null); goto label5; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label5: // AND
-            var _r5_2 = _results.Pop();
-            var _r5_1 = _results.Pop();
+            var _r5_2 = Results.Pop();
+            var _r5_1 = Results.Pop();
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i5, _index, _input_enumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i5, _index, InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i5;
             }
 
@@ -1610,7 +1609,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // OR shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Pop(); _arg_index = _start_i1; } else goto label1;
+            if (ArgResults.Peek() == null) { ArgResults.Pop(); _arg_index = _start_i1; } else goto label1;
 
             // LITERAL 'b'
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'b', _args);
@@ -1618,9 +1617,9 @@ namespace IronMeta.UnitTests
         label1: // OR
             int _dummy_i1 = _index; // no-op for label
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1631,22 +1630,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
@@ -1718,28 +1717,28 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // LITERAL 'b'
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'b', _args);
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1750,22 +1749,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
@@ -1827,7 +1826,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // STAR 1
-            var _r1 = _arg_results.Pop();
+            var _r1 = ArgResults.Pop();
             if (_r1 != null)
             {
                 _inp1 = _inp1.Concat(_r1.Inputs);
@@ -1836,12 +1835,12 @@ namespace IronMeta.UnitTests
             }
             else
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _inp1, _res1.Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _inp1, _res1.Where(_NON_NULL), false));
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1852,22 +1851,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label3; }
+            if (Results.Peek() == null) { Results.Push(null); goto label3; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label3: // AND
-            var _r3_2 = _results.Pop();
-            var _r3_1 = _results.Pop();
+            var _r3_2 = Results.Pop();
+            var _r3_1 = Results.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i3, _index, _input_enumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i3, _index, InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i3;
             }
 
@@ -1925,7 +1924,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // PLUS 1
-            var _r1 = _arg_results.Pop();
+            var _r1 = ArgResults.Pop();
             if (_r1 != null)
             {
                 _inp1 = _inp1.Concat(_r1.Inputs);
@@ -1935,14 +1934,14 @@ namespace IronMeta.UnitTests
             else
             {
                 if (_arg_index > _start_i1)
-                    _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _inp1, _res1.Where(_NON_NULL), false));
+                    ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _inp1, _res1.Where(_NON_NULL), false));
                 else
-                    _arg_results.Push(null);
+                    ArgResults.Push(null);
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -1953,22 +1952,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label3; }
+            if (Results.Peek() == null) { Results.Push(null); goto label3; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label3: // AND
-            var _r3_2 = _results.Pop();
-            var _r3_1 = _results.Pop();
+            var _r3_2 = Results.Pop();
+            var _r3_1 = Results.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i3, _index, _input_enumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i3, _index, InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i3;
             }
 
@@ -2020,11 +2019,11 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // QUES
-            if (_arg_results.Peek() == null) { _arg_results.Pop(); _arg_results.Push(new _TestParser_Item(_arg_index, _input_enumerable)); }
+            if (ArgResults.Peek() == null) { ArgResults.Pop(); ArgResults.Push(new _TestParser_Item(_arg_index, InputEnumerable)); }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -2035,22 +2034,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label3; }
+            if (Results.Peek() == null) { Results.Push(null); goto label3; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label3: // AND
-            var _r3_2 = _results.Pop();
-            var _r3_1 = _results.Pop();
+            var _r3_2 = Results.Pop();
+            var _r3_1 = Results.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i3, _index, _input_enumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i3, _index, InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i3;
             }
 
@@ -2107,13 +2106,13 @@ namespace IronMeta.UnitTests
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND v
-            v = _arg_results.Peek();
+            v = ArgResults.Peek();
 
             // COND
-            if (!((char)v == 'a')) { _arg_results.Pop(); _arg_results.Push(null); _arg_index = _start_i1; }
-            if (_arg_results.Pop() == null)
+            if (!((char)v == 'a')) { ArgResults.Pop(); ArgResults.Push(null); _arg_index = _start_i1; }
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -2124,22 +2123,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label4; }
+            if (Results.Peek() == null) { Results.Push(null); goto label4; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label4: // AND
-            var _r4_2 = _results.Pop();
-            var _r4_1 = _results.Pop();
+            var _r4_2 = Results.Pop();
+            var _r4_1 = Results.Pop();
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i4, _index, _input_enumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i4, _index, InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i4;
             }
 
@@ -2189,10 +2188,10 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'a');
 
             // BIND a
-            a = _results.Peek();
+            a = Results.Peek();
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // CALLORVAR a
             _TestParser_Item _r3;
@@ -2210,16 +2209,16 @@ namespace IronMeta.UnitTests
             if (_r3 != null) _index = _r3.NextIndex;
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -2242,19 +2241,19 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // ACT
-            var _r2 = _arg_results.Peek();
+            var _r2 = ArgResults.Peek();
             if (_r2 != null)
             {
-                _arg_results.Pop();
-                _arg_results.Push( new _TestParser_Item(_r2.StartIndex, _r2.NextIndex, _r2.Inputs, _Thunk(_IM_Result => { return 42; }, _r2), false) );
+                ArgResults.Pop();
+                ArgResults.Push( new _TestParser_Item(_r2.StartIndex, _r2.NextIndex, _r2.Inputs, _Thunk(_IM_Result => { return 42; }, _r2), false) );
             }
 
             // BIND a
-            a = _arg_results.Peek();
+            a = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -2326,32 +2325,32 @@ namespace IronMeta.UnitTests
             _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, 'a', _args);
 
             // BIND a
-            a = _arg_results.Peek();
+            a = ArgResults.Peek();
 
             // AND shortcut
-            if (_arg_results.Peek() == null) { _arg_results.Push(null); goto label1; }
+            if (ArgResults.Peek() == null) { ArgResults.Push(null); goto label1; }
 
             // CALLORVAR a
             var _r4 = _ParseLiteralArgs(ref _arg_index, ref _arg_input_index, a.Inputs, _args);
             if (_r4 != null) _arg_index = _r4.NextIndex;
 
         label1: // AND
-            var _r1_2 = _arg_results.Pop();
-            var _r1_1 = _arg_results.Pop();
+            var _r1_2 = ArgResults.Pop();
+            var _r1_1 = ArgResults.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _arg_results.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                ArgResults.Push(new _TestParser_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
-                _arg_results.Push(null);
+                ArgResults.Push(null);
                 _arg_index = _start_i1;
             }
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -2362,22 +2361,22 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label5; }
+            if (Results.Peek() == null) { Results.Push(null); goto label5; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label5: // AND
-            var _r5_2 = _results.Pop();
-            var _r5_1 = _results.Pop();
+            var _r5_2 = Results.Pop();
+            var _r5_1 = Results.Pop();
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i5, _index, _input_enumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i5, _index, InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i5;
             }
 
@@ -2431,11 +2430,11 @@ namespace IronMeta.UnitTests
             _ParseAnyArgs(ref _arg_index, ref _arg_input_index, _args);
 
             // BIND a
-            a = _arg_results.Peek();
+            a = ArgResults.Peek();
 
-            if (_arg_results.Pop() == null)
+            if (ArgResults.Pop() == null)
             {
-                _results.Push(null);
+                Results.Push(null);
                 goto label0;
             }
 
@@ -2458,7 +2457,7 @@ namespace IronMeta.UnitTests
             if (_r4 != null) _index = _r4.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label3; }
+            if (Results.Peek() == null) { Results.Push(null); goto label3; }
 
             // CALL a
             var _start_i5 = _index;
@@ -2468,16 +2467,16 @@ namespace IronMeta.UnitTests
             if (_r5 != null) _index = _r5.NextIndex;
 
         label3: // AND
-            var _r3_2 = _results.Pop();
-            var _r3_1 = _results.Pop();
+            var _r3_2 = Results.Pop();
+            var _r3_1 = Results.Pop();
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i3, _index, _input_enumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i3, _index, InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i3;
             }
 
@@ -2497,7 +2496,7 @@ namespace IronMeta.UnitTests
             _ParseLiteralChar(ref _index, 'x');
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
@@ -2539,7 +2538,7 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR ChoiceB
             _TestParser_Item _r3;
@@ -2552,7 +2551,7 @@ namespace IronMeta.UnitTests
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'x'
             _ParseLiteralChar(ref _index, 'x');
@@ -2577,22 +2576,22 @@ namespace IronMeta.UnitTests
             if (_r1 != null) _index = _r1.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -2613,22 +2612,22 @@ namespace IronMeta.UnitTests
             if (_r1 != null) _index = _r1.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'z'
             _ParseLiteralChar(ref _index, 'z');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -2652,27 +2651,27 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'x'
             _ParseLiteralChar(ref _index, 'x');
@@ -2700,27 +2699,27 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // LITERAL 'y'
             _ParseLiteralChar(ref _index, 'y');
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'x'
             _ParseLiteralChar(ref _index, 'x');
@@ -2745,22 +2744,22 @@ namespace IronMeta.UnitTests
             if (_r1 != null) _index = _r1.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label0; }
+            if (Results.Peek() == null) { Results.Push(null); goto label0; }
 
             // LITERAL 'z'
             _ParseLiteralChar(ref _index, 'z');
 
         label0: // AND
-            var _r0_2 = _results.Pop();
-            var _r0_1 = _results.Pop();
+            var _r0_2 = Results.Pop();
+            var _r0_1 = Results.Pop();
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i0, _index, _input_enumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i0, _index, InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i0;
             }
 
@@ -2784,27 +2783,27 @@ namespace IronMeta.UnitTests
             if (_r2 != null) _index = _r2.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label1; }
+            if (Results.Peek() == null) { Results.Push(null); goto label1; }
 
             // LITERAL 'a'
             _ParseLiteralChar(ref _index, 'a');
 
         label1: // AND
-            var _r1_2 = _results.Pop();
-            var _r1_1 = _results.Pop();
+            var _r1_2 = Results.Pop();
+            var _r1_1 = Results.Pop();
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i1, _index, _input_enumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i1, _index, InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i1;
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PathalogicalB
             _TestParser_Item _r4;
@@ -2839,27 +2838,27 @@ namespace IronMeta.UnitTests
             if (_r3 != null) _index = _r3.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // LITERAL 'b'
             _ParseLiteralChar(ref _index, 'b');
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR PathalogicalA
             _TestParser_Item _r5;
@@ -2872,7 +2871,7 @@ namespace IronMeta.UnitTests
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR PathalogicalC
             _TestParser_Item _r6;
@@ -2907,27 +2906,27 @@ namespace IronMeta.UnitTests
             if (_r3 != null) _index = _r3.NextIndex;
 
             // AND shortcut
-            if (_results.Peek() == null) { _results.Push(null); goto label2; }
+            if (Results.Peek() == null) { Results.Push(null); goto label2; }
 
             // LITERAL 'c'
             _ParseLiteralChar(ref _index, 'c');
 
         label2: // AND
-            var _r2_2 = _results.Pop();
-            var _r2_1 = _results.Pop();
+            var _r2_2 = Results.Pop();
+            var _r2_1 = Results.Pop();
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _results.Push( new _TestParser_Item(_start_i2, _index, _input_enumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+                Results.Push( new _TestParser_Item(_start_i2, _index, InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
-                _results.Push(null);
+                Results.Push(null);
                 _index = _start_i2;
             }
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i1; } else goto label1;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR PathalogicalB
             _TestParser_Item _r5;
@@ -2940,7 +2939,7 @@ namespace IronMeta.UnitTests
             int _dummy_i1 = _index; // no-op for label
 
             // OR shortcut
-            if (_results.Peek() == null) { _results.Pop(); _index = _start_i0; } else goto label0;
+            if (Results.Peek() == null) { Results.Pop(); _index = _start_i0; } else goto label0;
 
             // LITERAL 'd'
             _ParseLiteralChar(ref _index, 'd');
