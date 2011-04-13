@@ -127,6 +127,7 @@ namespace IronMeta.Matcher
         /// <returns>The result of the match.</returns>
         public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<int, IEnumerable<TItem>> production)
         {
+            _memo = new Memo<TInput, TResult, TItem>();
             Input = input;
             var result = _MemoCall(production.Method.Name, 0, production, null);
 
