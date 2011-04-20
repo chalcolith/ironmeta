@@ -184,6 +184,9 @@ namespace IronMeta.Matcher
                         if (!found_lr)
                             memo.Memoize(ruleKey, index, result);
 
+                        if (result == null)
+                            memo.AddError(index, () => "expected " + ruleKey);
+
                         break;
                     }
                 }
@@ -429,6 +432,7 @@ namespace IronMeta.Matcher
             catch { }
 
             memo.ArgResults.Push(null);
+            memo.AddError(input_index, () => "expected " + obj);
             return null;
         }
 
@@ -503,6 +507,7 @@ namespace IronMeta.Matcher
             catch { }
 
             memo.ArgResults.Push(null);
+            memo.AddError(input_index, () => "expected " + args);
             return null;
         }
 
@@ -531,6 +536,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
+            memo.AddError(index, () => "unexpected end of file");
             return null;
         }
 
@@ -549,6 +555,7 @@ namespace IronMeta.Matcher
             catch { }
 
             memo.ArgResults.Push(null);
+            memo.AddError(input_index, () => "not enough arguments");
             return null;
         }
 
