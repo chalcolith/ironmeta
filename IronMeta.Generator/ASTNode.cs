@@ -104,7 +104,7 @@ namespace IronMeta.Generator.AST
         public Fail(ASTNode<TItem> message)
         {
             if (message != null)
-                this.Message = message.GetText().Trim('"').Trim();
+                this.Message = message.GetText().Trim();
         }
     }
 

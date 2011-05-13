@@ -63,11 +63,10 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
                     .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new Or<_Parser_Item>(prev, cur) : cur);
             };
 
-    ActionExp = FailExp;
     ActionExp = SequenceExp:body ACTION &BRA CSharpCode:action -> { return new Act<_Parser_Item>(body, action); };
     ActionExp = SequenceExp;
 
-    FailExp = BANG (&'\"' CSharpCode:msg)? -> { return new Fail<_Parser_Item>(msg); };
+    FailExp = BANG (CSharpCode:msg)? -> { return new Fail<_Parser_Item>(msg); };
 
     SequenceExp = ConditionExp+
         ->  {
@@ -76,6 +75,7 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
                     .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new And<_Parser_Item>(prev, cur) : cur);
             };
 
+    ConditionExp = FailExp;
     ConditionExp = BoundTerm:body QUES &OPEN CSharpCode:cond -> { return new Cond<_Parser_Item>(body, cond); };
     ConditionExp = BoundTerm;
 

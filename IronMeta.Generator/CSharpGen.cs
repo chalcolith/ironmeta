@@ -505,11 +505,15 @@ namespace IronMeta.Generator
             if (match_args)
                 tw.WriteLine("_memo.ArgResults.Push(null);");
             else
-                tw.WriteLine("_memo.Results.Push( null );");
+                tw.WriteLine("_memo.Results.Push(null);");
             
             if (!string.IsNullOrEmpty(node.Message))
             {
-                tw.Write(indent); tw.WriteLine("_memo.AddError(_index, () => \"{0}\");", node.Message);
+                var msg = node.Message;
+                if (msg.StartsWith("{") && !msg.Contains("return"))
+                    msg = "{ return " + msg.Substring(1, msg.Length - 2) + "; }";
+
+                tw.Write(indent); tw.WriteLine("_memo.AddError(_index, () => {0});", msg);
             }
 
             tw.WriteLine();
