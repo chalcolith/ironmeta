@@ -80,7 +80,7 @@ namespace IronMeta.Matcher
             if (result != null)
                 return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, string.Empty, -1);
             else
-                return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, string.Empty, -1);
+                return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, memo.LastError.Message, memo.LastError.Pos);
         }
 
         #region Internal Parser Functions

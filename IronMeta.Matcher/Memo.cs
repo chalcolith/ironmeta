@@ -84,7 +84,7 @@ namespace IronMeta.Matcher
             Input = input;
             Results = new Stack<TItem>();
             ArgResults = new Stack<TItem>();
-            LastError = new ErrorRec { Pos = 0, Message = "no error" };
+            LastError = new ErrorRec { Pos = -1, Message = "no error" };
             CallStack = new Stack<LRRecord<TItem>>();
         }
 
@@ -197,7 +197,7 @@ namespace IronMeta.Matcher
         /// <param name="message">Function to generate the message (deferred until the end for better performance).</param>
         public void AddError(int pos, Func<string> message)
         {
-            if (pos >= LastError.Pos)
+            if (pos > LastError.Pos)
             {
                 LastError.Pos = pos;
                 LastError.Func = message;
