@@ -893,11 +893,11 @@ namespace IronMeta.Generator
                     condition = condition + ";";
 
                 tw.Write(indent); tw.WriteLine("Func<{2}, bool> lambda{0} = (_IM_Result) => {{ {1} }};", n, condition, tItem);
-                tw.Write(indent); tw.WriteLine("if (!lambda{0}({1}.Peek())) {{ {1}.Pop(); {1}.Push(null); {2} = _start_i{0}; }}", n, results, index);
+                tw.Write(indent); tw.WriteLine("if ({1}.Peek() == null || !lambda{0}({1}.Peek())) {{ {1}.Pop(); {1}.Push(null); {2} = _start_i{0}; }}", n, results, index);
             }
             else
             {
-                tw.Write(indent); tw.WriteLine("if (!({1})) {{ {2}.Pop(); {2}.Push(null); {3} = _start_i{0}; }}", n, condition, results, index);
+                tw.Write(indent); tw.WriteLine("if ({2}.Peek() == null || !({1})) {{ {2}.Pop(); {2}.Push(null); {3} = _start_i{0}; }}", n, condition, results, index);
             }
 
             tw.WriteLine();

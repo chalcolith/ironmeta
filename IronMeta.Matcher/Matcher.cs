@@ -78,7 +78,7 @@ namespace IronMeta.Matcher
             var result = _MemoCall(memo, production.Method.Name, 0, production, null);
 
             if (result != null)
-                return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, string.Empty, -1);
+                return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError.Message, memo.LastError.Pos);
             else
                 return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, memo.LastError.Message, memo.LastError.Pos);
         }
