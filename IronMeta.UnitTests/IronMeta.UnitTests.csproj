@@ -86,10 +86,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="GenerateTestParser" BeforeTargets="CoreCompile" Inputs="TestParser.ironmeta" Outputs="TestParser.cs">
+  <Target Name="GenerateTestParser" BeforeTargets="_GenerateCompileInputs" Inputs="TestParser.ironmeta" Outputs="TestParser.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe TestParser.ironmeta -o TestParser.cs" />
   </Target>
-  <Target Name="GenerateLRParser" BeforeTargets="CoreCompile" Inputs="LRParser.ironmeta" Outputs="LRParser.cs">
+  <Target Name="GenerateLRParser" BeforeTargets="_GenerateCompileInputs" Inputs="LRParser.ironmeta" Outputs="LRParser.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe LRParser.ironmeta -o LRParser.cs" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />

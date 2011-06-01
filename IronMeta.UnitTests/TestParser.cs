@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 13/04/2011 8:02:38 PM UTC
+// IronMeta TestParser Parser; Generated 01/06/2011 2:08:38 AM UTC
 //
 
 using System;
@@ -187,7 +187,8 @@ namespace IronMeta.UnitTests
         {
 
             // FAIL
-            _memo.Results.Push( null );
+            _memo.Results.Push(null);
+            _memo.ClearErrors(_index);
             _memo.AddError(_index, () => "This is a fail.");
 
         }
@@ -723,7 +724,7 @@ namespace IronMeta.UnitTests
             c = _memo.Results.Peek();
 
             // COND
-            if (!((char)c == 'b')) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i3; }
+            if (_memo.Results.Peek() == null || !((char)c == 'b')) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i3; }
 
         label1: // AND
             var _r1_2 = _memo.Results.Pop();
@@ -785,7 +786,7 @@ namespace IronMeta.UnitTests
 
             // COND
             Func<_TestParser_Item, bool> lambda3 = (_IM_Result) => { return (char)_IM_Result == 'b'; };
-            if (!lambda3(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i3; }
+            if (_memo.Results.Peek() == null || !lambda3(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i3; }
 
         label1: // AND
             var _r1_2 = _memo.Results.Pop();
@@ -2112,7 +2113,7 @@ namespace IronMeta.UnitTests
             v = _memo.ArgResults.Peek();
 
             // COND
-            if (!((char)v == 'a')) { _memo.ArgResults.Pop(); _memo.ArgResults.Push(null); _arg_index = _start_i1; }
+            if (_memo.ArgResults.Peek() == null || !((char)v == 'a')) { _memo.ArgResults.Pop(); _memo.ArgResults.Push(null); _arg_index = _start_i1; }
 
             if (_memo.ArgResults.Pop() == null)
             {

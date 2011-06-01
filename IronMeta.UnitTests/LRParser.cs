@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 13/04/2011 8:00:30 PM UTC
+// IronMeta LRParser Parser; Generated 01/06/2011 2:40:48 AM UTC
 //
 
 using System;
@@ -114,6 +114,119 @@ namespace IronMeta.UnitTests
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
+
+        }
+
+
+        public void Exp(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
+        {
+
+            _LRParser_Item e = null;
+            _LRParser_Item t = null;
+
+            // OR 0
+            int _start_i0 = _index;
+
+            // AND 2
+            int _start_i2 = _index;
+
+            // AND 3
+            int _start_i3 = _index;
+
+            // CALLORVAR Exp
+            _LRParser_Item _r5;
+
+            _r5 = _MemoCall(_memo, "Exp", _index, Exp, null);
+
+            if (_r5 != null) _index = _r5.NextIndex;
+
+            // BIND e
+            e = _memo.Results.Peek();
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label3; }
+
+            // LITERAL "+"
+            _ParseLiteralString(_memo, ref _index, "+");
+
+        label3: // AND
+            var _r3_2 = _memo.Results.Pop();
+            var _r3_1 = _memo.Results.Pop();
+
+            if (_r3_1 != null && _r3_2 != null)
+            {
+                _memo.Results.Push( new _LRParser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i3;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
+
+            // CALLORVAR Term
+            _LRParser_Item _r8;
+
+            _r8 = _MemoCall(_memo, "Term", _index, Term, null);
+
+            if (_r8 != null) _index = _r8.NextIndex;
+
+            // BIND t
+            t = _memo.Results.Peek();
+
+        label2: // AND
+            var _r2_2 = _memo.Results.Pop();
+            var _r2_1 = _memo.Results.Pop();
+
+            if (_r2_1 != null && _r2_2 != null)
+            {
+                _memo.Results.Push( new _LRParser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i2;
+            }
+
+            // ACT
+            var _r1 = _memo.Results.Peek();
+            if (_r1 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _LRParser_Item(_r1.StartIndex, _r1.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return "(" + (string)e + " + " + (string)t + ")"; }, _r1), true) );
+            }
+
+            // OR shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
+
+            // CALLORVAR Term
+            _LRParser_Item _r9;
+
+            _r9 = _MemoCall(_memo, "Term", _index, Term, null);
+
+            if (_r9 != null) _index = _r9.NextIndex;
+
+        label0: // OR
+            int _dummy_i0 = _index; // no-op for label
+
+        }
+
+
+        public void Term(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
+        {
+
+            // LITERAL "1"
+            _ParseLiteralString(_memo, ref _index, "1");
+
+            // ACT
+            var _r0 = _memo.Results.Peek();
+            if (_r0 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _LRParser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return "1"; }, _r0), true) );
+            }
 
         }
 

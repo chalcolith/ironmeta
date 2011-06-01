@@ -171,10 +171,12 @@ namespace IronMeta.Matcher
                         memo.Results.Push(result);
 
                         // if there are no LR-processing rules at or above us in the stack, memoize
+                        memo.CallStack.Pop();
+
                         bool found_lr = false;
                         foreach (var rec in memo.CallStack)
                         {
-                            if (rec != record && rec.LRDetected)
+                            if (rec.LRDetected)
                             {
                                 found_lr = true;
                                 break;
@@ -190,8 +192,6 @@ namespace IronMeta.Matcher
                         break;
                     }
                 }
-
-                memo.CallStack.Pop();
             }
 
             return result;
