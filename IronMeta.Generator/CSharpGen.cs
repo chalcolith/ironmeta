@@ -513,6 +513,7 @@ namespace IronMeta.Generator
                 if (msg.StartsWith("{") && !msg.Contains("return"))
                     msg = "{ return " + msg.Substring(1, msg.Length - 2) + "; }";
 
+                tw.Write(indent); tw.WriteLine("_memo.ClearErrors(_index);");
                 tw.Write(indent); tw.WriteLine("_memo.AddError(_index, () => {0});", msg);
             }
 

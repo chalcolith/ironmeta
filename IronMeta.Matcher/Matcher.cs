@@ -78,9 +78,9 @@ namespace IronMeta.Matcher
             var result = _MemoCall(memo, production.Method.Name, 0, production, null);
 
             if (result != null)
-                return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError.Message, memo.LastError.Pos);
+                return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex);
             else
-                return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, memo.LastError.Message, memo.LastError.Pos);
+                return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
         }
 
         #region Internal Parser Functions
@@ -174,7 +174,7 @@ namespace IronMeta.Matcher
                         bool found_lr = false;
                         foreach (var rec in memo.CallStack)
                         {
-                            if (rec.LRDetected)
+                            if (rec != record && rec.LRDetected)
                             {
                                 found_lr = true;
                                 break;

@@ -38,6 +38,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace IronMeta.Matcher
 {
@@ -110,6 +111,8 @@ namespace IronMeta.Matcher
             return index > 0 ? index : 1;
         }
 
+        static readonly Regex EOL = new Regex(@"\r\n|\n|\r", RegexOptions.Compiled);
+
         /// <summary>
         /// Finds line endings.
         /// </summary>
@@ -117,71 +120,22 @@ namespace IronMeta.Matcher
         {
             object obj;
             if (memo.Properties.TryGetValue("_line_begins", out obj) && obj is List<int>)
-                return (List<int>)obj;            
+                return (List<int>)obj;
 
             var line_begins = new List<int>();
             line_begins.Add(0);
+
+            var str = memo.InputString ?? new string(memo.Input.ToArray());
+
+            var matches = EOL.Matches(str);
+            foreach (Match match in matches)
+            {
+                line_begins.Add(match.Index + match.Length);
+            }
+
+            line_begins.Add(memo.InputString.Length);
+
             memo.Properties["_line_begins"] = line_begins;
-
-            bool found_return = false;
-            bool in_end = false;
-
-            if (memo.InputString != null)
-            {
-                for (int index = 0; index < memo.InputString.Length; ++index)
-                {
-                    char ch = memo.InputString[index];
-
-                    if (ch == '\r')
-                    {
-                        found_return = true;
-                        in_end = true;
-                    }
-                    else if (ch == '\n' && !found_return)
-                    {
-                        found_return = false;
-                        in_end = true;
-                    }
-                    else
-                    {
-                        found_return = false;
-                        if (in_end)
-                        {
-                            line_begins.Add(index);
-                            in_end = false;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                int index = 0;
-                foreach (char ch in memo.InputEnumerable)
-                {
-                    if (ch == '\r')
-                    {
-                        found_return = true;
-                        in_end = true;
-                    }
-                    else if (ch == '\n' || !found_return)
-                    {
-                        found_return = false;
-                        in_end = true;
-                    }
-                    else
-                    {
-                        found_return = false;
-                        if (in_end)
-                        {
-                            line_begins.Add(index);
-                            in_end = false;
-                        }
-                    }
-
-                    ++index;
-                }
-            }
-
             return line_begins;
         }
 

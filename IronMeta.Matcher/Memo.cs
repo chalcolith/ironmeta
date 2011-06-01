@@ -37,6 +37,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace IronMeta.Matcher
 {
@@ -74,17 +77,64 @@ namespace IronMeta.Matcher
         public Stack<TItem> Results { get; set; }
         public Stack<TItem> ArgResults { get; set; }
 
-        public ErrorRec LastError { get; set; }
         public Stack<LRRecord<TItem>> CallStack { get; set; }
-
         public Dictionary<string, object> Properties { get { return properties; } }
+
+        int last_error_pos = -1;
+        List<Func<string>> error_msgs = new List<Func<string>>();
+        string last_error = null;
+
+        static readonly Regex EXPECTED = new Regex(@"expected\s+(.*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        public string LastError
+        {
+            get
+            {
+                if (last_error == null && error_msgs.Count > 0)
+                {
+                    var strings = error_msgs.Select(f => f()).Distinct();
+                    var results = new List<string>();
+                    var expected = new List<string>();
+
+                    foreach (var str in strings)
+                    {
+                        var match = EXPECTED.Match(str);
+                        if (match.Success)
+                            expected.Add(match.Groups[1].Value);
+                        else
+                            results.Add(str);
+                    }
+
+                    if (expected.Count > 0)
+                    {
+                        var sb = new StringBuilder();
+                        sb.Append("expected ");
+                        if (expected.Count > 1)
+                        {
+                            sb.Append(string.Join(", ", expected.Take(expected.Count - 1)));
+                            sb.Append(" or ");
+                        }
+                        sb.Append(expected.Last());
+
+                        results.Add(sb.ToString());
+                    }
+
+                    last_error = string.Join(";", results);
+                }
+                return last_error;
+            }
+        }
+
+        public int LastErrorIndex
+        {
+            get { return last_error_pos; }
+        }
 
         public Memo(IEnumerable<TInput> input)
         {
             Input = input;
             Results = new Stack<TItem>();
-            ArgResults = new Stack<TItem>();
-            LastError = new ErrorRec { Pos = -1, Message = "no error" };
+            ArgResults = new Stack<TItem>();            
             CallStack = new Stack<LRRecord<TItem>>();
         }
 
@@ -197,11 +247,17 @@ namespace IronMeta.Matcher
         /// <param name="message">Function to generate the message (deferred until the end for better performance).</param>
         public void AddError(int pos, Func<string> message)
         {
-            if (pos > LastError.Pos)
+            if (pos > last_error_pos)
             {
-                LastError.Pos = pos;
-                LastError.Func = message;
+                error_msgs.Add(message);
+                last_error_pos = pos;
             }
+        }
+
+        public void ClearErrors(int pos)
+        {            
+            error_msgs.Clear();
+            last_error_pos = -1;
         }
 
     } // class Memo
