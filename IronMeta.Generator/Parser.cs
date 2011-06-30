@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 13/05/2011 6:25:25 PM UTC
+// IronMeta Parser Parser; Generated 30/06/2011 8:55:22 PM UTC
 //
 
 using System;
@@ -8,6 +8,8 @@ using System.Linq;
 using IronMeta.Matcher;
 using IronMeta.Generator;
 using IronMeta.Generator.AST;
+
+#pragma warning disable 1591
 
 namespace IronMeta.Generator
 {
@@ -18,24 +20,6 @@ namespace IronMeta.Generator
     using _Parser_Memo = Memo<char, ASTNode<_Parser_Item>, _Parser_Item>;
     using _Parser_Rule = System.Action<Memo<char, ASTNode<_Parser_Item>, _Parser_Item>, int, IEnumerable<_Parser_Item>>;
     using _Parser_Base = IronMeta.Matcher.Matcher<char, ASTNode<_Parser_Item>, _Parser_Item>;
-
-
-    public class _Parser_Item : IronMeta.Matcher.MatchItem<char, ASTNode<_Parser_Item>, _Parser_Item>
-    {
-        public _Parser_Item() { }
-        public _Parser_Item(char input) : base(input) { }
-        public _Parser_Item(char input, ASTNode<_Parser_Item> result) : base(input, result) { }
-        public _Parser_Item(_Parser_Inputs inputs) : base(inputs) { }
-        public _Parser_Item(_Parser_Inputs inputs, _Parser_Results results) : base(inputs, results) { }
-        public _Parser_Item(int start, int next, _Parser_Inputs inputs, _Parser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
-        public _Parser_Item(int start, _Parser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<ASTNode<_Parser_Item>>(), true) { }
-        public _Parser_Item(_Parser_Rule production) : base(production) { }
-
-        public static implicit operator List<char>(_Parser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
-        public static implicit operator char(_Parser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
-        public static implicit operator List<ASTNode<_Parser_Item>>(_Parser_Item item) { return item != null ? item.Results.ToList() : new List<ASTNode<_Parser_Item>>(); }
-        public static implicit operator ASTNode<_Parser_Item>(_Parser_Item item) { return item != null ? item.Results.LastOrDefault() : default(ASTNode<_Parser_Item>); }
-    }
 
     public partial class Parser : IronMeta.Matcher.CharMatcher<ASTNode<_Parser_Item>, _Parser_Item>
     {
@@ -3704,7 +3688,7 @@ namespace IronMeta.Generator
 
             // COND
             Func<_Parser_Item, bool> lambda2 = (_IM_Result) => { return System.Char.IsLetter(_IM_Result); };
-            if (!lambda2(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i2; }
+            if (_memo.Results.Peek() == null || !lambda2(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i2; }
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
@@ -3732,7 +3716,7 @@ namespace IronMeta.Generator
 
             // COND
             Func<_Parser_Item, bool> lambda2 = (_IM_Result) => { return System.Char.IsLetterOrDigit(_IM_Result); };
-            if (!lambda2(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i2; }
+            if (_memo.Results.Peek() == null || !lambda2(_memo.Results.Peek())) { _memo.Results.Pop(); _memo.Results.Push(null); _index = _start_i2; }
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
@@ -5247,6 +5231,24 @@ namespace IronMeta.Generator
         }
 
     } // class Parser
+
+
+    public class _Parser_Item : IronMeta.Matcher.MatchItem<char, ASTNode<_Parser_Item>, _Parser_Item>
+    {
+        public _Parser_Item() { }
+        public _Parser_Item(char input) : base(input) { }
+        public _Parser_Item(char input, ASTNode<_Parser_Item> result) : base(input, result) { }
+        public _Parser_Item(_Parser_Inputs inputs) : base(inputs) { }
+        public _Parser_Item(_Parser_Inputs inputs, _Parser_Results results) : base(inputs, results) { }
+        public _Parser_Item(int start, int next, _Parser_Inputs inputs, _Parser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
+        public _Parser_Item(int start, _Parser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<ASTNode<_Parser_Item>>(), true) { }
+        public _Parser_Item(_Parser_Rule production) : base(production) { }
+
+        public static implicit operator List<char>(_Parser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
+        public static implicit operator char(_Parser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
+        public static implicit operator List<ASTNode<_Parser_Item>>(_Parser_Item item) { return item != null ? item.Results.ToList() : new List<ASTNode<_Parser_Item>>(); }
+        public static implicit operator ASTNode<_Parser_Item>(_Parser_Item item) { return item != null ? item.Results.LastOrDefault() : default(ASTNode<_Parser_Item>); }
+    }
 
 } // namespace IronMeta.Generator
 

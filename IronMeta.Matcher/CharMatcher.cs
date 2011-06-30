@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id: Matcher.cs 125 2010-11-10 23:45:07Z kulibali $
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -63,6 +63,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Gets the line containing a particular index in the input.
         /// </summary>
+        /// <param name="memo">The memo object from the match (can be obtained from the match result object's <c>Memo</c> property).</param>
         /// <param name="pos">The index in the input.</param>
         /// <param name="offset">The offset of the position after the beginning of the line.</param>
         /// <returns>The line containing a particular input index.</returns>
@@ -91,6 +92,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Gets the line number of the line that contains a particular index in the input.
         /// </summary>
+        /// <param name="memo">The memo used for the match.</param>
         /// <param name="pos">The index in the input.</param>
         /// <returns>The number of the line that contains the index.</returns>
         public static int GetLineNumber(Memo<char, TResult, TItem> memo, int pos)

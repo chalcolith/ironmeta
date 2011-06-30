@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -51,17 +51,28 @@ namespace IronMeta.Generator
 
         AST.GrammarFile<_Parser_Item> grammar;
         string gNamespace;
+        bool add_timestamp = true;
         string gName, gBase, tInput, tResult, tItem;
 
         Dictionary<string, AST.ASTNode<_Parser_Item>> ruleBodies = new Dictionary<string, AST.ASTNode<_Parser_Item>>();
         HashSet<string> overrides = new HashSet<string>();
 
-        public CSharpGen(AST.ASTNode<_Parser_Item> topNode, string nameSpace)
+        public CSharpGen(AST.ASTNode<_Parser_Item> topNode, string name_space)
         {
             if (!(topNode is AST.GrammarFile<_Parser_Item>))
                 throw new Exception("Unable to generate.");
 
-            this.gNamespace = nameSpace;
+            this.gNamespace = name_space;
+            this.grammar = topNode as AST.GrammarFile<_Parser_Item>;
+        }
+
+        public CSharpGen(AST.ASTNode<_Parser_Item> topNode, string name_space, bool add_timestamp)
+        {
+            if (!(topNode is AST.GrammarFile<_Parser_Item>))
+                throw new Exception("Unable to generate.");
+
+            this.gNamespace = name_space;
+            this.add_timestamp = add_timestamp;
             this.grammar = topNode as AST.GrammarFile<_Parser_Item>;
         }
 
@@ -149,12 +160,21 @@ namespace IronMeta.Generator
         void GenerateGrammarFile(TextWriter tw)
         {
             tw.WriteLine("//");
-            tw.WriteLine("// IronMeta {1} Parser; Generated {0} UTC", DateTime.UtcNow, gName);
+
+            if (add_timestamp)
+                tw.WriteLine("// IronMeta {1} Parser; Generated {0} UTC", DateTime.UtcNow, gName);
+            else
+                tw.WriteLine("// IronMeta {0} Parser", gName);
+
             tw.WriteLine("//");
             tw.WriteLine();
 
             // namespace usings
             GenerateNamespaceUsings(tw);
+
+            // ignore uncommented
+            tw.WriteLine("#pragma warning disable 1591");
+            tw.WriteLine();
 
             // open namespace
             string indent = string.Empty;
@@ -244,9 +264,6 @@ namespace IronMeta.Generator
 
         void GenerateGrammar(TextWriter tw, string indent)
         {
-            // generate Item class
-            GenerateItemClass(tw, indent);
-
             // open matcher class
             tw.Write(indent); tw.WriteLine("public partial class {0} : {1}", gName, gBase);
             tw.Write(indent); tw.WriteLine("{");
@@ -266,6 +283,9 @@ namespace IronMeta.Generator
             // close class
             tw.Write(indent); tw.WriteLine("}} // class {0}", gName);
             tw.WriteLine();
+
+            // generate Item class
+            GenerateItemClass(tw, indent);
         }
 
         void GenerateRule(TextWriter tw, string ruleName, AST.ASTNode<_Parser_Item> body, string indent)

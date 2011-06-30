@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -40,7 +40,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-/// Main IronMeta library functionality.
 namespace IronMeta.Matcher
 {
 
@@ -56,6 +55,9 @@ namespace IronMeta.Matcher
 
         #region Members
 
+        /// <summary>
+        /// A utility delegate for filtering an enumerable to return only non-null items.
+        /// </summary>
         protected static readonly Func<TResult, bool> _NON_NULL = r => r != null;
 
         #endregion
@@ -70,12 +72,14 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Try to match the input.
         /// </summary>
-        /// <param name="production">The top-level grammar production (rule) to use.</param>
+        /// <param name="input">The input to be matched.</param>
+        /// <param name="production">The top-level grammar production (rule) of the generated parser class to use.</param>
         /// <returns>The result of the match.</returns>
         public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production)
         {
             var memo = new Memo<TInput, TResult, TItem>(input);
             var result = _MemoCall(memo, production.Method.Name, 0, production, null);
+            memo.ClearMemoTable(); // allow memo tables to be gc'd
 
             if (result != null)
                 return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex);
@@ -104,6 +108,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Call a grammar production, using memoization and handling left-recursion.
         /// </summary>
+        /// <param name="memo">The memo for the current match.</param>
         /// <param name="ruleName">The name of the production.</param>
         /// <param name="index">The current index in the input stream.</param>
         /// <param name="production">The production itself.</param>
@@ -199,6 +204,12 @@ namespace IronMeta.Matcher
 
         #region LITERAL
 
+        /// <summary>
+        /// Matches a literal string (only used with matchers on a <c>char</c> enumerable).
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="str">String to match.</param>
         static protected TItem _ParseLiteralString(Memo<TInput, TResult, TItem> memo, ref int index, string str)
         {
             int cur_index = index;
@@ -247,6 +258,12 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Matches a literal char (only used with matchers on a <c>char</c> enumerable).
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="ch">Character to match.</param>
         static protected TItem _ParseLiteralChar(Memo<TInput, TResult, TItem> memo, ref int index, char ch)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
@@ -277,6 +294,12 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Matches a literal object.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="obj">Object to match.</param>
         static protected TItem _ParseLiteralObj(Memo<TInput, TResult, TItem> memo, ref int index, object obj)
         {
             if (obj is IEnumerable<TInput>)
@@ -345,6 +368,14 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Matches a literal object in an argument stream.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="item_index">Item index.</param>
+        /// <param name="input_index">Input index.</param>
+        /// <param name="obj">Object to match.</param>
+        /// <param name="args">Argument stream.</param>
         static protected TItem _ParseLiteralArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, object obj, IEnumerable<TItem> args)
         {
             try
@@ -440,6 +471,12 @@ namespace IronMeta.Matcher
 
         #region INPUTCLASS
 
+        /// <summary>
+        /// Matches a set of characters.  Only used for matchers over <c>char</c> enumerables.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="chars">Characters to match.</param>
         static protected TItem _ParseInputClass(Memo<TInput, TResult, TItem> memo, ref int index, params char[] chars)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
@@ -468,6 +505,14 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Matches a set of characters in an argument stream.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="item_index">Item index.</param>
+        /// <param name="input_index">Input index.</param>
+        /// <param name="args">Argument stream.</param>
+        /// <param name="chars">Characters to match.</param>
         static protected TItem _ParseInputClassArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, IEnumerable<TItem> args, params char[] chars)
         {
             try
@@ -515,6 +560,11 @@ namespace IronMeta.Matcher
 
         #region ANY
 
+        /// <summary>
+        /// Matches any input.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="index">Index.</param>
         static protected TItem _ParseAny(Memo<TInput, TResult, TItem> memo, ref int index)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
@@ -540,6 +590,13 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Matches any input in an argument stream.
+        /// </summary>
+        /// <param name="memo">Memo.</param>
+        /// <param name="item_index">Item index.</param>
+        /// <param name="input_index">Input index.</param>
+        /// <param name="args">Argument stream.</param>
         static protected TItem _ParseAnyArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, IEnumerable<TItem> args)
         {
             try

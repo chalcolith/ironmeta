@@ -1,11 +1,13 @@
 //
-// IronMeta TestParser Parser; Generated 21/06/2011 3:37:12 AM UTC
+// IronMeta TestParser Parser; Generated 30/06/2011 8:48:04 PM UTC
 //
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
+
+#pragma warning disable 1591
 
 namespace IronMeta.UnitTests
 {
@@ -16,24 +18,6 @@ namespace IronMeta.UnitTests
     using _TestParser_Memo = Memo<char, int, _TestParser_Item>;
     using _TestParser_Rule = System.Action<Memo<char, int, _TestParser_Item>, int, IEnumerable<_TestParser_Item>>;
     using _TestParser_Base = IronMeta.Matcher.Matcher<char, int, _TestParser_Item>;
-
-
-    public class _TestParser_Item : IronMeta.Matcher.MatchItem<char, int, _TestParser_Item>
-    {
-        public _TestParser_Item() { }
-        public _TestParser_Item(char input) : base(input) { }
-        public _TestParser_Item(char input, int result) : base(input, result) { }
-        public _TestParser_Item(_TestParser_Inputs inputs) : base(inputs) { }
-        public _TestParser_Item(_TestParser_Inputs inputs, _TestParser_Results results) : base(inputs, results) { }
-        public _TestParser_Item(int start, int next, _TestParser_Inputs inputs, _TestParser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
-        public _TestParser_Item(int start, _TestParser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<int>(), true) { }
-        public _TestParser_Item(_TestParser_Rule production) : base(production) { }
-
-        public static implicit operator List<char>(_TestParser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
-        public static implicit operator char(_TestParser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
-        public static implicit operator List<int>(_TestParser_Item item) { return item != null ? item.Results.ToList() : new List<int>(); }
-        public static implicit operator int(_TestParser_Item item) { return item != null ? item.Results.LastOrDefault() : default(int); }
-    }
 
     public partial class TestParser : IronMeta.Matcher.CharMatcher<int, _TestParser_Item>
     {
@@ -2964,6 +2948,24 @@ namespace IronMeta.UnitTests
         }
 
     } // class TestParser
+
+
+    public class _TestParser_Item : IronMeta.Matcher.MatchItem<char, int, _TestParser_Item>
+    {
+        public _TestParser_Item() { }
+        public _TestParser_Item(char input) : base(input) { }
+        public _TestParser_Item(char input, int result) : base(input, result) { }
+        public _TestParser_Item(_TestParser_Inputs inputs) : base(inputs) { }
+        public _TestParser_Item(_TestParser_Inputs inputs, _TestParser_Results results) : base(inputs, results) { }
+        public _TestParser_Item(int start, int next, _TestParser_Inputs inputs, _TestParser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
+        public _TestParser_Item(int start, _TestParser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<int>(), true) { }
+        public _TestParser_Item(_TestParser_Rule production) : base(production) { }
+
+        public static implicit operator List<char>(_TestParser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
+        public static implicit operator char(_TestParser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
+        public static implicit operator List<int>(_TestParser_Item item) { return item != null ? item.Results.ToList() : new List<int>(); }
+        public static implicit operator int(_TestParser_Item item) { return item != null ? item.Results.LastOrDefault() : default(int); }
+    }
 
 } // namespace IronMeta.UnitTests
 

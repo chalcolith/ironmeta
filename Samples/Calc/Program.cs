@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (c) 2009, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -48,11 +48,14 @@ namespace Calc
 
         private static void Main(string[] args)
         {
+            Console.WriteLine("Enter an arithmatic expression (using only integers).");
+            Console.Write("Enter to quit");
+
             string input;
 
             do
             {
-                Console.Write("Enter an arithmatic expression (using only integers); Enter to quit: ");
+                Console.Write(": ");
                 input = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(input))
@@ -61,18 +64,14 @@ namespace Calc
                     var result = matcher.GetMatch(input, matcher.Expression);
 
                     if (result.Success)
-                    {
                         Console.WriteLine("Result: " + result.Result);
-                    }
                     else
-                    {
                         Console.WriteLine("Error: " + result.Error);
-                    }
                 }
             }
             while (!string.IsNullOrEmpty(input));
         }
 
-    } // class Program
+    } 
 
 }

@@ -1,11 +1,13 @@
 //
-// IronMeta LRParser Parser; Generated 01/06/2011 2:40:48 AM UTC
+// IronMeta LRParser Parser; Generated 30/06/2011 8:48:05 PM UTC
 //
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
+
+#pragma warning disable 1591
 
 namespace IronMeta.UnitTests
 {
@@ -16,24 +18,6 @@ namespace IronMeta.UnitTests
     using _LRParser_Memo = Memo<char, string, _LRParser_Item>;
     using _LRParser_Rule = System.Action<Memo<char, string, _LRParser_Item>, int, IEnumerable<_LRParser_Item>>;
     using _LRParser_Base = IronMeta.Matcher.Matcher<char, string, _LRParser_Item>;
-
-
-    public class _LRParser_Item : IronMeta.Matcher.MatchItem<char, string, _LRParser_Item>
-    {
-        public _LRParser_Item() { }
-        public _LRParser_Item(char input) : base(input) { }
-        public _LRParser_Item(char input, string result) : base(input, result) { }
-        public _LRParser_Item(_LRParser_Inputs inputs) : base(inputs) { }
-        public _LRParser_Item(_LRParser_Inputs inputs, _LRParser_Results results) : base(inputs, results) { }
-        public _LRParser_Item(int start, int next, _LRParser_Inputs inputs, _LRParser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
-        public _LRParser_Item(int start, _LRParser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<string>(), true) { }
-        public _LRParser_Item(_LRParser_Rule production) : base(production) { }
-
-        public static implicit operator List<char>(_LRParser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
-        public static implicit operator char(_LRParser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
-        public static implicit operator List<string>(_LRParser_Item item) { return item != null ? item.Results.ToList() : new List<string>(); }
-        public static implicit operator string(_LRParser_Item item) { return item != null ? item.Results.LastOrDefault() : default(string); }
-    }
 
     public partial class LRParser : IronMeta.Matcher.CharMatcher<string, _LRParser_Item>
     {
@@ -231,6 +215,24 @@ namespace IronMeta.UnitTests
         }
 
     } // class LRParser
+
+
+    public class _LRParser_Item : IronMeta.Matcher.MatchItem<char, string, _LRParser_Item>
+    {
+        public _LRParser_Item() { }
+        public _LRParser_Item(char input) : base(input) { }
+        public _LRParser_Item(char input, string result) : base(input, result) { }
+        public _LRParser_Item(_LRParser_Inputs inputs) : base(inputs) { }
+        public _LRParser_Item(_LRParser_Inputs inputs, _LRParser_Results results) : base(inputs, results) { }
+        public _LRParser_Item(int start, int next, _LRParser_Inputs inputs, _LRParser_Results results, bool relative) : base(start, next, inputs, results, relative) { }
+        public _LRParser_Item(int start, _LRParser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<string>(), true) { }
+        public _LRParser_Item(_LRParser_Rule production) : base(production) { }
+
+        public static implicit operator List<char>(_LRParser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
+        public static implicit operator char(_LRParser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
+        public static implicit operator List<string>(_LRParser_Item item) { return item != null ? item.Results.ToList() : new List<string>(); }
+        public static implicit operator string(_LRParser_Item item) { return item != null ? item.Results.LastOrDefault() : default(string); }
+    }
 
 } // namespace IronMeta.UnitTests
 

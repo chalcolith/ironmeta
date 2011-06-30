@@ -1,11 +1,13 @@
 //
-// IronMeta Calc Parser; Generated 01/06/2011 2:05:27 AM UTC
+// IronMeta Calc Parser; Generated 30/06/2011 8:54:46 PM UTC
 //
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
+
+#pragma warning disable 1591
 
 namespace Calc
 {
@@ -16,24 +18,6 @@ namespace Calc
     using _Calc_Memo = Memo<char, int, _Calc_Item>;
     using _Calc_Rule = System.Action<Memo<char, int, _Calc_Item>, int, IEnumerable<_Calc_Item>>;
     using _Calc_Base = IronMeta.Matcher.Matcher<char, int, _Calc_Item>;
-
-
-    public class _Calc_Item : IronMeta.Matcher.MatchItem<char, int, _Calc_Item>
-    {
-        public _Calc_Item() { }
-        public _Calc_Item(char input) : base(input) { }
-        public _Calc_Item(char input, int result) : base(input, result) { }
-        public _Calc_Item(_Calc_Inputs inputs) : base(inputs) { }
-        public _Calc_Item(_Calc_Inputs inputs, _Calc_Results results) : base(inputs, results) { }
-        public _Calc_Item(int start, int next, _Calc_Inputs inputs, _Calc_Results results, bool relative) : base(start, next, inputs, results, relative) { }
-        public _Calc_Item(int start, _Calc_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<int>(), true) { }
-        public _Calc_Item(_Calc_Rule production) : base(production) { }
-
-        public static implicit operator List<char>(_Calc_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
-        public static implicit operator char(_Calc_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
-        public static implicit operator List<int>(_Calc_Item item) { return item != null ? item.Results.ToList() : new List<int>(); }
-        public static implicit operator int(_Calc_Item item) { return item != null ? item.Results.LastOrDefault() : default(int); }
-    }
 
     public partial class Calc : IronMeta.Matcher.CharMatcher<int, _Calc_Item>
     {
@@ -820,6 +804,24 @@ namespace Calc
         }
 
     } // class Calc
+
+
+    public class _Calc_Item : IronMeta.Matcher.MatchItem<char, int, _Calc_Item>
+    {
+        public _Calc_Item() { }
+        public _Calc_Item(char input) : base(input) { }
+        public _Calc_Item(char input, int result) : base(input, result) { }
+        public _Calc_Item(_Calc_Inputs inputs) : base(inputs) { }
+        public _Calc_Item(_Calc_Inputs inputs, _Calc_Results results) : base(inputs, results) { }
+        public _Calc_Item(int start, int next, _Calc_Inputs inputs, _Calc_Results results, bool relative) : base(start, next, inputs, results, relative) { }
+        public _Calc_Item(int start, _Calc_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<int>(), true) { }
+        public _Calc_Item(_Calc_Rule production) : base(production) { }
+
+        public static implicit operator List<char>(_Calc_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
+        public static implicit operator char(_Calc_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
+        public static implicit operator List<int>(_Calc_Item item) { return item != null ? item.Results.ToList() : new List<int>(); }
+        public static implicit operator int(_Calc_Item item) { return item != null ? item.Results.LastOrDefault() : default(int); }
+    }
 
 } // namespace Calc
 

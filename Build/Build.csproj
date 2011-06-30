@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+	<OutputPath>$(MSBuildProjectDirectory)</OutputPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+	<OutputPath>$(MSBuildProjectDirectory)</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MSBuildExtensionsPath>$(MSBuildProjectDirectory)\..\ThirdParty\MSBuild.Extension.Pack</MSBuildExtensionsPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuild.ExtensionPack.tasks"/>
+  
+  <Target Name="Build">
+    <MSBuild.ExtensionPack.Framework.Assembly TaskAction="GetInfo" NetAssembly="$(MSBuildProjectDirectory)\..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.dll">
+      <Output TaskParameter="OutputItems" ItemName="IronMetaInfo"/>
+    </MSBuild.ExtensionPack.Framework.Assembly>
+
+	<PropertyGroup>
+	  <OutputZip>..\IronMeta.Win32.$(Configuration).%(IronMetaInfo.AssemblyVersion).zip</OutputZip>
+	</PropertyGroup>
+    
+	<ItemGroup>
+	  <BaseFiles Include="..\License.txt"/>
+	  <BaseFiles Include="..\Readme.txt"/>
+	</ItemGroup>
+
+	<MSBuild.ExtensionPack.Compression.DNZip TaskAction="Create" RemoveRoot="$(MSBuildProjectDirectory)\.." CompressFiles="@(BaseFiles)" ZipFileName
+="$(OutputZip)"/>
+
+    <ItemGroup>
+	  <GeneratorFiles Include="..\IronMeta.Generator\bin\$(Configuration)\IronMeta.Generator.exe"/>
+	</ItemGroup>
+
+    <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\IronMeta.Generator\bin\$(Configuration)" CompressFiles="@(GeneratorFiles)" ZipFileName="$(OutputZip)"/>
+
+	<ItemGroup>
+	  <MatcherFiles Include="..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.dll"/>
+	  <MatcherFiles Include="..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.xml"/>
+	</ItemGroup>
+
+    <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\IronMeta.Matcher\bin\$(Configuration)" CompressFiles="@(MatcherFiles)" ZipFileName="$(OutputZip)"/>
+	
+	<ItemGroup>
+	  <CalcBin Include="..\Samples\Calc\bin\$(Configuration)\Calc.exe"/>
+	</ItemGroup>
+	
+    <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\Samples\Calc\bin\$(Configuration)" CompressFiles="@(CalcBin)" ZipFileName="$(OutputZip)"/>
+	
+	<ItemGroup>
+	  <CalcSrc Include="..\Samples\Calc\Calc.ironmeta"/>
+	  <CalcSrc Include="..\Samples\Calc\Calc.cs"/>
+	  <CalcSrc Include="..\Samples\Calc\Program.cs"/>
+	</ItemGroup>
+	
+    <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\Samples\Calc" CompressFiles="@(CalcSrc)" ZipFileName="$(OutputZip)"/>	
+	
+  </Target>
+</Project>

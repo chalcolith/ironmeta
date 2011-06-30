@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -37,11 +37,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 using IronMeta.Matcher;
 
-/// Tool that parses IronMeta parser files (using IronMeta), and generates a C# parser class.
 namespace IronMeta.Generator
 {
 
@@ -58,15 +58,16 @@ namespace IronMeta.Generator
         /// </summary>
         /// <param name="input">Input stream.</param>
         /// <param name="output">Output stream.</param>
+        /// <param name="name_space">Namespace to use in the generated parser.</param>
         /// <returns></returns>
-        public Result Process(IEnumerable<char> input, TextWriter output, string nameSpace)
+        public Result Process(IEnumerable<char> input, TextWriter output, string name_space)
         {
             Parser parser = new Parser();
             Result match = parser.GetMatch(input, parser.IronMetaFile);
 
             if (match.Success)
             {
-                CSharpGen csgen = new CSharpGen(match.Result, nameSpace);
+                CSharpGen csgen = new CSharpGen(match.Result, name_space);
                 csgen.Generate(output);
             }
 
@@ -76,32 +77,35 @@ namespace IronMeta.Generator
         /// <summary>
         /// Generate a parser from an IronMeta grammar.
         /// </summary>
-        /// <param name="fname">Input filename.</param>
+        /// <param name="input_fname">Input filename.</param>
+        /// <param name="output_fname">Output filename.</param>
+        /// <param name="name_space">Namespace for the generated parser.</param>
+        /// <param name="force">Force generation even if the existing parser is newer than the source.</param>
         /// <returns>Whether or not generation succeeded.</returns>
-        public Result Process(string inputFname, string outputFname, string nameSpace, bool force)
+        public Result Process(string input_fname, string output_fname, string name_space, bool force)
         {
-            if (string.IsNullOrEmpty(nameSpace))
+            if (string.IsNullOrEmpty(name_space))
             {
-                FileInfo info = new FileInfo(inputFname);
-                nameSpace = info.Directory.Name;
+                FileInfo info = new FileInfo(input_fname);
+                name_space = info.Directory.Name;
             }
 
-            FileInfo srcInfo = new FileInfo(inputFname);
+            FileInfo srcInfo = new FileInfo(input_fname);
             if (!srcInfo.Exists)
-                throw new Exception("File not found: " + inputFname);
+                throw new Exception("File not found: " + input_fname);
 
-            FileInfo destInfo = new FileInfo(outputFname);
+            FileInfo destInfo = new FileInfo(output_fname);
             if (destInfo.Exists && !force)
             {
                 if (srcInfo.LastWriteTimeUtc <= destInfo.LastWriteTimeUtc)
                 {
-                    Console.WriteLine("{0} unchanged; not generating.", inputFname);
+                    Console.WriteLine("{0} unchanged; not generating.", input_fname);
                     return null;
                 }
             }
 
             string contents;
-            using (StreamReader sr = new StreamReader(inputFname))
+            using (StreamReader sr = new StreamReader(input_fname))
             {
                 contents = sr.ReadToEnd();
             }
@@ -109,11 +113,11 @@ namespace IronMeta.Generator
             Result match = null;
             using (StringWriter sw = new StringWriter())
             {
-                match = Process(contents, sw, nameSpace);
+                match = Process(contents, sw, name_space);
 
                 if (match.Success)
                 {
-                    using (StreamWriter fw = new StreamWriter(outputFname))
+                    using (StreamWriter fw = new StreamWriter(output_fname))
                     {
                         fw.Write(sw.ToString());
                     }
@@ -181,22 +185,26 @@ namespace IronMeta.Generator
             for (int i = 0; i < inputFiles.Count; ++i)
             {
                 string inputFile = inputFiles[i];
-                string outputFile = outputFiles.Count > 0 ? outputFiles[i] : inputFile + ".g.cs";
+                string inputName = inputFile.ToUpperInvariant().EndsWith(".IRONMETA") ? inputFile.Substring(0, inputFile.Length - 9) : inputFile;
 
-                if (inputFile.ToUpper().EndsWith(".IRONMETA"))
+                string outputFile = outputFiles.Count > 0 ? outputFiles[i] : inputName + ".g.cs";
+
+                if (inputFile.ToUpperInvariant().EndsWith(".IRONMETA"))
                 {
                     try
                     {
-                        DateTime start = DateTime.Now;
+                        Stopwatch stopwatch = new Stopwatch();
+
+                        stopwatch.Start();
                         Result match = generator.Process(inputFile, outputFile, nameSpace, force);
-                        DateTime end = DateTime.Now;
+                        stopwatch.Stop();
 
                         FileInfo file = new FileInfo(inputFile);
                         if (match != null)
                         {
                             if (match.Success)
                             {
-                                Console.WriteLine("{0}: {1}", file.Name, (end - start));
+                                Console.WriteLine("{0}: {1}", file.Name, stopwatch.Elapsed);
                             }
                             else
                             {

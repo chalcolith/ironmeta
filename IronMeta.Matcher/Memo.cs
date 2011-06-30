@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id: MatchResult.cs 125 2010-11-10 23:45:07Z kulibali $
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -52,8 +52,10 @@ namespace IronMeta.Matcher
     /// <typeparam name="TItem">The (internal) item type.</typeparam>
     public class Memo<TInput, TResult, TItem>
     {
-        Dictionary<string, Dictionary<int,TItem>> table = new Dictionary<string, Dictionary<int, TItem>>();
         Dictionary<string, object> properties = new Dictionary<string, object>();
+
+        Dictionary<string, Dictionary<int, TItem>> memo_table = new Dictionary<string, Dictionary<int, TItem>>();
+        Dictionary<string, Dictionary<int, LRRecord<TItem>>> current_recursions = new Dictionary<string, Dictionary<int, LRRecord<TItem>>>();
 
         /// <summary>
         /// The input stream for the grammar to parse.
@@ -70,14 +72,41 @@ namespace IronMeta.Matcher
             }
         }
 
+        /// <summary>
+        /// The input enumerable for this match.
+        /// </summary>
         public IEnumerable<TInput> InputEnumerable { get; set; }
+
+        /// <summary>
+        /// The input enumerable for this match (<see cref="InputEnumerable"/>) as an <c>IList&lt;&gt;</c>.
+        /// Is <c>null</c> if the input enumerable is not an <c>IList&lt;&gt;</c>.
+        /// </summary>
         public IList<TInput> InputList { get; set; }
+
+        /// <summary>
+        /// The input enumerable for this match (<see cref="InputEnumerable"/>) as a <c>string</c>.
+        /// Is <c>null</c> if the input enumerable is not a <see cref="string"/>.
+        /// </summary>
         public string InputString { get; set; }
 
+        /// <summary>
+        /// The result stack used while matching.
+        /// </summary>
         public Stack<TItem> Results { get; set; }
+
+        /// <summary>
+        /// The result stack used while matching arguments.
+        /// </summary>
         public Stack<TItem> ArgResults { get; set; }
 
+        /// <summary>
+        /// The call stack used while matching.
+        /// </summary>
         public Stack<LRRecord<TItem>> CallStack { get; set; }
+
+        /// <summary>
+        /// Used to pass properties specific to derived matcher classes.
+        /// </summary>
         public Dictionary<string, object> Properties { get { return properties; } }
 
         int last_error_pos = -1;
@@ -86,6 +115,11 @@ namespace IronMeta.Matcher
 
         static readonly Regex EXPECTED = new Regex(@"expected\s+(.*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        /// <summary>
+        /// The error message from the rightmost error encountered while matching.
+        /// Is <c>null</c> if there are no errors.
+        /// <seealso cref="LastErrorIndex"/>
+        /// </summary>
         public string LastError
         {
             get
@@ -111,7 +145,7 @@ namespace IronMeta.Matcher
                         sb.Append("expected ");
                         if (expected.Count > 1)
                         {
-                            sb.Append(string.Join(", ", expected.Take(expected.Count - 1)));
+                            sb.Append(string.Join(", ", expected.Take(expected.Count - 1).ToArray()));
                             sb.Append(" or ");
                         }
                         sb.Append(expected.Last());
@@ -119,23 +153,40 @@ namespace IronMeta.Matcher
                         results.Add(sb.ToString());
                     }
 
-                    last_error = string.Join(";", results);
+                    last_error = string.Join(";", results.ToArray());
                 }
                 return last_error;
             }
         }
 
+        /// <summary>
+        /// The position in the input enumerable of the rightmost error encountered while matching.
+        /// <seealso cref="LastError"/>
+        /// </summary>
         public int LastErrorIndex
         {
             get { return last_error_pos; }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="input">Input to be matches.</param>
         public Memo(IEnumerable<TInput> input)
         {
             Input = input;
             Results = new Stack<TItem>();
             ArgResults = new Stack<TItem>();            
             CallStack = new Stack<LRRecord<TItem>>();
+        }
+
+        /// <summary>
+        /// Allows the memo tables and left-recursion records to be garbage collect.
+        /// </summary>
+        internal void ClearMemoTable()
+        {
+            memo_table.Clear();
+            current_recursions.Clear();
         }
 
         /// <summary>
@@ -147,10 +198,10 @@ namespace IronMeta.Matcher
         public void Memoize(string rule, int index, TItem item)
         {
             Dictionary<int, TItem> ruleDict;
-            if (!table.TryGetValue(rule, out ruleDict))
+            if (!memo_table.TryGetValue(rule, out ruleDict))
             {
                 ruleDict = new Dictionary<int, TItem>();
-                table.Add(rule, ruleDict);
+                memo_table.Add(rule, ruleDict);
             }
 
             ruleDict[index] = item;
@@ -164,7 +215,7 @@ namespace IronMeta.Matcher
         public void ForgetMemo(string rule, int index)
         {
             Dictionary<int, TItem> ruleDict;
-            if (table.TryGetValue(rule, out ruleDict))
+            if (memo_table.TryGetValue(rule, out ruleDict))
             {
                 ruleDict.Remove(index);
             }
@@ -180,7 +231,7 @@ namespace IronMeta.Matcher
         public bool TryGetMemo(string rule, int index, out TItem item)
         {
             Dictionary<int, TItem> ruleDict;
-            if (table.TryGetValue(rule, out ruleDict) && ruleDict.TryGetValue(index, out item))
+            if (memo_table.TryGetValue(rule, out ruleDict) && ruleDict.TryGetValue(index, out item))
             {
                 return true;
             }
@@ -191,8 +242,6 @@ namespace IronMeta.Matcher
             }
         }
 
-        Dictionary<string, Dictionary<int, LRRecord<TItem>>> currentRecursions = new Dictionary<string, Dictionary<int, LRRecord<TItem>>>();
-
         /// <summary>
         /// Start a left-recursion record for a rule at a given index.
         /// </summary>
@@ -202,10 +251,10 @@ namespace IronMeta.Matcher
         public void StartLRRecord(string rule, int index, LRRecord<TItem> record)
         {
             Dictionary<int, LRRecord<TItem>> recordDict;
-            if (!currentRecursions.TryGetValue(rule, out recordDict))
+            if (!current_recursions.TryGetValue(rule, out recordDict))
             {
                 recordDict = new Dictionary<int, LRRecord<TItem>>();
-                currentRecursions.Add(rule, recordDict);
+                current_recursions.Add(rule, recordDict);
             }
 
             recordDict[index] = record;
@@ -219,7 +268,7 @@ namespace IronMeta.Matcher
         public void ForgetLRRecord(string rule, int index)
         {
             Dictionary<int, LRRecord<TItem>> recordDict;
-            if (currentRecursions.TryGetValue(rule, out recordDict))
+            if (current_recursions.TryGetValue(rule, out recordDict))
                 recordDict.Remove(index);
         }
 
@@ -233,7 +282,7 @@ namespace IronMeta.Matcher
         public bool TryGetLRRecord(string rule, int index, out LRRecord<TItem> record)
         {
             Dictionary<int, LRRecord<TItem>> recordDict;
-            if (currentRecursions.TryGetValue(rule, out recordDict) && recordDict.TryGetValue(index, out record))
+            if (current_recursions.TryGetValue(rule, out recordDict) && recordDict.TryGetValue(index, out record))
                 return true;
 
             record = null;
@@ -254,6 +303,10 @@ namespace IronMeta.Matcher
             }
         }
 
+        /// <summary>
+        /// Clears all errors for a given position.
+        /// </summary>
+        /// <param name="pos">Position for which to clear errors.</param>
         public void ClearErrors(int pos)
         {            
             error_msgs.Clear();
@@ -268,6 +321,9 @@ namespace IronMeta.Matcher
     public class LRRecord<TItem>
     {
 
+        /// <summary>
+        /// Whether or not left-recursion has been detected for this production.
+        /// </summary>
         public bool LRDetected { get; set; }
 
         /// <summary>

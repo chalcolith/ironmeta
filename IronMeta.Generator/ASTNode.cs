@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -51,9 +51,19 @@ namespace IronMeta.Generator.AST
     public class ASTNode<TItem>
         where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
     {
+        /// <summary>
+        /// Children of this node.
+        /// </summary>
         public List<ASTNode<TItem>> Children { get; protected set; }
+
+        /// <summary>
+        /// Match results for this node.
+        /// </summary>
         public List<TItem> Items { get; protected set; }
 
+        /// <summary>
+        /// Get the text that this node covers.
+        /// </summary>
         public string GetText()
         {
             StringBuilder sb = new StringBuilder();
@@ -76,6 +86,10 @@ namespace IronMeta.Generator.AST
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Get the text covered by the match item.
+        /// </summary>
+        /// <param name="item">Match item.</param>
         public string GetText(TItem item)
         {
             StringBuilder sb = new StringBuilder();

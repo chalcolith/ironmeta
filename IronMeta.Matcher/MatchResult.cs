@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2010, The IronMeta Project
+// Copyright (C) 2009-2011, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -84,6 +84,9 @@ namespace IronMeta.Matcher
         /// </summary>
         public Matcher<TInput, TResult, TItem> Matcher { get { return matcher; } } 
 
+        /// <summary>
+        /// The memo object that holds the match state.
+        /// </summary>
         public Memo<TInput, TResult, TItem> Memo { get { return memo; } }
 
         /// <summary>
