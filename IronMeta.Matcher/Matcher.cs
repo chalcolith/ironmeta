@@ -86,10 +86,12 @@ namespace IronMeta.Matcher
             }
             catch (MatcherException me)
             {
+                memo.ClearErrors();
                 memo.AddError(me.Index, me.Message);
             }
             catch (Exception e)
             {
+                memo.ClearErrors();
                 memo.AddError(0, e.Message);
             }
 

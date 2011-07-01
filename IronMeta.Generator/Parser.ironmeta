@@ -89,15 +89,17 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
 
     PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
 
-	MinMaxTerm = Term:exp BRA Number:n COMMA Number:x KET:last ->
+	MinMaxTerm = Term:exp BRA Number:n (COMMA Number:x)? KET ->
 	    {
 			int min = int.Parse(Input(n));
-			int max = int.Parse(Input(x));
+			int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
-			if (min < 0 || max < 1)
-			    throw new MatcherException(last.NextIndex, "arguments to a MinMaxTerm must be positive or zero");
+			if (min < 0)
+			    throw new MatcherException(n.StartIndex, "min must be >= 0");
+			if (max < 1)
+			    throw new MatcherException(x.StartIndex, "max must be > 1");
 			if (max < min)
-			    throw new MatcherException(last.NextIndex, "max cannot be less than min for a MinMaxTerm");
+			    throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
 			ASTNode<_Parser_Item> res = null;
 			for (int i = 0; i < min; ++i)

@@ -121,4 +121,5 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 
 	TestMinMax1 = 'a'{3,4};
 	TestMinMax2 = 'b'{0,1};
+	//TestMinMaxBad = 'd'{0,0}
 }

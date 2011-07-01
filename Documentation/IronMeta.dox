@@ -48,7 +48,10 @@ Current limitations:
 
 \section changelog Changelog
 
-2.1: July 1, 2011: Much refactoring, miscellaneous bug fixes, and better error handling.
+2.1: July 1, 2011: Much refactoring, miscellaneous bug fixes.
+    - Better error handling.
+	- Added <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#a180a519c2aed91f6ea499a54b0c0dba4">IronMeta.Matcher.CharMatcher.Input()</a> and <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#ac9532fb50fce46a6d42dede985011e14">IronMeta.Matcher.CharMatcher.Trimmed()</a> for more convenient string handling.
+	- Added min/max repeats syntax (e.g. \c 'a' \c {1, \c 3}).
 
 2.0: December 4, 2010: Many internal improvements.
     - Removed general backtracking functionality in favor of strict PEG semantics only.
@@ -279,11 +282,13 @@ To specify a choice between alternatives, separate them with \c "|".
 
 \section langOperators Other Operators
 
-You can modify the meaning of patterns with the following operators:
+You can modify the meaning of patterns with the following operators that appear after an expression:
 
- - \c "?" as a suffix will match zero or one times.
- - \c "*" as a suffix will match zero or more times.
- - \c "+" as a suffix will match one or more times.
+ - \c "?" will match zero or one time.
+ - \c "*" will match zero or more times.
+ - \c "+" will match one or more times.
+ - \c "{N}" will match \c N times.
+ - \c "{Min,Max}" will match at least \c Min times, and at most \c Max times.
  
 These operators are all greedy -- they will match as many times a possible and then return that result.
 

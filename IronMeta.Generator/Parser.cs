@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 01/07/2011 1:22:13 AM UTC
+// IronMeta Parser Parser; Generated 01/07/2011 3:07:41 AM UTC
 //
 
 using System;
@@ -1793,7 +1793,6 @@ namespace IronMeta.Generator
             _Parser_Item exp = null;
             _Parser_Item n = null;
             _Parser_Item x = null;
-            _Parser_Item last = null;
 
             // AND 1
             int _start_i1 = _index;
@@ -1807,55 +1806,25 @@ namespace IronMeta.Generator
             // AND 4
             int _start_i4 = _index;
 
-            // AND 5
-            int _start_i5 = _index;
-
             // CALLORVAR Term
-            _Parser_Item _r7;
+            _Parser_Item _r6;
 
-            _r7 = _MemoCall(_memo, "Term", _index, Term, null);
+            _r6 = _MemoCall(_memo, "Term", _index, Term, null);
 
-            if (_r7 != null) _index = _r7.NextIndex;
+            if (_r6 != null) _index = _r6.NextIndex;
 
             // BIND exp
             exp = _memo.Results.Peek();
 
             // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
-
-            // CALLORVAR BRA
-            _Parser_Item _r8;
-
-            _r8 = _MemoCall(_memo, "BRA", _index, BRA, null);
-
-            if (_r8 != null) _index = _r8.NextIndex;
-
-        label5: // AND
-            var _r5_2 = _memo.Results.Pop();
-            var _r5_1 = _memo.Results.Pop();
-
-            if (_r5_1 != null && _r5_2 != null)
-            {
-                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i5;
-            }
-
-            // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
 
-            // CALLORVAR Number
-            _Parser_Item _r10;
+            // CALLORVAR BRA
+            _Parser_Item _r7;
 
-            _r10 = _MemoCall(_memo, "Number", _index, Number, null);
+            _r7 = _MemoCall(_memo, "BRA", _index, BRA, null);
 
-            if (_r10 != null) _index = _r10.NextIndex;
-
-            // BIND n
-            n = _memo.Results.Peek();
+            if (_r7 != null) _index = _r7.NextIndex;
 
         label4: // AND
             var _r4_2 = _memo.Results.Pop();
@@ -1874,12 +1843,15 @@ namespace IronMeta.Generator
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label3; }
 
-            // CALLORVAR COMMA
-            _Parser_Item _r11;
+            // CALLORVAR Number
+            _Parser_Item _r9;
 
-            _r11 = _MemoCall(_memo, "COMMA", _index, COMMA, null);
+            _r9 = _MemoCall(_memo, "Number", _index, Number, null);
 
-            if (_r11 != null) _index = _r11.NextIndex;
+            if (_r9 != null) _index = _r9.NextIndex;
+
+            // BIND n
+            n = _memo.Results.Peek();
 
         label3: // AND
             var _r3_2 = _memo.Results.Pop();
@@ -1898,15 +1870,45 @@ namespace IronMeta.Generator
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
 
+            // AND 11
+            int _start_i11 = _index;
+
+            // CALLORVAR COMMA
+            _Parser_Item _r12;
+
+            _r12 = _MemoCall(_memo, "COMMA", _index, COMMA, null);
+
+            if (_r12 != null) _index = _r12.NextIndex;
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label11; }
+
             // CALLORVAR Number
-            _Parser_Item _r13;
+            _Parser_Item _r14;
 
-            _r13 = _MemoCall(_memo, "Number", _index, Number, null);
+            _r14 = _MemoCall(_memo, "Number", _index, Number, null);
 
-            if (_r13 != null) _index = _r13.NextIndex;
+            if (_r14 != null) _index = _r14.NextIndex;
 
             // BIND x
             x = _memo.Results.Peek();
+
+        label11: // AND
+            var _r11_2 = _memo.Results.Pop();
+            var _r11_1 = _memo.Results.Pop();
+
+            if (_r11_1 != null && _r11_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i11;
+            }
+
+            // QUES
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _Parser_Item(_index, _memo.InputEnumerable)); }
 
         label2: // AND
             var _r2_2 = _memo.Results.Pop();
@@ -1932,9 +1934,6 @@ namespace IronMeta.Generator
 
             if (_r15 != null) _index = _r15.NextIndex;
 
-            // BIND last
-            last = _memo.Results.Peek();
-
         label1: // AND
             var _r1_2 = _memo.Results.Pop();
             var _r1_1 = _memo.Results.Pop();
@@ -1955,12 +1954,14 @@ namespace IronMeta.Generator
             {
                 _memo.Results.Pop();
                 _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { int min = int.Parse(Input(n));
-            int max = int.Parse(Input(x));
+            int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
-            if (min < 0 || max < 1)
-                throw new MatcherException(last.NextIndex, "arguments to a MinMaxTerm must be positive or zero");
+            if (min < 0)
+                throw new MatcherException(n.StartIndex, "min must be >= 0");
+            if (max < 1)
+                throw new MatcherException(x.StartIndex, "max must be > 1");
             if (max < min)
-                throw new MatcherException(last.NextIndex, "max cannot be less than min for a MinMaxTerm");
+                throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
             ASTNode<_Parser_Item> res = null;
             for (int i = 0; i < min; ++i)

@@ -316,8 +316,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Clears all errors for a given position.
         /// </summary>
-        /// <param name="pos">Position for which to clear errors.</param>
-        public void ClearErrors(int pos)
+        public void ClearErrors()
         {            
             error_msgs.Clear();
             last_error_pos = -1;

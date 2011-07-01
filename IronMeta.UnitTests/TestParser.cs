@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 01/07/2011 1:24:12 AM UTC
+// IronMeta TestParser Parser; Generated 01/07/2011 3:08:27 AM UTC
 //
 
 using System;
@@ -172,7 +172,7 @@ namespace IronMeta.UnitTests
 
             // FAIL
             _memo.Results.Push(null);
-            _memo.ClearErrors(_index);
+            _memo.ClearErrors();
             _memo.AddError(_index, () => "This is a fail.");
 
         }
