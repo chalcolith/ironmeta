@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 30/06/2011 8:55:22 PM UTC
+// IronMeta Parser Parser; Generated 01/07/2011 12:08:58 AM UTC
 //
 
 using System;
@@ -1722,22 +1722,38 @@ namespace IronMeta.Generator
             // OR 2
             int _start_i2 = _index;
 
+            // OR 3
+            int _start_i3 = _index;
+
+            // CALLORVAR MinMaxTerm
+            _Parser_Item _r4;
+
+            _r4 = _MemoCall(_memo, "MinMaxTerm", _index, MinMaxTerm, null);
+
+            if (_r4 != null) _index = _r4.NextIndex;
+
+            // OR shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i3; } else goto label3;
+
             // CALLORVAR StarTerm
-            _Parser_Item _r3;
+            _Parser_Item _r5;
 
-            _r3 = _MemoCall(_memo, "StarTerm", _index, StarTerm, null);
+            _r5 = _MemoCall(_memo, "StarTerm", _index, StarTerm, null);
 
-            if (_r3 != null) _index = _r3.NextIndex;
+            if (_r5 != null) _index = _r5.NextIndex;
+
+        label3: // OR
+            int _dummy_i3 = _index; // no-op for label
 
             // OR shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i2; } else goto label2;
 
             // CALLORVAR PlusTerm
-            _Parser_Item _r4;
+            _Parser_Item _r6;
 
-            _r4 = _MemoCall(_memo, "PlusTerm", _index, PlusTerm, null);
+            _r6 = _MemoCall(_memo, "PlusTerm", _index, PlusTerm, null);
 
-            if (_r4 != null) _index = _r4.NextIndex;
+            if (_r6 != null) _index = _r6.NextIndex;
 
         label2: // OR
             int _dummy_i2 = _index; // no-op for label
@@ -1746,11 +1762,11 @@ namespace IronMeta.Generator
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR QuesTerm
-            _Parser_Item _r5;
+            _Parser_Item _r7;
 
-            _r5 = _MemoCall(_memo, "QuesTerm", _index, QuesTerm, null);
+            _r7 = _MemoCall(_memo, "QuesTerm", _index, QuesTerm, null);
 
-            if (_r5 != null) _index = _r5.NextIndex;
+            if (_r7 != null) _index = _r7.NextIndex;
 
         label1: // OR
             int _dummy_i1 = _index; // no-op for label
@@ -1759,14 +1775,200 @@ namespace IronMeta.Generator
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Term
-            _Parser_Item _r6;
+            _Parser_Item _r8;
 
-            _r6 = _MemoCall(_memo, "Term", _index, Term, null);
+            _r8 = _MemoCall(_memo, "Term", _index, Term, null);
 
-            if (_r6 != null) _index = _r6.NextIndex;
+            if (_r8 != null) _index = _r8.NextIndex;
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
+
+        }
+
+
+        public void MinMaxTerm(_Parser_Memo _memo, int _index, _Parser_Args _args)
+        {
+
+            _Parser_Item exp = null;
+            _Parser_Item n = null;
+            _Parser_Item x = null;
+            _Parser_Item last = null;
+
+            // AND 1
+            int _start_i1 = _index;
+
+            // AND 2
+            int _start_i2 = _index;
+
+            // AND 3
+            int _start_i3 = _index;
+
+            // AND 4
+            int _start_i4 = _index;
+
+            // AND 5
+            int _start_i5 = _index;
+
+            // CALLORVAR Term
+            _Parser_Item _r7;
+
+            _r7 = _MemoCall(_memo, "Term", _index, Term, null);
+
+            if (_r7 != null) _index = _r7.NextIndex;
+
+            // BIND exp
+            exp = _memo.Results.Peek();
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
+
+            // CALLORVAR BRA
+            _Parser_Item _r8;
+
+            _r8 = _MemoCall(_memo, "BRA", _index, BRA, null);
+
+            if (_r8 != null) _index = _r8.NextIndex;
+
+        label5: // AND
+            var _r5_2 = _memo.Results.Pop();
+            var _r5_1 = _memo.Results.Pop();
+
+            if (_r5_1 != null && _r5_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i5;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
+
+            // CALLORVAR Number
+            _Parser_Item _r10;
+
+            _r10 = _MemoCall(_memo, "Number", _index, Number, null);
+
+            if (_r10 != null) _index = _r10.NextIndex;
+
+            // BIND n
+            n = _memo.Results.Peek();
+
+        label4: // AND
+            var _r4_2 = _memo.Results.Pop();
+            var _r4_1 = _memo.Results.Pop();
+
+            if (_r4_1 != null && _r4_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i4;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label3; }
+
+            // CALLORVAR COMMA
+            _Parser_Item _r11;
+
+            _r11 = _MemoCall(_memo, "COMMA", _index, COMMA, null);
+
+            if (_r11 != null) _index = _r11.NextIndex;
+
+        label3: // AND
+            var _r3_2 = _memo.Results.Pop();
+            var _r3_1 = _memo.Results.Pop();
+
+            if (_r3_1 != null && _r3_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i3;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
+
+            // CALLORVAR Number
+            _Parser_Item _r13;
+
+            _r13 = _MemoCall(_memo, "Number", _index, Number, null);
+
+            if (_r13 != null) _index = _r13.NextIndex;
+
+            // BIND x
+            x = _memo.Results.Peek();
+
+        label2: // AND
+            var _r2_2 = _memo.Results.Pop();
+            var _r2_1 = _memo.Results.Pop();
+
+            if (_r2_1 != null && _r2_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i2;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
+
+            // CALLORVAR KET
+            _Parser_Item _r15;
+
+            _r15 = _MemoCall(_memo, "KET", _index, KET, null);
+
+            if (_r15 != null) _index = _r15.NextIndex;
+
+            // BIND last
+            last = _memo.Results.Peek();
+
+        label1: // AND
+            var _r1_2 = _memo.Results.Pop();
+            var _r1_1 = _memo.Results.Pop();
+
+            if (_r1_1 != null && _r1_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i1;
+            }
+
+            // ACT
+            var _r0 = _memo.Results.Peek();
+            if (_r0 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { int min = int.Parse(Input(n));
+            int max = int.Parse(Input(x));
+
+            if (min < 0 || max < 1)
+                throw new MatcherException(last.NextIndex, "arguments to a MinMaxTerm must be positive or zero");
+            if (max < min)
+                throw new MatcherException(last.NextIndex, "max cannot be less than min for a MinMaxTerm");
+
+            ASTNode<_Parser_Item> res = null;
+            for (int i = 0; i < min; ++i)
+                res = res != null ? new And<_Parser_Item>(res, exp) : (ASTNode<_Parser_Item>)exp;
+            for (int i = 0; i < max; ++i)
+                res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)exp;
+            return res; }, _r0), true) );
+            }
 
         }
 
@@ -4002,6 +4204,62 @@ namespace IronMeta.Generator
             {
                 _memo.Results.Pop();
                 _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Idfr<_Parser_Item>(ids, gp); }, _r0), true) );
+            }
+
+        }
+
+
+        public void Number(_Parser_Memo _memo, int _index, _Parser_Args _args)
+        {
+
+            // AND 0
+            int _start_i0 = _index;
+
+            // PLUS 1
+            int _start_i1 = _index;
+            var _res1 = Enumerable.Empty<ASTNode<_Parser_Item>>();
+        label1:
+
+            // INPUT CLASS
+            _ParseInputClass(_memo, ref _index, '\u0030', '\u0031', '\u0032', '\u0033', '\u0034', '\u0035', '\u0036', '\u0037', '\u0038', '\u0039');
+
+            // PLUS 1
+            var _r1 = _memo.Results.Pop();
+            if (_r1 != null)
+            {
+                _res1 = _res1.Concat(_r1.Results);
+                goto label1;
+            }
+            else
+            {
+                if (_index > _start_i1)
+                    _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _res1.Where(_NON_NULL), true));
+                else
+                    _memo.Results.Push(null);
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label0; }
+
+            // CALLORVAR SP
+            _Parser_Item _r3;
+
+            _r3 = _MemoCall(_memo, "SP", _index, SP, null);
+
+            if (_r3 != null) _index = _r3.NextIndex;
+
+        label0: // AND
+            var _r0_2 = _memo.Results.Pop();
+            var _r0_1 = _memo.Results.Pop();
+
+            if (_r0_1 != null && _r0_2 != null)
+            {
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i0;
             }
 
         }

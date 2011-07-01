@@ -61,6 +61,26 @@ namespace IronMeta.Matcher
         }
 
         /// <summary>
+        /// Utility function for getting the input that matched from a variable.
+        /// </summary>
+        /// <param name="item">Variable that matched.</param>
+        /// <returns>The input that matched the variable, as a string.</returns>
+        protected string Input(TItem item)
+        {
+            return new string(item.Inputs.ToArray());
+        }
+
+        /// <summary>
+        /// Utility function for getting the input that matched from a variable.
+        /// </summary>
+        /// <param name="item">Variable that matched.</param>
+        /// <returns>The input that matched the variable, with whitspace trimmed.</returns>
+        protected string Trimmed(TItem item)
+        {
+            return new string(item.Inputs.ToArray()).Trim();
+        }
+
+        /// <summary>
         /// Gets the line containing a particular index in the input.
         /// </summary>
         /// <param name="memo">The memo object from the match (can be obtained from the match result object's <c>Memo</c> property).</param>

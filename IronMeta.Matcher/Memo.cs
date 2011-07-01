@@ -304,6 +304,16 @@ namespace IronMeta.Matcher
         }
 
         /// <summary>
+        /// Sets the current error if it is beyond or equal to the previous error.
+        /// </summary>
+        /// <param name="pos">Position of the error.</param>
+        /// <param name="message">Message.</param>
+        public void AddError(int pos, string message)
+        {
+            AddError(pos, () => message);
+        }
+
+        /// <summary>
         /// Clears all errors for a given position.
         /// </summary>
         /// <param name="pos">Position for which to clear errors.</param>

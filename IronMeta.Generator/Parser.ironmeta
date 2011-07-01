@@ -87,7 +87,25 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
     LookTerm = AND_PRE PostfixedTerm:exp -> { return new Look<_Parser_Item>(exp); };
     NotTerm = NOT_PRE PostfixedTerm:exp -> { return new Not<_Parser_Item>(exp); };
 
-    PostfixedTerm = StarTerm | PlusTerm | QuesTerm | Term;
+    PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
+
+	MinMaxTerm = Term:exp BRA Number:n COMMA Number:x KET:last ->
+	    {
+			int min = int.Parse(Input(n));
+			int max = int.Parse(Input(x));
+
+			if (min < 0 || max < 1)
+			    throw new MatcherException(last.NextIndex, "arguments to a MinMaxTerm must be positive or zero");
+			if (max < min)
+			    throw new MatcherException(last.NextIndex, "max cannot be less than min for a MinMaxTerm");
+
+			ASTNode<_Parser_Item> res = null;
+			for (int i = 0; i < min; ++i)
+			    res = res != null ? new And<_Parser_Item>(res, exp) : (ASTNode<_Parser_Item>)exp;
+			for (int i = 0; i < max; ++i)
+			    res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)exp;
+			return res;
+		};
 
     StarTerm = Term:exp STAR -> { return new Star<_Parser_Item>(exp); };
     PlusTerm = Term:exp PLUS -> { return new Plus<_Parser_Item>(exp); };
@@ -140,6 +158,8 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
 
     GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
         -> { return new Idfr<_Parser_Item>(ids, gp); };
+
+	Number = ['0'-'9']+ SP;
 
     USING = "using" SP;
     IRONMETA = "ironmeta" SP;

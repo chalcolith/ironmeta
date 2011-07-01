@@ -39,6 +39,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 using IronMeta.Matcher;
 
@@ -232,6 +233,12 @@ namespace IronMeta.Generator
 
             return 0;
         } // Main()
+
+        void misc()
+        {
+            IEnumerable<char> chs = new List<char> { 'a', 'b' };
+            var s = new string(chs.ToArray());
+        }
 
     } // class Program
 

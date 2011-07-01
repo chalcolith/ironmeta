@@ -117,4 +117,8 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 
 	TestBuildTasks = "testBuildTask9";
 
+	TestInputs = 'a' 'b' 'c' -> { Input(_IM_Result) == "abc" ? 1 : 0 };
+
+	TestMinMax = 'a'{3,4};
+	TestMinMax = 'b'{0,1};
 }

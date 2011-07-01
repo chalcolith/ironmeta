@@ -640,6 +640,14 @@ namespace IronMeta.UnitTests
             Assert.True(match.Success);
         }
 
+        [Fact]
+        public void TestInputs()
+        {
+            var match = Run("abc", "TestInputs");
+            Assert.True(match.Success);
+            Assert.Equal(1, match.Result);
+        }
+
         ////////////////////////////////////////
 
         MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)

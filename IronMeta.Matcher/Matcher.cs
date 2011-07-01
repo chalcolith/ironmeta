@@ -78,7 +78,21 @@ namespace IronMeta.Matcher
         public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production)
         {
             var memo = new Memo<TInput, TResult, TItem>(input);
-            var result = _MemoCall(memo, production.Method.Name, 0, production, null);
+            TItem result = null;
+
+            try
+            {
+                result = _MemoCall(memo, production.Method.Name, 0, production, null);
+            }
+            catch (MatcherException me)
+            {
+                memo.AddError(me.Index, me.Message);
+            }
+            catch (Exception e)
+            {
+                memo.AddError(0, e.Message);
+            }
+
             memo.ClearMemoTable(); // allow memo tables to be gc'd
 
             if (result != null)
@@ -135,7 +149,7 @@ namespace IronMeta.Matcher
                 record.LRDetected = true;
 
                 if (!memo.TryGetMemo(record.CurrentExpansion, index, out result))
-                    throw new Exception("Problem with expansion " + record.CurrentExpansion);
+                    throw new MatcherException(index, "Problem with expansion " + record.CurrentExpansion);
                 memo.Results.Push(result);
             }
             // no lr information
@@ -409,7 +423,6 @@ namespace IronMeta.Matcher
                         }
                         else
                         {
-                            throw new Exception();
                         }
                     }
 
@@ -619,6 +632,38 @@ namespace IronMeta.Matcher
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Exception class for extraordinary parsing errors.
+        /// </summary>
+        public class MatcherException : Exception
+        {
+            /// <summary>
+            /// Position in the input at which the error happened.
+            /// </summary>
+            public int Index { get; private set; }
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="message">Message.</param>
+            public MatcherException(string message)
+                : base(message)
+            {
+                Index = 0;
+            }
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="index">Index.</param>
+            /// <param name="message">Message.</param>
+            public MatcherException(int index, string message)
+                : this(message)
+            {
+                Index = index;
+            }
+        }
 
     } // class Matcher
 
