@@ -103,7 +103,7 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
 			for (int i = 0; i < min; ++i)
 			    res = res != null ? new And<_Parser_Item>(res, exp) : (ASTNode<_Parser_Item>)exp;
 			for (int i = 0; i < max; ++i)
-			    res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)exp;
+			    res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)new Ques<_Parser_Item>(exp);
 			return res;
 		};
 

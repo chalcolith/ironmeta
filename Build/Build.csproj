@@ -19,7 +19,7 @@
     <MSBuildExtensionsPath>$(MSBuildProjectDirectory)\..\ThirdParty\MSBuild.Extension.Pack</MSBuildExtensionsPath>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildExtensionsPath)\MSBuild.ExtensionPack.tasks"/>
+  <Import Project="$(MSBuildExtensionsPath)\ExtensionPack\MSBuild.ExtensionPack.tasks"/>
   
   <Target Name="Build">
     <MSBuild.ExtensionPack.Framework.Assembly TaskAction="GetInfo" NetAssembly="$(MSBuildProjectDirectory)\..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.dll">
@@ -46,6 +46,7 @@
 
 	<ItemGroup>
 	  <MatcherFiles Include="..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.dll"/>
+	  <MatcherFiles Include="..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.pdb"/>
 	  <MatcherFiles Include="..\IronMeta.Matcher\bin\$(Configuration)\IronMeta.Matcher.xml"/>
 	</ItemGroup>
 

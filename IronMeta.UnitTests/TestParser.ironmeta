@@ -14,7 +14,7 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 
     AndString = "ab" "cd";
     OrString = "ab" | "cd";
-
+	
     Fail = ! "This is a fail.";
     Any = .;
 
@@ -119,6 +119,6 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 
 	TestInputs = 'a' 'b' 'c' -> { Input(_IM_Result) == "abc" ? 1 : 0 };
 
-	TestMinMax = 'a'{3,4};
-	TestMinMax = 'b'{0,1};
+	TestMinMax1 = 'a'{3,4};
+	TestMinMax2 = 'b'{0,1};
 }

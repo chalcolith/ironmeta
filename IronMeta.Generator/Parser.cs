@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 01/07/2011 12:08:58 AM UTC
+// IronMeta Parser Parser; Generated 01/07/2011 1:22:13 AM UTC
 //
 
 using System;
@@ -1966,7 +1966,7 @@ namespace IronMeta.Generator
             for (int i = 0; i < min; ++i)
                 res = res != null ? new And<_Parser_Item>(res, exp) : (ASTNode<_Parser_Item>)exp;
             for (int i = 0; i < max; ++i)
-                res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)exp;
+                res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)new Ques<_Parser_Item>(exp);
             return res; }, _r0), true) );
             }
 

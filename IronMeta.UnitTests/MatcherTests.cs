@@ -648,6 +648,48 @@ namespace IronMeta.UnitTests
             Assert.Equal(1, match.Result);
         }
 
+        [Fact]
+        public void TestMinMax01()
+        {
+            var match = Run("aaa", "TestMinMax1");
+            Assert.True(match.Success);
+        }
+
+        [Fact]
+        public void TestMinMax02()
+        {
+            var match = Run("aaaa", "TestMinMax1");
+            Assert.True(match.Success);
+        }
+
+        [Fact]
+        public void TestMinMax03()
+        {
+            var match = Run("aa", "TestMinMax1");
+            Assert.False(match.Success);        
+        }
+
+        [Fact]
+        public void TestMinMax04()
+        {
+            var match = Run("", "TestMinMax1");
+            Assert.False(match.Success);
+        }
+
+        [Fact]
+        public void TestMinMax05()
+        {
+            var match = Run("b", "TestMinMax2");
+            Assert.True(match.Success);
+        }
+
+        [Fact]
+        public void TestMinMax06()
+        {
+            var match = Run("", "TestMinMax2");
+            Assert.True(match.Success);
+        }
+
         ////////////////////////////////////////
 
         MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)

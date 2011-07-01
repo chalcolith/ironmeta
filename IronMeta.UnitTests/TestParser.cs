@@ -1,5 +1,5 @@
 //
-// IronMeta TestParser Parser; Generated 01/07/2011 12:09:20 AM UTC
+// IronMeta TestParser Parser; Generated 01/07/2011 1:24:12 AM UTC
 //
 
 using System;
@@ -3011,10 +3011,10 @@ namespace IronMeta.UnitTests
         }
 
 
-        public void TestMinMax(_TestParser_Memo _memo, int _index, _TestParser_Args _args)
+        public void TestMinMax1(_TestParser_Memo _memo, int _index, _TestParser_Args _args)
         {
 
-            // OR 0
+            // AND 0
             int _start_i0 = _index;
 
             // AND 1
@@ -3032,31 +3032,8 @@ namespace IronMeta.UnitTests
             // AND 5
             int _start_i5 = _index;
 
-            // AND 6
-            int _start_i6 = _index;
-
             // LITERAL 'a'
             _ParseLiteralChar(_memo, ref _index, 'a');
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label6; }
-
-            // LITERAL 'a'
-            _ParseLiteralChar(_memo, ref _index, 'a');
-
-        label6: // AND
-            var _r6_2 = _memo.Results.Pop();
-            var _r6_1 = _memo.Results.Pop();
-
-            if (_r6_1 != null && _r6_2 != null)
-            {
-                _memo.Results.Push( new _TestParser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i6;
-            }
 
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
@@ -3083,9 +3060,6 @@ namespace IronMeta.UnitTests
 
             // LITERAL 'a'
             _ParseLiteralChar(_memo, ref _index, 'a');
-
-            // QUES
-            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _TestParser_Item(_index, _memo.InputEnumerable)); }
 
         label4: // AND
             var _r4_2 = _memo.Results.Pop();
@@ -3170,14 +3144,40 @@ namespace IronMeta.UnitTests
                 _index = _start_i1;
             }
 
-            // OR shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label0; }
+
+            // LITERAL 'a'
+            _ParseLiteralChar(_memo, ref _index, 'a');
+
+            // QUES
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _TestParser_Item(_index, _memo.InputEnumerable)); }
+
+        label0: // AND
+            var _r0_2 = _memo.Results.Pop();
+            var _r0_1 = _memo.Results.Pop();
+
+            if (_r0_1 != null && _r0_2 != null)
+            {
+                _memo.Results.Push( new _TestParser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i0;
+            }
+
+        }
+
+
+        public void TestMinMax2(_TestParser_Memo _memo, int _index, _TestParser_Args _args)
+        {
 
             // LITERAL 'b'
             _ParseLiteralChar(_memo, ref _index, 'b');
 
-        label0: // OR
-            int _dummy_i0 = _index; // no-op for label
+            // QUES
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _TestParser_Item(_index, _memo.InputEnumerable)); }
 
         }
 
