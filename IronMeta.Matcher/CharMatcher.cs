@@ -61,6 +61,15 @@ namespace IronMeta.Matcher
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="handle_left_recursion">Whether or not to handle left recursion.</param>
+        public CharMatcher(bool handle_left_recursion)
+            : base(handle_left_recursion)
+        {
+        }
+
+        /// <summary>
         /// Utility function for getting the input that matched from a variable.
         /// </summary>
         /// <param name="item">Variable that matched.</param>

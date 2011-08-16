@@ -29,6 +29,20 @@ namespace IronMeta.UnitTests
             Assert.Equal("(((1 + 1) + 1) + 1)", match.Result);
         }
 
+        [Fact]
+        public void TestNonLR()
+        {
+            var parser = new LRParser(false);
+            var match = parser.GetMatch("ab", parser.NonLR);
+            Assert.True(match.Success);
+
+            match = parser.GetMatch("ac", parser.NonLR);
+            Assert.True(match.Success);
+
+            match = parser.GetMatch("ad", parser.NonLR);
+            Assert.False(match.Success);
+        }
+
     }
 
 }

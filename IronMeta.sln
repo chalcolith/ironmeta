@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Generator", "IronMeta.Generator\IronMeta.Generator.csproj", "{1B35D8C4-C879-425E-A892-3999F4A1655A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Samples\Calc\Calc.csproj", "{0E72B92C-5669-48FA-8DF0-D3422C4C5D80}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1B35D8C4-C879-425E-A892-3999F4A1655A} = {1B35D8C4-C879-425E-A892-3999F4A1655A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{657FCD1A-A3D7-4B53-B1B6-C668F919DAE9}"
 	ProjectSection(ProjectDependencies) = postProject

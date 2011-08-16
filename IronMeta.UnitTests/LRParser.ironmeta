@@ -7,4 +7,10 @@ ironmeta LRParser<char, string> : IronMeta.Matcher.CharMatcher<string>
 	Exp = Exp:e "+" Term:t -> { "(" + (string)e + " + " + (string)t + ")" } | Term;
 	Term = "1" -> { "1" };
 
+	NonLR = NonLR_A NonLR_B;
+
+	NonLR_A = "a";
+	NonLR_B = "b" | NonLR_C;
+	NonLR_C = "c";
+
 }

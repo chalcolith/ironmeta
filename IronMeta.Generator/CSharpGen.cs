@@ -273,6 +273,11 @@ namespace IronMeta.Generator
             tw.Write(innerIndent); tw.WriteLine("public {0}()", gName);
             tw.Write(innerIndent); tw.WriteLine("    : base()");
             tw.Write(innerIndent); tw.WriteLine("{ }");
+            tw.WriteLine();
+
+            tw.Write(innerIndent); tw.WriteLine("public {0}(bool handle_left_recursion)", gName);
+            tw.Write(innerIndent); tw.WriteLine("    : base(handle_left_recursion)");
+            tw.Write(innerIndent); tw.WriteLine("{ }");
 
             // generate rules
             foreach (KeyValuePair<string, AST.ASTNode<_Parser_Item>> item in ruleBodies)

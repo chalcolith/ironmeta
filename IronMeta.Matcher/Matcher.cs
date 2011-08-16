@@ -62,11 +62,31 @@ namespace IronMeta.Matcher
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Whether or not the matcher should detect and process left-recursive rules correctly.
+        /// Setting this to false will make matching run faster, but go into an infinite loop if there is a left-recursive rule in your grammar.
+        /// </summary>
+        public bool HandleLeftRecursion { get; private set; }
+
+        #endregion
+
         /// <summary>
         /// Constructor.
         /// </summary>
         public Matcher()
         {
+            HandleLeftRecursion = true;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="handle_left_recursion">Whether or not the matcher should handle left-recursion.</param>
+        public Matcher(bool handle_left_recursion)
+        {
+            HandleLeftRecursion = handle_left_recursion;
         }
 
         /// <summary>
@@ -130,12 +150,24 @@ namespace IronMeta.Matcher
         /// <param name="production">The production itself.</param>
         /// <param name="args">Arguments to the production (can be null).</param>
         /// <returns>The result of the production at the given input index.</returns>
-        static protected TItem _MemoCall(Memo<TInput, TResult, TItem> memo, string ruleName, int index, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production, IEnumerable<TItem> args)
+        protected TItem _MemoCall(Memo<TInput, TResult, TItem> memo, string ruleName, int index, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production, IEnumerable<TItem> args)
         {
+            TItem result;
+
+            // if we are not handling left recursion, just call the production directly.
+            if (!HandleLeftRecursion)
+            {
+                production(memo, index, args);
+                result = memo.Results.Peek();
+
+                if (result == null)
+                    memo.AddError(index, () => "expected " + ruleName);
+
+                return result;
+            }
+
             string ruleKey = args == null ? ruleName
                 : ruleName + string.Join(", ", args.Select(arg => arg.ToString()).ToArray());
-
-            TItem result;
 
             // if we have a memo record, use that
             if (memo.TryGetMemo(ruleKey, index, out result))
