@@ -200,17 +200,18 @@ namespace IronMeta.Generator
                         Result match = generator.Process(inputFile, outputFile, nameSpace, force);
                         stopwatch.Stop();
 
-                        FileInfo file = new FileInfo(inputFile);
+                        FileInfo inputInfo = new FileInfo(inputFile);
+                        FileInfo outputInfo = new FileInfo(outputFile);
                         if (match != null)
                         {
                             if (match.Success)
                             {
-                                Console.WriteLine("{0}: {1}", file.Name, stopwatch.Elapsed);
+                                Console.WriteLine("{0} -> {1}: {2}", inputInfo.Name, outputInfo, stopwatch.Elapsed);
                             }
                             else
                             {
                                 int lineNum = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
-                                Console.WriteLine("{0} ({1}): {2}", file.Name, lineNum, match.Memo.LastError);
+                                Console.WriteLine("{0} ({1}): {2}", inputInfo.Name, lineNum, match.Memo.LastError);
 
                                 int offset;
                                 string line = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
