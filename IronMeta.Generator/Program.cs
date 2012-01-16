@@ -148,7 +148,7 @@ namespace IronMeta.Generator
                     Console.WriteLine("usage: IronMeta.Generator [-f|--force] [-n|--namespace Namespace] InputFile [-o|--output OutputFile] ...");
                     Console.WriteLine("         -f, --force:     Force generation even if the input file is older than the output.");
                     Console.WriteLine("         -n, --namespace: Set namespace (defaults to the current directory).");
-                    Console.WriteLine("         -o, --output:    Specify output file name (defaults to adding \".g.cs\"");
+                    Console.WriteLine("         -o, --output:    Specify output file name (defaults to adding \".g.cs\").");
                     Console.WriteLine();
                     return 3;
                 }
@@ -234,12 +234,6 @@ namespace IronMeta.Generator
 
             return 0;
         } // Main()
-
-        void misc()
-        {
-            IEnumerable<char> chs = new List<char> { 'a', 'b' };
-            var s = new string(chs.ToArray());
-        }
 
     } // class Program
 
