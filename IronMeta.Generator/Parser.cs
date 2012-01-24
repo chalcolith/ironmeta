@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 01/07/2011 3:07:41 AM UTC
+// IronMeta Parser Parser; Generated 24/01/2012 7:23:44 PM UTC
 //
 
 using System;
@@ -25,6 +25,10 @@ namespace IronMeta.Generator
     {
         public Parser()
             : base()
+        { }
+
+        public Parser(bool handle_left_recursion)
+            : base(handle_left_recursion)
         { }
 
         public void IronMetaFile(_Parser_Memo _memo, int _index, _Parser_Args _args)
@@ -5503,9 +5507,7 @@ namespace IronMeta.Generator
         public _Parser_Item(int start, _Parser_Inputs inputs) : base(start, start, inputs, Enumerable.Empty<ASTNode<_Parser_Item>>(), true) { }
         public _Parser_Item(_Parser_Rule production) : base(production) { }
 
-        public static implicit operator List<char>(_Parser_Item item) { return item != null ? item.Inputs.ToList() : new List<char>(); }
         public static implicit operator char(_Parser_Item item) { return item != null ? item.Inputs.LastOrDefault() : default(char); }
-        public static implicit operator List<ASTNode<_Parser_Item>>(_Parser_Item item) { return item != null ? item.Results.ToList() : new List<ASTNode<_Parser_Item>>(); }
         public static implicit operator ASTNode<_Parser_Item>(_Parser_Item item) { return item != null ? item.Results.LastOrDefault() : default(ASTNode<_Parser_Item>); }
     }
 

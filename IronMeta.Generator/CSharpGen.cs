@@ -251,11 +251,11 @@ namespace IronMeta.Generator
 
             if (tResult != tInput)
             {
-                tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Inputs.ToList() : new List<{0}>(); }}", tInput, tItem);
+                //tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Inputs.ToList() : new List<{0}>(); }}", tInput, tItem);
                 tw.Write(indent); tw.WriteLine("    public static implicit operator {0}({1} item) {{ return item != null ? item.Inputs.LastOrDefault() : default({0}); }}", tInput, tItem);
             }
 
-            tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Results.ToList() : new List<{0}>(); }}", tResult, tItem);
+            //tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Results.ToList() : new List<{0}>(); }}", tResult, tItem);
             tw.Write(indent); tw.WriteLine("    public static implicit operator {0}({1} item) {{ return item != null ? item.Results.LastOrDefault() : default({0}); }}", tResult, tItem);
 
             tw.Write(indent); tw.WriteLine("}");
