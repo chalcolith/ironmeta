@@ -13,4 +13,6 @@ ironmeta LRParser<char, string> : IronMeta.Matcher.CharMatcher<string>
 	NonLR_B = "b" | NonLR_C;
 	NonLR_C = "c";
 
+	AAA = AAA*:x "a":y -> { "(" + (string)x + "a)" } | "b":z -> { "b" };
+
 }

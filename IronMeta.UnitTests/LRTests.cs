@@ -43,6 +43,15 @@ namespace IronMeta.UnitTests
             Assert.False(match.Success);
         }
 
+        [Fact]
+        public void TestLR2()
+        {
+            var parser = new LRParser();
+            var match = parser.GetMatch("ababbba", parser.AAA);
+            Assert.True(match.Success);
+            var res = match.Result;
+        }
+
     }
 
 }

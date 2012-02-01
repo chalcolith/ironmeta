@@ -426,88 +426,91 @@ namespace IronMeta.Matcher
         /// <param name="args">Argument stream.</param>
         static protected TItem _ParseLiteralArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, object obj, IEnumerable<TItem> args)
         {
-            try
+            if (args != null)
             {
-                if (obj is IEnumerable<TInput>)
+                try
                 {
-                    int old_item_index = item_index;
-                    int cur_item_index = item_index;
-                    int cur_input_index = input_index;
-
-                    var input_list = new List<TInput>();
-
-                    foreach (TInput input in ((IEnumerable<TInput>)obj))
+                    if (obj is IEnumerable<TInput>)
                     {
-                        TItem cur_item = args.ElementAt(cur_item_index);
-                        TInput cur_input = cur_item.Inputs.ElementAt(cur_input_index);
+                        int old_item_index = item_index;
+                        int cur_item_index = item_index;
+                        int cur_input_index = input_index;
 
-                        if (cur_input.Equals(input))
+                        var input_list = new List<TInput>();
+
+                        foreach (TInput input in ((IEnumerable<TInput>)obj))
                         {
-                            input_list.Add(cur_input);
+                            TItem cur_item = args.ElementAt(cur_item_index);
+                            TInput cur_input = cur_item.Inputs.ElementAt(cur_input_index);
 
-                            if (cur_input_index + 1 >= cur_item.Inputs.Count())
+                            if (cur_input.Equals(input))
                             {
-                                ++cur_item_index;
-                                cur_input_index = 0;
+                                input_list.Add(cur_input);
+
+                                if (cur_input_index + 1 >= cur_item.Inputs.Count())
+                                {
+                                    ++cur_item_index;
+                                    cur_input_index = 0;
+                                }
+                                else
+                                {
+                                    ++input_index;
+                                }
                             }
                             else
                             {
-                                ++input_index;
                             }
                         }
-                        else
-                        {
-                        }
-                    }
 
-                    //
-                    item_index = cur_item_index;
-                    input_index = cur_input_index;
+                        //
+                        item_index = cur_item_index;
+                        input_index = cur_input_index;
 
-                    TItem result = new TItem()
-                    {
-                        StartIndex = old_item_index,
-                        NextIndex = item_index,
-                        Inputs = input_list,
-                    };
-
-                    memo.ArgResults.Push(result);
-                    return result;
-                }
-                else
-                {
-                    int old_item_index = item_index;
-
-                    TItem cur_item = args.ElementAt(item_index);
-                    TInput cur_input = cur_item.Inputs.ElementAt(input_index);
-
-                    if (cur_input.Equals(obj))
-                    {
-                        // increment
-                        if (input_index + 1 >= cur_item.Inputs.Count())
-                        {
-                            ++item_index;
-                            input_index = 0;
-                        }
-                        else
-                        {
-                            ++input_index;
-                        }
-
-                        // 
                         TItem result = new TItem()
                         {
                             StartIndex = old_item_index,
                             NextIndex = item_index,
-                            Inputs = new List<TInput> { cur_input },
+                            Inputs = input_list,
                         };
 
                         memo.ArgResults.Push(result);
                         return result;
                     }
+                    else
+                    {
+                        int old_item_index = item_index;
+
+                        TItem cur_item = args.ElementAt(item_index);
+                        TInput cur_input = cur_item.Inputs.ElementAt(input_index);
+
+                        if (cur_input.Equals(obj))
+                        {
+                            // increment
+                            if (input_index + 1 >= cur_item.Inputs.Count())
+                            {
+                                ++item_index;
+                                input_index = 0;
+                            }
+                            else
+                            {
+                                ++input_index;
+                            }
+
+                            // 
+                            TItem result = new TItem()
+                            {
+                                StartIndex = old_item_index,
+                                NextIndex = item_index,
+                                Inputs = new List<TInput> { cur_input },
+                            };
+
+                            memo.ArgResults.Push(result);
+                            return result;
+                        }
+                    }
                 }
+                catch { }
             }
-            catch { }
 
             memo.ArgResults.Push(null);
             memo.AddError(input_index, () => "expected " + obj);
@@ -646,17 +649,20 @@ namespace IronMeta.Matcher
         /// <param name="args">Argument stream.</param>
         static protected TItem _ParseAnyArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, IEnumerable<TItem> args)
         {
-            try
+            if (args != null)
             {
-                if (input_index == 0)
+                try
                 {
-                    var _temp = args.ElementAt(item_index);
-                    ++item_index;
-                    memo.ArgResults.Push(_temp);
-                    return _temp;
+                    if (input_index == 0)
+                    {
+                        var _temp = args.ElementAt(item_index);
+                        ++item_index;
+                        memo.ArgResults.Push(_temp);
+                        return _temp;
+                    }
                 }
+                catch { }
             }
-            catch { }
 
             memo.ArgResults.Push(null);
             memo.AddError(input_index, () => "not enough arguments");
