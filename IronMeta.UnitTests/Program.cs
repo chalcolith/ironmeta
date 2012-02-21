@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2011, The IronMeta Project
+// Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -85,6 +85,9 @@ namespace IronMeta.UnitTests
 
             StringTests stringTests = new StringTests();
             RunTests(stringTests);
+
+            Bugs.BugsTests bugsTests = new Bugs.BugsTests();
+            RunTests(bugsTests);
         }
 
     } // class Program

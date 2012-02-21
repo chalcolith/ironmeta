@@ -42,6 +42,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bugs\Bugs.g.cs" />
+    <Compile Include="Bugs\BugsTests.cs" />
     <Compile Include="CalcTests.cs" />
     <Compile Include="LRParser.cs" />
     <Compile Include="LRTests.cs" />
@@ -53,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Bugs\Bugs.ironmeta" />
     <None Include="LRParser.ironmeta" />
     <None Include="TestParser.ironmeta" />
   </ItemGroup>
@@ -91,6 +94,9 @@
   </Target>
   <Target Name="GenerateLRParser" BeforeTargets="_GenerateCompileInputs" Inputs="LRParser.ironmeta" Outputs="LRParser.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe LRParser.ironmeta -o LRParser.cs" />
+  </Target>
+  <Target Name="GenerateBugsParser" BeforeTargets="_GenerateCompileInputs" Inputs="Bugs\Bugs.ironmeta" Outputs="Bugs\Bugs.g.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Bugs Bugs\Bugs.ironmeta" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">

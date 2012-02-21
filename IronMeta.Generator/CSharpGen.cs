@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2011, The IronMeta Project
+// Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -249,14 +249,15 @@ namespace IronMeta.Generator
             tw.Write(indent); tw.WriteLine("    public {0}(_{1}_Rule production) : base(production) {{ }}", tItem, gName, tInput, tResult);
             tw.WriteLine();
 
-            if (tResult != tInput)
+            if (tResult != tInput && tInput.ToUpperInvariant() != "OBJECT")
             {
-                //tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Inputs.ToList() : new List<{0}>(); }}", tInput, tItem);
                 tw.Write(indent); tw.WriteLine("    public static implicit operator {0}({1} item) {{ return item != null ? item.Inputs.LastOrDefault() : default({0}); }}", tInput, tItem);
             }
 
-            //tw.Write(indent); tw.WriteLine("    public static implicit operator List<{0}>({1} item) {{ return item != null ? item.Results.ToList() : new List<{0}>(); }}", tResult, tItem);
-            tw.Write(indent); tw.WriteLine("    public static implicit operator {0}({1} item) {{ return item != null ? item.Results.LastOrDefault() : default({0}); }}", tResult, tItem);
+            if (tResult.ToUpperInvariant() != "OBJECT")
+            {
+                tw.Write(indent); tw.WriteLine("    public static implicit operator {0}({1} item) {{ return item != null ? item.Results.LastOrDefault() : default({0}); }}", tResult, tItem);
+            }
 
             tw.Write(indent); tw.WriteLine("}");
             tw.WriteLine();

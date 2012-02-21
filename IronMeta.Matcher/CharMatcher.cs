@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id: Matcher.cs 125 2010-11-10 23:45:07Z kulibali $
 //
-// Copyright (C) 2009-2011, The IronMeta Project
+// Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
