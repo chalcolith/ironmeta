@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////
 // $Id$
 //
-// Copyright (C) 2009-2011, The IronMeta Project
+// Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -348,7 +348,7 @@ namespace IronMeta.Matcher
             public void Reset()
             {
                 source_enumerator = slice.enumerable.GetEnumerator();
-                for (int i = 0; i < slice.start - 1; ++i)
+                for (int i = 0; i < slice.start; ++i)
                     source_enumerator.MoveNext();
                 pos = -1;
             }
