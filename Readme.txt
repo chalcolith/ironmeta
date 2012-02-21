@@ -1,11 +1,11 @@
-IronMeta v2.1
+IronMeta v2.2
 
 IronMeta provides a programming language and application for 
 generating pattern matchers on arbitrary streams of objects. 
 It is an implementation of Alessandro Warth's OMeta system 
 for C#.
 
-IronMeta is Copyright (C) 2009-2011 by the IronMeta Project.
+IronMeta is Copyright (C) 2009-2012 by the IronMeta Project.
 
 It is available under the terms of the BSD License.
 
