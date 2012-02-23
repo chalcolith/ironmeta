@@ -47,9 +47,7 @@ namespace IronMeta.Matcher
     /// A matcher class for operating on streams of characters.  Provides some utilities for line numbers.
     /// </summary>
     /// <typeparam name="TResult">Result type.</typeparam>
-    /// <typeparam name="TItem">Item type (internal).</typeparam>
-    public abstract class CharMatcher<TResult, TItem> : Matcher<char, TResult, TItem>
-        where TItem : MatchItem<char, TResult, TItem>, new()
+    public abstract class CharMatcher<TResult> : Matcher<char, TResult>
     {
 
         /// <summary>
@@ -74,7 +72,7 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="item">Variable that matched.</param>
         /// <returns>The input that matched the variable, as a string.</returns>
-        protected string Input(TItem item)
+        protected string Input(MatchItem<char, TResult> item)
         {
             return new string(item.Inputs.ToArray());
         }
@@ -84,7 +82,7 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="item">Variable that matched.</param>
         /// <returns>The input that matched the variable, with whitspace trimmed.</returns>
-        protected string Trimmed(TItem item)
+        protected string Trimmed(MatchItem<char, TResult> item)
         {
             return new string(item.Inputs.ToArray()).Trim();
         }
@@ -96,7 +94,7 @@ namespace IronMeta.Matcher
         /// <param name="pos">The index in the input.</param>
         /// <param name="offset">The offset of the position after the beginning of the line.</param>
         /// <returns>The line containing a particular input index.</returns>
-        public static string GetLine(Memo<char, TResult, TItem> memo, int pos, out int offset)
+        public static string GetLine(Memo<char, TResult> memo, int pos, out int offset)
         {
             var line_begins = MakeLines(memo);
             offset = 0;
@@ -124,7 +122,7 @@ namespace IronMeta.Matcher
         /// <param name="memo">The memo used for the match.</param>
         /// <param name="pos">The index in the input.</param>
         /// <returns>The number of the line that contains the index.</returns>
-        public static int GetLineNumber(Memo<char, TResult, TItem> memo, int pos)
+        public static int GetLineNumber(Memo<char, TResult> memo, int pos)
         {
             var line_begins = MakeLines(memo);
 
@@ -147,7 +145,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Finds line endings.
         /// </summary>
-        static List<int> MakeLines(Memo<char, TResult, TItem> memo)
+        static List<int> MakeLines(Memo<char, TResult> memo)
         {
             object obj;
             if (memo.Properties.TryGetValue("_line_begins", out obj) && obj is List<int>)

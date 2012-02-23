@@ -46,7 +46,7 @@ using IronMeta.Matcher;
 namespace IronMeta.Generator
 {
 
-    using Result = MatchResult<char, AST.ASTNode<_Parser_Item>, _Parser_Item>;
+    using Result = MatchResult<char, AST.ASTNode>;
 
     /// <summary>
     /// Main program of the IronMeta generator.
@@ -210,11 +210,11 @@ namespace IronMeta.Generator
                             }
                             else
                             {
-                                int lineNum = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
+                                int lineNum = CharMatcher<AST.ASTNode>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
                                 Console.WriteLine("{0} ({1}): {2}", inputInfo.Name, lineNum, match.Memo.LastError);
 
                                 int offset;
-                                string line = CharMatcher<AST.ASTNode<_Parser_Item>, _Parser_Item>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
+                                string line = CharMatcher<AST.ASTNode>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
 
                                 Console.WriteLine();
                                 Console.WriteLine(line.Trim());

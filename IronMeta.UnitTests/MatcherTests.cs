@@ -37,6 +37,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using IronMeta.Matcher;
 using Xunit;
 
@@ -690,13 +692,24 @@ namespace IronMeta.UnitTests
             Assert.True(match.Success);
         }
 
+        [Fact]
+        public void TestReturn()
+        {
+            var match = Run("b", "TestReturn");
+            Assert.True(match.Success);
+            Assert.Equal(3, match.Results.Count());
+            Assert.Equal(4, match.Results.ElementAt(0));
+            Assert.Equal(5, match.Results.ElementAt(1));
+            Assert.Equal(6, match.Results.ElementAt(2));
+        }
+
         ////////////////////////////////////////
 
-        MatchResult<char, int, _TestParser_Item> Run(IEnumerable<char> input, string productionName)
+        MatchResult<char, int> Run(IEnumerable<char> input, string productionName)
         {
             var parser = new TestParser();
-            var production = (Action<Memo<char, int, _TestParser_Item>, int, IEnumerable<_TestParser_Item>>)
-                Delegate.CreateDelegate(typeof(Action<Memo<char, int, _TestParser_Item>, int, IEnumerable<_TestParser_Item>>), parser, productionName);
+            var production = (Action<Memo<char, int>, int, IEnumerable<MatchItem<char, int>>>)
+                Delegate.CreateDelegate(typeof(Action<Memo<char, int>, int, IEnumerable<MatchItem<char, int>>>), parser, productionName);
 
             return parser.GetMatch(input, production);
         }

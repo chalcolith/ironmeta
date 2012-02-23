@@ -49,13 +49,12 @@ namespace IronMeta.Matcher
     /// </summary>
     /// <typeparam name="TInput">The input type.</typeparam>
     /// <typeparam name="TResult">The result type.</typeparam>
-    /// <typeparam name="TItem">The (internal) item type.</typeparam>
-    public class Memo<TInput, TResult, TItem>
+    public class Memo<TInput, TResult>
     {
         Dictionary<string, object> properties = new Dictionary<string, object>();
 
-        Dictionary<string, Dictionary<int, TItem>> memo_table = new Dictionary<string, Dictionary<int, TItem>>();
-        Dictionary<string, Dictionary<int, LRRecord<TItem>>> current_recursions = new Dictionary<string, Dictionary<int, LRRecord<TItem>>>();
+        Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>> memo_table = new Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>>();
+        Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions = new Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>>();
 
         /// <summary>
         /// The input stream for the grammar to parse.
@@ -92,17 +91,17 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The result stack used while matching.
         /// </summary>
-        public Stack<TItem> Results { get; set; }
+        public Stack<MatchItem<TInput, TResult>> Results { get; set; }
 
         /// <summary>
         /// The result stack used while matching arguments.
         /// </summary>
-        public Stack<TItem> ArgResults { get; set; }
+        public Stack<MatchItem<TInput, TResult>> ArgResults { get; set; }
 
         /// <summary>
         /// The call stack used while matching.
         /// </summary>
-        public Stack<LRRecord<TItem>> CallStack { get; set; }
+        public Stack<LRRecord<MatchItem<TInput, TResult>>> CallStack { get; set; }
 
         /// <summary>
         /// Used to pass properties specific to derived matcher classes.
@@ -175,9 +174,9 @@ namespace IronMeta.Matcher
         public Memo(IEnumerable<TInput> input)
         {
             Input = input;
-            Results = new Stack<TItem>();
-            ArgResults = new Stack<TItem>();            
-            CallStack = new Stack<LRRecord<TItem>>();
+            Results = new Stack<MatchItem<TInput, TResult>>();
+            ArgResults = new Stack<MatchItem<TInput, TResult>>();
+            CallStack = new Stack<LRRecord<MatchItem<TInput, TResult>>>();
         }
 
         /// <summary>
@@ -195,12 +194,12 @@ namespace IronMeta.Matcher
         /// <param name="rule">The production name.</param>
         /// <param name="index">The input position.</param>
         /// <param name="item">The result of the parse.</param>
-        public void Memoize(string rule, int index, TItem item)
+        public void Memoize(string rule, int index, MatchItem<TInput, TResult> item)
         {
-            Dictionary<int, TItem> ruleDict;
+            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
             if (!memo_table.TryGetValue(rule, out ruleDict))
             {
-                ruleDict = new Dictionary<int, TItem>();
+                ruleDict = new Dictionary<int, MatchItem<TInput, TResult>>();
                 memo_table.Add(rule, ruleDict);
             }
 
@@ -214,7 +213,7 @@ namespace IronMeta.Matcher
         /// <param name="index">The input position.</param>
         public void ForgetMemo(string rule, int index)
         {
-            Dictionary<int, TItem> ruleDict;
+            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
             if (memo_table.TryGetValue(rule, out ruleDict))
             {
                 ruleDict.Remove(index);
@@ -228,16 +227,16 @@ namespace IronMeta.Matcher
         /// <param name="index">The input position.</param>
         /// <param name="item">The result.</param>
         /// <returns>True if there is a memo record for the rule at the index.</returns>
-        public bool TryGetMemo(string rule, int index, out TItem item)
+        public bool TryGetMemo(string rule, int index, out MatchItem<TInput, TResult> item)
         {
-            Dictionary<int, TItem> ruleDict;
+            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
             if (memo_table.TryGetValue(rule, out ruleDict) && ruleDict.TryGetValue(index, out item))
             {
                 return true;
             }
             else
             {
-                item = default(TItem);
+                item = default(MatchItem<TInput, TResult>);
                 return false;
             }
         }
@@ -248,12 +247,12 @@ namespace IronMeta.Matcher
         /// <param name="rule">The name of the rule.</param>
         /// <param name="index">The input position.</param>
         /// <param name="record">The new left-recursion record.</param>
-        public void StartLRRecord(string rule, int index, LRRecord<TItem> record)
+        public void StartLRRecord(string rule, int index, LRRecord<MatchItem<TInput, TResult>> record)
         {
-            Dictionary<int, LRRecord<TItem>> recordDict;
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
             if (!current_recursions.TryGetValue(rule, out recordDict))
             {
-                recordDict = new Dictionary<int, LRRecord<TItem>>();
+                recordDict = new Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>();
                 current_recursions.Add(rule, recordDict);
             }
 
@@ -267,7 +266,7 @@ namespace IronMeta.Matcher
         /// <param name="index">The input position.</param>
         public void ForgetLRRecord(string rule, int index)
         {
-            Dictionary<int, LRRecord<TItem>> recordDict;
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
             if (current_recursions.TryGetValue(rule, out recordDict))
                 recordDict.Remove(index);
         }
@@ -279,9 +278,9 @@ namespace IronMeta.Matcher
         /// <param name="index">The input position.</param>
         /// <param name="record">The left-recursion record.</param>
         /// <returns>True if there is a left-recursion record for the rule at the index.</returns>
-        public bool TryGetLRRecord(string rule, int index, out LRRecord<TItem> record)
+        public bool TryGetLRRecord(string rule, int index, out LRRecord<MatchItem<TInput, TResult>> record)
         {
-            Dictionary<int, LRRecord<TItem>> recordDict;
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
             if (current_recursions.TryGetValue(rule, out recordDict) && recordDict.TryGetValue(index, out record))
                 return true;
 

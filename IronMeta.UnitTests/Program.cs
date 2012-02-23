@@ -88,6 +88,9 @@ namespace IronMeta.UnitTests
 
             Bugs.BugsTests bugsTests = new Bugs.BugsTests();
             RunTests(bugsTests);
+
+            var combineTests = new Combine.CombineTests();
+            RunTests(combineTests);
         }
 
     } // class Program

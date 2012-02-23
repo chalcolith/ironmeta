@@ -15,7 +15,7 @@ namespace IronMeta.UnitTests.Bugs
         public void Bug_009()
         {
             var matcher = new Bugs();
-            var match = matcher.GetMatch("#\\x000", matcher.Bug_009_HexEscapeCharacter);
+            var match = matcher.GetMatch("#\\x000", matcher.Bug_3490042_HexEscapeCharacter);
             Assert.True(match.Success);
             
             var chars = match.Result as IEnumerable<char>;

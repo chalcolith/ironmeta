@@ -48,7 +48,7 @@ namespace IronMeta.Matcher
     ///  - As the result of a production, stores a range of input, and the results of the match.
     ///  - As a parameter to a production, can hold an item of input, a range of input, or a production.
     /// </summary>
-    public class MatchItem<TInput, TResult, TItem>
+    public class MatchItem<TInput, TResult>
     {
         static readonly IEnumerable<TInput> emptyInputs = Enumerable.Empty<TInput>();
         static readonly IEnumerable<TResult> emptyResults = Enumerable.Empty<TResult>();
@@ -68,7 +68,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The production that this item is passing.
         /// </summary>
-        public Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> Production = null;
+        public Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> Production = null;
 
         /// <summary>
         /// The name of the production that this item is passing.
@@ -141,35 +141,6 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="start">Start position in the match (not necessarily in the given inputs).</param>
-        /// <param name="next">Next position in the match (not necessarily in the given inputs).</param>
-        /// <param name="inputs">Input enumerable.</param>
-        /// <param name="results">Result enumerable.</param>
-        /// <param name="relative">Whether or not the start and next parameters are relative to the given input enumerable, or independent of it.</param>
-        public MatchItem(int start, int next, IEnumerable<TInput> inputs, IEnumerable<TResult> results, bool relative)
-        {
-            input_enumerable = inputs;
-
-            StartIndex = start;
-            NextIndex = next;
-
-            if (relative)
-            {
-                input_start = start;
-                input_next = next;
-            }
-            else
-            {
-                input_start = 0;
-                input_next = inputs.Count();
-            }
-
-            Results = results;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         /// <param name="input">A single input to hold.</param>
         public MatchItem(TInput input)
         {
@@ -186,23 +157,6 @@ namespace IronMeta.Matcher
         /// <param name="result">The result of the input.</param>
         public MatchItem(TInput input, TResult result)
         {
-            input_enumerable = input_slice = new TInput[] { input };
-            input_start = 0;
-            input_next = 1;            
-            Results = new TResult[] { result };
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="start">Start position in the match.</param>
-        /// <param name="next">Next position in the match.</param>
-        /// <param name="input">A single input to hold.</param>
-        /// <param name="result">A single result to hold.</param>
-        public MatchItem(int start, int next, TInput input, TResult result)
-        {
-            StartIndex = start;
-            NextIndex = next;
             input_enumerable = input_slice = new TInput[] { input };
             input_start = 0;
             input_next = 1;
@@ -233,8 +187,64 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="start">Start position in the match (not necessarily in the given inputs).</param>
+        /// <param name="next">Next position in the match (not necessarily in the given inputs).</param>
+        /// <param name="inputs">Input enumerable.</param>
+        /// <param name="results">Result enumerable.</param>
+        /// <param name="relative">Whether or not the start and next parameters are relative to the given input enumerable, or independent of it.</param>
+        public MatchItem(int start, int next, IEnumerable<TInput> inputs, IEnumerable<TResult> results, bool relative)
+        {
+            input_enumerable = inputs;
+
+            StartIndex = start;
+            NextIndex = next;
+
+            if (relative)
+            {
+                input_start = start;
+                input_next = next;
+            }
+            else
+            {
+                input_start = 0;
+                input_next = inputs.Count();
+            }
+
+            Results = results;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="start">Start position in the match.</param>
+        /// <param name="inputs">Inputs to hold.</param>
+        public MatchItem(int start, IEnumerable<TInput> inputs)
+            : this(start, start, inputs, Enumerable.Empty<TResult>(), true)
+        {
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="start">Start position in the match.</param>
+        /// <param name="next">Next position in the match.</param>
+        /// <param name="input">A single input to hold.</param>
+        /// <param name="result">A single result to hold.</param>
+        public MatchItem(int start, int next, TInput input, TResult result)
+        {
+            StartIndex = start;
+            NextIndex = next;
+            input_enumerable = input_slice = new TInput[] { input };
+            input_start = 0;
+            input_next = 1;
+            Results = new TResult[] { result };
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         /// <param name="p">Production to pass.</param>
-        public MatchItem(Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> p)
+        public MatchItem(Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> p)
         {
             this.Production = p;
             this.ProductionName = p.Method.Name;
@@ -269,6 +279,19 @@ namespace IronMeta.Matcher
 
             return id;
         }
+
+        /// <summary>
+        /// Implicit conversion to input type.
+        /// </summary>
+        /// <param name="item">Item.</param>
+        public static implicit operator TInput(MatchItem<TInput, TResult> item) { return item != null ? item.Inputs.LastOrDefault() : default(TInput); }
+
+        /// <summary>
+        /// Implicit conversion to result type.
+        /// </summary>
+        /// <param name="item">Item.</param>
+        public static implicit operator TResult(MatchItem<TInput, TResult> item) { return item != null ? item.Results.LastOrDefault() : default(TResult); }
+
 
     } // class MatchItem
 

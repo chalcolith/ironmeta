@@ -1,4 +1,3 @@
-
 ironmeta LRParser<char, string> : IronMeta.Matcher.CharMatcher<string>
 {
 

@@ -1,14 +1,14 @@
 ironmeta Bugs<char, object> : IronMeta.Matcher.CharMatcher<object>
 {
 
-	Bug_009_HexEscapeCharacter = "#\\x" Bug_009_HexScalarValue:hex -> 
+	Bug_3490042_HexEscapeCharacter = "#\\x" Bug_3490042_HexScalarValue:hex -> 
 	{
 		Console.WriteLine("inputs {0}", hex.Inputs);
 		return hex.Inputs;
 	};
 
-	Bug_009_HexScalarValue = Bug_009_HexDigit+;
-	Bug_009_HexDigit = Bug_009_Digit | 'a' | 'A' | 'b' | 'B' | 'c' | 'C' | 'd' | 'D' | 'e' | 'E' | 'f' | 'F';
-	Bug_009_Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+	Bug_3490042_HexScalarValue = Bug_3490042_HexDigit+;
+	Bug_3490042_HexDigit = Bug_3490042_Digit | 'a' | 'A' | 'b' | 'B' | 'c' | 'C' | 'd' | 'D' | 'e' | 'E' | 'f' | 'F';
+	Bug_3490042_Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 }

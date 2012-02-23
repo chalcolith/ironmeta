@@ -48,9 +48,7 @@ namespace IronMeta.Matcher
     /// </summary>
     /// <typeparam name="TInput">The type of inputs to the grammar.</typeparam>
     /// <typeparam name="TResult">The type of results of grammar rules.</typeparam>
-    /// <typeparam name="TItem">The (internal) type used to track inputs and results.</typeparam>
-    public abstract class Matcher<TInput, TResult, TItem>
-        where TItem:MatchItem<TInput, TResult, TItem>, new()
+    public abstract class Matcher<TInput, TResult>
     {
 
         #region Members
@@ -95,10 +93,10 @@ namespace IronMeta.Matcher
         /// <param name="input">The input to be matched.</param>
         /// <param name="production">The top-level grammar production (rule) of the generated parser class to use.</param>
         /// <returns>The result of the match.</returns>
-        public MatchResult<TInput, TResult, TItem> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production)
+        public MatchResult<TInput, TResult> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production)
         {
-            var memo = new Memo<TInput, TResult, TItem>(input);
-            TItem result = null;
+            var memo = new Memo<TInput, TResult>(input);
+            MatchItem<TInput, TResult> result = null;
 
             try
             {
@@ -118,9 +116,9 @@ namespace IronMeta.Matcher
             memo.ClearMemoTable(); // allow memo tables to be gc'd
 
             if (result != null)
-                return new MatchResult<TInput, TResult, TItem>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex);
+                return new MatchResult<TInput, TResult>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex);
             else
-                return new MatchResult<TInput, TResult, TItem>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
+                return new MatchResult<TInput, TResult>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
         }
 
         #region Internal Parser Functions
@@ -150,9 +148,9 @@ namespace IronMeta.Matcher
         /// <param name="production">The production itself.</param>
         /// <param name="args">Arguments to the production (can be null).</param>
         /// <returns>The result of the production at the given input index.</returns>
-        protected TItem _MemoCall(Memo<TInput, TResult, TItem> memo, string ruleName, int index, Action<Memo<TInput, TResult, TItem>, int, IEnumerable<TItem>> production, IEnumerable<TItem> args)
+        protected MatchItem<TInput, TResult> _MemoCall(Memo<TInput, TResult> memo, string ruleName, int index, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, IEnumerable<MatchItem<TInput, TResult>> args)
         {
-            TItem result;
+            MatchItem<TInput, TResult> result;
 
             // if we are not handling left recursion, just call the production directly.
             if (!HandleLeftRecursion)
@@ -177,7 +175,7 @@ namespace IronMeta.Matcher
             }
 
             // check for left-recursion
-            LRRecord<TItem> record;
+            LRRecord<MatchItem<TInput, TResult>> record;
             if (memo.TryGetLRRecord(ruleKey, index, out record))
             {
                 record.LRDetected = true;
@@ -189,7 +187,7 @@ namespace IronMeta.Matcher
             // no lr information
             else
             {
-                record = new LRRecord<TItem>();
+                record = new LRRecord<MatchItem<TInput, TResult>>();
                 record.LRDetected = false;
                 record.NumExpansions = 0;
                 record.CurrentExpansion = ruleKey + "_lrexp_" + record.NumExpansions;
@@ -258,7 +256,7 @@ namespace IronMeta.Matcher
         /// <param name="memo">Memo.</param>
         /// <param name="index">Index.</param>
         /// <param name="str">String to match.</param>
-        static protected TItem _ParseLiteralString(Memo<TInput, TResult, TItem> memo, ref int index, string str)
+        protected MatchItem<TInput, TResult> _ParseLiteralString(Memo<TInput, TResult> memo, ref int index, string str)
         {
             int cur_index = index;
             bool failed = false;
@@ -290,11 +288,11 @@ namespace IronMeta.Matcher
 
             if (!failed)
             {
-                TItem result = new TItem()
+                var result = new MatchItem<TInput, TResult>
                 {
                     StartIndex = index,
                     NextIndex = cur_index,
-                    InputEnumerable = memo.InputEnumerable,
+                    InputEnumerable = memo.InputEnumerable
                 };
                 index = cur_index;
                 memo.Results.Push(result);
@@ -312,7 +310,7 @@ namespace IronMeta.Matcher
         /// <param name="memo">Memo.</param>
         /// <param name="index">Index.</param>
         /// <param name="ch">Character to match.</param>
-        static protected TItem _ParseLiteralChar(Memo<TInput, TResult, TItem> memo, ref int index, char ch)
+        protected MatchItem<TInput, TResult> _ParseLiteralChar(Memo<TInput, TResult> memo, ref int index, char ch)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
             {
@@ -321,7 +319,7 @@ namespace IronMeta.Matcher
                     char cur_ch = memo.InputString != null ? memo.InputString[index] : (char)(object)memo.InputEnumerable.ElementAt(index);
                     if (cur_ch == ch)
                     {
-                        TItem result = new TItem()
+                        var result = new MatchItem<TInput, TResult>
                         {
                             StartIndex = index,
                             NextIndex = index + 1,
@@ -337,7 +335,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
-            memo.AddError(index, () => "expected '" + ch + "'");
+            memo.AddError(index, () => string.Format("expected '{0}'", Regex.Escape(new string(ch, 1))));
 
             return null;
         }
@@ -348,7 +346,7 @@ namespace IronMeta.Matcher
         /// <param name="memo">Memo.</param>
         /// <param name="index">Index.</param>
         /// <param name="obj">Object to match.</param>
-        static protected TItem _ParseLiteralObj(Memo<TInput, TResult, TItem> memo, ref int index, object obj)
+        protected MatchItem<TInput, TResult> _ParseLiteralObj(Memo<TInput, TResult> memo, ref int index, object obj)
         {
             if (obj is IEnumerable<TInput>)
             {
@@ -376,12 +374,13 @@ namespace IronMeta.Matcher
 
                 if (!failed)
                 {
-                    TItem result = new TItem()
+                    var result = new MatchItem<TInput, TResult>
                     {
                         StartIndex = index,
                         NextIndex = cur_index,
                         InputEnumerable = memo.InputEnumerable,
                     };
+
                     memo.Results.Push(result);
                     index = cur_index;
 
@@ -395,7 +394,7 @@ namespace IronMeta.Matcher
                     TInput cur_input = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
                     if (cur_input.Equals(obj))
                     {
-                        TItem result = new TItem()
+                        var result = new MatchItem<TInput, TResult>
                         {
                             StartIndex = index,
                             NextIndex = index + 1,
@@ -424,7 +423,7 @@ namespace IronMeta.Matcher
         /// <param name="input_index">Input index.</param>
         /// <param name="obj">Object to match.</param>
         /// <param name="args">Argument stream.</param>
-        static protected TItem _ParseLiteralArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, object obj, IEnumerable<TItem> args)
+        protected MatchItem<TInput, TResult> _ParseLiteralArgs(Memo<TInput, TResult> memo, ref int item_index, ref int input_index, object obj, IEnumerable<MatchItem<TInput, TResult>> args)
         {
             if (args != null)
             {
@@ -440,7 +439,7 @@ namespace IronMeta.Matcher
 
                         foreach (TInput input in ((IEnumerable<TInput>)obj))
                         {
-                            TItem cur_item = args.ElementAt(cur_item_index);
+                            var cur_item = args.ElementAt(cur_item_index);
                             TInput cur_input = cur_item.Inputs.ElementAt(cur_input_index);
 
                             if (cur_input.Equals(input))
@@ -466,7 +465,7 @@ namespace IronMeta.Matcher
                         item_index = cur_item_index;
                         input_index = cur_input_index;
 
-                        TItem result = new TItem()
+                        var result = new MatchItem<TInput, TResult>
                         {
                             StartIndex = old_item_index,
                             NextIndex = item_index,
@@ -480,7 +479,7 @@ namespace IronMeta.Matcher
                     {
                         int old_item_index = item_index;
 
-                        TItem cur_item = args.ElementAt(item_index);
+                        var cur_item = args.ElementAt(item_index);
                         TInput cur_input = cur_item.Inputs.ElementAt(input_index);
 
                         if (cur_input.Equals(obj))
@@ -497,7 +496,7 @@ namespace IronMeta.Matcher
                             }
 
                             // 
-                            TItem result = new TItem()
+                            var result = new MatchItem<TInput, TResult>
                             {
                                 StartIndex = old_item_index,
                                 NextIndex = item_index,
@@ -527,7 +526,7 @@ namespace IronMeta.Matcher
         /// <param name="memo">Memo.</param>
         /// <param name="index">Index.</param>
         /// <param name="chars">Characters to match.</param>
-        static protected TItem _ParseInputClass(Memo<TInput, TResult, TItem> memo, ref int index, params char[] chars)
+        protected MatchItem<TInput, TResult> _ParseInputClass(Memo<TInput, TResult> memo, ref int index, params char[] chars)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
             {
@@ -536,12 +535,13 @@ namespace IronMeta.Matcher
                     TInput input = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
                     if (Array.IndexOf(chars, input) != -1)
                     {
-                        TItem result = new TItem()
+                        var result = new MatchItem<TInput, TResult>
                         {
                             StartIndex = index,
-                            NextIndex = index+1,
+                            NextIndex = index + 1,
                             InputEnumerable = memo.InputEnumerable,
                         };
+
                         ++index;
                         memo.Results.Push(result);
                         return result;
@@ -563,14 +563,14 @@ namespace IronMeta.Matcher
         /// <param name="input_index">Input index.</param>
         /// <param name="args">Argument stream.</param>
         /// <param name="chars">Characters to match.</param>
-        static protected TItem _ParseInputClassArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, IEnumerable<TItem> args, params char[] chars)
+        protected MatchItem<TInput, TResult> _ParseInputClassArgs(Memo<TInput, TResult> memo, ref int item_index, ref int input_index, IEnumerable<MatchItem<TInput, TResult>> args, params char[] chars)
         {
             try
             {
                 int cur_item_index = item_index;
                 int cur_input_index = input_index;
 
-                TItem cur_item = args.ElementAt(cur_item_index);
+                var cur_item = args.ElementAt(cur_item_index);
                 TInput cur_input = cur_item.Inputs.ElementAt(cur_input_index);
 
                 if (Array.IndexOf(chars, cur_input) != -1)
@@ -585,7 +585,7 @@ namespace IronMeta.Matcher
                         ++cur_input_index;
                     }
 
-                    TItem result = new TItem()
+                    var result = new MatchItem<TInput, TResult>
                     {
                         StartIndex = item_index,
                         NextIndex = cur_item_index,
@@ -615,19 +615,20 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="memo">Memo.</param>
         /// <param name="index">Index.</param>
-        static protected TItem _ParseAny(Memo<TInput, TResult, TItem> memo, ref int index)
+        protected MatchItem<TInput, TResult> _ParseAny(Memo<TInput, TResult> memo, ref int index)
         {
             if (!(memo.InputString != null && index >= memo.InputString.Length))
             {
                 try
                 {
                     var _temp = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
-                    TItem result = new TItem()
+                    var result = new MatchItem<TInput, TResult>
                     {
                         StartIndex = index,
-                        NextIndex = index+1,
+                        NextIndex = index + 1,
                         InputEnumerable = memo.InputEnumerable,
                     };
+
                     ++index;
                     memo.Results.Push(result);
                     return result;
@@ -647,7 +648,7 @@ namespace IronMeta.Matcher
         /// <param name="item_index">Item index.</param>
         /// <param name="input_index">Input index.</param>
         /// <param name="args">Argument stream.</param>
-        static protected TItem _ParseAnyArgs(Memo<TInput, TResult, TItem> memo, ref int item_index, ref int input_index, IEnumerable<TItem> args)
+        protected MatchItem<TInput, TResult> _ParseAnyArgs(Memo<TInput, TResult> memo, ref int item_index, ref int input_index, IEnumerable<MatchItem<TInput, TResult>> args)
         {
             if (args != null)
             {

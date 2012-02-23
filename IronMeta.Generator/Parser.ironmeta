@@ -38,54 +38,54 @@
 using IronMeta.Generator;
 using IronMeta.Generator.AST;
 
-ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTNode<_Parser_Item>>
+ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 {
 
-    IronMetaFile = '\ufeff'? SP Preamble?:p Grammar:g EOF -> { return new GrammarFile<_Parser_Item>(p, g); };
+    IronMetaFile = '\ufeff'? SP Preamble?:p Grammar:g EOF -> { return new GrammarFile(p, g); };
 
-    Preamble = Using+:u -> { return new Preamble<_Parser_Item>(u.Results); };
+    Preamble = Using+:u -> { return new Preamble(u.Results); };
 
-    Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new Using<_Parser_Item>(name); };
+    Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new Using(name); };
 
     Grammar = IRONMETA Identifier:name 
             LESS GenericId:tinput COMMA GenericId:tresult GREATER
             COLON GenericId:baseclass
             BRA Rule*:rules KET
-        -> { return new Grammar<_Parser_Item>(name, tinput, tresult, baseclass, rules.Results); };
+        -> { return new Grammar(name, tinput, tresult, baseclass, rules.Results); };
 
     Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
-        -> { return new Rule<_Parser_Item>(name, parms.Inputs.Any() ? new Args<_Parser_Item>(parms, body) : (AST.ASTNode<_Parser_Item>)body, ovr.Inputs.Any()); };
+        -> { return new Rule(name, parms.Inputs.Any() ? new Args(parms, body) : (AST.ASTNode)body, Trimmed(ovr)); };
 
     Disjunction = ActionExp ( OR ActionExp )*
         ->  {
                 return _IM_Result.Results
                     .Where(node => node != null)
-                    .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new Or<_Parser_Item>(prev, cur) : cur);
+                    .Aggregate<ASTNode, ASTNode>(null, (prev, cur) => prev != null ? new Or(prev, cur) : cur);
             };
 
-    ActionExp = SequenceExp:body ACTION &BRA CSharpCode:action -> { return new Act<_Parser_Item>(body, action); };
+    ActionExp = SequenceExp:body ACTION &BRA CSharpCode:action -> { return new Act(body, action); };
     ActionExp = SequenceExp;
 
-    FailExp = BANG (CSharpCode:msg)? -> { return new Fail<_Parser_Item>(msg); };
+    FailExp = BANG (CSharpCode:msg)? -> { return new Fail(msg); };
 
     SequenceExp = ConditionExp+
         ->  {
                 return _IM_Result.Results
                     .Where(node => node != null)
-                    .Aggregate<ASTNode<_Parser_Item>, ASTNode<_Parser_Item>>(null, (prev, cur) => prev != null ? new And<_Parser_Item>(prev, cur) : cur);
+                    .Aggregate<ASTNode, ASTNode>(null, (prev, cur) => prev != null ? new And(prev, cur) : cur);
             };
 
     ConditionExp = FailExp;
-    ConditionExp = BoundTerm:body QUES &OPEN CSharpCode:cond -> { return new Cond<_Parser_Item>(body, cond); };
+    ConditionExp = BoundTerm:body QUES &OPEN CSharpCode:cond -> { return new Cond(body, cond); };
     ConditionExp = BoundTerm;
 
-    BoundTerm = PrefixedTerm:exp COLON Identifier:id -> { return new Bind<_Parser_Item>(exp, id); };
-    BoundTerm = COLON Identifier:id -> { return new Bind<_Parser_Item>(new Any<_Parser_Item>(), id); };
+    BoundTerm = PrefixedTerm:exp COLON Identifier:id -> { return new Bind(exp, id); };
+    BoundTerm = COLON Identifier:id -> { return new Bind(new Any(), id); };
     BoundTerm = PrefixedTerm;
 
     PrefixedTerm = LookTerm | NotTerm | PostfixedTerm;
-    LookTerm = AND_PRE PostfixedTerm:exp -> { return new Look<_Parser_Item>(exp); };
-    NotTerm = NOT_PRE PostfixedTerm:exp -> { return new Not<_Parser_Item>(exp); };
+    LookTerm = AND_PRE PostfixedTerm:exp -> { return new Look(exp); };
+    NotTerm = NOT_PRE PostfixedTerm:exp -> { return new Not(exp); };
 
     PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
 
@@ -101,35 +101,35 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
 			if (max < min)
 			    throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
-			ASTNode<_Parser_Item> res = null;
+			ASTNode res = null;
 			for (int i = 0; i < min; ++i)
-			    res = res != null ? new And<_Parser_Item>(res, exp) : (ASTNode<_Parser_Item>)exp;
+			    res = res != null ? new And(res, exp) : (ASTNode)exp;
 			for (int i = 0; i < max; ++i)
-			    res = res != null ? new And<_Parser_Item>(res, new Ques<_Parser_Item>(exp)) : (ASTNode<_Parser_Item>)new Ques<_Parser_Item>(exp);
+			    res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
 			return res;
 		};
 
-    StarTerm = Term:exp STAR -> { return new Star<_Parser_Item>(exp); };
-    PlusTerm = Term:exp PLUS -> { return new Plus<_Parser_Item>(exp); };
-    QuesTerm = Term:exp QUES ~OPEN SP -> { return new Ques<_Parser_Item>(exp); };
+    StarTerm = Term:exp STAR -> { return new Star(exp); };
+    PlusTerm = Term:exp PLUS -> { return new Plus(exp); };
+    QuesTerm = Term:exp QUES ~OPEN SP -> { return new Ques(exp); };
 
     Term = InputClass | ParenTerm | RuleCall | CallOrVar | Literal | AnyTerm;
 
     ParenTerm = OPEN Disjunction:exp CLOSE -> { return exp; };
-    AnyTerm = PERIOD -> { return new Any<_Parser_Item>(); };
+    AnyTerm = PERIOD -> { return new Any(); };
 
-    RuleCall = Ident:name OPEN ParameterList?:p CLOSE -> { return new Call<_Parser_Item>(name, p.Results); };
+    RuleCall = QualifiedId:name OPEN ParameterList?:p CLOSE -> { return new Call(name, p.Results); };
     ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
     Parameter = CallOrVar | Literal;
 
-    CallOrVar = Identifier:id -> { return new CallOrVar<_Parser_Item>(id); };
+    CallOrVar = QualifiedId:name -> { return new CallOrVar(name); };
     Literal = &('\x22' | '\x27' | '{') CSharpCode:code -> { return code; };
 
-    InputClass = '[' SP (ClassRange | &'\x27' Literal)+:c ']' SP -> { return new InputClass<_Parser_Item>(c.Results); };
+    InputClass = '[' SP (ClassRange | &'\x27' Literal)+:c ']' SP -> { return new InputClass(c.Results); };
     ClassRange = &'\x27' Literal:from SP '-' SP &'\x27' Literal:to SP ->
         {
-            char ch_from = AST.ClassRange<_Parser_Item>.GetChar(from);
-            char ch_to = AST.ClassRange<_Parser_Item>.GetChar(to);
+            char ch_from = AST.ClassRange.GetChar(from);
+            char ch_to = AST.ClassRange.GetChar(to);
 
             List<char> range = new List<char>();
             if (ch_from > ch_to)			    
@@ -143,10 +143,10 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
                     range.Add(ch);
             }
 
-            return new ClassRange<_Parser_Item>(_IM_Result, range);
+            return new ClassRange(_IM_Result, range);
         };
 
-    CSharpCode = CSharpCodeItem:code SP -> { return new Code<_Parser_Item>(code); };
+    CSharpCode = CSharpCodeItem:code SP -> { return new Code(code); };
 
     CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | .))* '}';
     CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | .))* ')';
@@ -154,19 +154,20 @@ ironmeta Parser<char, ASTNode<_Parser_Item>> : IronMeta.Matcher.CharMatcher<ASTN
     CSharpCodeItem = '\x22' ("\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
     
     Identifier = Ident:id SP -> { return id; };
-    Ident = (IdentBegin IdentBody*):id -> { return new Idfr<_Parser_Item>(id); };
+    Ident = (IdentBegin IdentBody*):id -> { return new Idfr(id); };
     IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
     IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
 
+	QualifiedId = (Ident (DOT Ident)*) SP -> { new Idfr(_IM_Result) };
     GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
-        -> { return new Idfr<_Parser_Item>(ids, gp); };
+        -> { return new Idfr(ids, gp); };
 
 	Number = ['0'-'9']+ SP;
 
     USING = "using" SP;
     IRONMETA = "ironmeta" SP;
     EQUALS = ('=' | "::=") SP;
-    OVERRIDE = "override" SP;
+    OVERRIDE = ("override" | "virtual" | "new") SP;
     LR = "lr" SP;
     SEMI = (';' | ',') SP;
     BANG = '!' SP;

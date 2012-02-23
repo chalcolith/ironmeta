@@ -45,6 +45,10 @@
     <Compile Include="Bugs\Bugs.g.cs" />
     <Compile Include="Bugs\BugsTests.cs" />
     <Compile Include="CalcTests.cs" />
+    <Compile Include="Combine\Combine1.g.cs" />
+    <Compile Include="Combine\Combine2.cs" />
+    <Compile Include="Combine\Combine2.g.cs" />
+    <Compile Include="Combine\CombineTests.cs" />
     <Compile Include="LRParser.cs" />
     <Compile Include="LRTests.cs" />
     <Compile Include="MatcherTests.cs" />
@@ -56,6 +60,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Bugs\Bugs.ironmeta" />
+    <None Include="Combine\Combine1.ironmeta" />
+    <None Include="Combine\Combine2.ironmeta" />
     <None Include="LRParser.ironmeta" />
     <None Include="TestParser.ironmeta" />
   </ItemGroup>
@@ -97,6 +103,12 @@
   </Target>
   <Target Name="GenerateBugsParser" BeforeTargets="_GenerateCompileInputs" Inputs="Bugs\Bugs.ironmeta" Outputs="Bugs\Bugs.g.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Bugs Bugs\Bugs.ironmeta" />
+  </Target>
+  <Target Name="GenerateCombine1Parser" BeforeTargets="_GenerateCompileInputs" Inputs="Combine\Combine1.ironmeta" Outputs="Combine\Combine1.g.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Combine Combine\Combine1.ironmeta" />
+  </Target>
+  <Target Name="GenerateCombine2Parser" BeforeTargets="_GenerateCompileInputs" Inputs="Combine\Combine2.ironmeta" Outputs="Combine\Combine2.g.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Combine Combine\Combine2.ironmeta" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">

@@ -49,31 +49,31 @@ namespace IronMeta.Generator
     class CSharpGen : IGenerator
     {
 
-        AST.GrammarFile<_Parser_Item> grammar;
+        AST.GrammarFile grammar;
         string gNamespace;
         bool add_timestamp = true;
         string gName, gBase, tInput, tResult, tItem;
 
-        Dictionary<string, AST.ASTNode<_Parser_Item>> ruleBodies = new Dictionary<string, AST.ASTNode<_Parser_Item>>();
-        HashSet<string> overrides = new HashSet<string>();
+        Dictionary<string, AST.ASTNode> ruleBodies = new Dictionary<string, AST.ASTNode>();
+        Dictionary<string, string> overrides = new Dictionary<string, string>();
 
-        public CSharpGen(AST.ASTNode<_Parser_Item> topNode, string name_space)
+        public CSharpGen(AST.ASTNode topNode, string name_space)
         {
-            if (!(topNode is AST.GrammarFile<_Parser_Item>))
+            if (!(topNode is AST.GrammarFile))
                 throw new Exception("Unable to generate.");
 
             this.gNamespace = name_space;
-            this.grammar = topNode as AST.GrammarFile<_Parser_Item>;
+            this.grammar = topNode as AST.GrammarFile;
         }
 
-        public CSharpGen(AST.ASTNode<_Parser_Item> topNode, string name_space, bool add_timestamp)
+        public CSharpGen(AST.ASTNode topNode, string name_space, bool add_timestamp)
         {
-            if (!(topNode is AST.GrammarFile<_Parser_Item>))
+            if (!(topNode is AST.GrammarFile))
                 throw new Exception("Unable to generate.");
 
             this.gNamespace = name_space;
             this.add_timestamp = add_timestamp;
-            this.grammar = topNode as AST.GrammarFile<_Parser_Item>;
+            this.grammar = topNode as AST.GrammarFile;
         }
 
         public void Generate(TextWriter tw)
@@ -82,63 +82,58 @@ namespace IronMeta.Generator
             GenerateGrammarFile(tw);
         }
 
-        void Analyze(AST.ASTNode<_Parser_Item> node, AST.Rule<_Parser_Item> currentRule)
+        void Analyze(AST.ASTNode node, AST.Rule currentRule)
         {
             // get grammar name & generic parameters
-            if (node is AST.Grammar<_Parser_Item>)
+            if (node is AST.Grammar)
             {
-                AST.Grammar<_Parser_Item> gr = node as AST.Grammar<_Parser_Item>;
+                AST.Grammar gr = node as AST.Grammar;
                 gName = gr.GetText(gr.Name).Trim();
                 gBase = gr.GetText(gr.Base).Trim();
 
                 tItem = string.Format("_{0}_Item", gName);
                 tInput = gr.GetText(gr.TInput).Trim();
                 tResult = gr.GetText(gr.TResult).Trim();
-
-                if (!gBase.EndsWith("_Item>") && gBase.EndsWith(">"))
-                {
-                    gBase = gBase.Insert(gBase.Length - 1, ", " + tItem);
-                }            
             }
 
             // also analyze arguments (because they are not children)
-            else if (node is AST.Args<_Parser_Item>)
+            else if (node is AST.Args)
             {
-                AST.Args<_Parser_Item> args = node as AST.Args<_Parser_Item>;
+                AST.Args args = node as AST.Args;
                 if (args.Parms != null)
                     Analyze(args.Parms, currentRule);
             }
 
             // collect rule bodies
-            else if (node is AST.Rule<_Parser_Item>)
+            else if (node is AST.Rule)
             {
-                currentRule = node as AST.Rule<_Parser_Item>;
+                currentRule = node as AST.Rule;
                 string ruleName = node.GetText().Trim();
 
-                if (currentRule.Override)
-                    overrides.Add(ruleName);
+                if (!string.IsNullOrEmpty(currentRule.Override))
+                    overrides[ruleName] = currentRule.Override;
 
-                AST.ASTNode<_Parser_Item> oldBody;
+                AST.ASTNode oldBody;
                 if (ruleBodies.TryGetValue(ruleName, out oldBody))
-                    ruleBodies[ruleName] = new AST.Or<_Parser_Item>(oldBody, currentRule.Body);
+                    ruleBodies[ruleName] = new AST.Or(oldBody, currentRule.Body);
                 else
                     ruleBodies.Add(ruleName, currentRule.Body);
             }
 
             // collect input classes
-            else if (node is AST.InputClass<_Parser_Item>)
+            else if (node is AST.InputClass)
             {
-                AST.InputClass<_Parser_Item> input = node as AST.InputClass<_Parser_Item>;
+                AST.InputClass input = node as AST.InputClass;
 
-                foreach (AST.ASTNode<_Parser_Item> child in input.Inputs)
+                foreach (AST.ASTNode child in input.Inputs)
                 {
-                    if (child is AST.Code<_Parser_Item>)
+                    if (child is AST.Code)
                     {
                         input.Chars.Add(TrimBraces(child.GetText().Trim()).Trim());
                     }
-                    else if (child is AST.ClassRange<_Parser_Item>)
+                    else if (child is AST.ClassRange)
                     {
-                        foreach (char ch in ((AST.ClassRange<_Parser_Item>)child).Inputs)
+                        foreach (char ch in ((AST.ClassRange)child).Inputs)
                         {
                             input.Chars.Add(string.Format("'\\u{0:x4}'", (int)ch));
                         }
@@ -149,7 +144,7 @@ namespace IronMeta.Generator
             // recurse
             if (node.Children != null)
             {
-                foreach (AST.ASTNode<_Parser_Item> child in node.Children)
+                foreach (AST.ASTNode child in node.Children)
                 {
                     if (child != null)
                         Analyze(child, currentRule);
@@ -211,7 +206,7 @@ namespace IronMeta.Generator
 
             if (grammar.Preamble != null && grammar.Preamble.Usings != null)
             {
-                foreach (AST.Using<_Parser_Item> use in grammar.Preamble.Usings)
+                foreach (AST.Using use in grammar.Preamble.Usings)
                     usingsNeeded.Add(use.GetText());
             }
 
@@ -224,22 +219,23 @@ namespace IronMeta.Generator
 
         void GenerateUsingAliases(TextWriter tw, string indent)
         {
-            tw.Write(indent); tw.WriteLine("using _{1}_Inputs = IEnumerable<{0}>;", tInput, gName);
-            tw.Write(indent); tw.WriteLine("using _{1}_Results = IEnumerable<{0}>;", tResult, gName);
-            tw.Write(indent); tw.WriteLine("using _{0}_Args = IEnumerable<{1}>;", gName, tItem);
-            tw.Write(indent); tw.WriteLine("using _{0}_Memo = Memo<{1}, {2}, {3}>;", gName, tInput, tResult, tItem);
-            tw.Write(indent); tw.WriteLine("using _{0}_Rule = System.Action<Memo<{2}, {3}, {1}>, int, IEnumerable<{1}>>;", gName, tItem, tInput, tResult);
-            tw.Write(indent); tw.WriteLine("using _{3}_Base = IronMeta.Matcher.Matcher<{0}, {1}, {2}>;", tInput, tResult, tItem, gName);
+            tw.Write(indent); tw.WriteLine("using _{0}_Inputs = IEnumerable<{1}>;", gName, tInput);
+            tw.Write(indent); tw.WriteLine("using _{0}_Results = IEnumerable<{1}>;", gName, tResult);
+            tw.Write(indent); tw.WriteLine("using {0} = IronMeta.Matcher.MatchItem<{1}, {2}>;", tItem, tInput, tResult);
+            tw.Write(indent); tw.WriteLine("using _{0}_Args = IEnumerable<IronMeta.Matcher.MatchItem<{1}, {2}>>;", gName, tInput, tResult);
+            tw.Write(indent); tw.WriteLine("using _{0}_Memo = Memo<{1}, {2}>;", gName, tInput, tResult);
+            tw.Write(indent); tw.WriteLine("using _{0}_Rule = System.Action<Memo<{1}, {2}>, int, IEnumerable<IronMeta.Matcher.MatchItem<{1}, {2}>>>;", gName, tInput, tResult);
+            tw.Write(indent); tw.WriteLine("using _{0}_Base = IronMeta.Matcher.Matcher<{1}, {2}>;", gName, tInput, tResult);
             tw.WriteLine();
         }
 
         void GenerateItemClass(TextWriter tw, string indent)
         {
             tw.WriteLine();
-            tw.Write(indent); tw.WriteLine("public class {2} : IronMeta.Matcher.MatchItem<{0}, {1}, {2}>", tInput, tResult, tItem);
+            tw.Write(indent); tw.WriteLine("public class {2} : IronMeta.Matcher.MatchItem<{0}, {1}>", tInput, tResult);
             tw.Write(indent); tw.WriteLine("{");
 
-            tw.Write(indent); tw.WriteLine("    public {0}() {{ }}", tItem);
+            tw.Write(indent); tw.WriteLine("    public {0}() : base() {{ }}", tItem);
             tw.Write(indent); tw.WriteLine("    public {0}({1} input) : base(input) {{ }}", tItem, tInput);
             tw.Write(indent); tw.WriteLine("    public {2}({0} input, {1} result) : base(input, result) {{ }}", tInput, tResult, tItem);
             tw.Write(indent); tw.WriteLine("    public {0}(_{1}_Inputs inputs) : base(inputs) {{ }}", tItem, gName);
@@ -281,7 +277,7 @@ namespace IronMeta.Generator
             tw.Write(innerIndent); tw.WriteLine("{ }");
 
             // generate rules
-            foreach (KeyValuePair<string, AST.ASTNode<_Parser_Item>> item in ruleBodies)
+            foreach (KeyValuePair<string, AST.ASTNode> item in ruleBodies)
             {
                 GenerateRule(tw, item.Key, item.Value, innerIndent);
             }
@@ -291,14 +287,14 @@ namespace IronMeta.Generator
             tw.WriteLine();
 
             // generate Item class
-            GenerateItemClass(tw, indent);
+            //GenerateItemClass(tw, indent);
         }
 
-        void GenerateRule(TextWriter tw, string ruleName, AST.ASTNode<_Parser_Item> body, string indent)
+        void GenerateRule(TextWriter tw, string ruleName, AST.ASTNode body, string indent)
         {
             // generate rule
             tw.WriteLine();
-            tw.Write(indent); tw.WriteLine("public {2}void {0}(_{1}_Memo _memo, int _index, _{1}_Args _args)", ruleName, gName, overrides.Contains(ruleName) ? "override " : "");
+            tw.Write(indent); tw.WriteLine("public {2}void {0}(_{1}_Memo _memo, int _index, _{1}_Args _args)", ruleName, gName, overrides.ContainsKey(ruleName) ? (overrides[ruleName] + " ") : "");
             tw.Write(indent); tw.WriteLine("{");
             tw.WriteLine();
 
@@ -335,44 +331,44 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateBody(TextWriter tw, HashSet<string> vars, AST.ASTNode<_Parser_Item> node, ref int n, ref bool use_args, bool match_args, string indent)
+        void GenerateBody(TextWriter tw, HashSet<string> vars, AST.ASTNode node, ref int n, ref bool use_args, bool match_args, string indent)
         {
             int outer_n = n;
 
             #region PRE: Giant Switch Statement
 
             // and/or header
-            if (node is AST.And<_Parser_Item>)
+            if (node is AST.And)
             {
-                GenerateAndPre(tw, node as AST.And<_Parser_Item>, n, match_args, indent);
+                GenerateAndPre(tw, node as AST.And, n, match_args, indent);
             }
-            else if (node is AST.Or<_Parser_Item>)
+            else if (node is AST.Or)
             {
-                GenerateOrPre(tw, node as AST.Or<_Parser_Item>, n, match_args, indent);
+                GenerateOrPre(tw, node as AST.Or, n, match_args, indent);
             }
-            else if (node is AST.Look<_Parser_Item>)
+            else if (node is AST.Look)
             {
-                GenerateLookPre(tw, node as AST.Look<_Parser_Item>, n, match_args, indent);
+                GenerateLookPre(tw, node as AST.Look, n, match_args, indent);
             }
-            else if (node is AST.Not<_Parser_Item>)
+            else if (node is AST.Not)
             {
-                GenerateNotPre(tw, node as AST.Not<_Parser_Item>, n, match_args, indent);
+                GenerateNotPre(tw, node as AST.Not, n, match_args, indent);
             }
-            else if (node is AST.Star<_Parser_Item>)
+            else if (node is AST.Star)
             {
-                GenerateStarPre(tw, node as AST.Star<_Parser_Item>, n, match_args, indent);
+                GenerateStarPre(tw, node as AST.Star, n, match_args, indent);
             }
-            else if (node is AST.Plus<_Parser_Item>)
+            else if (node is AST.Plus)
             {
-                GeneratePlusPre(tw, node as AST.Plus<_Parser_Item>, n, match_args, indent);
+                GeneratePlusPre(tw, node as AST.Plus, n, match_args, indent);
             }
-            else if (node is AST.Cond<_Parser_Item>)
+            else if (node is AST.Cond)
             {
-                GenerateCondPre(tw, node as AST.Cond<_Parser_Item>, n, match_args, indent);
+                GenerateCondPre(tw, node as AST.Cond, n, match_args, indent);
             }
-            else if (node is AST.Args<_Parser_Item>)
+            else if (node is AST.Args)
             {
-                GenerateArgsPre(tw, vars, node as AST.Args<_Parser_Item>, ref n, ref use_args, match_args, indent);
+                GenerateArgsPre(tw, vars, node as AST.Args, ref n, ref use_args, match_args, indent);
             }
 
             #endregion
@@ -380,7 +376,7 @@ namespace IronMeta.Generator
             // generate in post order
             if (node.Children != null)
             {
-                foreach (AST.ASTNode<_Parser_Item> child in node.Children)
+                foreach (AST.ASTNode child in node.Children)
                 {
                     int cur_n = n++;
 
@@ -388,86 +384,86 @@ namespace IronMeta.Generator
                     GenerateBody(tw, vars, child, ref n, ref use_args, match_args, indent);
 
                     // shortcut and/or
-                    if (cur_n == outer_n && node is AST.And<_Parser_Item>)
+                    if (cur_n == outer_n && node is AST.And)
                     {
-                        GenerateAndShortcut(tw, node as AST.And<_Parser_Item>, outer_n, match_args, indent);
+                        GenerateAndShortcut(tw, node as AST.And, outer_n, match_args, indent);
                     }
-                    else if (cur_n == outer_n && node is AST.Or<_Parser_Item>)
+                    else if (cur_n == outer_n && node is AST.Or)
                     {
-                        GenerateOrShortcut(tw, node as AST.Or<_Parser_Item>, outer_n, match_args, indent);
+                        GenerateOrShortcut(tw, node as AST.Or, outer_n, match_args, indent);
                     }
                 }
             }
 
             #region POST: Giant Switch Statement
             // 
-            if (node is AST.Code<_Parser_Item>)
+            if (node is AST.Code)
             {
-                GenerateLiteralPost(tw, node as AST.Code<_Parser_Item>, outer_n, match_args, indent);
+                GenerateLiteralPost(tw, node as AST.Code, outer_n, match_args, indent);
             }
-            else if (node is AST.Fail<_Parser_Item>)
+            else if (node is AST.Fail)
             {
-                GenerateFailPost(tw, node as AST.Fail<_Parser_Item>, outer_n, match_args, indent);
+                GenerateFailPost(tw, node as AST.Fail, outer_n, match_args, indent);
             }
-            else if (node is AST.Any<_Parser_Item>)
+            else if (node is AST.Any)
             {
-                GenerateAnyPost(tw, node as AST.Any<_Parser_Item>, outer_n, match_args, indent);
+                GenerateAnyPost(tw, node as AST.Any, outer_n, match_args, indent);
             }
-            else if (node is AST.Look<_Parser_Item>)
+            else if (node is AST.Look)
             {
-                GenerateLookPost(tw, node as AST.Look<_Parser_Item>, outer_n, match_args, indent);
+                GenerateLookPost(tw, node as AST.Look, outer_n, match_args, indent);
             }
-            else if (node is AST.Not<_Parser_Item>)
+            else if (node is AST.Not)
             {
-                GenerateNotPost(tw, node as AST.Not<_Parser_Item>, outer_n, match_args, indent);
+                GenerateNotPost(tw, node as AST.Not, outer_n, match_args, indent);
             }
-            else if (node is AST.Or<_Parser_Item>)
+            else if (node is AST.Or)
             {
-                GenerateOrPost(tw, node as AST.Or<_Parser_Item>, outer_n, match_args, indent);
+                GenerateOrPost(tw, node as AST.Or, outer_n, match_args, indent);
             }
-            else if (node is AST.And<_Parser_Item>)
+            else if (node is AST.And)
             {
-                GenerateAndPost(tw, node as AST.And<_Parser_Item>, outer_n, match_args, indent);
+                GenerateAndPost(tw, node as AST.And, outer_n, match_args, indent);
             }
-            else if (node is AST.Star<_Parser_Item>)
+            else if (node is AST.Star)
             {
-                GenerateStarPost(tw, node as AST.Star<_Parser_Item>, outer_n, match_args, indent);
+                GenerateStarPost(tw, node as AST.Star, outer_n, match_args, indent);
             }
-            else if (node is AST.Plus<_Parser_Item>)
+            else if (node is AST.Plus)
             {
-                GeneratePlusPost(tw, node as AST.Plus<_Parser_Item>, outer_n, match_args, indent);
+                GeneratePlusPost(tw, node as AST.Plus, outer_n, match_args, indent);
             }
-            else if (node is AST.Ques<_Parser_Item>)
+            else if (node is AST.Ques)
             {
-                GenerateQuesPost(tw, node as AST.Ques<_Parser_Item>, outer_n, match_args, indent);
+                GenerateQuesPost(tw, node as AST.Ques, outer_n, match_args, indent);
             }
-            else if (node is AST.CallOrVar<_Parser_Item>)
+            else if (node is AST.CallOrVar)
             {
-                GenerateCallOrVarPost(tw, vars, node as AST.CallOrVar<_Parser_Item>, outer_n, match_args, indent);
+                GenerateCallOrVarPost(tw, vars, node as AST.CallOrVar, outer_n, match_args, indent);
             }
-            else if (node is AST.Call<_Parser_Item>)
+            else if (node is AST.Call)
             {
-                GenerateCallPost(tw, vars, node as AST.Call<_Parser_Item>, outer_n, match_args, indent);
+                GenerateCallPost(tw, vars, node as AST.Call, outer_n, match_args, indent);
             }
-            else if (node is AST.Bind<_Parser_Item>)
+            else if (node is AST.Bind)
             {
-                GenerateBindPost(tw, vars, node as AST.Bind<_Parser_Item>, outer_n, match_args, indent);
+                GenerateBindPost(tw, vars, node as AST.Bind, outer_n, match_args, indent);
             }
-            else if (node is AST.Cond<_Parser_Item>)
+            else if (node is AST.Cond)
             {
-                GenerateCondPost(tw, node as AST.Cond<_Parser_Item>, outer_n, match_args, indent);
+                GenerateCondPost(tw, node as AST.Cond, outer_n, match_args, indent);
             }
-            else if (node is AST.Act<_Parser_Item>)
+            else if (node is AST.Act)
             {
-                GenerateActPost(tw, node as AST.Act<_Parser_Item>, outer_n, match_args, indent);
+                GenerateActPost(tw, node as AST.Act, outer_n, match_args, indent);
             }
-            else if (node is AST.InputClass<_Parser_Item>)
+            else if (node is AST.InputClass)
             {
-                GenerateInputClassPost(tw, node as AST.InputClass<_Parser_Item>, outer_n, match_args, indent);
+                GenerateInputClassPost(tw, node as AST.InputClass, outer_n, match_args, indent);
             }
-            else if (node is AST.Args<_Parser_Item>)
+            else if (node is AST.Args)
             {
-                GenerateArgsPost(tw, vars, node as AST.Args<_Parser_Item>, outer_n, match_args, indent);
+                GenerateArgsPost(tw, vars, node as AST.Args, outer_n, match_args, indent);
             }
             else
             {
@@ -478,7 +474,7 @@ namespace IronMeta.Generator
 
         #region LITERAL
 
-        void GenerateLiteralPost(TextWriter tw, AST.Code<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateLiteralPost(TextWriter tw, AST.Code node, int n, bool match_args, string indent)
         {
             string literal = TrimBraces(node.GetText().Trim()).Trim();
 
@@ -506,7 +502,7 @@ namespace IronMeta.Generator
 
         #region INPUT_CLASS
 
-        void GenerateInputClassPost(TextWriter tw, AST.InputClass<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateInputClassPost(TextWriter tw, AST.InputClass node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// INPUT CLASS");
             tw.Write(indent);
@@ -523,7 +519,7 @@ namespace IronMeta.Generator
 
         #region FAIL
 
-        void GenerateFailPost(TextWriter tw, AST.Fail<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateFailPost(TextWriter tw, AST.Fail node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// FAIL");
 
@@ -550,7 +546,7 @@ namespace IronMeta.Generator
 
         #region ANY
 
-        void GenerateAnyPost(TextWriter tw, AST.Any<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateAnyPost(TextWriter tw, AST.Any node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// ANY");
             tw.Write(indent);
@@ -567,7 +563,7 @@ namespace IronMeta.Generator
 
         #region LOOK
 
-        void GenerateLookPre(TextWriter tw, AST.Look<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateLookPre(TextWriter tw, AST.Look node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// LOOK {0}", n);
             tw.Write(indent);
@@ -580,7 +576,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateLookPost(TextWriter tw, AST.Look<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateLookPost(TextWriter tw, AST.Look node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// LOOK {0}", n);
 
@@ -604,7 +600,7 @@ namespace IronMeta.Generator
 
         #region NOT
 
-        void GenerateNotPre(TextWriter tw, AST.Not<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateNotPre(TextWriter tw, AST.Not node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// NOT {0}", n);
             tw.Write(indent); 
@@ -617,7 +613,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateNotPost(TextWriter tw, AST.Not<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateNotPost(TextWriter tw, AST.Not node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// NOT {0}", n);
 
@@ -641,7 +637,7 @@ namespace IronMeta.Generator
 
         #region OR
 
-        void GenerateOrPre(TextWriter tw, AST.Or<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateOrPre(TextWriter tw, AST.Or node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// OR {0}", n);
             tw.Write(indent); 
@@ -654,7 +650,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateOrShortcut(TextWriter tw, AST.Or<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateOrShortcut(TextWriter tw, AST.Or node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// OR shortcut");
             tw.Write(indent); 
@@ -667,7 +663,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateOrPost(TextWriter tw, AST.Or<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateOrPost(TextWriter tw, AST.Or node, int n, bool match_args, string indent)
         {
             tw.Write(indent.Substring(4)); tw.WriteLine("label{0}: // OR", n);
             tw.Write(indent); tw.WriteLine("int _dummy_i{0} = _index; // no-op for label", n);
@@ -678,7 +674,7 @@ namespace IronMeta.Generator
 
         #region AND
 
-        void GenerateAndPre(TextWriter tw, AST.And<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateAndPre(TextWriter tw, AST.And node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// AND {0}", n);
             tw.Write(indent); 
@@ -691,7 +687,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateAndShortcut(TextWriter tw, AST.And<_Parser_Item> node, int outer_n, bool match_args, string indent)
+        void GenerateAndShortcut(TextWriter tw, AST.And node, int outer_n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// AND shortcut");
             tw.Write(indent); 
@@ -704,7 +700,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateAndPost(TextWriter tw, AST.And<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateAndPost(TextWriter tw, AST.And node, int n, bool match_args, string indent)
         {
             tw.Write(indent.Substring(4)); tw.WriteLine("label{0}: // AND", n);
 
@@ -746,7 +742,7 @@ namespace IronMeta.Generator
 
         #region STAR
 
-        void GenerateStarPre(TextWriter tw, AST.Star<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateStarPre(TextWriter tw, AST.Star node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// STAR {0}", n);
 
@@ -767,7 +763,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateStarPost(TextWriter tw, AST.Star<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateStarPost(TextWriter tw, AST.Star node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// STAR {0}", n);
 
@@ -806,7 +802,7 @@ namespace IronMeta.Generator
 
         #region PLUS
 
-        void GeneratePlusPre(TextWriter tw, AST.Plus<_Parser_Item> node, int n, bool match_args, string indent)
+        void GeneratePlusPre(TextWriter tw, AST.Plus node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// PLUS {0}", n);
 
@@ -827,7 +823,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GeneratePlusPost(TextWriter tw, AST.Plus<_Parser_Item> node, int n, bool match_args, string indent)
+        void GeneratePlusPost(TextWriter tw, AST.Plus node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// PLUS {0}", n);
 
@@ -872,7 +868,7 @@ namespace IronMeta.Generator
 
         #region QUES
 
-        void GenerateQuesPost(TextWriter tw, AST.Ques<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateQuesPost(TextWriter tw, AST.Ques node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// QUES");
             tw.Write(indent);
@@ -889,7 +885,7 @@ namespace IronMeta.Generator
 
         #region COND
 
-        void GenerateCondPre(TextWriter tw, AST.Cond<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateCondPre(TextWriter tw, AST.Cond node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// COND {0}", n);
             tw.Write(indent);
@@ -902,7 +898,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateCondPost(TextWriter tw, AST.Cond<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateCondPost(TextWriter tw, AST.Cond node, int n, bool match_args, string indent)
         {
             string condition = TrimBraces(node.GetText().Trim()).Trim();
             condition = condition.Replace("\t", "    ");
@@ -941,7 +937,7 @@ namespace IronMeta.Generator
             return s;
         }
 
-        void GenerateActPost(TextWriter tw, AST.Act<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateActPost(TextWriter tw, AST.Act node, int n, bool match_args, string indent)
         {
             string action = TrimBraces(node.GetText().Trim()).Trim();
             action = action.Replace("\t", "    ");
@@ -977,7 +973,7 @@ namespace IronMeta.Generator
 
         #region CALL
 
-        void GenerateCallPost(TextWriter tw, HashSet<string> vars, AST.Call<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateCallPost(TextWriter tw, HashSet<string> vars, AST.Call node, int n, bool match_args, string indent)
         {
             string name = node.GetText().Trim();
 
@@ -1021,16 +1017,16 @@ namespace IronMeta.Generator
             }
         }
 
-        List<string> GenerateActualParams(TextWriter tw, HashSet<string> vars, AST.Call<_Parser_Item> node, int n, string name, string indent)
+        List<string> GenerateActualParams(TextWriter tw, HashSet<string> vars, AST.Call node, int n, string name, string indent)
         {
             List<string> plist = new List<string>();
 
             int i = 0;
-            foreach (AST.ASTNode<_Parser_Item> pnode in node.Params)
+            foreach (AST.ASTNode pnode in node.Params)
             {
                 string pstr = pnode.GetText().Trim();
 
-                if (pnode is AST.CallOrVar<_Parser_Item>)
+                if (pnode is AST.CallOrVar)
                 {
                     //string parm = vars.Contains(pstr) ? string.Format("({0}){1}", tItem, pstr) : pstr;
                     //plist.Add(string.Format("new {0}({1})", tItem, parm));
@@ -1055,7 +1051,7 @@ namespace IronMeta.Generator
 
         #region BIND
 
-        void GenerateBindPost(TextWriter tw, HashSet<string> vars, AST.Bind<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateBindPost(TextWriter tw, HashSet<string> vars, AST.Bind node, int n, bool match_args, string indent)
         {
             string name = node.GetText().Trim();
 
@@ -1075,7 +1071,7 @@ namespace IronMeta.Generator
 
         #region CALLORVAR
 
-        void GenerateCallOrVarPost(TextWriter tw, HashSet<string> vars, AST.CallOrVar<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateCallOrVarPost(TextWriter tw, HashSet<string> vars, AST.CallOrVar node, int n, bool match_args, string indent)
         {
             string name = node.GetText().Trim();
 
@@ -1126,7 +1122,7 @@ namespace IronMeta.Generator
 
         #region ARGS
 
-        void GenerateArgsPre(TextWriter tw, HashSet<string> vars, AST.Args<_Parser_Item> node, ref int n, ref bool use_args, bool match_args, string indent)
+        void GenerateArgsPre(TextWriter tw, HashSet<string> vars, AST.Args node, ref int n, ref bool use_args, bool match_args, string indent)
         {
             if (node.Parms != null)
             {
@@ -1149,7 +1145,7 @@ namespace IronMeta.Generator
             }
         }
 
-        void GenerateArgsPost(TextWriter tw, HashSet<string> vars, AST.Args<_Parser_Item> node, int n, bool match_args, string indent)
+        void GenerateArgsPost(TextWriter tw, HashSet<string> vars, AST.Args node, int n, bool match_args, string indent)
         {
             if (node.Parms != null)
             {

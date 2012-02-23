@@ -44,17 +44,18 @@ using System.Text.RegularExpressions;
 namespace IronMeta.Generator.AST
 {
 
+    using TItem = Matcher.MatchItem<char, ASTNode>;
+
     /// <summary>
     /// Base class for Abstract Syntax Tree nodes for the IronMeta parser.
     /// </summary>
-    /// <typeparam name="TItem"></typeparam>
-    public class ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    public class ASTNode
     {
+
         /// <summary>
         /// Children of this node.
         /// </summary>
-        public List<ASTNode<TItem>> Children { get; protected set; }
+        public List<ASTNode> Children { get; protected set; }
 
         /// <summary>
         /// Match results for this node.
@@ -110,120 +111,110 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Fail<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Fail : ASTNode
     {
         public string Message { get; protected set; }
 
-        public Fail(ASTNode<TItem> message)
+        public Fail(ASTNode message)
         {
             if (message != null)
                 this.Message = message.GetText().Trim();
         }
     }
 
-    class Any<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Any : ASTNode
     {
     }
 
-    class Look<TItem> : ASTNode<TItem> 
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Look : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Look(ASTNode<TItem> body)
+        public Look(ASTNode body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Not<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Not : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Not(ASTNode<TItem> body)
+        public Not(ASTNode body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Or<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Or : ASTNode
     {
-        public ASTNode<TItem> Left { get; protected set; }
-        public ASTNode<TItem> Right { get; protected set; }
+        public ASTNode Left { get; protected set; }
+        public ASTNode Right { get; protected set; }
 
-        public Or(ASTNode<TItem> left, ASTNode<TItem> right)
+        public Or(ASTNode left, ASTNode right)
         {
             this.Left = left;
             this.Right = right;
 
-            Children = new List<ASTNode<TItem>> { left, right };
+            Children = new List<ASTNode> { left, right };
         }
     }
 
-    class And<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class And : ASTNode
     {
-        public ASTNode<TItem> Left { get; protected set; }
-        public ASTNode<TItem> Right { get; protected set; }
+        public ASTNode Left { get; protected set; }
+        public ASTNode Right { get; protected set; }
 
-        public And(ASTNode<TItem> left, ASTNode<TItem> right)
+        public And(ASTNode left, ASTNode right)
         {
             this.Left = left;
             this.Right = right;
 
-            Children = new List<ASTNode<TItem>> { left, right };
+            Children = new List<ASTNode> { left, right };
         }
     }
 
-    class Star<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Star : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Star(ASTNode<TItem> body)
+        public Star(ASTNode body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Plus<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Plus : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Plus(ASTNode<TItem> body)
+        public Plus(ASTNode body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Ques<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Ques : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Ques(ASTNode<TItem> body)
+        public Ques(ASTNode body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class CallOrVar<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class CallOrVar : ASTNode
     {
         public TItem Name { get; protected set; }
 
@@ -235,13 +226,12 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Call<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Call : ASTNode
     {
         public TItem Rule { get; protected set; }
-        public IEnumerable<ASTNode<TItem>> Params { get; protected set; }
+        public IEnumerable<ASTNode> Params { get; protected set; }
 
-        public Call(TItem rule, IEnumerable<ASTNode<TItem>> parms)
+        public Call(TItem rule, IEnumerable<ASTNode> parms)
         {
             this.Rule = rule;
             this.Params = parms;
@@ -250,8 +240,7 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Idfr<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Idfr : ASTNode
     {
         public TItem Text { get; protected set; }
         public TItem GenericParams { get; protected set; }
@@ -272,8 +261,7 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Code<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Code : ASTNode
     {
         public TItem Text { get; protected set; }
 
@@ -285,21 +273,19 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class InputClass<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class InputClass : ASTNode
     {
-        public IEnumerable<ASTNode<TItem>> Inputs { get; protected set; }
+        public IEnumerable<ASTNode> Inputs { get; protected set; }
         public List<string> Chars { get; protected set; }
 
-        public InputClass(IEnumerable<ASTNode<TItem>> inputs)
+        public InputClass(IEnumerable<ASTNode> inputs)
         {
             this.Inputs = inputs;
             this.Chars = new List<string>();
         }
     }
 
-    class ClassRange<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class ClassRange : ASTNode
     {
         public TItem Item { get; protected set; }
         public IEnumerable<char> Inputs { get; protected set; }
@@ -312,7 +298,7 @@ namespace IronMeta.Generator.AST
             this.Inputs = inputs;
         }
 
-        public static char GetChar(ASTNode<TItem> node)
+        public static char GetChar(ASTNode node)
         {
             if (node != null)
             {
@@ -325,111 +311,104 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Bind<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Bind : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
         public TItem VarName { get; protected set; }
 
-        public Bind(ASTNode<TItem> body, TItem varname)
+        public Bind(ASTNode body, TItem varname)
         {
             this.Body = body;
             this.VarName = varname;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
             Items = new List<TItem> { varname };
         }
     }
 
-    class Cond<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Cond : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
         public TItem Expression { get; protected set; }
 
-        public Cond(ASTNode<TItem> body, TItem exp)
+        public Cond(ASTNode body, TItem exp)
         {
             this.Body = body;
             this.Expression = exp;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
             Items = new List<TItem> { exp };
         }
     }
 
-    class Act<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Act : ASTNode
     {
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Body { get; protected set; }
         public TItem Expression { get; protected set; }
 
-        public Act(ASTNode<TItem> body, TItem exp)
+        public Act(ASTNode body, TItem exp)
         {
             this.Body = body;
             this.Expression = exp;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
             Items = new List<TItem> { exp };
         }
     }
 
-    class Args<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Args : ASTNode
     {
-        public ASTNode<TItem> Parms { get; protected set; }
-        public ASTNode<TItem> Body { get; protected set; }
+        public ASTNode Parms { get; protected set; }
+        public ASTNode Body { get; protected set; }
 
-        public Args(ASTNode<TItem> parms, ASTNode<TItem> body)
+        public Args(ASTNode parms, ASTNode body)
         {
             this.Parms = parms;
             this.Body = body;
 
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Rule<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Rule : ASTNode
     {
         public TItem Name { get; protected set; }
-        public ASTNode<TItem> Body { get; protected set; }
-        public bool Override { get; protected set; }
+        public ASTNode Body { get; protected set; }
+        public string Override { get; protected set; }
 
-        public Rule(TItem name, ASTNode<TItem> body, bool ovr)
+        public Rule(TItem name, ASTNode body, string ovr)
         {
             this.Name = name;
             this.Body = body;
             this.Override = ovr;
 
             Items = new List<TItem> { name };
-            Children = new List<ASTNode<TItem>> { body };
+            Children = new List<ASTNode> { body };
         }
     }
 
-    class Grammar<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Grammar : ASTNode
     {
         public TItem Name { get; protected set; }
         public TItem TInput { get; protected set; }
         public TItem TResult { get; protected set; }
         public TItem Base { get; protected set; }
-        public IEnumerable<Rule<TItem>> Rules { get; protected set; }
+        public IEnumerable<Rule> Rules { get; protected set; }
 
-        public Grammar(TItem name, TItem tinput, TItem tresult, TItem baseclass, IEnumerable<ASTNode<TItem>> rules)
+        public Grammar(TItem name, TItem tinput, TItem tresult, TItem baseclass, IEnumerable<ASTNode> rules)
         {
             this.Name = name;
             this.TInput = tinput;
             this.TResult = tresult;
             this.Base = baseclass;
-            this.Rules = rules.Cast<Rule<TItem>>();
+            this.Rules = rules.Cast<Rule>();
 
             Items = new List<TItem> { name, tinput, tresult, baseclass };
-            Children = new List<ASTNode<TItem>>(rules);
+            Children = new List<ASTNode>(rules);
         }
     }
 
-    class Using<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Using : ASTNode
     {
         public TItem Name { get; protected set; }
 
@@ -441,29 +420,27 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Preamble<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class Preamble : ASTNode
     {
-        public IEnumerable<Using<TItem>> Usings { get; protected set; }
+        public IEnumerable<Using> Usings { get; protected set; }
 
-        public Preamble(IEnumerable<ASTNode<TItem>> usings)
+        public Preamble(IEnumerable<ASTNode> usings)
         {
-            this.Usings = usings.Cast<Using<TItem>>();
+            this.Usings = usings.Cast<Using>();
         }
     }
 
-    class GrammarFile<TItem> : ASTNode<TItem>
-        where TItem : IronMeta.Matcher.MatchItem<char, ASTNode<TItem>, TItem>
+    class GrammarFile : ASTNode
     {
-        public Preamble<TItem> Preamble { get; protected set; }
-        public Grammar<TItem> Grammar { get; protected set; }
+        public Preamble Preamble { get; protected set; }
+        public Grammar Grammar { get; protected set; }
 
-        public GrammarFile(ASTNode<TItem> preamble, ASTNode<TItem> grammar)
+        public GrammarFile(ASTNode preamble, ASTNode grammar)
         {
-            this.Preamble = preamble as Preamble<TItem>;
-            this.Grammar = grammar as Grammar<TItem>;
+            this.Preamble = preamble as Preamble;
+            this.Grammar = grammar as Grammar;
 
-            Children = new List<ASTNode<TItem>> { grammar };
+            Children = new List<ASTNode> { grammar };
         }
     }
 
