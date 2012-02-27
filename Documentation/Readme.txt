@@ -9,7 +9,7 @@
 	
 2.1: July 1, 2011: Much refactoring, miscellaneous bug fixes.
     - Better error handling.
-	- Added <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#a180a519c2aed91f6ea499a54b0c0dba4">IronMeta.Matcher.CharMatcher.Input()</a> and <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#ac9532fb50fce46a6d42dede985011e14">IronMeta.Matcher.CharMatcher.Trimmed()</a> for more convenient string handling.
+	- Added IronMeta.Matcher.CharMatcher.Input() and IronMeta.Matcher.CharMatcher.Trimmed() for more convenient string handling.
 	- Added min/max repeats syntax (e.g. \c 'a' \c {1, \c 3}).
 
 2.0: December 4, 2010: Many internal improvements.
