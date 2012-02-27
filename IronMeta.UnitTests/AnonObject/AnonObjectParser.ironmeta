@@ -1,0 +1,13 @@
+
+ironmeta AnonObjectParser<InputObject, int> : IronMeta.Matcher.Matcher<InputObject, int>
+{
+
+	ActualObject = 
+		new InputObject { Name = "actual", Value = "one" } 
+		new InputObject { Name = "actual", Value = "two" };
+
+	ImplicitObject = 
+		new { Name = "implicit", Value = "three" }
+		new { Name = "implicit", Value = "four" };
+
+}

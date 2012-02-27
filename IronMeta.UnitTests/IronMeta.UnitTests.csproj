@@ -42,6 +42,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonObject\AnonObjectParser.g.cs" />
+    <Compile Include="AnonObject\AnonObjectTests.cs" />
+    <Compile Include="AnonObject\InputObject.cs" />
     <Compile Include="Bugs\Bugs.g.cs" />
     <Compile Include="Bugs\BugsTests.cs" />
     <Compile Include="CalcTests.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="TestParser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AnonObject\AnonObjectParser.ironmeta" />
     <None Include="app.config" />
     <None Include="Bugs\Bugs.ironmeta" />
     <None Include="Combine\Combine1.ironmeta" />
@@ -115,6 +119,9 @@
   </Target>
   <Target Name="GenerateStringParser" BeforeTargets="_GenerateCompileInputs" Inputs="String\StringParser.ironmeta" Outputs="String\StringParser.g.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.String String\StringParser.ironmeta" />
+  </Target>
+  <Target Name="GenerateAnonObjectParser" BeforeTargets="_GenerateCompileInputs" Inputs="AnonObject\AnonObjectParser.ironmeta" Outputs="AnonObject\AnonObjectParser.g.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.AnonObject AnonObject\AnonObjectParser.ironmeta" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">

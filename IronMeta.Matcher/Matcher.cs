@@ -38,6 +38,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace IronMeta.Matcher
@@ -360,7 +361,7 @@ namespace IronMeta.Matcher
                         TInput cur_input = memo.InputList != null ? memo.InputList[cur_index] : memo.InputEnumerable.ElementAt(cur_index);
                         ++cur_index;
 
-                        if (!cur_input.Equals(input))
+                        if (!ObjectEquals(input, cur_input))
                         {
                             failed = true;
                             break;
@@ -392,7 +393,8 @@ namespace IronMeta.Matcher
                 try
                 {
                     TInput cur_input = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
-                    if (cur_input.Equals(obj))
+
+                    if (ObjectEquals(obj, cur_input))
                     {
                         var result = new MatchItem<TInput, TResult>
                         {
@@ -413,6 +415,43 @@ namespace IronMeta.Matcher
             memo.Results.Push(null);
             memo.AddError(index, () => "expected " + obj);
             return null;
+        }
+
+        protected bool ObjectEquals(object expected, object encountered)
+        {
+            var expectedType = expected.GetType();
+            var encounteredType = encountered.GetType();
+
+            if (expectedType.IsAnonymousType())
+            {
+                // go through public properties
+                foreach (var expectedProperty in expectedType.GetProperties())
+                {
+                    var encounteredProperty = encounteredType.GetProperty(expectedProperty.Name);
+                    if (encounteredProperty == null)
+                        return false;
+
+                    var expectedVal = expectedProperty.GetValue(expected, null);
+                    var encounteredVal = encounteredProperty.GetValue(encountered, null);
+
+                    if (expectedVal == null)
+                    {
+                        if (encounteredVal == null)
+                            continue;
+                        else
+                            return false;
+                    }
+
+                    if (!expectedVal.Equals(encounteredVal))
+                        return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                return expected.Equals(encountered);
+            }
         }
 
         /// <summary>
@@ -442,7 +481,7 @@ namespace IronMeta.Matcher
                             var cur_item = args.ElementAt(cur_item_index);
                             TInput cur_input = cur_item.Inputs.ElementAt(cur_input_index);
 
-                            if (cur_input.Equals(input))
+                            if (ObjectEquals(input, cur_input))
                             {
                                 input_list.Add(cur_input);
 
@@ -482,7 +521,7 @@ namespace IronMeta.Matcher
                         var cur_item = args.ElementAt(item_index);
                         TInput cur_input = cur_item.Inputs.ElementAt(input_index);
 
-                        if (cur_input.Equals(obj))
+                        if (ObjectEquals(obj, cur_input))
                         {
                             // increment
                             if (input_index + 1 >= cur_item.Inputs.Count())
@@ -707,5 +746,22 @@ namespace IronMeta.Matcher
         }
 
     } // class Matcher
+
+    // extension to determine if a type is anonymous; cribbed from http://stackoverflow.com/questions/1650681/determining-whether-a-type-is-an-anonymous-type
+    public static class TypeExtension
+    {
+        public static bool IsAnonymousType(this Type type)
+        {
+            bool hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Count() > 0;
+            if (!hasCompilerGeneratedAttribute)
+                return false;
+
+            bool nameContainsAnonymousType = type.FullName.Contains("AnonymousType");
+            if (!nameContainsAnonymousType)
+                return false;
+
+            return true;
+        }
+    }
 
 } // namespace Matcher

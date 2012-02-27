@@ -122,8 +122,8 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
     ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
     Parameter = CallOrVar | Literal;
 
-    CallOrVar = QualifiedId:name -> { return new CallOrVar(name); };
-    Literal = &('\x22' | '\x27' | '{') CSharpCode:code -> { return code; };
+    CallOrVar = ~KEYWORD QualifiedId:name -> { return new CallOrVar(name); };
+    Literal = ((NEW GenericId? &'{') | &('\x22' | '\x27' | '{')) CSharpCode -> { return new Code(_IM_Result); };
 
     InputClass = '[' SP (ClassRange | &'\x27' Literal)+:c ']' SP -> { return new InputClass(c.Results); };
     ClassRange = &'\x27' Literal:from SP '-' SP &'\x27' Literal:to SP ->
@@ -164,10 +164,13 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
 	Number = ['0'-'9']+ SP;
 
+	KEYWORD = USING | IRONMETA | OVERRIDE | NEW | LR;
+
     USING = "using" SP;
     IRONMETA = "ironmeta" SP;
     EQUALS = ('=' | "::=") SP;
     OVERRIDE = ("override" | "virtual" | "new") SP;
+	NEW = "new" SP;
     LR = "lr" SP;
     SEMI = (';' | ',') SP;
     BANG = '!' SP;

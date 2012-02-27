@@ -91,6 +91,12 @@ namespace IronMeta.UnitTests
 
             var combineTests = new Combine.CombineTests();
             RunTests(combineTests);
+
+            var stringParserTests = new String.StringParserTests();
+            RunTests(stringParserTests);
+
+            var anonTests = new AnonObject.AnonObjectTests();
+            RunTests(anonTests);
         }
 
     } // class Program
