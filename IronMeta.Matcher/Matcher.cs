@@ -417,6 +417,12 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        /// <summary>
+        /// Checks for anonymous literals in the rule before matching against input object.
+        /// </summary>
+        /// <param name="expected">Expected object.  May be an anonymously-typed object.</param>
+        /// <param name="encountered">Object encountered in the input.</param>
+        /// <returns></returns>
         protected bool ObjectEquals(object expected, object encountered)
         {
             var expectedType = expected.GetType();
@@ -747,9 +753,16 @@ namespace IronMeta.Matcher
 
     } // class Matcher
 
-    // extension to determine if a type is anonymous; cribbed from http://stackoverflow.com/questions/1650681/determining-whether-a-type-is-an-anonymous-type
+    /// <summary>
+    /// Extension class to determine if a type is anonymous; cribbed from http://stackoverflow.com/questions/1650681/determining-whether-a-type-is-an-anonymous-type
+    /// </summary>
     public static class TypeExtension
     {
+
+        /// <summary>
+        /// Heuristic test to determine whether a type is anonymous.
+        /// </summary>
+        /// <param name="type">The type in question.</param>
         public static bool IsAnonymousType(this Type type)
         {
             bool hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Count() > 0;
@@ -762,6 +775,7 @@ namespace IronMeta.Matcher
 
             return true;
         }
+
     }
 
 } // namespace Matcher
