@@ -55,6 +55,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringTests.cs" />
+    <Compile Include="String\StringParser.g.cs" />
+    <Compile Include="String\StringParserTests.cs" />
     <Compile Include="TestParser.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +65,7 @@
     <None Include="Combine\Combine1.ironmeta" />
     <None Include="Combine\Combine2.ironmeta" />
     <None Include="LRParser.ironmeta" />
+    <None Include="String\StringParser.ironmeta" />
     <None Include="TestParser.ironmeta" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +112,9 @@
   </Target>
   <Target Name="GenerateCombine2Parser" BeforeTargets="_GenerateCompileInputs" Inputs="Combine\Combine2.ironmeta" Outputs="Combine\Combine2.g.cs">
     <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Combine Combine\Combine2.ironmeta" />
+  </Target>
+  <Target Name="GenerateStringParser" BeforeTargets="_GenerateCompileInputs" Inputs="String\StringParser.ironmeta" Outputs="String\StringParser.g.cs">
+    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.String String\StringParser.ironmeta" />
   </Target>
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">

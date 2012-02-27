@@ -486,10 +486,12 @@ namespace IronMeta.Generator
             }
             else
             {
+                bool isCharMatcher = tInput == "char" || tInput.EndsWith("Character");
+
                 tw.Write(indent);
-                if (literal.StartsWith("\""))
+                if (isCharMatcher && literal.StartsWith("\""))
                     tw.WriteLine("_ParseLiteralString(_memo, ref _index, {0});", literal);
-                else if (literal.StartsWith("'"))
+                else if (isCharMatcher && literal.StartsWith("'"))
                     tw.WriteLine("_ParseLiteralChar(_memo, ref _index, {0});", literal);
                 else
                     tw.WriteLine("_ParseLiteralObj(_memo, ref _index, {0});", literal);

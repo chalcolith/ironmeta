@@ -1,0 +1,8 @@
+ironmeta StringParser<string, int> : IronMeta.Matcher.Matcher<string, int>
+{
+
+	One = "one" -> {1};
+	Two = "two" -> {2};
+	Pi = "three" "point" "one" "four" "one" "five" "nine" -> { 314 };
+
+}
