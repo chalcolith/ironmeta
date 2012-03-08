@@ -765,7 +765,7 @@ namespace IronMeta.Matcher
         /// <param name="type">The type in question.</param>
         public static bool IsAnonymousType(this Type type)
         {
-            bool hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Count() > 0;
+            bool hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any();
             if (!hasCompilerGeneratedAttribute)
                 return false;
 
