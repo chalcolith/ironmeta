@@ -126,8 +126,8 @@ namespace MyCalcProject
 
         static void Main(string[] args)
         {
-            var parser = new Calc("2 * 7");
-            var match = parser.GetMatch(parser.Expression);
+            var parser = new Calc();
+            var match = parser.GetMatch("2 * 7", parser.Expression);
 
             if (match.Success)
                 Console.WriteLine("result: {0}", match.Result); // should print "14"
