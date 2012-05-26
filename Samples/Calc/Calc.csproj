@@ -66,7 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calc.cs" />
+    <Compile Include="Calc.g.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,9 +75,6 @@
       <Project>{B73467B0-F643-4738-BFB4-4F1F8CF8703C}</Project>
       <Name>IronMeta.Matcher</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Calc.ironmeta" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -113,7 +110,16 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="GenerateParser" BeforeTargets="_GenerateCompileInputs" Inputs="Calc.ironmeta" Outputs="Calc.cs">
-    <Exec Command="..\..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe Calc.ironmeta -o Calc.cs" />
+
+  <PropertyGroup>
+    <IronMeta>..\..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe</IronMeta>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Parser Include="Calc.ironmeta"/>
+  </ItemGroup>
+  
+  <Target Name="GenerateParser" BeforeTargets="BeforeBuild" Inputs="$(IronMeta);%(Parser.Identity)" Outputs="%(Parser.Filename).g.cs">
+    <Exec Command="$(IronMeta) -f %(Parser.Identity)" />
   </Target>
 </Project>

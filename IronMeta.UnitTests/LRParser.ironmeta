@@ -14,4 +14,17 @@ ironmeta LRParser<char, string> : IronMeta.Matcher.CharMatcher<string>
 
 	AAA = AAA*:x "a":y -> { "(" + (string)x + "a)" } | "b":z -> { "b" };
 
+
+	Character = HexEscapeCharacter;
+
+	HexEscapeCharacter = "#\\x" HexScalarValue:hex -> 
+	{ 
+		foreach (var input in hex.Inputs)
+			Console.WriteLine("{0}", input);
+		return "";
+	};
+	HexScalarValue = HexDigit+;
+	HexDigit = Digit | 'a' | 'A' | 'b' | 'B' | 'c' | 'C' | 'd' | 'D' | 'e' | 'E' | 'f' | 'F';
+	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+
 }

@@ -52,7 +52,7 @@
     <Compile Include="Combine\Combine2.cs" />
     <Compile Include="Combine\Combine2.g.cs" />
     <Compile Include="Combine\CombineTests.cs" />
-    <Compile Include="LRParser.cs" />
+	<Compile Include="LRParser.g.cs"/>
     <Compile Include="LRTests.cs" />
     <Compile Include="MatcherTests.cs" />
     <Compile Include="Program.cs" />
@@ -60,17 +60,10 @@
     <Compile Include="StringTests.cs" />
     <Compile Include="String\StringParser.g.cs" />
     <Compile Include="String\StringParserTests.cs" />
-    <Compile Include="TestParser.cs" />
+	<Compile Include="TestParser.g.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AnonObject\AnonObjectParser.ironmeta" />
     <None Include="app.config" />
-    <None Include="Bugs\Bugs.ironmeta" />
-    <None Include="Combine\Combine1.ironmeta" />
-    <None Include="Combine\Combine2.ironmeta" />
-    <None Include="LRParser.ironmeta" />
-    <None Include="String\StringParser.ironmeta" />
-    <None Include="TestParser.ironmeta" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IronMeta.Generator\IronMeta.Generator.csproj">
@@ -102,27 +95,24 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="GenerateTestParser" BeforeTargets="_GenerateCompileInputs" Inputs="TestParser.ironmeta" Outputs="TestParser.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe TestParser.ironmeta -o TestParser.cs" />
+  <PropertyGroup>
+    <IronMeta>..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe</IronMeta>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Parser Include="AnonObject\AnonObjectParser.ironmeta" />
+    <Parser Include="Bugs\Bugs.ironmeta" />
+    <Parser Include="Combine\Combine1.ironmeta" />
+    <Parser Include="Combine\Combine2.ironmeta" />
+    <Parser Include="String\StringParser.ironmeta" />
+    <Parser Include="LRParser.ironmeta" />
+    <Parser Include="TestParser.ironmeta" />
+  </ItemGroup>
+
+  <Target Name="GenerateParser" BeforeTargets="BeforeBuild" Inputs="$(IronMeta);%(Parser.Identity)" Outputs="%(Parser.RelativeDir)%(Parser.Filename).g.cs">
+    <Exec Command="$(IronMeta) -f -n IronMeta.UnitTests.%(Parser.RelativeDir) %(Parser.Identity)" />
   </Target>
-  <Target Name="GenerateLRParser" BeforeTargets="_GenerateCompileInputs" Inputs="LRParser.ironmeta" Outputs="LRParser.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe LRParser.ironmeta -o LRParser.cs" />
-  </Target>
-  <Target Name="GenerateBugsParser" BeforeTargets="_GenerateCompileInputs" Inputs="Bugs\Bugs.ironmeta" Outputs="Bugs\Bugs.g.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Bugs Bugs\Bugs.ironmeta" />
-  </Target>
-  <Target Name="GenerateCombine1Parser" BeforeTargets="_GenerateCompileInputs" Inputs="Combine\Combine1.ironmeta" Outputs="Combine\Combine1.g.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Combine Combine\Combine1.ironmeta" />
-  </Target>
-  <Target Name="GenerateCombine2Parser" BeforeTargets="_GenerateCompileInputs" Inputs="Combine\Combine2.ironmeta" Outputs="Combine\Combine2.g.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.Combine Combine\Combine2.ironmeta" />
-  </Target>
-  <Target Name="GenerateStringParser" BeforeTargets="_GenerateCompileInputs" Inputs="String\StringParser.ironmeta" Outputs="String\StringParser.g.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.String String\StringParser.ironmeta" />
-  </Target>
-  <Target Name="GenerateAnonObjectParser" BeforeTargets="_GenerateCompileInputs" Inputs="AnonObject\AnonObjectParser.ironmeta" Outputs="AnonObject\AnonObjectParser.g.cs">
-    <Exec Command="..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe -n IronMeta.UnitTests.AnonObject AnonObject\AnonObjectParser.ironmeta" />
-  </Target>
+  
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">
     <xunit Assembly="$(TargetPath)" />

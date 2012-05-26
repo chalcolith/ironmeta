@@ -156,6 +156,13 @@ namespace IronMeta.Generator
                 if ((args[i] == "-n" || args[i] == "--namespace") && i < args.Length - 1)
                 {
                     nameSpace = args[++i];
+
+                    // strip initial and final punctuation
+                    while (nameSpace.Length > 0 && !char.IsLetter(nameSpace[0]))
+                        nameSpace = nameSpace.Substring(1);
+                    while (nameSpace.Length > 0 && !char.IsLetter(nameSpace[nameSpace.Length - 1]))
+                        nameSpace = nameSpace.Substring(0, nameSpace.Length - 1);
+
                     continue;
                 }
 

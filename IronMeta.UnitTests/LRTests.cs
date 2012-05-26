@@ -52,6 +52,14 @@ namespace IronMeta.UnitTests
             var res = match.Result;
         }
 
+        [Fact]
+        public void TestHexEscape()
+        {
+            var parser = new LRParser();
+            var match = parser.GetMatch("#\\x000", parser.HexEscapeCharacter);
+            Assert.True(match.Success);
+        }
+
     }
 
 }
