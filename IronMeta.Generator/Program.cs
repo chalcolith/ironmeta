@@ -162,6 +162,7 @@ namespace IronMeta.Generator
                         nameSpace = nameSpace.Substring(1);
                     while (nameSpace.Length > 0 && !char.IsLetter(nameSpace[nameSpace.Length - 1]))
                         nameSpace = nameSpace.Substring(0, nameSpace.Length - 1);
+                    nameSpace = nameSpace.Replace('\\', '.').Replace('/', '.');
 
                     continue;
                 }
