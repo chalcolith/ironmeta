@@ -1,3 +1,5 @@
+syntax: regexp
+Documentation/html
 syntax: glob
 bin
 obj
