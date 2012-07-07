@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 
 \mainpage IronMeta Main Page
 
@@ -39,9 +39,7 @@ Although the most common use for IronMeta is to build parsers on streams of text
     - get the result or result list of an expression they are bound to.
     - match a rule passed as a parameter.
     - pass a rule on to another rule.
- - As an enhancement over the base OMeta, IronMeta allows unlimited left-recursion, using Sergio Queiroz de Medeiros's 
- <a href="http://lists.csail.mit.edu/pipermail/peg/2009-November/000245.html">unpublished algorithm</a> 
- (a mirror of the paper is <a href="http://ironmeta.sourceforge.net/Left-Recursion%20in%20PEGs.pdf">here</a>) for all rules, even within parameter matching.
+ - As an enhancement over the base OMeta, IronMeta allows direct and indirect left recursion, using Sérgio Medeiros et al's <a href="http://arxiv.org/abs/1207.0443">algorithm</a> for all rules, even within parameter matching.
 
 Current limitations:
 
