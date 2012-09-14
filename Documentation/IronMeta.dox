@@ -145,7 +145,7 @@ If you come across a bug in IronMeta, please fill out a bug report at the <a hre
 
 \section buildIronMeta Building IronMeta from Source
 
-In order to build IronMeta, you must download the source code using a <a href="http://mercurial.selenic.com">Mercurial</a> client.  Clone the repository at \code http://ironmeta.hg.sourceforge.net:8000/hgroot/ironmeta/ironmeta \endcode 
+In order to build IronMeta, you must download the source code using a <a href="http://mercurial.selenic.com">Mercurial</a> client: \code hg clone http://hg.code.sf.net/p/ironmeta/code ironmeta \endcode
 
 The top folder of the source code contains a Visual Studio 2010 solution file called \c IronMeta.sln.  This includes three projects:
 
