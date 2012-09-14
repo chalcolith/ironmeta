@@ -111,7 +111,7 @@ In order to use an IronMeta-generated parser in your C# program, do the followin
 
 The following is a small sample program that uses the \c Calc demo parser that is included in the distribution.
 
-\code
+\verbatim
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,17 +135,21 @@ namespace MyCalcProject
 
     }
 }
-\endcode
+\endverbatim
 
 \section reportingBugs Support and Reporting Bugs
 
-There is a forum for asking questions about IronMeta at <a href="http://sourceforge.net/projects/ironmeta/forums/forum/951984">SourceForge</a>.
+There is a forum for asking questions about IronMeta at <a href="http://sourceforge.net/p/ironmeta/discussion/951984/">SourceForge</a>.
 
-If you come across a bug in IronMeta, please fill out a bug report at the <a href="http://sourceforge.net/tracker/?group_id=261882&atid=1127483">SourceForge bug tracker</a>.
+If you come across a bug in IronMeta, please fill out a bug report at the <a href="http://sourceforge.net/p/ironmeta/bugs/">SourceForge bug tracker</a>.
 
 \section buildIronMeta Building IronMeta from Source
 
-In order to build IronMeta, you must download the source code using a <a href="http://mercurial.selenic.com">Mercurial</a> client: \code hg clone http://hg.code.sf.net/p/ironmeta/code ironmeta \endcode
+In order to build IronMeta, you must download the source code using a <a href="http://mercurial.selenic.com">Mercurial</a> client:
+
+\verbatim
+hg clone http://hg.code.sf.net/p/ironmeta/code ironmeta
+\endverbatim
 
 The top folder of the source code contains a Visual Studio 2010 solution file called \c IronMeta.sln.  This includes three projects:
 
@@ -154,7 +158,7 @@ The top folder of the source code contains a Visual Studio 2010 solution file ca
  - \c IronMeta::UnitTests : unit tests for the parsing library.
  - \c Calc : an example of a \ref ironMetaLanguage "calculator program", made purposely more complicated than necessary so as to demonstrate some of IronMeta's advanced features.
 
-If you would like to contribute to the development of IronMeta, please send patches to the project admin listed at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the <a href="http://sourceforge.net/projects/ironmeta/forums/forum/951985">IronMeta developers forum</a>.
+If you would like to contribute to the development of IronMeta, please send patches to the project admin listed at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the <a href="http://sourceforge.net/p/ironmeta/discussion/">IronMeta developers forum</a>.
 
 
 \page ironMetaLanguage The IronMeta Language
@@ -163,7 +167,7 @@ This section is an informal introduction to the features of the IronMeta languag
 
 The Calc grammar is much more complex than it needs to be in order to demonstrate some of the advanced functionality of IronMeta.
 
-\code
+\verbatim
 // IronMeta Calculator Example
 
 using System;
@@ -195,28 +199,28 @@ ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
     KW :str = str WS*;
     WS = ' ' | '\n' | '\r' | '\t';
 }
-\endcode
+\endverbatim
 
 We will go through this example line by line to introduce the IronMeta language:
 
 
 
 \section langComments Comments
-\code
+\verbatim
 // IronMeta Calculator Example
-\endcode
+\endverbatim
 
 You may include comments anywhere in the IronMeta file.  They may also be in the C-style form:
 
-\code
+\verbatim
 /* C-Style Comment */
-\endcode
+\endverbatim
 
 \section langPreamble Preamble
-\code
+\verbatim
 using System;
 using System.Linq;
-\endcode
+\endverbatim
 
 You can include C# \c using statements at the beginning of an IronMeta file.  IronMeta will automatically add \c using statements to its output to include the namespaces it needs.
 
@@ -224,9 +228,9 @@ You can include C# \c using statements at the beginning of an IronMeta file.  Ir
 
 \section langDeclaration Parser Declaration
 
-\code
+\verbatim
 ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
-\endcode
+\endverbatim
 
 An IronMeta parser always starts with the keyword \c ironmeta.  Then comes the name of the parser (\c Calc, in this case), and the input and output types.  
 The generated parser will take as input an IEnumerable of the input type, and return as output an object of the output type.
@@ -237,18 +241,18 @@ In this case, the \c Calc parser will operate on a stream of \c char values, and
 
 You may also optionally include a base class:
 
-\code
- : IronMeta.Matcher.CharMatcher<int>
-\endcode
+\verbatim
+    : IronMeta.Matcher.CharMatcher<int>
+\endverbatim
 
 If you do not include a base class, your parser will inherit directly from \ref IronMeta::Matcher::Matcher.  The \ref IronMeta::Matcher::CharMatcher class provides some specialized functionality for dealing with streams of characters.
 
 
 \section langRules Rules
 
-\code
+\verbatim
     Expression = Additive;
-\endcode
+\endverbatim
 
 An IronMeta rule consists of a name, an pattern for matching parameters, \c "=", a pattern for matching against the main input, and a terminating semicolon \c ";" (for folks used to C#) or comma \c "," (for folks used to OMeta):
 
@@ -259,17 +263,17 @@ In this case, the rule \c Expression has no parameters, and matches by calling a
 
 You can use the period \c "." to match any item of input, or you can use arbitrary C# expressions.  The C# expressions may be a string literal, a character literal, an object created using the \c new keyword, or any other expression that is surrounded by curly braces:
 
-\code
+\verbatim
     MyPattern = 'a' "b" {3.14159} {new MyClass()};
-\endcode
+\endverbatim
 
 IronMeta will use the standard C# \c Equals() method to match the items.
 
 You can also use anonymous object syntax (you don't need to surround the whole \c new expression with braces in this case):
 
-\code
+\verbatim
     MyPattern = new { Name="MyName", Value="MyValue" }  new { Name="MyName", Value="MySecondValue" };
-\endcode
+\endverbatim
 
 Literals that you define with anonymous types will be matched according to their public properties; if an input object has the same properties with the same values, it will be considered equal to the anonymous object.
 
@@ -277,15 +281,16 @@ The pattern literal can also be an \c IEnumerable of the input type, including C
 
 This eliminates the need for the OMeta \c token function; just use a string literal, or if you are matching on something other than characters, use a list:
 
-\code
+\verbatim
     MyPattern = {new List<MyInputType>{ a, b, c }};
-\endcode
+\endverbatim
 
 
 \section langSeqDisj Sequence and Disjunction
-\code
+
+\verbatim
     Additive = Add | Sub | Multiplicative;
-\endcode
+\endverbatim
 
 As is probably obvious from the other rules, you write a sequence of patterns by simply writing them one after the other, separated by whitespace.
 
@@ -314,9 +319,10 @@ You can stop them from matching by using the prefix operators:
 
 
 \section langVarCondAction Conditions and Actions
-\code
+
+\verbatim
     DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
-\endcode
+\endverbatim
 
 Here things get more interesting.  This rule has only one expression, the period \c ".".  This will match a single item of input.  It is then bound to the variable \c c by means of the colon \c ":".
 
@@ -332,23 +338,23 @@ In this case, the variable \c c is explicitly cast to an \c int in order to forc
 
 Be aware that an action only applies to the last expression in an OR expression.  So the action in the following:
 
-\code
+\verbatim
     MyRule = One | Two | Three -> { my action };
-\endcode
+\endverbatim
 
 will only run if the expression \c Three matches!  If you want an action to apply on an OR, use parentheses:
 
-\code
+\verbatim
     MyRule = (One | Two | Three) -> { my action };
-\endcode
+\endverbatim
 
 
 
 \section langVariables Variables
 
-\code
+\verbatim
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
-\endcode
+\endverbatim
 
 Upon a successful match, variables will contain information about the results of the match of the expression they are bound to.  In this example, because \c a & \c b are used in an expression containing an integer, they will automatically evaluate to the \em results of their expressions, because the result type of the Calc grammar is \c int.
 
@@ -377,34 +383,35 @@ IronMeta automatically defines a variable for use in your C# code:
 
 
 \section langMultiple Multiple Rule Bodies
-\code
+\verbatim
     Multiplicative = Multiply | Divide;
     Multiplicative = Number(DecimalDigit);
-\endcode
+\endverbatim
 
 You can have multiple rule bodies; their patterns will be combined in one overall OR when that rule is called.
 
 
 
 \section langParameters Parameters
-\code
+
+\verbatim
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
-\endcode
+\endverbatim
 
 This rule shows that you can pass parameters to a rule.  You can pass literal match patterns, rule names, or variables.
 
-\code
+\verbatim
     BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
-\endcode
+\endverbatim
 
 This rule demonstrates how to match parameters.  The parameter part of a rule is actually a matching pattern no different than that on the right-hand side of the \c "=" !  Using this fact, plus the ability to specify multiple rules with the same name, you can write rules that match differently depending on the number and kind of parameters they are passed.
 
 
 \section langProductions Rules as Arguments
-\code
+\verbatim
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
     BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
-\endcode
+\endverbatim
 
 These rules show that you can pass rules as parameters to other rules.  To match against them, just capture them in a variable in your parameter pattern, and then use the variable as an expression in your pattern.  You can pass parameters as usual.
 
@@ -415,16 +422,16 @@ The example above shows that you can define different behavior depending on the 
 
 
 \section langListFolding List Folding
-\code
+\verbatim
     KW :str = str Whitespace*;
-\endcode
+\endverbatim
 
 If you look at the rules that call this rule  (indirectly through the \c BinaryOp rule), you'll see that they pass both a single character and a string:
 
-\code
+\verbatim
     Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
     Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
-\endcode
+\endverbatim
 
 When matching against variables captured in parameters, variables containing single items or variables containing lists will match correctly.
 
@@ -433,7 +440,7 @@ When matching against variables captured in parameters, variables containing sin
 
 IronMeta parsers are regular C# classes, so they can inherit from other parsers and call their rules.  You must preface rules you wish to override by the C# keyword \c virtual.  You can override rules in a base class by prefixing the rule definition by the keyword \c override, or hide non-virtual rules by means of the \c new keyword.
 
-\code
+\verbatim
 
 ironmeta DerivedParser<char, Node> : BaseParser<Node>
 {
@@ -442,13 +449,13 @@ ironmeta DerivedParser<char, Node> : BaseParser<Node>
 	new Expression3 = ...;
 }
 
-\endcode
+\endverbatim
 
 \section langRuleEncapsulation Rule Encapsulation
 
 You can also refer to rules in a completely unrelated grammar (as long as the input and output types are the same) by declaring initialized members of the other grammar's class and referring to those members' rule functions.
 
-\code
+\verbatim
 
 public partial class MyParser
 {
@@ -462,13 +469,13 @@ ironmeta MyParser<char, int>: IronMeta.Matcher.Matcher<char, int>
 	
 }
 
-\endcode
+\endverbatim
 
 \page ironMetaGrammar The IronMeta Grammar
 
 The following is the grammar used for parsing IronMeta files themselves, presented purely for interest.
 
-\code
+\verbatim
 using IronMeta.Generator;
 using IronMeta.Generator.AST;
 
@@ -636,7 +643,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
     Comment = "/*" (~"*/" .)* "*/";
 
 }
-\endcode
+\endverbatim
 
 \page BSDLicense BSD License
 
