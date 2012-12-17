@@ -1,6 +1,4 @@
 ﻿//////////////////////////////////////////////////////////////////////
-// $Id$
-//
 // Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
@@ -59,6 +57,16 @@ namespace IronMeta.Matcher
         /// </summary>
         protected static readonly Func<TResult, bool> _NON_NULL = r => r != null;
 
+        /// <summary>
+        /// Called before a match begins.
+        /// </summary>
+        protected event Action<Memo<TInput, TResult>, IEnumerable<TInput>, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>>> BeforeMatch;
+
+        /// <summary>
+        /// Called after a match ends.
+        /// </summary>
+        protected event Action<MatchResult<TInput, TResult>> AfterMatch;
+
         #endregion
 
         #region Properties
@@ -94,10 +102,13 @@ namespace IronMeta.Matcher
         /// <param name="input">The input to be matched.</param>
         /// <param name="production">The top-level grammar production (rule) of the generated parser class to use.</param>
         /// <returns>The result of the match.</returns>
-        public MatchResult<TInput, TResult> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production)
+        public virtual MatchResult<TInput, TResult> GetMatch(IEnumerable<TInput> input, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production)
         {
             var memo = new Memo<TInput, TResult>(input);
             MatchItem<TInput, TResult> result = null;
+
+            if (BeforeMatch != null)
+                BeforeMatch(memo, input, production);
 
             try
             {
@@ -116,10 +127,14 @@ namespace IronMeta.Matcher
 
             memo.ClearMemoTable(); // allow memo tables to be gc'd
 
-            if (result != null)
-                return new MatchResult<TInput, TResult>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex);
-            else
-                return new MatchResult<TInput, TResult>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
+            var match_result = result != null
+                ? new MatchResult<TInput, TResult>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex)
+                : new MatchResult<TInput, TResult>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
+
+            if (AfterMatch != null)
+                AfterMatch(match_result);
+
+            return match_result;
         }
 
         #region Internal Parser Functions
@@ -301,7 +316,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
-            memo.AddError(index, () => "expected \"" + Regex.Escape(str) + "\"");
+            //memo.AddError(index, () => "expected \"" + Regex.Escape(str) + "\"");
             return null;
         }
 
@@ -336,8 +351,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
-            memo.AddError(index, () => string.Format("expected '{0}'", Regex.Escape(new string(ch, 1))));
-
+            //memo.AddError(index, () => string.Format("expected '{0}'", Regex.Escape(new string(ch, 1))));
             return null;
         }
 
@@ -413,7 +427,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
-            memo.AddError(index, () => "expected " + obj);
+            //memo.AddError(index, () => "expected " + obj);
             return null;
         }
 
@@ -557,7 +571,7 @@ namespace IronMeta.Matcher
             }
 
             memo.ArgResults.Push(null);
-            memo.AddError(input_index, () => "expected " + obj);
+            //memo.AddError(input_index, () => "expected " + obj);
             return null;
         }
 
@@ -596,7 +610,7 @@ namespace IronMeta.Matcher
             }
 
             memo.Results.Push(null);
-            memo.AddError(index, () => "expected one of [" + Regex.Escape(new string(chars)) + "]");
+            //memo.AddError(index, () => "expected one of [" + Regex.Escape(new string(chars)) + "]");
             return null;
         }
 
@@ -647,7 +661,7 @@ namespace IronMeta.Matcher
             catch { }
 
             memo.ArgResults.Push(null);
-            memo.AddError(input_index, () => "expected " + args);
+            //memo.AddError(input_index, () => "expected " + args);
             return null;
         }
 

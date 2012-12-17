@@ -3,3 +3,6 @@ Documentation/html
 syntax: glob
 bin
 obj
+*.g.cs
+*.suo
+*.user
