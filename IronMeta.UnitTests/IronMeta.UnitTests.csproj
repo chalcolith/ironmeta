@@ -52,7 +52,7 @@
     <Compile Include="Combine\Combine2.cs" />
     <Compile Include="Combine\Combine2.g.cs" />
     <Compile Include="Combine\CombineTests.cs" />
-	<Compile Include="LRParser.g.cs"/>
+    <Compile Include="LRParser.g.cs" />
     <Compile Include="LRTests.cs" />
     <Compile Include="MatcherTests.cs" />
     <Compile Include="Program.cs" />
@@ -60,7 +60,8 @@
     <Compile Include="StringTests.cs" />
     <Compile Include="String\StringParser.g.cs" />
     <Compile Include="String\StringParserTests.cs" />
-	<Compile Include="TestParser.g.cs" />
+    <Compile Include="TestParser.g.cs" />
+    <Compile Include="Timing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -98,7 +99,6 @@
   <PropertyGroup>
     <IronMeta>..\IronMeta.Generator\bin\$(ConfigurationName)\IronMeta.Generator.exe</IronMeta>
   </PropertyGroup>
-
   <ItemGroup>
     <Parser Include="AnonObject\AnonObjectParser.ironmeta" />
     <Parser Include="Bugs\Bugs.ironmeta" />
@@ -108,11 +108,9 @@
     <Parser Include="LRParser.ironmeta" />
     <Parser Include="TestParser.ironmeta" />
   </ItemGroup>
-
   <Target Name="GenerateParser" BeforeTargets="BeforeBuild" Inputs="$(IronMeta);%(Parser.Identity)" Outputs="%(Parser.RelativeDir)%(Parser.Filename).g.cs">
     <Exec Command="$(IronMeta) -f -n IronMeta.UnitTests.%(Parser.RelativeDir) %(Parser.Identity)" />
   </Target>
-  
   <UsingTask AssemblyFile="..\ThirdParty\xUnit.NET\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
   <Target Name="RunTests" AfterTargets="Build">
     <xunit Assembly="$(TargetPath)" />

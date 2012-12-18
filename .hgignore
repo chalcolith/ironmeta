@@ -1,5 +1,8 @@
 syntax: regexp
 Documentation/html
+
 syntax: glob
 bin
 obj
+*.suo
+*.g.cs
