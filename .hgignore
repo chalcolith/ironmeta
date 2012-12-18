@@ -4,5 +4,6 @@ Documentation/html
 syntax: glob
 bin
 obj
-*.suo
 *.g.cs
+*.suo
+*.user

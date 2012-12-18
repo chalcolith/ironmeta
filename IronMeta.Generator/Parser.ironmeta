@@ -1,6 +1,4 @@
 //////////////////////////////////////////////////////////////////////
-// $Id$
-//
 // Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
@@ -148,10 +146,10 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
     CSharpCode = CSharpCodeItem:code SP -> { return new Code(code); };
 
-    CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | .))* '}';
-    CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | .))* ')';
-    CSharpCodeItem = '\x27' ("\x5c\x27" | "\x5c\x5c" | ~'\x27' .)* '\x27';   // '
-    CSharpCodeItem = '\x22' ("\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
+    CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | EOL | .))* '}';
+    CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | EOL | .))* ')';
+    CSharpCodeItem = '\x27' ("\x5c\x27" | "\x5c\x5c" | EOL | ~'\x27' .)* '\x27';   // '
+    CSharpCodeItem = '\x22' ("\x5c\x22" | "\x5c\x5c" | EOL | ~'\x22' .)* '\x22';   // "
     
     Identifier = Ident:id SP -> { return id; };
     Ident = (IdentBegin IdentBody*):id -> { return new Idfr(id); };
@@ -192,13 +190,13 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
     STAR = '*' SP;
     PLUS = '+' SP;
     
-    EOL = '\r' '\n'? | '\n';
+    EOL = ('\r' '\n'? | '\n') -> { _memo.Positions.Add(_IM_Result.StartIndex); return _IM_Result; };
     EOF = ~.;
 
-    SP = (WS | Comment)*;
-    WS = ' ' | '\n' | '\r' | '\t';
+    SP = (EOL | WS | Comment)*;
+    WS = ' ' | '\t';
     
-    Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
-    Comment = "/*" (~"*/" .)* "*/";
+    Comment = "//" (~EOL .)* EOL;
+    Comment = "/*" (~"*/" (EOL | .))* "*/";
 
 }

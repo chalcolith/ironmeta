@@ -56,6 +56,8 @@ namespace IronMeta.Matcher
         Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>> memo_table = new Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>>();
         Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions = new Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>>();
 
+        HashSet<int> positions = new HashSet<int>();
+
         /// <summary>
         /// The input stream for the grammar to parse.
         /// </summary>
@@ -102,6 +104,11 @@ namespace IronMeta.Matcher
         /// The call stack used while matching.
         /// </summary>
         public Stack<LRRecord<MatchItem<TInput, TResult>>> CallStack { get; set; }
+
+        /// <summary>
+        /// Used by calling code to store special positions, e.g. line numbers.
+        /// </summary>
+        public HashSet<int> Positions { get { return positions; } }
 
         /// <summary>
         /// Used to pass properties specific to derived matcher classes.

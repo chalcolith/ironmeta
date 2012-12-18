@@ -50,7 +50,7 @@
     <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\Samples\Calc\bin\$(Configuration)" CompressFiles="@(CalcBin)" ZipFileName="$(OutputZip)" />
     <ItemGroup>
       <CalcSrc Include="..\Samples\Calc\Calc.ironmeta" />
-      <CalcSrc Include="..\Samples\Calc\Calc.cs" />
+      <CalcSrc Include="..\Samples\Calc\Calc.g.cs" />
       <CalcSrc Include="..\Samples\Calc\Program.cs" />
     </ItemGroup>
     <MSBuild.ExtensionPack.Compression.DNZip TaskAction="AddFiles" RemoveRoot="$(MSBuildProjectDirectory)\..\Samples\Calc" CompressFiles="@(CalcSrc)" ZipFileName="$(OutputZip)" />
