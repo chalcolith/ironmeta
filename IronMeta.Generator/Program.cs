@@ -1,6 +1,4 @@
 ﻿//////////////////////////////////////////////////////////////////////
-// $Id$
-//
 // Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 
@@ -40,6 +38,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using IronMeta.Matcher;
 
@@ -53,6 +52,8 @@ namespace IronMeta.Generator
     /// </summary>
     public class Program
     {
+
+        static readonly Regex TAB_REGEX = new Regex("\t", RegexOptions.Compiled);
 
         /// <summary>
         /// Generate a parser from an IronMeta grammar.
