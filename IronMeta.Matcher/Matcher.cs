@@ -122,7 +122,11 @@ namespace IronMeta.Matcher
             catch (Exception e)
             {
                 memo.ClearErrors();
-                memo.AddError(0, e.Message);
+                memo.AddError(0, e.Message
+#if DEBUG
+                    + "\n" + e.StackTrace
+#endif
+                );
             }
 
             memo.ClearMemoTable(); // allow memo tables to be gc'd
@@ -164,7 +168,10 @@ namespace IronMeta.Matcher
         /// <param name="production">The production itself.</param>
         /// <param name="args">Arguments to the production (can be null).</param>
         /// <returns>The result of the production at the given input index.</returns>
-        protected MatchItem<TInput, TResult> _MemoCall(Memo<TInput, TResult> memo, string ruleName, int index, Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, IEnumerable<MatchItem<TInput, TResult>> args)
+        protected MatchItem<TInput, TResult> _MemoCall(
+            Memo<TInput, TResult> memo, string ruleName, int index, 
+            Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            IEnumerable<MatchItem<TInput, TResult>> args)
         {
             MatchItem<TInput, TResult> result;
 
@@ -180,11 +187,15 @@ namespace IronMeta.Matcher
                 return result;
             }
 
-            string ruleKey = args == null ? ruleName
-                : ruleName + string.Join(", ", args.Select(arg => arg.ToString()).ToArray());
+            var expansion = new Expansion
+            {
+                Name = args == null ? ruleName : ruleName + string.Join(", ", args.Select(arg => arg.ToString()).ToArray()),
+                Num = 0
+            };
+
 
             // if we have a memo record, use that
-            if (memo.TryGetMemo(ruleKey, index, out result))
+            if (memo.TryGetMemo(expansion, index, out result))
             {
                 memo.Results.Push(result);
                 return result;
@@ -192,7 +203,7 @@ namespace IronMeta.Matcher
 
             // check for left-recursion
             LRRecord<MatchItem<TInput, TResult>> record;
-            if (memo.TryGetLRRecord(ruleKey, index, out record))
+            if (memo.TryGetLRRecord(expansion, index, out record))
             {
                 record.LRDetected = true;
 
@@ -205,11 +216,11 @@ namespace IronMeta.Matcher
             {
                 record = new LRRecord<MatchItem<TInput, TResult>>();
                 record.LRDetected = false;
-                record.NumExpansions = 0;
-                record.CurrentExpansion = ruleKey + "_lrexp_" + record.NumExpansions;
+                record.NumExpansions = 1;
+                record.CurrentExpansion = new Expansion { Name = expansion.Name, Num = record.NumExpansions };
                 record.CurrentNextIndex = -1;
                 memo.Memoize(record.CurrentExpansion, index, null);
-                memo.StartLRRecord(ruleKey, index, record);
+                memo.StartLRRecord(expansion, index, record);
 
                 memo.CallStack.Push(record);
 
@@ -222,7 +233,7 @@ namespace IronMeta.Matcher
                     if (record.LRDetected && result != null && result.NextIndex > record.CurrentNextIndex)
                     {
                         record.NumExpansions = record.NumExpansions + 1;
-                        record.CurrentExpansion = ruleKey + "_lrexp_" + record.NumExpansions;
+                        record.CurrentExpansion = new Expansion { Name = expansion.Name, Num = record.NumExpansions };
                         record.CurrentNextIndex = result != null ? result.NextIndex : 0;
                         memo.Memoize(record.CurrentExpansion, index, result);
 
@@ -234,7 +245,7 @@ namespace IronMeta.Matcher
                         if (record.LRDetected)
                             result = record.CurrentResult;
 
-                        memo.ForgetLRRecord(ruleKey, index);
+                        memo.ForgetLRRecord(expansion, index);
                         memo.Results.Push(result);
 
                         // if there are no LR-processing rules at or above us in the stack, memoize
@@ -251,10 +262,10 @@ namespace IronMeta.Matcher
                         }
 
                         if (!found_lr)
-                            memo.Memoize(ruleKey, index, result);
+                            memo.Memoize(expansion, index, result);
 
                         if (result == null)
-                            memo.AddError(index, () => "expected " + ruleKey);
+                            memo.AddError(index, () => "expected " + expansion.Name);
 
                         break;
                     }

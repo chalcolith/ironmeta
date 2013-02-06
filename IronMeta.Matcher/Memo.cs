@@ -53,8 +53,13 @@ namespace IronMeta.Matcher
     {
         Dictionary<string, object> properties = new Dictionary<string, object>();
 
-        Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>> memo_table = new Dictionary<string, Dictionary<int, MatchItem<TInput, TResult>>>();
-        Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions = new Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>>();
+        // rulename -> expansion -> index -> item
+        Dictionary<string, Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>> memo_table 
+            = new Dictionary<string, Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>>();
+
+        // rulename -> index -> lrrecord
+        Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions 
+            = new Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>>();
 
         HashSet<int> positions = new HashSet<int>();
 
@@ -198,97 +203,108 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Memoize the result of a production at a given index.
         /// </summary>
-        /// <param name="rule">The production name.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
         /// <param name="item">The result of the parse.</param>
-        public void Memoize(string rule, int index, MatchItem<TInput, TResult> item)
+        public void Memoize(Expansion expansion, int index, MatchItem<TInput, TResult> item)
         {
-            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
-            if (!memo_table.TryGetValue(rule, out ruleDict))
+            Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>> expansion_dict;
+            if (!memo_table.TryGetValue(expansion.Name, out expansion_dict))
             {
-                ruleDict = new Dictionary<int, MatchItem<TInput, TResult>>();
-                memo_table.Add(rule, ruleDict);
+                expansion_dict = new Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>();
+                memo_table.Add(expansion.Name, expansion_dict);
             }
 
-            ruleDict[index] = item;
+            Dictionary<int, MatchItem<TInput, TResult>> rule_dict;
+            if (!expansion_dict.TryGetValue(expansion.Num, out rule_dict))
+            {
+                rule_dict = new Dictionary<int, MatchItem<TInput, TResult>>();
+                expansion_dict.Add(expansion.Num, rule_dict);
+            }
+
+            rule_dict[index] = item;
         }
 
         /// <summary>
         /// Forget a memoized result.
         /// </summary>
-        /// <param name="rule">The production name.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
-        public void ForgetMemo(string rule, int index)
+        public void ForgetMemo(Expansion expansion, int index)
         {
-            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
-            if (memo_table.TryGetValue(rule, out ruleDict))
+            Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>> expansion_dict;
+            if (!memo_table.TryGetValue(expansion.Name, out expansion_dict))
+                return;
+
+            Dictionary<int, MatchItem<TInput, TResult>> rule_dict;
+            if (expansion_dict.TryGetValue(expansion.Num, out rule_dict))
             {
-                ruleDict.Remove(index);
+                rule_dict.Remove(index);
             }
         }
 
         /// <summary>
         /// Find the memo of a given rule call.
         /// </summary>
-        /// <param name="rule">The name of the rule.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
         /// <param name="item">The result.</param>
         /// <returns>True if there is a memo record for the rule at the index.</returns>
-        public bool TryGetMemo(string rule, int index, out MatchItem<TInput, TResult> item)
+        public bool TryGetMemo(Expansion expansion, int index, out MatchItem<TInput, TResult> item)
         {
-            Dictionary<int, MatchItem<TInput, TResult>> ruleDict;
-            if (memo_table.TryGetValue(rule, out ruleDict) && ruleDict.TryGetValue(index, out item))
-            {
+            Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>> expansion_dict;
+            Dictionary<int, MatchItem<TInput, TResult>> rule_dict;
+            if (memo_table.TryGetValue(expansion.Name, out expansion_dict)
+                && expansion_dict.TryGetValue(expansion.Num, out rule_dict)
+                && rule_dict.TryGetValue(index, out item))
                 return true;
-            }
-            else
-            {
-                item = default(MatchItem<TInput, TResult>);
-                return false;
-            }
+
+            item = default(MatchItem<TInput, TResult>);
+            return false;
         }
 
         /// <summary>
         /// Start a left-recursion record for a rule at a given index.
         /// </summary>
-        /// <param name="rule">The name of the rule.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
         /// <param name="record">The new left-recursion record.</param>
-        public void StartLRRecord(string rule, int index, LRRecord<MatchItem<TInput, TResult>> record)
+        public void StartLRRecord(Expansion expansion, int index, LRRecord<MatchItem<TInput, TResult>> record)
         {
-            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
-            if (!current_recursions.TryGetValue(rule, out recordDict))
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> record_dict;
+            if (!current_recursions.TryGetValue(expansion.Name, out record_dict))
             {
-                recordDict = new Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>();
-                current_recursions.Add(rule, recordDict);
+                record_dict = new Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>();
+                current_recursions.Add(expansion.Name, record_dict);
             }
 
-            recordDict[index] = record;
+            record_dict[index] = record;
         }
 
         /// <summary>
         /// Discard a left-recursion record for a rule at a given index.
         /// </summary>
-        /// <param name="rule">The name of the rule.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
-        public void ForgetLRRecord(string rule, int index)
+        public void ForgetLRRecord(Expansion expansion, int index)
         {
-            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
-            if (current_recursions.TryGetValue(rule, out recordDict))
-                recordDict.Remove(index);
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> record_dict;
+            if (current_recursions.TryGetValue(expansion.Name, out record_dict))
+                record_dict.Remove(index);
         }
 
         /// <summary>
         /// Get the left-recursion record for a rule at a given index.
         /// </summary>
-        /// <param name="rule">The name of the rule.</param>
+        /// <param name="expansion">The production expansion.</param>
         /// <param name="index">The input position.</param>
         /// <param name="record">The left-recursion record.</param>
         /// <returns>True if there is a left-recursion record for the rule at the index.</returns>
-        public bool TryGetLRRecord(string rule, int index, out LRRecord<MatchItem<TInput, TResult>> record)
+        public bool TryGetLRRecord(Expansion expansion, int index, out LRRecord<MatchItem<TInput, TResult>> record)
         {
-            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> recordDict;
-            if (current_recursions.TryGetValue(rule, out recordDict) && recordDict.TryGetValue(index, out record))
+            Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> record_dict;
+            if (current_recursions.TryGetValue(expansion.Name, out record_dict) 
+                && record_dict.TryGetValue(index, out record))
                 return true;
 
             record = null;
@@ -331,6 +347,22 @@ namespace IronMeta.Matcher
     } // class Memo
 
     /// <summary>
+    /// Records the production name and current expansion for left-recursion handling.
+    /// </summary>
+    public class Expansion
+    {
+        /// <summary>
+        /// The name of the production.
+        /// </summary>
+        public String Name { get; set; }
+
+        /// <summary>
+        /// The current expansion number.
+        /// </summary>
+        public int Num { get; set; }
+    }
+
+    /// <summary>
     /// A record of the current state of left-recursion handling for a rule.
     /// </summary>
     public class LRRecord<TItem>
@@ -347,9 +379,9 @@ namespace IronMeta.Matcher
         public int NumExpansions { get; set; }
 
         /// <summary>
-        /// The name of the current expansion.
+        /// The current expansion.
         /// </summary>
-        public string CurrentExpansion { get; set; }
+        public Expansion CurrentExpansion { get; set; }
 
         /// <summary>
         /// The farthest extent of the match.
