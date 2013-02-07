@@ -39,21 +39,21 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 
-namespace IronMeta.Generator.AST
+namespace IronMeta.AST
 {
 
-    using TItem = Matcher.MatchItem<char, ASTNode>;
+    using TItem = Matcher.MatchItem<char, Node>;
 
     /// <summary>
     /// Base class for Abstract Syntax Tree nodes for the IronMeta parser.
     /// </summary>
-    public class ASTNode
+    public class Node
     {
 
         /// <summary>
         /// Children of this node.
         /// </summary>
-        public List<ASTNode> Children { get; protected set; }
+        public List<Node> Children { get; protected set; }
 
         /// <summary>
         /// Match results for this node.
@@ -109,110 +109,110 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Fail : ASTNode
+    class Fail : Node
     {
         public string Message { get; protected set; }
 
-        public Fail(ASTNode message)
+        public Fail(Node message)
         {
             if (message != null)
                 this.Message = message.GetText().Trim();
         }
     }
 
-    class Any : ASTNode
+    class Any : Node
     {
     }
 
-    class Look : ASTNode
+    class Look : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Look(ASTNode body)
+        public Look(Node body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Not : ASTNode
+    class Not : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Not(ASTNode body)
+        public Not(Node body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Or : ASTNode
+    class Or : Node
     {
-        public ASTNode Left { get; protected set; }
-        public ASTNode Right { get; protected set; }
+        public Node Left { get; protected set; }
+        public Node Right { get; protected set; }
 
-        public Or(ASTNode left, ASTNode right)
+        public Or(Node left, Node right)
         {
             this.Left = left;
             this.Right = right;
 
-            Children = new List<ASTNode> { left, right };
+            Children = new List<Node> { left, right };
         }
     }
 
-    class And : ASTNode
+    class And : Node
     {
-        public ASTNode Left { get; protected set; }
-        public ASTNode Right { get; protected set; }
+        public Node Left { get; protected set; }
+        public Node Right { get; protected set; }
 
-        public And(ASTNode left, ASTNode right)
+        public And(Node left, Node right)
         {
             this.Left = left;
             this.Right = right;
 
-            Children = new List<ASTNode> { left, right };
+            Children = new List<Node> { left, right };
         }
     }
 
-    class Star : ASTNode
+    class Star : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Star(ASTNode body)
+        public Star(Node body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Plus : ASTNode
+    class Plus : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Plus(ASTNode body)
+        public Plus(Node body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Ques : ASTNode
+    class Ques : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Ques(ASTNode body)
+        public Ques(Node body)
         {
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class CallOrVar : ASTNode
+    class CallOrVar : Node
     {
         public TItem Name { get; protected set; }
 
@@ -224,12 +224,12 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Call : ASTNode
+    class Call : Node
     {
         public TItem Rule { get; protected set; }
-        public IEnumerable<ASTNode> Params { get; protected set; }
+        public IEnumerable<Node> Params { get; protected set; }
 
-        public Call(TItem rule, IEnumerable<ASTNode> parms)
+        public Call(TItem rule, IEnumerable<Node> parms)
         {
             this.Rule = rule;
             this.Params = parms;
@@ -238,7 +238,7 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Idfr : ASTNode
+    class Idfr : Node
     {
         public TItem Text { get; protected set; }
         public TItem GenericParams { get; protected set; }
@@ -259,7 +259,7 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Code : ASTNode
+    class Code : Node
     {
         public TItem Text { get; protected set; }
 
@@ -271,19 +271,19 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class InputClass : ASTNode
+    class InputClass : Node
     {
-        public IEnumerable<ASTNode> Inputs { get; protected set; }
+        public IEnumerable<Node> Inputs { get; protected set; }
         public List<string> Chars { get; protected set; }
 
-        public InputClass(IEnumerable<ASTNode> inputs)
+        public InputClass(IEnumerable<Node> inputs)
         {
             this.Inputs = inputs;
             this.Chars = new List<string>();
         }
     }
 
-    class ClassRange : ASTNode
+    class ClassRange : Node
     {
         public TItem Item { get; protected set; }
         public IEnumerable<char> Inputs { get; protected set; }
@@ -296,7 +296,7 @@ namespace IronMeta.Generator.AST
             this.Inputs = inputs;
         }
 
-        public static char GetChar(ASTNode node)
+        public static char GetChar(Node node)
         {
             if (node != null)
             {
@@ -309,83 +309,83 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Bind : ASTNode
+    class Bind : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
         public TItem VarName { get; protected set; }
 
-        public Bind(ASTNode body, TItem varname)
+        public Bind(Node body, TItem varname)
         {
             this.Body = body;
             this.VarName = varname;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
             Items = new List<TItem> { varname };
         }
     }
 
-    class Cond : ASTNode
+    class Cond : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
         public TItem Expression { get; protected set; }
 
-        public Cond(ASTNode body, TItem exp)
+        public Cond(Node body, TItem exp)
         {
             this.Body = body;
             this.Expression = exp;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
             Items = new List<TItem> { exp };
         }
     }
 
-    class Act : ASTNode
+    class Act : Node
     {
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
         public TItem Expression { get; protected set; }
 
-        public Act(ASTNode body, TItem exp)
+        public Act(Node body, TItem exp)
         {
             this.Body = body;
             this.Expression = exp;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
             Items = new List<TItem> { exp };
         }
     }
 
-    class Args : ASTNode
+    class Args : Node
     {
-        public ASTNode Parms { get; protected set; }
-        public ASTNode Body { get; protected set; }
+        public Node Parms { get; protected set; }
+        public Node Body { get; protected set; }
 
-        public Args(ASTNode parms, ASTNode body)
+        public Args(Node parms, Node body)
         {
             this.Parms = parms;
             this.Body = body;
 
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Rule : ASTNode
+    class Rule : Node
     {
         public TItem Name { get; protected set; }
-        public ASTNode Body { get; protected set; }
+        public Node Body { get; protected set; }
         public string Override { get; protected set; }
 
-        public Rule(TItem name, ASTNode body, string ovr)
+        public Rule(TItem name, Node body, string ovr)
         {
             this.Name = name;
             this.Body = body;
             this.Override = ovr;
 
             Items = new List<TItem> { name };
-            Children = new List<ASTNode> { body };
+            Children = new List<Node> { body };
         }
     }
 
-    class Grammar : ASTNode
+    class Grammar : Node
     {
         public TItem Name { get; protected set; }
         public TItem TInput { get; protected set; }
@@ -393,7 +393,7 @@ namespace IronMeta.Generator.AST
         public TItem Base { get; protected set; }
         public IEnumerable<Rule> Rules { get; protected set; }
 
-        public Grammar(TItem name, TItem tinput, TItem tresult, TItem baseclass, IEnumerable<ASTNode> rules)
+        public Grammar(TItem name, TItem tinput, TItem tresult, TItem baseclass, IEnumerable<Node> rules)
         {
             this.Name = name;
             this.TInput = tinput;
@@ -402,11 +402,11 @@ namespace IronMeta.Generator.AST
             this.Rules = rules.Cast<Rule>();
 
             Items = new List<TItem> { name, tinput, tresult, baseclass };
-            Children = new List<ASTNode>(rules);
+            Children = new List<Node>(rules);
         }
     }
 
-    class Using : ASTNode
+    class Using : Node
     {
         public TItem Name { get; protected set; }
 
@@ -418,27 +418,27 @@ namespace IronMeta.Generator.AST
         }
     }
 
-    class Preamble : ASTNode
+    class Preamble : Node
     {
         public IEnumerable<Using> Usings { get; protected set; }
 
-        public Preamble(IEnumerable<ASTNode> usings)
+        public Preamble(IEnumerable<Node> usings)
         {
             this.Usings = usings.Cast<Using>();
         }
     }
 
-    class GrammarFile : ASTNode
+    class GrammarFile : Node
     {
         public Preamble Preamble { get; protected set; }
         public Grammar Grammar { get; protected set; }
 
-        public GrammarFile(ASTNode preamble, ASTNode grammar)
+        public GrammarFile(Node preamble, Node grammar)
         {
             this.Preamble = preamble as Preamble;
             this.Grammar = grammar as Grammar;
 
-            Children = new List<ASTNode> { grammar };
+            Children = new List<Node> { grammar };
         }
     }
 

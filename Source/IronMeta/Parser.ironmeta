@@ -33,8 +33,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-using IronMeta.Generator;
-using IronMeta.Generator.AST;
+using IronMeta;
+using IronMeta.AST;
 
 ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 {

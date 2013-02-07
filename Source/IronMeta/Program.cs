@@ -42,18 +42,16 @@ using System.Text.RegularExpressions;
 
 using IronMeta.Matcher;
 
-namespace IronMeta.Generator
+namespace IronMeta
 {
 
-    using Result = MatchResult<char, AST.ASTNode>;
+    using Result = MatchResult<char, AST.Node>;
 
     /// <summary>
     /// Main program of the IronMeta generator.
     /// </summary>
     public class Program
     {
-
-        static readonly Regex TAB_REGEX = new Regex("\t", RegexOptions.Compiled);
 
         /// <summary>
         /// Generate a parser from an IronMeta grammar.
@@ -219,11 +217,11 @@ namespace IronMeta.Generator
                             }
                             else
                             {
-                                int lineNum = CharMatcher<AST.ASTNode>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
+                                int lineNum = CharMatcher<AST.Node>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
                                 Console.WriteLine("{0} ({1}): {2}", inputInfo.Name, lineNum, match.Memo.LastError);
 
                                 int offset;
-                                string line = CharMatcher<AST.ASTNode>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
+                                string line = CharMatcher<AST.Node>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
 
                                 Console.WriteLine();
                                 Console.WriteLine(line.Trim());

@@ -35,7 +35,7 @@
 
 using System.IO;
 
-namespace IronMeta.Generator
+namespace IronMeta
 {
 
     /// <summary>

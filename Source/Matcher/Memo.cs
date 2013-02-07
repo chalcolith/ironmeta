@@ -1,6 +1,4 @@
 ﻿//////////////////////////////////////////////////////////////////////
-// $Id: MatchResult.cs 125 2010-11-10 23:45:07Z kulibali $
-//
 // Copyright (C) 2009-2012, The IronMeta Project
 // All rights reserved.
 // 

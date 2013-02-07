@@ -38,7 +38,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace IronMeta.Generator
+namespace IronMeta
 {
 
     /// <summary>
@@ -52,10 +52,10 @@ namespace IronMeta.Generator
         bool add_timestamp = true;
         string gName, gBase, tInput, tResult, tItem;
 
-        Dictionary<string, AST.ASTNode> ruleBodies = new Dictionary<string, AST.ASTNode>();
+        Dictionary<string, AST.Node> ruleBodies = new Dictionary<string, AST.Node>();
         Dictionary<string, string> overrides = new Dictionary<string, string>();
 
-        public CSharpGen(AST.ASTNode topNode, string name_space)
+        public CSharpGen(AST.Node topNode, string name_space)
         {
             if (!(topNode is AST.GrammarFile))
                 throw new Exception("Unable to generate.");
@@ -64,7 +64,7 @@ namespace IronMeta.Generator
             this.grammar = topNode as AST.GrammarFile;
         }
 
-        public CSharpGen(AST.ASTNode topNode, string name_space, bool add_timestamp)
+        public CSharpGen(AST.Node topNode, string name_space, bool add_timestamp)
         {
             if (!(topNode is AST.GrammarFile))
                 throw new Exception("Unable to generate.");
@@ -80,7 +80,7 @@ namespace IronMeta.Generator
             GenerateGrammarFile(tw);
         }
 
-        void Analyze(AST.ASTNode node, AST.Rule currentRule)
+        void Analyze(AST.Node node, AST.Rule currentRule)
         {
             // get grammar name & generic parameters
             if (node is AST.Grammar)
@@ -111,7 +111,7 @@ namespace IronMeta.Generator
                 if (!string.IsNullOrEmpty(currentRule.Override))
                     overrides[ruleName] = currentRule.Override;
 
-                AST.ASTNode oldBody;
+                AST.Node oldBody;
                 if (ruleBodies.TryGetValue(ruleName, out oldBody))
                     ruleBodies[ruleName] = new AST.Or(oldBody, currentRule.Body);
                 else
@@ -123,7 +123,7 @@ namespace IronMeta.Generator
             {
                 AST.InputClass input = node as AST.InputClass;
 
-                foreach (AST.ASTNode child in input.Inputs)
+                foreach (AST.Node child in input.Inputs)
                 {
                     if (child is AST.Code)
                     {
@@ -142,7 +142,7 @@ namespace IronMeta.Generator
             // recurse
             if (node.Children != null)
             {
-                foreach (AST.ASTNode child in node.Children)
+                foreach (AST.Node child in node.Children)
                 {
                     if (child != null)
                         Analyze(child, currentRule);
@@ -275,7 +275,7 @@ namespace IronMeta.Generator
             tw.Write(innerIndent); tw.WriteLine("{ }");
 
             // generate rules
-            foreach (KeyValuePair<string, AST.ASTNode> item in ruleBodies)
+            foreach (KeyValuePair<string, AST.Node> item in ruleBodies)
             {
                 GenerateRule(tw, item.Key, item.Value, innerIndent);
             }
@@ -288,7 +288,7 @@ namespace IronMeta.Generator
             //GenerateItemClass(tw, indent);
         }
 
-        void GenerateRule(TextWriter tw, string ruleName, AST.ASTNode body, string indent)
+        void GenerateRule(TextWriter tw, string ruleName, AST.Node body, string indent)
         {
             // generate rule
             tw.WriteLine();
@@ -329,7 +329,7 @@ namespace IronMeta.Generator
             tw.WriteLine();
         }
 
-        void GenerateBody(TextWriter tw, HashSet<string> vars, AST.ASTNode node, ref int n, ref bool use_args, bool match_args, string indent)
+        void GenerateBody(TextWriter tw, HashSet<string> vars, AST.Node node, ref int n, ref bool use_args, bool match_args, string indent)
         {
             int outer_n = n;
 
@@ -374,7 +374,7 @@ namespace IronMeta.Generator
             // generate in post order
             if (node.Children != null)
             {
-                foreach (AST.ASTNode child in node.Children)
+                foreach (AST.Node child in node.Children)
                 {
                     int cur_n = n++;
 
@@ -1022,7 +1022,7 @@ namespace IronMeta.Generator
             List<string> plist = new List<string>();
 
             int i = 0;
-            foreach (AST.ASTNode pnode in node.Params)
+            foreach (AST.Node pnode in node.Params)
             {
                 string pstr = pnode.GetText().Trim();
 

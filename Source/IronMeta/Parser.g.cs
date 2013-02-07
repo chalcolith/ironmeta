@@ -6,23 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
-using IronMeta.Generator;
-using IronMeta.Generator.AST;
+using IronMeta;
+using IronMeta.AST;
 
 #pragma warning disable 1591
 
-namespace IronMeta.Generator
+namespace IronMeta
 {
 
     using _Parser_Inputs = IEnumerable<char>;
-    using _Parser_Results = IEnumerable<ASTNode>;
-    using _Parser_Item = IronMeta.Matcher.MatchItem<char, ASTNode>;
-    using _Parser_Args = IEnumerable<IronMeta.Matcher.MatchItem<char, ASTNode>>;
-    using _Parser_Memo = Memo<char, ASTNode>;
-    using _Parser_Rule = System.Action<Memo<char, ASTNode>, int, IEnumerable<IronMeta.Matcher.MatchItem<char, ASTNode>>>;
-    using _Parser_Base = IronMeta.Matcher.Matcher<char, ASTNode>;
+    using _Parser_Results = IEnumerable<Node>;
+    using _Parser_Item = IronMeta.Matcher.MatchItem<char, Node>;
+    using _Parser_Args = IEnumerable<IronMeta.Matcher.MatchItem<char, Node>>;
+    using _Parser_Memo = Memo<char, Node>;
+    using _Parser_Rule = System.Action<Memo<char, Node>, int, IEnumerable<IronMeta.Matcher.MatchItem<char, Node>>>;
+    using _Parser_Base = IronMeta.Matcher.Matcher<char, Node>;
 
-    public partial class Parser : IronMeta.Matcher.CharMatcher<ASTNode>
+    public partial class Parser : IronMeta.Matcher.CharMatcher<Node>
     {
         public Parser()
             : base()
@@ -179,7 +179,7 @@ namespace IronMeta.Generator
 
             // PLUS 2
             int _start_i2 = _index;
-            var _res2 = Enumerable.Empty<ASTNode>();
+            var _res2 = Enumerable.Empty<Node>();
         label2:
 
             // CALLORVAR Using
@@ -257,7 +257,7 @@ namespace IronMeta.Generator
 
             // STAR 8
             int _start_i8 = _index;
-            var _res8 = Enumerable.Empty<ASTNode>();
+            var _res8 = Enumerable.Empty<Node>();
         label8:
 
             // AND 9
@@ -678,7 +678,7 @@ namespace IronMeta.Generator
 
             // STAR 27
             int _start_i27 = _index;
-            var _res27 = Enumerable.Empty<ASTNode>();
+            var _res27 = Enumerable.Empty<Node>();
         label27:
 
             // CALLORVAR Rule
@@ -925,7 +925,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Rule(name, parms.Inputs.Any() ? new Args(parms, body) : (AST.ASTNode)body, Trimmed(ovr)); }, _r0), true) );
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Rule(name, parms.Inputs.Any() ? new Args(parms, body) : (AST.Node)body, Trimmed(ovr)); }, _r0), true) );
             }
 
         }
@@ -949,7 +949,7 @@ namespace IronMeta.Generator
 
             // STAR 3
             int _start_i3 = _index;
-            var _res3 = Enumerable.Empty<ASTNode>();
+            var _res3 = Enumerable.Empty<Node>();
         label3:
 
             // AND 4
@@ -1019,7 +1019,7 @@ namespace IronMeta.Generator
                 _memo.Results.Pop();
                 _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results
                     .Where(node => node != null)
-                    .Aggregate<ASTNode, ASTNode>(null, (prev, cur) => prev != null ? new Or(prev, cur) : cur); }, _r0), true) );
+                    .Aggregate<Node, Node>(null, (prev, cur) => prev != null ? new Or(prev, cur) : cur); }, _r0), true) );
             }
 
         }
@@ -1221,7 +1221,7 @@ namespace IronMeta.Generator
 
             // PLUS 1
             int _start_i1 = _index;
-            var _res1 = Enumerable.Empty<ASTNode>();
+            var _res1 = Enumerable.Empty<Node>();
         label1:
 
             // CALLORVAR ConditionExp
@@ -1253,7 +1253,7 @@ namespace IronMeta.Generator
                 _memo.Results.Pop();
                 _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results
                     .Where(node => node != null)
-                    .Aggregate<ASTNode, ASTNode>(null, (prev, cur) => prev != null ? new And(prev, cur) : cur); }, _r0), true) );
+                    .Aggregate<Node, Node>(null, (prev, cur) => prev != null ? new And(prev, cur) : cur); }, _r0), true) );
             }
 
         }
@@ -1968,11 +1968,11 @@ namespace IronMeta.Generator
             if (max < min)
                 throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
-            ASTNode res = null;
+            Node res = null;
             for (int i = 0; i < min; ++i)
-                res = res != null ? new And(res, exp) : (ASTNode)exp;
+                res = res != null ? new And(res, exp) : (Node)exp;
             for (int i = 0; i < max; ++i)
-                res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
+                res = res != null ? new And(res, new Ques(exp)) : (Node)new Ques(exp);
             return res; }, _r0), true) );
             }
 
@@ -2526,7 +2526,7 @@ namespace IronMeta.Generator
 
             // STAR 3
             int _start_i3 = _index;
-            var _res3 = Enumerable.Empty<ASTNode>();
+            var _res3 = Enumerable.Empty<Node>();
         label3:
 
             // AND 4
@@ -2892,7 +2892,7 @@ namespace IronMeta.Generator
 
             // PLUS 8
             int _start_i8 = _index;
-            var _res8 = Enumerable.Empty<ASTNode>();
+            var _res8 = Enumerable.Empty<Node>();
         label8:
 
             // OR 9
@@ -3353,7 +3353,7 @@ namespace IronMeta.Generator
 
             // STAR 6
             int _start_i6 = _index;
-            var _res6 = Enumerable.Empty<ASTNode>();
+            var _res6 = Enumerable.Empty<Node>();
         label6:
 
             // AND 7
@@ -3501,7 +3501,7 @@ namespace IronMeta.Generator
 
             // STAR 21
             int _start_i21 = _index;
-            var _res21 = Enumerable.Empty<ASTNode>();
+            var _res21 = Enumerable.Empty<Node>();
         label21:
 
             // AND 22
@@ -3652,7 +3652,7 @@ namespace IronMeta.Generator
 
             // STAR 36
             int _start_i36 = _index;
-            var _res36 = Enumerable.Empty<ASTNode>();
+            var _res36 = Enumerable.Empty<Node>();
         label36:
 
             // OR 37
@@ -3795,7 +3795,7 @@ namespace IronMeta.Generator
 
             // STAR 51
             int _start_i51 = _index;
-            var _res51 = Enumerable.Empty<ASTNode>();
+            var _res51 = Enumerable.Empty<Node>();
         label51:
 
             // OR 52
@@ -3997,7 +3997,7 @@ namespace IronMeta.Generator
 
             // STAR 4
             int _start_i4 = _index;
-            var _res4 = Enumerable.Empty<ASTNode>();
+            var _res4 = Enumerable.Empty<Node>();
         label4:
 
             // CALLORVAR IdentBody
@@ -4124,7 +4124,7 @@ namespace IronMeta.Generator
 
             // STAR 4
             int _start_i4 = _index;
-            var _res4 = Enumerable.Empty<ASTNode>();
+            var _res4 = Enumerable.Empty<Node>();
         label4:
 
             // AND 5
@@ -4249,7 +4249,7 @@ namespace IronMeta.Generator
 
             // STAR 6
             int _start_i6 = _index;
-            var _res6 = Enumerable.Empty<ASTNode>();
+            var _res6 = Enumerable.Empty<Node>();
         label6:
 
             // AND 7
@@ -4373,7 +4373,7 @@ namespace IronMeta.Generator
 
             // STAR 18
             int _start_i18 = _index;
-            var _res18 = Enumerable.Empty<ASTNode>();
+            var _res18 = Enumerable.Empty<Node>();
         label18:
 
             // AND 19
@@ -4513,7 +4513,7 @@ namespace IronMeta.Generator
 
             // PLUS 1
             int _start_i1 = _index;
-            var _res1 = Enumerable.Empty<ASTNode>();
+            var _res1 = Enumerable.Empty<Node>();
         label1:
 
             // INPUT CLASS
@@ -5559,7 +5559,7 @@ namespace IronMeta.Generator
 
             // STAR 0
             int _start_i0 = _index;
-            var _res0 = Enumerable.Empty<ASTNode>();
+            var _res0 = Enumerable.Empty<Node>();
         label0:
 
             // OR 1
@@ -5657,7 +5657,7 @@ namespace IronMeta.Generator
 
             // STAR 4
             int _start_i4 = _index;
-            var _res4 = Enumerable.Empty<ASTNode>();
+            var _res4 = Enumerable.Empty<Node>();
         label4:
 
             // AND 5
@@ -5833,7 +5833,7 @@ namespace IronMeta.Generator
 
             // STAR 23
             int _start_i23 = _index;
-            var _res23 = Enumerable.Empty<ASTNode>();
+            var _res23 = Enumerable.Empty<Node>();
         label23:
 
             // AND 24
