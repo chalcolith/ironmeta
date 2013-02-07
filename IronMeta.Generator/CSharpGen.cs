@@ -155,7 +155,7 @@ namespace IronMeta.Generator
             tw.WriteLine("//");
 
             if (add_timestamp)
-                tw.WriteLine("// IronMeta {1} Parser; Generated {0} UTC", DateTime.UtcNow, gName);
+                tw.WriteLine("// IronMeta {1} Parser; Generated {0} UTC", DateTime.UtcNow.ToString("u"), gName);
             else
                 tw.WriteLine("// IronMeta {0} Parser", gName);
 

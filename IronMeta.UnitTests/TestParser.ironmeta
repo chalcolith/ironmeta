@@ -117,14 +117,16 @@ ironmeta TestParser<char, int> : IronMeta.Matcher.CharMatcher<int>
 
 	TestInputs = 'a' 'b' 'c' -> { Input(_IM_Result) == "abc" ? 1 : 0 };
 
-	TestMinMax1 = 'a'{3,4};
-	TestMinMax2 = 'b'{0,1};
-	//TestMinMaxBad = 'd'{0,0}
+	TestMinMax1 = 'a'{3,4} ~.;
+	TestMinMax2 = 'b'{0,1} ~.;
+	//TestMinMaxBad = 'd'{0,0} ~.;
 
 	TestReturn = TestReturn1 | TestReturn2 | TestReturn3;
 
 	TestReturn1 = "a" -> { new List<int> { 1, 2, 3} };
 	TestReturn2 = "b" -> { new List<int> { 4, 5, 6} };
 	TestReturn3 = "c" -> { new List<int> { 7, 8, 9} };
+
+	TestCount = 'a'{4} 'b' ~.;
 
 }

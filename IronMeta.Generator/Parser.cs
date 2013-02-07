@@ -1959,7 +1959,7 @@ namespace IronMeta.Generator
             {
                 _memo.Results.Pop();
                 _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { int min = int.Parse(Input(n));
-            int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
+            int max = x != null && x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
             if (min < 0)
                 throw new MatcherException(n.StartIndex, "min must be >= 0");
@@ -1971,7 +1971,7 @@ namespace IronMeta.Generator
             ASTNode res = null;
             for (int i = 0; i < min; ++i)
                 res = res != null ? new And(res, exp) : (ASTNode)exp;
-            for (int i = 0; i < max; ++i)
+            for (int i = 0; i < (max - min); ++i)
                 res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
             return res; }, _r0), true) );
             }

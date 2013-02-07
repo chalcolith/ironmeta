@@ -90,7 +90,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 	MinMaxTerm = Term:exp BRA Number:n (COMMA Number:x)? KET ->
 	    {
 			int min = int.Parse(Input(n));
-			int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
+			int max = x != null && x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
 			if (min < 0)
 			    throw new MatcherException(n.StartIndex, "min must be >= 0");
@@ -102,7 +102,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 			ASTNode res = null;
 			for (int i = 0; i < min; ++i)
 			    res = res != null ? new And(res, exp) : (ASTNode)exp;
-			for (int i = 0; i < max; ++i)
+			for (int i = 0; i < (max-min); ++i)
 			    res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
 			return res;
 		};

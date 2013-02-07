@@ -660,13 +660,16 @@ namespace IronMeta.UnitTests
         {
             var match = Run("aaaa", "TestMinMax1");
             Assert.True(match.Success);
+
+            match = Run("aaaaa", "TestMinMax1");
+            Assert.False(match.Success);
         }
 
         [Fact]
         public void TestMinMax03()
         {
             var match = Run("aa", "TestMinMax1");
-            Assert.False(match.Success);        
+            Assert.False(match.Success);
         }
 
         [Fact]
@@ -688,6 +691,19 @@ namespace IronMeta.UnitTests
         {
             var match = Run("", "TestMinMax2");
             Assert.True(match.Success);
+        }
+
+        [Fact]
+        public void TestSingleNum()
+        {
+            var match = Run("aaaab", "TestCount");
+            Assert.True(match.Success);
+
+            match = Run("aaab", "TestCount");
+            Assert.False(match.Success);
+
+            match = Run("aaaaab", "TestCount");
+            Assert.False(match.Success);
         }
 
         [Fact]
