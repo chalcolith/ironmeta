@@ -41,7 +41,7 @@ namespace IronMeta
     /// <summary>
     /// Simple interface for code generators.
     /// </summary>
-    interface IGenerator
+    public interface IGenerator
     {
         void Generate(TextWriter sb);
     }

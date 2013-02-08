@@ -44,7 +44,7 @@ namespace IronMeta
     /// <summary>
     /// Generates C# code for an IronMeta parser from an abstract syntax tree.
     /// </summary>
-    class CSharpGen : IGenerator
+    public class CSharpGen : IGenerator
     {
 
         AST.GrammarFile grammar;

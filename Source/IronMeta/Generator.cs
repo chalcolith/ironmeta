@@ -50,7 +50,7 @@ namespace IronMeta
     /// <summary>
     /// Main program of the IronMeta generator.
     /// </summary>
-    public class Program
+    public class Generator
     {
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace IronMeta
             }
 
             // process files
-            Program generator = new Program();
+            Generator generator = new Generator();
 
             for (int i = 0; i < inputFiles.Count; ++i)
             {
