@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////
-// Copyright (C) 2009-2012, The IronMeta Project
+// Copyright © 2013 The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -44,7 +44,7 @@ namespace IronMeta
     /// <summary>
     /// Generates C# code for an IronMeta parser from an abstract syntax tree.
     /// </summary>
-    public class CSharpGen : IGenerator
+    class CSharpGen : IGenerator
     {
 
         AST.GrammarFile grammar;

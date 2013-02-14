@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////
-// Copyright (C) 2009-2012, The IronMeta Project
+// Copyright © 2013 The IronMeta Project
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -41,91 +41,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using IronMeta.Matcher;
+using IronMeta.Generator;
 
 namespace IronMeta
 {
 
-    using Result = MatchResult<char, AST.Node>;
-
     /// <summary>
     /// Main program of the IronMeta generator.
     /// </summary>
-    public class Generator
+    public class Program
     {
-
-        /// <summary>
-        /// Generate a parser from an IronMeta grammar.
-        /// </summary>
-        /// <param name="input">Input stream.</param>
-        /// <param name="output">Output stream.</param>
-        /// <param name="name_space">Namespace to use in the generated parser.</param>
-        /// <returns></returns>
-        public Result Process(IEnumerable<char> input, TextWriter output, string name_space)
-        {
-            Parser parser = new Parser();
-            Result match = parser.GetMatch(input, parser.IronMetaFile);
-
-            if (match.Success)
-            {
-                CSharpGen csgen = new CSharpGen(match.Result, name_space);
-                csgen.Generate(output);
-            }
-
-            return match;
-        }
-
-        /// <summary>
-        /// Generate a parser from an IronMeta grammar.
-        /// </summary>
-        /// <param name="input_fname">Input filename.</param>
-        /// <param name="output_fname">Output filename.</param>
-        /// <param name="name_space">Namespace for the generated parser.</param>
-        /// <param name="force">Force generation even if the existing parser is newer than the source.</param>
-        /// <returns>Whether or not generation succeeded.</returns>
-        public Result Process(string input_fname, string output_fname, string name_space, bool force)
-        {
-            if (string.IsNullOrEmpty(name_space))
-            {
-                FileInfo info = new FileInfo(input_fname);
-                name_space = info.Directory.Name;
-            }
-
-            FileInfo srcInfo = new FileInfo(input_fname);
-            if (!srcInfo.Exists)
-                throw new Exception("File not found: " + input_fname);
-
-            FileInfo destInfo = new FileInfo(output_fname);
-            if (destInfo.Exists && !force)
-            {
-                if (srcInfo.LastWriteTimeUtc <= destInfo.LastWriteTimeUtc)
-                {
-                    Console.WriteLine("{0} unchanged; not generating.", input_fname);
-                    return null;
-                }
-            }
-
-            string contents;
-            using (StreamReader sr = new StreamReader(input_fname))
-            {
-                contents = sr.ReadToEnd();
-            }
-
-            Result match = null;
-            using (StringWriter sw = new StringWriter())
-            {
-                match = Process(contents, sw, name_space);
-
-                if (match.Success)
-                {
-                    using (StreamWriter fw = new StreamWriter(output_fname))
-                    {
-                        fw.Write(sw.ToString());
-                    }
-                }
-            }
-
-            return match;
-        }
 
         /// <summary>
         /// Main function.
@@ -188,8 +113,6 @@ namespace IronMeta
             }
 
             // process files
-            Generator generator = new Generator();
-
             for (int i = 0; i < inputFiles.Count; ++i)
             {
                 string inputFile = inputFiles[i];
@@ -204,7 +127,7 @@ namespace IronMeta
                         Stopwatch stopwatch = new Stopwatch();
 
                         stopwatch.Start();
-                        Result match = generator.Process(inputFile, outputFile, nameSpace, force);
+                        var match = CSharpShell.Process(inputFile, outputFile, nameSpace, force);
                         stopwatch.Stop();
 
                         FileInfo inputInfo = new FileInfo(inputFile);

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matcher", "Matcher\Matcher.csproj", "{EF704069-517A-48A5-9AF2-1B257544D358}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Matcher", "Matcher\IronMeta.Matcher.csproj", "{EF704069-517A-48A5-9AF2-1B257544D358}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "IronMeta\IronMeta.csproj", "{6EB07DF5-34E1-4769-A1E3-2027C68B9234}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Tests", "Tests\IronMeta.Tests.csproj", "{3B5DA033-D30B-4724-84DB-83BAB377CE99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{6767D6B1-E18E-4778-8E4F-8870B881ECF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Generator", "Generator\IronMeta.Generator.csproj", "{6767D6B1-E18E-4778-8E4F-8870B881ECF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSGenerate", "VSGenerate\VSGenerate.csproj", "{6DA50333-41CA-478A-8ED2-89FB298CCD02}"
 EndProject

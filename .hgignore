@@ -1,9 +1,10 @@
 syntax: regexp
 Documentation/html
-
 syntax: glob
 bin
 obj
 *.g.cs
 *.suo
 *.user
+Source/VSGenerate/Lib/SDK.zip
+Source/VSGenerate/Lib/VSSDK
