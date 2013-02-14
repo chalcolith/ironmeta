@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Generator")]
+[assembly: AssemblyTitle("VSGenerate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IronMeta")]
-[assembly: AssemblyProduct("Generator")]
+[assembly: AssemblyProduct("VSGenerate")]
 [assembly: AssemblyCopyright("Copyright © IronMeta 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("baa37a26-83d5-4810-b574-fc1221ff1caf")]
+[assembly: Guid("d18fd9aa-1788-4a69-98a3-c895a2b6800c")]
 
 // Version information for an assembly consists of the following four values:
 //
