@@ -50,6 +50,7 @@ using IronMeta.Matcher;
 namespace IronMeta.VSGenerate
 {
 
+    [ComVisible(true)]
     public class VSGenerator : IVsSingleFileGenerator
     {
         #region IVsSingleFileGenerator Members
@@ -94,6 +95,20 @@ namespace IronMeta.VSGenerate
                     return VSConstants.E_FAIL;
                 }
             }
+        }
+
+        #endregion
+
+        #region COM Registration and Unregistration
+
+        [ComRegisterFunction]
+        private static void ComRegisterFunction(Type t)
+        {
+        }
+
+        [ComUnregisterFunction]
+        private static void ComUnregisterFunction(Type t)
+        {
         }
 
         #endregion
