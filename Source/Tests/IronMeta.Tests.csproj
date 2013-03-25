@@ -53,7 +53,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Plugin\PluginTestGrammar.g.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PluginTestGrammar.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Plugin\PluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plugin\PluginTestGrammar.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>PluginTestGrammar.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Matcher\IronMeta.Matcher.csproj">
+      <Project>{ef704069-517a-48a5-9af2-1b257544d358}</Project>
+      <Name>IronMeta.Matcher</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

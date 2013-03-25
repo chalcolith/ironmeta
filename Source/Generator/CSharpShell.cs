@@ -59,7 +59,7 @@ namespace IronMeta.Generator
         /// <param name="name_space">Namespace to use in the generated parser.</param>
         public static MatchResult<char, AST.Node> Process(IEnumerable<char> input, TextWriter output, string name_space)
         {
-            var parser = new Parser();
+            var parser = new BootstrapParser();
             var match = parser.GetMatch(input, parser.IronMetaFile);
 
             if (match.Success)

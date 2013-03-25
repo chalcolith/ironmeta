@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>IronMeta.keyfile.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,10 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\Node.cs" />
+    <Compile Include="BootstrapParser.cs" />
     <Compile Include="CSharpGen.cs" />
     <Compile Include="CSharpShell.cs" />
     <Compile Include="IGenerator.cs" />
-    <Compile Include="Parser.g.cs" />
+    <Compile Include="Parser.g.cs">
+      <SubType>Code</SubType>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Parser.ironmeta</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +68,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Parser.ironmeta" />
+    <None Include="IronMeta.keyfile.pfx" />
+    <None Include="Parser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Parser.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

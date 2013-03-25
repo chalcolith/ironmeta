@@ -8,3 +8,4 @@ obj
 *.user
 Source/VSGenerate/Lib/SDK.zip
 Source/VSGenerate/Lib/VSSDK
+IronMeta.keyfile.pfx

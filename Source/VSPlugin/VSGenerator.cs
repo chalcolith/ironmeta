@@ -46,11 +46,14 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using IronMeta.Generator;
 using IronMeta.Matcher;
+using Microsoft.Win32;
+using System.Diagnostics;
 
-namespace IronMeta.VSGenerate
+namespace IronMeta.VSPlugin
 {
 
     [ComVisible(true)]
+    [Guid("BBFE6A50-F3A7-409A-97E4-08217808896F")]
     public class VSGenerator : IVsSingleFileGenerator
     {
         #region IVsSingleFileGenerator Members
@@ -101,14 +104,45 @@ namespace IronMeta.VSGenerate
 
         #region COM Registration and Unregistration
 
+        const string VS_KEY = @"Software\Microsoft\VisualStudio\11.0\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\";
+        const string TOOL_NAME = "IronMetaGenerator";
+        const string TOOL_EXT = ".ironmeta";
+
         [ComRegisterFunction]
         private static void ComRegisterFunction(Type t)
         {
+            var guid = t.GUID.ToString("B");
+
+            using (var classKey = Registry.ClassesRoot.CreateSubKey(@"CLSID\" + guid))
+            {
+                classKey.SetValue("", "COM+ class: " + t.FullName);
+                classKey.SetValue("InprocServer32", "C:\\WINDOWS\\system32\\mscoree.dll");
+                classKey.SetValue("ThreadingModel", "Both");
+                classKey.SetValue("Class", t.FullName);
+                classKey.SetValue("Assembly", t.Assembly.FullName);
+            }
+
+            using (var vsKey = Registry.LocalMachine.CreateSubKey(VS_KEY + TOOL_NAME))
+            {
+                vsKey.SetValue("", "IronMeta C# Generator");
+                vsKey.SetValue("CLSID", guid);
+                vsKey.SetValue("GeneratesDesignTimeSource", 1, RegistryValueKind.DWord);
+            }
+
+            using (var extKey = Registry.LocalMachine.CreateSubKey(VS_KEY + TOOL_EXT))
+            {
+                extKey.SetValue("", "IronMetaGenerator");
+            }
         }
 
         [ComUnregisterFunction]
         private static void ComUnregisterFunction(Type t)
         {
+            var guid = t.GUID.ToString("B");
+
+            Registry.LocalMachine.DeleteSubKey(VS_KEY + TOOL_EXT);
+            Registry.LocalMachine.DeleteSubKeyTree(VS_KEY + TOOL_NAME);
+            Registry.ClassesRoot.DeleteSubKeyTree(@"CLSID\" + guid);
         }
 
         #endregion

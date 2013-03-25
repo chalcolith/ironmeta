@@ -22,13 +22,13 @@ namespace IronMeta
     using _Parser_Rule = System.Action<Memo<char, Node>, int, IEnumerable<IronMeta.Matcher.MatchItem<char, Node>>>;
     using _Parser_Base = IronMeta.Matcher.Matcher<char, Node>;
 
-    public partial class Parser : IronMeta.Matcher.CharMatcher<Node>
+    public partial class BootstrapParser : IronMeta.Matcher.CharMatcher<Node>
     {
-        public Parser()
+        public BootstrapParser()
             : base()
         { }
 
-        public Parser(bool handle_left_recursion)
+        public BootstrapParser(bool handle_left_recursion)
             : base(handle_left_recursion)
         { }
 

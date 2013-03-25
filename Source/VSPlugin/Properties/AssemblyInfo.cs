@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VSGenerate")]
+[assembly: AssemblyTitle("VSPlugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IronMeta")]
-[assembly: AssemblyProduct("VSGenerate")]
+[assembly: AssemblyProduct("VSPlugin")]
 [assembly: AssemblyCopyright("Copyright © IronMeta 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
