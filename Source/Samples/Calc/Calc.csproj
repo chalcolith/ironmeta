@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6767D6B1-E18E-4778-8E4F-8870B881ECF1}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{0219B7F1-7E4F-4FE0-A0B4-35ED1CC6E3C0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IronMeta.Generator</RootNamespace>
-    <AssemblyName>IronMeta.Generator</AssemblyName>
+    <RootNamespace>Calc</RootNamespace>
+    <AssemblyName>Calc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,24 +21,37 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IronMeta.keyfile.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronMeta.Generator, Version=3.0.4841.27446, Culture=neutral, PublicKeyToken=80170e38f823b676, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\IronMeta.Generator.dll</HintPath>
+    </Reference>
+    <Reference Include="IronMeta.Matcher, Version=3.0.4841.27445, Culture=neutral, PublicKeyToken=80170e38f823b676, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\IronMeta.Matcher.dll</HintPath>
+    </Reference>
+    <Reference Include="IronMeta.VSPlugin, Version=3.0.4841.27447, Culture=neutral, PublicKeyToken=80170e38f823b676, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\IronMeta.VSPlugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\Microsoft.VisualStudio.Shell.11.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,33 +59,26 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VSPackage">
+      <HintPath>..\..\packages\IronMeta.3.0.4841.27531\lib\net45\VSPackage.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AST\Node.cs" />
-    <Compile Include="BootstrapParser.cs" />
-    <Compile Include="CSharpGen.cs" />
-    <Compile Include="CSharpShell.cs" />
-    <Compile Include="IGenerator.cs" />
-    <Compile Include="Parser.g.cs">
-      <SubType>Code</SubType>
+    <Compile Include="Calc.g.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Parser.ironmeta</DependentUpon>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Calc.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Matcher\IronMeta.Matcher.csproj">
-      <Project>{ef704069-517a-48a5-9af2-1b257544d358}</Project>
-      <Name>IronMeta.Matcher</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="IronMeta.keyfile.pfx" />
-    <None Include="Parser.ironmeta">
+    <None Include="App.config" />
+    <None Include="Calc.ironmeta">
       <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>Parser.g.cs</LastGenOutput>
+      <LastGenOutput>Calc.g.cs</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

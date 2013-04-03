@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>IronMeta</id>
+    <version>$version$</version>
+    <title>IronMeta</title>
+    <authors>Gordon Tisher</authors>
+    <owners>The IronMeta Project</owners>
+    <description>
+      The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+      Parser generator for Parsing Expression Grammars
+    </summary>
+    <language>en-US</language>
+    <projectUrl>http://ironmeta.sourceforge.net/</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://ironmeta.sourceforge.net/_b_s_d_license.html</licenseUrl>
+    <copyright>Copyright The IronMeta Project 2013</copyright>
+    <dependencies>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+    <file src="..\VSPlugin\bin\Release\*.dll" target="lib\net45" />
+    <file src="..\VSPlugin\Lib\*.dll" target="lib\net45" />
+    <file src="tools\" target="tools" />
+    <file src="..\IronMeta\bin\Release\IronMeta.exe" target="tools\net45" />
+    <file src="content\" target="content" />
+  </files>
+</package>
