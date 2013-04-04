@@ -88,9 +88,9 @@ namespace IronMeta.VSPlugin
                 }
                 else
                 {
-                    int line = CharMatcher<AST.Node>.GetLineNumber(result.Memo, result.ErrorIndex);
-
-                    pGenerateProgress.GeneratorError(0, 0, result.Error, (uint)(line - 1), uint.MaxValue);
+                    int num, offset;
+                    var line = CharMatcher<AST.Node>.GetLine(result.Memo, result.ErrorIndex, out num, out offset);
+                    pGenerateProgress.GeneratorError(0, 0, result.Error, (uint)(num - 1), (uint)offset);
 
                     rgbOutputFileContents = null;
                     pcbOutput = 0;

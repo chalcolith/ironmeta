@@ -55,10 +55,8 @@
     <Compile Include="CSharpShell.cs" />
     <Compile Include="IGenerator.cs" />
     <Compile Include="Parser.g.cs">
-      <SubType>Code</SubType>
       <AutoGen>True</AutoGen>
       <DependentUpon>Parser.ironmeta</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

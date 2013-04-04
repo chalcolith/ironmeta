@@ -140,14 +140,10 @@ namespace IronMeta
                             }
                             else
                             {
-                                int lineNum = CharMatcher<AST.Node>.GetLineNumber(match.Memo, match.Memo.LastErrorIndex);
-                                Console.WriteLine("{0} ({1}): {2}", inputInfo.Name, lineNum, match.Memo.LastError);
-
-                                int offset;
-                                string line = CharMatcher<AST.Node>.GetLine(match.Memo, match.Memo.LastErrorIndex, out offset);
-
-                                Console.WriteLine();
-                                Console.WriteLine(line.Trim());
+                                int num, offset;
+                                var line = CharMatcher<AST.Node>.GetLine(match.Memo, match.Memo.LastErrorIndex, out num, out offset);
+                                Console.WriteLine("{0}({1},{2}): {3}", inputInfo.Name, num, offset, match.Memo.LastError);
+                                Console.WriteLine(line.TrimEnd());
                                 Console.WriteLine(new string(' ', offset) + '^');
 
                                 return 1;

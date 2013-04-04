@@ -86,65 +86,54 @@ namespace IronMeta.Matcher
         }
 
         /// <summary>
-        /// Gets the line containing a particular index in the input.
+        /// Get the line in the input for a given index.
         /// </summary>
-        /// <param name="memo">The memo object from the match (can be obtained from the match result object's <c>Memo</c> property).</param>
-        /// <param name="pos">The index in the input.</param>
-        /// <param name="offset">The offset of the position after the beginning of the line.</param>
-        /// <returns>The line containing a particular input index.</returns>
-        public static string GetLine(Memo<char, TResult> memo, int pos, out int offset)
+        /// <param name="memo">Memo to use.</param>
+        /// <param name="index">Index in the input.</param>
+        /// <param name="line">The line number (1-based) of the line.</param>
+        /// <param name="offset">The offset in the line of the given index.</param>
+        /// <returns>The line for a given index.</returns>
+        public static string GetLine(Memo<char, TResult> memo, int index, out int line, out int offset)
         {
-            int num, start, next;
+            int[] begins;
 
-            GetLineInfo(memo, pos, out num, out start, out next);
-
-            offset = pos - start;
-            var result = new string(memo.InputEnumerable.Skip(start).Take(next - start).TakeWhile((ch, i) => i < (pos-start) || (ch != '\r' && ch != '\n')).ToArray());
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the line number of the line that contains a particular index in the input.
-        /// </summary>
-        /// <param name="memo">The memo used for the match.</param>
-        /// <param name="pos">The index in the input.</param>
-        /// <returns>The number of the line that contains the index.</returns>
-        public static int GetLineNumber(Memo<char, TResult> memo, int pos)
-        {
-            int num, start, next;
-            GetLineInfo(memo, pos, out num, out start, out next);
-            return start;
-        }
-
-        static void GetLineInfo(Memo<char, TResult> memo, int pos, out int num, out int start, out int next)
-        {
-            int[] line_beginnings = memo.Positions.OrderBy(n => n).ToArray();
-
-            start = -1;
-            next = -1;
-            num = -1;
-
-            if (line_beginnings == null)
-                return;
-
-            int prev = 0;
-            for (int i = 0; i < line_beginnings.Length; ++i)
+            object prop;
+            if (memo.Properties.TryGetValue("lineBeginnings", out prop) && prop is int[])
             {
-                if (pos < line_beginnings[i])
-                {
-                    num = i + 1;
-                    start = prev;
-                    next = line_beginnings[i];
-                    break;
-                }
-
-                prev = line_beginnings[i];
+                begins = (int[])prop;
+            }
+            else
+            {
+                memo.Positions.Add(0);
+                begins = memo.Positions.OrderBy(n => n).ToArray();
+                memo.Properties.Add("lineBeginnings", begins);
             }
 
-            if (start == -1)
-                start = prev;
-            if (next == -1)
-                next = int.MaxValue;
+            int inputIndex, inputNext = int.MaxValue;
+            
+            int arrayIndex = Array.BinarySearch<int>(begins, index);
+            if (arrayIndex >= 0)
+            {
+                line = arrayIndex + 1;
+                offset = 0;
+
+                inputIndex = begins[arrayIndex];
+                if ((arrayIndex + 1) < begins.Length)
+                    inputNext = begins[arrayIndex + 1];
+            }
+            else
+            {
+                int nextLargestArrayIndex = ~arrayIndex;
+
+                line = nextLargestArrayIndex;
+                offset = index - begins[nextLargestArrayIndex - 1];
+
+                inputIndex = begins[nextLargestArrayIndex - 1];
+                if (nextLargestArrayIndex < begins.Length)
+                    inputNext = begins[nextLargestArrayIndex];
+            }
+
+            return new string(memo.InputEnumerable.Skip(inputIndex).Take(inputNext - inputIndex).TakeWhile(ch => ch != '\r' && ch != '\n').ToArray());
         }
 
     }  // class CharMatcher

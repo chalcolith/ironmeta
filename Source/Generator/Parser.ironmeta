@@ -1,34 +1,34 @@
 //////////////////////////////////////////////////////////////////////
 // Copyright © 2013 The IronMeta Project
 // All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
 // are met:
-// 
-//     * Redistributions of source code must retain the above 
-//       copyright notice, this list of conditions and the following 
+//
+//     * Redistributions of source code must retain the above
+//       copyright notice, this list of conditions and the following
 //       disclaimer.
-//     * Redistributions in binary form must reproduce the above 
-//       copyright notice, this list of conditions and the following 
-//       disclaimer in the documentation and/or other materials 
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials
 //       provided with the distribution.
-//     * Neither the name of the IronMeta Project nor the names of its 
-//       contributors may be used to endorse or promote products 
-//       derived from this software without specific prior written 
+//     * Neither the name of the IronMeta Project nor the names of its
+//       contributors may be used to endorse or promote products
+//       derived from this software without specific prior written
 //       permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS 
-// FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES; 
-// LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN 
-// ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE 
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS
+// FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE
+// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+// BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES;
+// LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN
+// ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
 
     Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new AST.Using(name); };
 
-    Grammar = IRONMETA Identifier:name 
+    Grammar = IRONMETA Identifier:name
             LESS GenericId:tinput COMMA GenericId:tresult GREATER
             COLON GenericId:baseclass
             BRA Rule*:rules KET
@@ -129,7 +129,7 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
             char ch_to = AST.ClassRange.GetChar(to);
 
             List<char> range = new List<char>();
-            if (ch_from > ch_to)			    
+            if (ch_from > ch_to)
             {
                 range.Add(ch_from);
                 range.Add(ch_to);
@@ -145,11 +145,11 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
 
     CSharpCode = CSharpCodeItem:code SP -> { return new AST.Code(code); };
 
-    CSharpCodeItem = '{' (~'}' (Comment | CSharpCodeItem | EOL | .))* '}';
-    CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | EOL | .))* ')';
-    CSharpCodeItem = '\x27' ("\x5c\x27" | "\x5c\x5c" | EOL | ~'\x27' .)* '\x27';   // '
-    CSharpCodeItem = '\x22' ("\x5c\x22" | "\x5c\x5c" | EOL | ~'\x22' .)* '\x22';   // "
-    
+    CSharpCodeItem = '{' (~'}' (EOL | Comment | CSharpCodeItem | .))* '}';
+    CSharpCodeItem = '(' (~')' (EOL | Comment | CSharpCodeItem | .))* ')';
+    CSharpCodeItem = '\x27' (EOL | "\x5c\x27" | "\x5c\x5c" | ~'\x27' .)* '\x27';   // '
+    CSharpCodeItem = '\x22' (EOL | "\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
+
     Identifier = Ident:id SP -> { return id; };
     Ident = (IdentBegin IdentBody*):id -> { return new AST.Idfr(id); };
     IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
@@ -188,14 +188,13 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
     NOT_PRE = '~';
     STAR = '*' SP;
     PLUS = '+' SP;
-    
-    EOL = ('\r' '\n'? | '\n') -> { _memo.Positions.Add(_IM_Result.StartIndex); return _IM_Result; };
-    EOF = ~.;
 
     SP = (EOL | WS | Comment)*;
-    WS = ' ' | '\t';
-    
+    WS = [' ' '\t'];
+
     Comment = "//" (~EOL .)* EOL;
     Comment = "/*" (~"*/" (EOL | .))* "*/";
 
+    EOL = ('\r' '\n'? | '\n'):nl -> { _memo.Positions.Add(nl.NextIndex); return nl; };
+    EOF = ~.;
 }
