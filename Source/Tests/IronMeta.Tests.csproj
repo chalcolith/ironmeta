@@ -53,20 +53,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Plugin\PluginTestGrammar.g.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PluginTestGrammar.ironmeta</DependentUpon>
-    </Compile>
-    <Compile Include="Plugin\PluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Plugin\PluginTestGrammar.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>PluginTestGrammar.g.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Generator\IronMeta.Generator.csproj">
+      <Project>{6767d6b1-e18e-4778-8e4f-8870b881ecf1}</Project>
+      <Name>IronMeta.Generator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Matcher\IronMeta.Matcher.csproj">
       <Project>{ef704069-517a-48a5-9af2-1b257544d358}</Project>
       <Name>IronMeta.Matcher</Name>

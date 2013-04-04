@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Matcher", "Matcher\IronMeta.Matcher.csproj", "{EF704069-517A-48A5-9AF2-1B257544D358}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "IronMeta\IronMeta.csproj", "{6EB07DF5-34E1-4769-A1E3-2027C68B9234}"

@@ -8,8 +8,8 @@
     <ProjectGuid>{0451BAEF-DF2E-4B98-8644-94EE9415E389}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VSPackage</RootNamespace>
-    <AssemblyName>VSPackage</AssemblyName>
+    <RootNamespace>IronMeta.VSPackage</RootNamespace>
+    <AssemblyName>IronMeta.VSPackage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -39,15 +39,24 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\IronMeta.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\IronMeta.snk">
+      <Link>IronMeta.snk</Link>
+    </None>
     <None Include="NuGet.exe" />
-    <None Include="Package.nuspec" />
     <None Include="tools\init.ps1" />
     <None Include="tools\install.ps1" />
     <None Include="tools\uninstall.ps1" />
+    <None Include="VSPackage.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="content\" />
@@ -57,10 +66,13 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir ..\..\package
 pushd ..\..
-nuget.exe update -self
+xcopy /y /i ..\VSPlugin\bin\$(Configuration)\*.dll lib\net45
+xcopy /y /i ..\VSPlugin\Lib\*.dll lib\net45
+xcopy /y /i ..\IronMeta\bin\$(Configuration)\*.exe tools\net45
+rem nuget.exe update -self
 nuget.exe pack -outputdirectory package $(ProjectPath)
 popd</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets. -->
 </Project>

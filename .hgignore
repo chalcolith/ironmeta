@@ -1,12 +1,14 @@
-syntax: regexp
-Documentation/html
 syntax: glob
-bin
-obj
 *.g.cs
 *.suo
 *.user
+bin
+obj
+packages
+Documentation/html
+Source/VSPackage/lib/net45
+Source/VSPackage/tools/net45
+Source/VSPackage/package
 Source/VSGenerate/Lib/SDK.zip
 Source/VSGenerate/Lib/VSSDK
-IronMeta.keyfile.pfx
-packages
+Source/IronMeta.snk

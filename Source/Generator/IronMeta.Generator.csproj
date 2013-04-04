@@ -37,7 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IronMeta.keyfile.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\IronMeta.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,14 +69,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="IronMeta.keyfile.pfx" />
+    <None Include="..\IronMeta.snk">
+      <Link>IronMeta.snk</Link>
+    </None>
     <None Include="Parser.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>Parser.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
