@@ -5,6 +5,7 @@ syntax: glob
 bin
 obj
 packages
+packages.config
 Documentation/html
 Source/VSPackage/lib/net45
 Source/VSPackage/tools/net45
