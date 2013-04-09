@@ -45,6 +45,9 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\IronMeta.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>IronMeta.VSPackage.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +56,7 @@
     <None Include="..\IronMeta.snk">
       <Link>IronMeta.snk</Link>
     </None>
+    <None Include="IronMeta.VSPackage.manifest" />
     <None Include="NuGet.exe" />
     <None Include="tools\init.ps1" />
     <None Include="tools\install.ps1" />
