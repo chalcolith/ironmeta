@@ -70,7 +70,7 @@ namespace IronMeta.VSPackage
 
                         genKey.SetValue("", "IronMeta C# Generator");
                         genKey.SetValue("CLSID", generatorType.GUID.ToString("B"));
-                        genKey.SetValue("GeneratesDesignTimeSource", 0, RegistryValueKind.DWord);
+                        genKey.SetValue("GeneratesDesignTimeSource", 1, RegistryValueKind.DWord);
                         genKey.SetValue("Installed", installed);
                     }
 
