@@ -37,27 +37,63 @@ namespace IronMeta.VSPackage
 
             if (!pluginAssembly.GlobalAssemblyCache)
             {
-                Console.WriteLine("VSPackage registering VSPlugin in GAC");
+                //Console.WriteLine("VSPackage registering VSPlugin in GAC");
 
                 var publisher = new System.EnterpriseServices.Internal.Publish();
                 publisher.GacInstall(pluginAssembly.Location);
             }
 
-            // register for all known versions of VS11
-            var installed = DateTime.Now.ToString("U");
+            // register class
+            var installed = DateTime.Now.ToString("u");
 
+            var guid = generatorType.GUID.ToString("B");
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + generatorType.FullName))
+                key.SetValue("", generatorType.FullName);
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + generatorType.FullName + @"\CLSID"))
+                key.SetValue("", guid);
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + @"\CLSID\" + guid))
+                key.SetValue("", generatorType.FullName);
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + @"\CLSID\" + guid + @"\InprocServer32"))
+            {
+                key.SetValue("", "mscoree.dll");
+                key.SetValue("ThreadingModel", "Both");
+                key.SetValue("Class", generatorType.FullName);
+                key.SetValue("Assembly", pluginAssembly.FullName);
+                key.SetValue("RuntimeVersion", pluginAssembly.ImageRuntimeVersion);
+                key.SetValue("Installed", installed);
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + @"\CLSID\" + guid + @"\InprocServer32\" + pluginAssembly.GetName().Version.ToString()))
+            {
+                key.SetValue("Class", generatorType.FullName);
+                key.SetValue("Assembly", pluginAssembly.FullName);
+                key.SetValue("RuntimeVersion", pluginAssembly.ImageRuntimeVersion);
+                key.SetValue("Installed", installed);
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + @"\CLSID\" + guid + @"\ProgId"))
+                key.SetValue("", generatorType.FullName);
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + @"\CLSID\" + guid + @"\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}"))
+                key.SetValue("Installed", installed);
+
+            // register for all known versions of VS11
             foreach (var product in VS_PRODUCTS)
             {
                 foreach (var version in VS_VERSIONS)
                 {
                     var rootKey = VS_PREFIX + product + @"\" + version;
 
-                    using (var clsidKey = Registry.CurrentUser.CreateSubKey(rootKey + @"\CLSID\" + generatorType.GUID.ToString("B")))
+                    using (var clsidKey = Registry.CurrentUser.CreateSubKey(rootKey + @"\CLSID\" + guid))
                     {
-                        Console.WriteLine("VSPackage setting class info in " + clsidKey.Name);
+                        //Console.WriteLine("VSPackage setting class info in " + clsidKey.Name);
 
                         clsidKey.SetValue("", "COM+ class: " + generatorType.FullName);
-                        clsidKey.SetValue("InprocServer32", "C:\\WINDOWS\\system32\\mscoree.dll");
+                        clsidKey.SetValue("InprocServer32", "mscoree.dll");
                         clsidKey.SetValue("ThreadingModel", "Both");
                         clsidKey.SetValue("Class", generatorType.FullName);
                         clsidKey.SetValue("Assembly", generatorType.Assembly.FullName);
@@ -66,17 +102,17 @@ namespace IronMeta.VSPackage
 
                     using (var genKey = Registry.CurrentUser.CreateSubKey(rootKey + VS_KEY + TOOL_NAME))
                     {
-                        Console.WriteLine("VSPackage setting generator info in " + genKey.Name);
+                        //Console.WriteLine("VSPackage setting generator info in " + genKey.Name);
 
                         genKey.SetValue("", "IronMeta C# Generator");
-                        genKey.SetValue("CLSID", generatorType.GUID.ToString("B"));
+                        genKey.SetValue("CLSID", guid);
                         genKey.SetValue("GeneratesDesignTimeSource", 1, RegistryValueKind.DWord);
                         genKey.SetValue("Installed", installed);
                     }
 
                     using (var extKey = Registry.CurrentUser.CreateSubKey(rootKey + VS_KEY + TOOL_EXT))
                     {
-                        Console.WriteLine("VSPackage setting extension info in " + extKey.Name);
+                        //Console.WriteLine("VSPackage setting extension info in " + extKey.Name);
 
                         extKey.SetValue("", "IronMetaGenerator");
                         extKey.SetValue("Installed", installed);
