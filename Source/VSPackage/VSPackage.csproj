@@ -79,8 +79,8 @@
 pushd ..\..
 xcopy /y /i ..\VSPlugin\bin\$(Configuration)\*.dll lib\net45
 xcopy /y /i ..\VSPlugin\Lib\*.dll lib\net45
-xcopy /y /i ..\IronMeta\bin\$(Configuration)\IronMeta.exe tools\net45
-xcopy /y /i bin\$(Configuration)\IronMeta.VSPackage.exe tools\net45
+xcopy /y /i ..\IronMeta\bin\$(Configuration)\IronMeta.exe* tools\net45
+xcopy /y /i bin\$(Configuration)\IronMeta.VSPackage.exe* tools\net45
 rem nuget.exe update -self
 nuget.exe pack -outputdirectory package $(ProjectPath)
 popd</PostBuildEvent>

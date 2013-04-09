@@ -7,10 +7,11 @@ param($installPath, $toolsPath, $package, $project)
 # $package is a reference to the package object.
 # $project is null in init.ps1
 
-$latest = (Get-ItemProperty 'hkcu:Software\IronMeta\VSPackage').Latest
+$latest = (Get-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -ErrorAction SilentlyContinue).Latest
 
-if ($latest -ne $installPath) {
+if ($latest -ne $package.version) {
 	iex ((join-path $installPath "\tools\net45\IronMeta.VSPackage.exe") + " " + (join-path $installPath "\lib\net45\IronMeta.VSPlugin.dll") + " " + (join-path $installPath "\lib\net45\IronMeta.Generator.dll") + " " + (join-path $installPath "\lib\net45\IronMeta.Matcher.dll"))
-} else {
-	Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name Latest -Value $installPath
+
+	New-Item -Path 'hkcu:Software\IronMeta' -Name VSPackage -Force
+	Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name Latest -Value $package.version
 }
