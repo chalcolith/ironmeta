@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0451BAEF-DF2E-4B98-8644-94EE9415E389}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IronMeta.VSPackage</RootNamespace>
     <AssemblyName>IronMeta.VSPackage</AssemblyName>
@@ -46,6 +46,7 @@
     <AssemblyOriginatorKeyFile>..\IronMeta.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,11 +57,17 @@
     <None Include="tools\init.ps1" />
     <None Include="tools\install.ps1" />
     <None Include="tools\uninstall.ps1" />
-    <None Include="VSPackage.nuspec" />
+    <None Include="VSPackage.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="content\" />
     <Folder Include="lib\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -69,6 +76,7 @@ pushd ..\..
 xcopy /y /i ..\VSPlugin\bin\$(Configuration)\*.dll lib\net45
 xcopy /y /i ..\VSPlugin\Lib\*.dll lib\net45
 xcopy /y /i ..\IronMeta\bin\$(Configuration)\*.exe tools\net45
+xcopy /y /i bin\$(Configuration)\*.exe tools\net45
 rem nuget.exe update -self
 nuget.exe pack -outputdirectory package $(ProjectPath)
 popd</PostBuildEvent>

@@ -7,4 +7,4 @@ param($installPath, $toolsPath, $package, $project)
 # $package is a reference to the package object.
 # $project is null in init.ps1
 
-iex ("C:\Windows\Microsoft.NET\Framework\v4.0.30319\regasm.exe " + (join-path $installPath "\lib\net45\IronMeta.VSPlugin.dll") + " /codebase")
+iex ((join-path $installPath "\tools\net45\IronMeta.VSPackage.exe") + " " + (join-path $installPath "\lib\net45\IronMeta.VSPlugin.dll"))

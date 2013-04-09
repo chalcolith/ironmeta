@@ -101,69 +101,6 @@ namespace IronMeta.VSPlugin
         }
 
         #endregion
-
-        #region COM Registration and Unregistration
-
-        static readonly string[] VS_PRODUCTS = { "VisualStudio", "VSWinExpress", "VWDExpress", "WDExpress" };
-        static readonly string[] VS_VERSIONS = { "11.0", "11.0_Config" };
-
-        const string VS_PREFIX = @"Software\Microsoft\";
-        const string VS_KEY = @"\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\";
-        const string TOOL_NAME = "IronMetaGenerator";
-        const string TOOL_EXT = ".ironmeta";
-
-        static IEnumerable<string> GetVSKeys()
-        {
-            return VS_PRODUCTS.SelectMany(product => VS_VERSIONS.Select(version => VS_PREFIX + product + @"\" + version + VS_KEY));
-        }
-
-        [ComRegisterFunction]
-        private static void ComRegisterFunction(Type t)
-        {
-            var guid = t.GUID.ToString("B");
-
-            using (var classKey = Registry.ClassesRoot.CreateSubKey(@"CLSID\" + guid))
-            {
-                classKey.SetValue("", "COM+ class: " + t.FullName);
-                classKey.SetValue("InprocServer32", "C:\\WINDOWS\\system32\\mscoree.dll");
-                classKey.SetValue("ThreadingModel", "Both");
-                classKey.SetValue("Class", t.FullName);
-                classKey.SetValue("Assembly", t.Assembly.FullName);
-            }
-
-            foreach (var vs_key in GetVSKeys())
-            {                
-                using (var vsKey = Registry.CurrentUser.CreateSubKey(vs_key + TOOL_NAME))
-                {
-                    vsKey.SetValue("", "IronMeta C# Generator");
-                    vsKey.SetValue("CLSID", guid);
-                    vsKey.SetValue("GeneratesDesignTimeSource", 0, RegistryValueKind.DWord);
-                }
-
-                using (var extKey = Registry.CurrentUser.CreateSubKey(vs_key + TOOL_EXT))
-                {
-                    extKey.SetValue("", "IronMetaGenerator");
-                }
-            }
-        }
-
-        [ComUnregisterFunction]
-        private static void ComUnregisterFunction(Type t)
-        {
-            var guid = t.GUID.ToString("B");
-
-            foreach (var vs_key in GetVSKeys())
-            {
-                Registry.LocalMachine.DeleteSubKey(vs_key + TOOL_EXT);
-                Registry.CurrentUser.DeleteSubKeyTree(vs_key + TOOL_NAME);
-                Registry.LocalMachine.DeleteSubKey(vs_key + TOOL_EXT);
-                Registry.CurrentUser.DeleteSubKeyTree(vs_key + TOOL_NAME);
-            }
-
-            Registry.ClassesRoot.DeleteSubKeyTree(@"CLSID\" + guid);
-        }
-
-        #endregion
     }
 
 }
