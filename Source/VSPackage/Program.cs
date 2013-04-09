@@ -27,6 +27,16 @@ namespace IronMeta.VSPackage
             return VS_PRODUCTS.SelectMany(product => VS_VERSIONS.Select(version => VS_PREFIX + product + @"\" + version + VS_KEY));
         }
 
+        private static void GacInstall(string path)
+        {
+            var assembly = Assembly.LoadFile(path);
+            if (!assembly.GlobalAssemblyCache)
+            {
+                var publisher = new System.EnterpriseServices.Internal.Publish();
+                publisher.GacInstall(assembly.Location);
+            }
+        }
+
         private static void Register(string path)
         {
             // get DLL
@@ -127,8 +137,13 @@ namespace IronMeta.VSPackage
         {
             try
             {
-                if (args.Length > 0)
-                    Register(args[0]);
+                for (int i = 0; i < args.Length; ++i)
+                {
+                    if (i == 0)
+                        Register(args[i]);
+                    else
+                        GacInstall(args[i]);
+                }
             }
             catch (Exception e)
             {
