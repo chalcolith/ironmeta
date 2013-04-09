@@ -37,7 +37,7 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
         }
 
         [TestMethod]
-        public void TestLineBeginPositions()
+        public void TestLineNumbers_BeginPositions()
         {
             var match = parser.GetMatch(SOURCE1, parser.IronMetaFile);
             var lineBegins = match.Memo.Positions.OrderBy(n => n).ToArray();
@@ -53,7 +53,7 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
         }
 
         [TestMethod]
-        public void TestErrorLineAndOffset()
+        public void TestLineNumbers_ErrorLineAndOffset()
         {
             var match = parser.GetMatch(SOURCE1, parser.IronMetaFile);
             Assert.IsFalse(match.Success, "match should fail");
@@ -113,7 +113,7 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
 }";
 
         [TestMethod]
-        public void TestLongCommentBlock()
+        public void TestLineNumbers_LongCommentBlock()
         {
             var match = parser.GetMatch(SOURCE2, parser.IronMetaFile);
             Assert.IsFalse(match.Success, "match should fail");

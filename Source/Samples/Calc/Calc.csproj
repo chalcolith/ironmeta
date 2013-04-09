@@ -32,28 +32,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronMeta.Generator, Version=3.0.4847.26253, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
+    <Reference Include="IronMeta.Generator, Version=3.0.4847.26690, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\IronMeta.Generator.dll</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\IronMeta.Generator.dll</HintPath>
     </Reference>
-    <Reference Include="IronMeta.Matcher, Version=3.0.4847.26253, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
+    <Reference Include="IronMeta.Matcher, Version=3.0.4847.26690, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\IronMeta.Matcher.dll</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\IronMeta.Matcher.dll</HintPath>
     </Reference>
     <Reference Include="IronMeta.VSPackage">
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\IronMeta.VSPackage.exe</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\IronMeta.VSPackage.exe</HintPath>
     </Reference>
-    <Reference Include="IronMeta.VSPlugin, Version=3.0.4847.26253, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
+    <Reference Include="IronMeta.VSPlugin, Version=3.0.4847.26691, Culture=neutral, PublicKeyToken=6dd3e6768a98afdb, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\IronMeta.VSPlugin.dll</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\IronMeta.VSPlugin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\Microsoft.VisualStudio.Shell.11.0.dll</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\Microsoft.VisualStudio.Shell.11.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
-      <HintPath>..\..\packages\IronMeta.3.0.4847.26253\lib\net45\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+      <HintPath>..\..\packages\IronMeta.3.0.4847.26691\lib\net45\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,9 +78,7 @@
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>Calc.g.cs</LastGenOutput>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

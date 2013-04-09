@@ -1,3 +1,7 @@
+3.0: April 9, 2013: VS 2012 and NuGet package.
+	- Now set up to build with Visual Studio 2012.
+	- Now distributed as a NuGet package.
+
 2.3: February 27, 2012: Combining parsers.
 	- Made generated code more general so it is now possible to combine parsers by inheritance or encapsulation.
 	- Added the ability to use anonymous object literals in rules.  They match by comparing their public properties with the input object's properties.
@@ -6,7 +10,7 @@
 2.2: February 21, 2012: Miscellaneous bug fixes.
     - Fixed an off-by-one error in input enumerables.
 	- Now compiles with Mono.
-	
+
 2.1: July 1, 2011: Much refactoring, miscellaneous bug fixes.
     - Better error handling.
 	- Added IronMeta.Matcher.CharMatcher.Input() and IronMeta.Matcher.CharMatcher.Trimmed() for more convenient string handling.
@@ -25,7 +29,7 @@
     - IronMeta is now about an order of magnitude faster.
     - Fixed a bug when handling C# string literals.
 
-1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.	
+1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.
     - Added a simple interactive shell to the Calc program.
     - Fixed a bug that caused redundant evaluation of involved rules.
     - Fixed a bug with parsers that don't declare a base class.
