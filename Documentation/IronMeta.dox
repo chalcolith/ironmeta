@@ -2,20 +2,24 @@
 
 \mainpage IronMeta Main Page
 
-\htmlonly 
+\htmlonly
 
-<a href="http://sourceforge.net/projects/ironmeta"><img align="right" src="http://sflogo.sourceforge.net/sflogo.php?group_id=261882&amp;type=12" width="120" height="30" alt="Get IronMeta at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
-<a href="http://sourceforge.net/donate/index.php?group_id=261882"><img align="right" src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" /></a>
+<a href="http://sourceforge.net/projects/ironmeta">
+  <img align="right" src="http://sflogo.sourceforge.net/sflogo.php?group_id=261882&amp;type=12" width="120" height="30" alt="Get IronMeta at SourceForge.net. Fast, secure and Free Open Source software downloads" />
+</a>
+<a href="http://sourceforge.net/donate/index.php?group_id=261882">
+  <img align="right" src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" />
+</a>
 
 \endhtmlonly
 
-The <b>IronMeta</b> parser generator provides a programming language and 
-application for generating pattern matchers on 
-arbitrary streams of objects.  It is an implementation of Alessandro 
+The <b>IronMeta</b> parser generator provides a programming language and
+application for generating pattern matchers on
+arbitrary streams of objects.  It is an implementation of Alessandro
 Warth's <a href="http://tinlizzie.org/ometa/">OMeta</a> system for C#.
 
 IronMeta is available under the terms of the \ref BSDLicense "BSD License".
- 
+
 - \ref ironMetaLanguage "The IronMeta Language"
 - \ref ironMetaGrammar "The IronMeta Grammar"
 - <a href="http://sourceforge.net/projects/ironmeta/">The IronMeta SourceForge page</a>
@@ -48,19 +52,23 @@ Current limitations:
 
 \section changelog Changelog
 
+3.0: April 9, 2013: VS 2012 and NuGet package.
+    - Now set up to build with Visual Studio 2012.
+    - Now distributed as a NuGet package.
+
 2.3: February 27, 2012: Combining parsers.
-	- Made generated code more general so it is now possible to combine parsers by inheritance or encapsulation.
-	- Added the ability to use anonymous object literals in rules.  They match by comparing their public properties with the input object's properties.
-	- Fixed a bug where string and char literals were not correctly handled in parsers whose input was not of type \c char.
+    - Made generated code more general so it is now possible to combine parsers by inheritance or encapsulation.
+    - Added the ability to use anonymous object literals in rules.  They match by comparing their public properties with the input object's properties.
+    - Fixed a bug where string and char literals were not correctly handled in parsers whose input was not of type \c char.
 
 2.2: February 21, 2012: Miscellaneous bug fixes.
     - Fixed an off-by-one error in input enumerables.
-	- Now compiles with Mono.
-	
+    - Now compiles with Mono.
+
 2.1: July 1, 2011: Much refactoring, miscellaneous bug fixes.
     - Better error handling.
-	- Added <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#a180a519c2aed91f6ea499a54b0c0dba4">IronMeta.Matcher.CharMatcher.Input()</a> and <a class="el" href="class_iron_meta_1_1_matcher_1_1_char_matcher-g.html#ac9532fb50fce46a6d42dede985011e14">IronMeta.Matcher.CharMatcher.Trimmed()</a> for more convenient string handling.
-	- Added min/max repeats syntax (e.g. \c 'a' \c {1, \c 3}).
+    - Added \c IronMeta.Matcher.CharMatcher.Input() and \c IronMeta.Matcher.CharMatcher.Trimmed() for more convenient string handling.
+    - Added min/max repeats syntax (e.g. \c 'a' \c {1, \c 3}).
 
 2.0: December 4, 2010: Many internal improvements.
     - Removed general backtracking functionality in favor of strict PEG semantics only.
@@ -75,7 +83,7 @@ Current limitations:
     - IronMeta is now about an order of magnitude faster.
     - Fixed a bug when handling C# string literals.
 
-1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.	
+1.2: June 1, 2009: Bug fixes and miscellaneous enhancements.
     - Added a simple interactive shell to the Calc program.
     - Fixed a bug that caused redundant evaluation of involved rules.
     - Fixed a bug with parsers that don't declare a base class.
@@ -90,13 +98,15 @@ Current limitations:
 
 \section getIronMeta Get IronMeta
 
-IronMeta can be used with Microsoft .NET (3.5 and higher) and Mono.
-
-You can download a zip file containing IronMeta binaries at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge site</a>.
+IronMeta is built for .NET 4.5, and is distributed using NuGet.  Open the Package Manager for a project in Visual Studio 2012 and search for IronMeta.  Installing the package in your project will install the needed DLLs.
 
 \section programmingWithIronMeta Programming with IronMeta
 
-In order to use IronMeta, run \c IronMeta.Generator.exe on your \ref ironMetaLanguage "IronMeta file", which <b>must</b> have the extension .\c ironmeta.  You can specify the following arguments to the program:
+Once you have installed the NuGet package, add a file with the extension .\c ironmeta to your project.  Visual Studio will automatically generate a C# grammar class for you and include it in your project.  The generated parser class is declared as \c partial, so you can add ancillary code in another file if you wish.
+
+In addition to the Visual Studio addin, the IronMeta executable is included in the \c tools directory of the NuGet package installation directory.
+
+In order to use the IronMeta executable, run \c IronMeta.exe on your \ref ironMetaLanguage "IronMeta file", which <b>must</b> have the extension .\c ironmeta.  You can specify the following arguments to the program:
 
  - \c -f Force generation even if the input file is older than the output file.
  - \c -n \c &lt;namespace&gt; Specify the namespace to use for the generated parser (defaults to the name of the directory the input file is in).
@@ -104,12 +114,10 @@ In order to use IronMeta, run \c IronMeta.Generator.exe on your \ref ironMetaLan
 
 In order to use an IronMeta-generated parser in your C# program, do the following:
 
- - Add a reference to \c IronMeta.Matcher.dll to your project.
- - Compile the generated C# file.  The generated parser class will have the same name as your input file (minus the extension) and is declared as \c partial, so you can add ancillary code in another file if you wish.
  - Create an instance of the generated parser class.
  - Call the function \c GetMatch() with the input you wish to parse, and the function of the generated parser class that corresponds to the top-level rule you wish to use.  This returns an object of type \ref IronMeta::Matcher::MatchResult, which contains information about the result of the match, as well as errors that might have ocurred.
 
-The following is a small sample program that uses the \c Calc demo parser that is included in the distribution.
+The following is a small sample program that uses the \c Calc \ref ironMetaLanguage demo parser that is included in the distribution.
 
 \verbatim
 using System;
@@ -151,14 +159,14 @@ In order to build IronMeta, you must download the source code using a <a href="h
 hg clone http://hg.code.sf.net/p/ironmeta/code ironmeta
 \endverbatim
 
-The top folder of the source code contains a Visual Studio 2010 solution file called \c IronMeta.sln.  This includes three projects:
+The \c Source folder of the source code contains a Visual Studio 2012 solution file called \c IronMeta.sln.  This includes several projects:
 
- - \ref IronMeta::Matcher : parser implementation.
- - \c IronMeta::Generator : the main IronMeta program.
- - \c IronMeta::UnitTests : unit tests for the parsing library.
- - \c Calc : an example of a \ref ironMetaLanguage "calculator program", made purposely more complicated than necessary so as to demonstrate some of IronMeta's advanced features.
+ - Matcher: common functionality for parsing.
+ - Generator: library for generating C# code from an IronMeta grammar.
+ - Tests : unit tests for the parsing library.
+ - Samples\\Calc: an example of a \ref ironMetaLanguage "calculator program", made purposely more complicated than necessary so as to demonstrate some of IronMeta's advanced features.
 
-If you would like to contribute to the development of IronMeta, please send patches to the project admin listed at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the <a href="http://sourceforge.net/p/ironmeta/discussion/">IronMeta developers forum</a>.
+If you would like to contribute to the development of IronMeta, please send patches or pull requests to the project admin listed at the <a href="http://sourceforge.net/projects/ironmeta/">SourceForge website</a> or the <a href="http://sourceforge.net/p/ironmeta/discussion/">IronMeta developers forum</a>.
 
 
 \page ironMetaLanguage The IronMeta Language
@@ -176,25 +184,25 @@ using System.Linq;
 ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
 {
     Expression = Additive;
-    
+
     Additive = Add | Sub | Multiplicative;
-    
+
     Add = BinaryOp(Additive, '+', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
     Sub = BinaryOp(Additive, '-', Multiplicative) -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
-    
+
     Multiplicative = Multiply | Divide;
     Multiplicative = Number(DecimalDigit);
-    
+
     Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
     Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
-        
+
     BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b -> { return new List<int> { a, b }; };
-    
+
     Number :type = Digits(type):n WS* -> { return n; };
-    
+
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
     Digits :type = type;
-            
+
     DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
     KW :str = str WS*;
     WS = ' ' | '\n' | '\r' | '\t';
@@ -232,7 +240,7 @@ You can include C# \c using statements at the beginning of an IronMeta file.  Ir
 ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
 \endverbatim
 
-An IronMeta parser always starts with the keyword \c ironmeta.  Then comes the name of the parser (\c Calc, in this case), and the input and output types.  
+An IronMeta parser always starts with the keyword \c ironmeta.  Then comes the name of the parser (\c Calc, in this case), and the input and output types.
 The generated parser will take as input an IEnumerable of the input type, and return as output an object of the output type.
 
 In this case, the \c Calc parser will operate on a stream of \c char values, and output an \c int value.
@@ -309,7 +317,7 @@ You can modify the meaning of patterns with the following operators that appear 
  - \c "+" will match one or more times.
  - \c "{N}" will match \c N times.
  - \c "{Min,Max}" will match at least \c Min times, and at most \c Max times.
- 
+
 These operators are all greedy -- they will match as many times a possible and then return that result.
 
 You can stop them from matching by using the prefix operators:
@@ -364,7 +372,7 @@ IronMeta variables are very flexible.  They contain implicit cast operators to:
  - A single value of the output type.
  - A \c List<> of the input type.
  - A \c List<> of the output type.
- 
+
 If your input and output types are the same, the implicit cast operators will only return the \em inputs, and you will need to use the explicit variable properties:
 
  - \c c.Inputs returns the list of inputs that the parse pattern matched.
@@ -444,9 +452,9 @@ IronMeta parsers are regular C# classes, so they can inherit from other parsers 
 
 ironmeta DerivedParser<char, Node> : BaseParser<Node>
 {
-	virtual Expression1 = ...;
+    virtual Expression1 = ...;
     override Expression2 = ...;
-	new Expression3 = ...;
+    new Expression3 = ...;
 }
 
 \endverbatim
@@ -459,14 +467,14 @@ You can also refer to rules in a completely unrelated grammar (as long as the in
 
 public partial class MyParser
 {
-	private OtherParser other_parser = new OtherParser();
+    private OtherParser other_parser = new OtherParser();
 }
 
 ironmeta MyParser<char, int>: IronMeta.Matcher.Matcher<char, int>
 {
-	
-	Rule = "foo" other_parser.OtherRule "bar";
-	
+
+    Rule = "foo" other_parser.OtherRule "bar";
+
 }
 
 \endverbatim
@@ -488,7 +496,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
     Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new Using(name); };
 
-    Grammar = IRONMETA Identifier:name 
+    Grammar = IRONMETA Identifier:name
             LESS GenericId:tinput COMMA GenericId:tresult GREATER
             COLON GenericId:baseclass
             BRA Rule*:rules KET
@@ -530,25 +538,25 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
     PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
 
-	MinMaxTerm = Term:exp BRA Number:n (COMMA Number:x)? KET ->
-	    {
-			int min = int.Parse(Input(n));
-			int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
+    MinMaxTerm = Term:exp BRA Number:n (COMMA Number:x)? KET ->
+        {
+            int min = int.Parse(Input(n));
+            int max = x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
-			if (min < 0)
-			    throw new MatcherException(n.StartIndex, "min must be >= 0");
-			if (max < 1)
-			    throw new MatcherException(x.StartIndex, "max must be > 1");
-			if (max < min)
-			    throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
+            if (min < 0)
+                throw new MatcherException(n.StartIndex, "min must be >= 0");
+            if (max < 1)
+                throw new MatcherException(x.StartIndex, "max must be > 1");
+            if (max < min)
+                throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
-			ASTNode res = null;
-			for (int i = 0; i < min; ++i)
-			    res = res != null ? new And(res, exp) : (ASTNode)exp;
-			for (int i = 0; i < max; ++i)
-			    res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
-			return res;
-		};
+            ASTNode res = null;
+            for (int i = 0; i < min; ++i)
+                res = res != null ? new And(res, exp) : (ASTNode)exp;
+            for (int i = 0; i < max; ++i)
+                res = res != null ? new And(res, new Ques(exp)) : (ASTNode)new Ques(exp);
+            return res;
+        };
 
     StarTerm = Term:exp STAR -> { return new Star(exp); };
     PlusTerm = Term:exp PLUS -> { return new Plus(exp); };
@@ -573,7 +581,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
             char ch_to = AST.ClassRange.GetChar(to);
 
             List<char> range = new List<char>();
-            if (ch_from > ch_to)			    
+            if (ch_from > ch_to)
             {
                 range.Add(ch_from);
                 range.Add(ch_to);
@@ -593,25 +601,25 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
     CSharpCodeItem = '(' (~')' (Comment | CSharpCodeItem | .))* ')';
     CSharpCodeItem = '\x27' ("\x5c\x27" | "\x5c\x5c" | ~'\x27' .)* '\x27';   // '
     CSharpCodeItem = '\x22' ("\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
-    
+
     Identifier = Ident:id SP -> { return id; };
     Ident = (IdentBegin IdentBody*):id -> { return new Idfr(id); };
     IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
     IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
 
-	QualifiedId = (Ident (DOT Ident)*) SP -> { new Idfr(_IM_Result) };
+    QualifiedId = (Ident (DOT Ident)*) SP -> { new Idfr(_IM_Result) };
     GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
         -> { return new Idfr(ids, gp); };
 
-	Number = ['0'-'9']+ SP;
+    Number = ['0'-'9']+ SP;
 
-	KEYWORD = USING | IRONMETA | OVERRIDE | NEW | LR;
+    KEYWORD = USING | IRONMETA | OVERRIDE | NEW | LR;
 
     USING = "using" SP;
     IRONMETA = "ironmeta" SP;
     EQUALS = ('=' | "::=") SP;
     OVERRIDE = ("override" | "virtual" | "new") SP;
-	NEW = "new" SP;
+    NEW = "new" SP;
     LR = "lr" SP;
     SEMI = (';' | ',') SP;
     BANG = '!' SP;
@@ -632,13 +640,13 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
     NOT_PRE = '~';
     STAR = '*' SP;
     PLUS = '+' SP;
-    
+
     EOL = '\r' '\n'? | '\n';
     EOF = ~.;
 
     SP = (WS | Comment)*;
     WS = ' ' | '\n' | '\r' | '\t';
-    
+
     Comment = "//" (~('\r' '\n'? | '\n') .)* ('\r' '\n'? | '\n');
     Comment = "/*" (~"*/" .)* "*/";
 
@@ -649,37 +657,37 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
 IronMeta
 
-Copyright (c) 2009-2012, The IronMeta Project.
+Copyright (c) 2009-2013, The IronMeta Project.
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
-modification, are permitted provided that the following conditions 
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
 are met:
 
-    - Redistributions of source code must retain the above 
-      copyright notice, this list of conditions and the following 
-      disclaimer.
-    - Redistributions in binary form must reproduce the above 
-      copyright notice, this list of conditions and the following 
-      disclaimer in the documentation and/or other materials 
-      provided with the distribution.
-    - Neither the name of the IronMeta Project nor the names of its 
-      contributors may be used to endorse or promote products 
-      derived from this software without specific prior written 
-      permission.
+- Redistributions of source code must retain the above
+  copyright notice, this list of conditions and the following
+  disclaimer.
+- Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following
+  disclaimer in the documentation and/or other materials
+  provided with the distribution.
+- Neither the name of the IronMeta Project nor the names of its
+  contributors may be used to endorse or promote products
+  derived from this software without specific prior written
+  permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-"AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS 
-FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE 
-COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES; 
-LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER 
-CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT 
-LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN 
-ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS
+FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES;
+LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN
+ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 */

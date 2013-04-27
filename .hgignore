@@ -1,9 +1,15 @@
-syntax: regexp
-Documentation/html
-
 syntax: glob
-bin
-obj
 *.g.cs
 *.suo
 *.user
+bin
+obj
+packages
+packages.config
+Documentation/html
+Source/VSPackage/lib/net45
+Source/VSPackage/tools/net45
+Source/VSPackage/package
+Source/VSGenerate/Lib/SDK.zip
+Source/VSGenerate/Lib/VSSDK
+Source/IronMeta.snk
