@@ -1,4 +1,4 @@
-IronMeta v2.3
+IronMeta v3.0
 
 IronMeta provides a programming language and application for 
 generating pattern matchers on arbitrary streams of objects. 
