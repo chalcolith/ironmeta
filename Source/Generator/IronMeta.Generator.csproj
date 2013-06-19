@@ -57,6 +57,7 @@
     <Compile Include="Parser.g.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Parser.ironmeta</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
