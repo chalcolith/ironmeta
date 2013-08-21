@@ -657,7 +657,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
 IronMeta
 
-Copyright (c) 2009-2013, The IronMeta Project.
+Copyright (c) 2013, Verophyle Informatics
 
 All rights reserved.
 

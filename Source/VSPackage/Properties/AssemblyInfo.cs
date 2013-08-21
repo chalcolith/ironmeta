@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("IronMeta.VSPackage")]
 [assembly: AssemblyDescription("IronMeta Visual Studio Plugin NuGet Package")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Verophyle Informatics")]
 [assembly: AssemblyProduct("IronMeta.VSPackage")]
-[assembly: AssemblyCopyright("Copyright © The IronMeta Project 2013")]
+[assembly: AssemblyCopyright("Copyright © Verophyle Informatics 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.*")]
+[assembly: AssemblyVersion("3.1.*")]
