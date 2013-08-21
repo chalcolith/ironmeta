@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Xunit;
-
-namespace IronMeta.UnitTests.AnonObject
+namespace IronMeta.Tests.Matcher.AnonObject
 {
     
+    [TestClass]
     public class AnonObjectTests
     {
 
@@ -24,26 +24,26 @@ namespace IronMeta.UnitTests.AnonObject
             };
 
 
-        [Fact]
-        public void TestActual()
+        [TestMethod]
+        public void TestAnonObjectActual()
         {
             var matcher = new AnonObjectParser();
             var match = matcher.GetMatch(first, matcher.ActualObject);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
 
             match = matcher.GetMatch(second, matcher.ActualObject);
-            Assert.False(match.Success);
+            Assert.IsFalse(match.Success);
         }
 
-        [Fact]
-        public void TestImplicit()
+        [TestMethod]
+        public void TestAnonObjectImplicit()
         {
             var matcher = new AnonObjectParser();
             var match = matcher.GetMatch(second, matcher.ImplicitObject);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
 
             match = matcher.GetMatch(first, matcher.ImplicitObject);
-            Assert.False(match.Success);
+            Assert.IsFalse(match.Success);
         }
 
     }

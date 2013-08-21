@@ -53,12 +53,43 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BugFixes\BugFixes.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BugFixes.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="BugFixes\TestBugFixes.cs" />
+    <Compile Include="Matcher\AnonObject\AnonObjectParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnonObjectParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\AnonObject\InputObject.cs" />
+    <Compile Include="Matcher\AnonObject\TestAnonObject.cs" />
     <Compile Include="Matcher\Basics\MatcherTests.cs" />
     <Compile Include="Matcher\Basics\TestParser.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestParser.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="Matcher\Combine\Combine1.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Combine1.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Combine\Combine2.cs" />
+    <Compile Include="Matcher\Combine\Combine2.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Combine2.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Combine\TestCombine.cs" />
+    <Compile Include="Matcher\LeftRecursion\LRParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LRParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\LeftRecursion\TestLeftRecursion.cs" />
     <Compile Include="Matcher\LineNumbers\TestLineNumbers.cs" />
     <Compile Include="Matcher\Memoization\MemoizeParser.g.cs">
       <AutoGen>True</AutoGen>
@@ -66,6 +97,13 @@
       <DependentUpon>MemoizeParser.ironmeta</DependentUpon>
     </Compile>
     <Compile Include="Matcher\Memoization\TestMemoize.cs" />
+    <Compile Include="Matcher\String\StringParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\String\TestStringParser.cs" />
+    <Compile Include="Parser\TestStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,13 +117,37 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BugFixes\BugFixes.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>BugFixes.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\AnonObject\AnonObjectParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>AnonObjectParser.g.cs</LastGenOutput>
+    </None>
     <None Include="Matcher\Basics\TestParser.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>TestParser.g.cs</LastGenOutput>
     </None>
+    <None Include="Matcher\Combine\Combine1.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Combine1.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Combine\Combine2.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Combine2.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\LeftRecursion\LRParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>LRParser.g.cs</LastGenOutput>
+    </None>
     <None Include="Matcher\Memoization\MemoizeParser.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>MemoizeParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\String\StringParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>StringParser.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Choose>

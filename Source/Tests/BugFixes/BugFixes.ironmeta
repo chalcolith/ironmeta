@@ -1,4 +1,4 @@
-ironmeta Bugs<char, object> : IronMeta.Matcher.CharMatcher<object>
+ironmeta BugFixes<char, object> : IronMeta.Matcher.CharMatcher<object>
 {
 
 	Bug_3490042_HexEscapeCharacter = "#\\x" Bug_3490042_HexScalarValue:hex -> 

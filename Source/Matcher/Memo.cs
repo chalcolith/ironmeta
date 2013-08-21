@@ -391,6 +391,11 @@ namespace IronMeta.Matcher
         /// </summary>
         public TItem CurrentResult { get; set; }
 
+        /// <summary>
+        /// Rules that are involved in expanding this left-recursion.
+        /// </summary>
+        public ISet<string> InvolvedRules { get; set; }
+
     } // class LRRecord
 
     /// <summary>

@@ -168,10 +168,14 @@ namespace IronMeta.Matcher
         /// <param name="production">The production itself.</param>
         /// <param name="args">Arguments to the production (can be null).</param>
         /// <returns>The result of the production at the given input index.</returns>
-        protected MatchItem<TInput, TResult> _MemoCall(
-            Memo<TInput, TResult> memo, string ruleName, int index, 
+        protected MatchItem<TInput, TResult> _MemoCall
+        (
+            Memo<TInput, TResult> memo, 
+            string ruleName, 
+            int index, 
             Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
-            IEnumerable<MatchItem<TInput, TResult>> args)
+            IEnumerable<MatchItem<TInput, TResult>> args
+        )
         {
             MatchItem<TInput, TResult> result;
 
@@ -208,6 +212,15 @@ namespace IronMeta.Matcher
             {
                 record.LRDetected = true;
 
+                var involved = memo.CallStack.Reverse()
+                    .SkipWhile(rec => rec.CurrentExpansion.Name != expansion.Name)
+                    .Select(rec => rec.CurrentExpansion.Name);
+
+                if (record.InvolvedRules != null)
+                    record.InvolvedRules.UnionWith(involved);
+                else
+                    record.InvolvedRules = new HashSet<string>(involved);
+
                 if (!memo.TryGetMemo(record.CurrentExpansion, index, out result))
                     throw new MatcherException(index, "Problem with expansion " + record.CurrentExpansion);
                 memo.Results.Push(result);
@@ -220,6 +233,7 @@ namespace IronMeta.Matcher
                 record.NumExpansions = 1;
                 record.CurrentExpansion = new Expansion { Name = expansion.Name, Num = record.NumExpansions };
                 record.CurrentNextIndex = -1;
+
                 memo.Memoize(record.CurrentExpansion, index, null);
                 memo.StartLRRecord(expansion, index, record);
 
@@ -249,16 +263,15 @@ namespace IronMeta.Matcher
                         memo.ForgetLRRecord(expansion, index);
                         memo.Results.Push(result);
 
-                        // if there are no LR-processing rules associated with us in the stack, memoize
+                        // if we are not involved in any left-recursion expansions above us, memoize
                         memo.CallStack.Pop();
 
-                        bool found_lr = memo.CallStack.Any(rec => rec.CurrentExpansion.Name == expansion.Name && rec.LRDetected);
+                        bool found_lr = memo.CallStack.Any(rec => rec.InvolvedRules != null && rec.InvolvedRules.Contains(expansion.Name));
                         if (!found_lr)
                             memo.Memoize(expansion, index, result);
 
                         if (result == null)
                             memo.AddError(index, () => "expected " + expansion.Name);
-
                         break;
                     }
                 }

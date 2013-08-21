@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace IronMeta.Tests.Matcher.Memoization
 {
@@ -52,7 +52,7 @@ namespace IronMeta.Tests.Matcher.Memoization
 
             Assert.IsTrue(match.Success);
             Assert.AreEqual(3, parser.charCount);
-            Assert.AreEqual(2, parser.categoryCount);
+            Assert.AreEqual(3, parser.categoryCount);
         }
 
         [TestMethod]

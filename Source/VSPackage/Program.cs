@@ -8,14 +8,12 @@ using Microsoft.Win32;
 
 namespace IronMeta.VSPackage
 {
-
     class Program
     {
-
         #region Registration
 
         static readonly string[] VS_PRODUCTS = { "VisualStudio", "VSWinExpress", "VWDExpress", "WDExpress" };
-        static readonly string[] VS_VERSIONS = { "11.0", "11.0_Config" };
+        static readonly string[] VS_VERSIONS = { "11.0_Config", "11.0" };
 
         const string VS_PREFIX = @"Software\Microsoft\";
         const string VS_KEY = @"\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}";
@@ -115,6 +113,5 @@ namespace IronMeta.VSPackage
 
             return 0;
         }
-
     }
 }

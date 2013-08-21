@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Xunit;
 using IronMeta.Generator;
 using IronMeta.Matcher;
 
-namespace IronMeta.UnitTests
+namespace IronMeta.Tests.Parser
 {
 
-    public class StringTests
+    [TestClass]
+    public class TestStrings
     {
 
         bool TestParse(string str)
@@ -20,52 +21,52 @@ namespace IronMeta.UnitTests
             return result.Success;
         }
 
-        [Fact]
-        public void Test_DoubleSingle()
+        [TestMethod]
+        public void TestStringsDoubleSingle()
         {
             var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { rule = ""\'""; }";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
-        [Fact]
-        public void Test_DoubleDouble()
+        [TestMethod]
+        public void TestStringsDoubleDouble()
         {
             var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { rule = ""\""""; }";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
-        [Fact]
-        public void Test_SingleSingle()
+        [TestMethod]
+        public void TestStringsSingleSingle()
         {
             var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { rule = '\''; }";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
-        [Fact]
-        public void Test_SingleDouble()
+        [TestMethod]
+        public void TestStringsSingleDouble()
         {
             var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { rule = '\""'; }";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
-        [Fact]
-        public void Test_CharLiteral()
+        [TestMethod]
+        public void TestStringsCharLiteral()
         {
             var grammar = @"ironmeta StrGrammar<char, string> : CharMatcher<string> { DQ = '\""'; rule = DQ (""\\\"""" | ~DQ .)* DQ; }";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
-        [Fact]
-        public void Test_TwoSlashes()
+        [TestMethod]
+        public void TestStringsTwoSlashes()
         {
             var literal = @"'\\'";
             var parser = new IronMeta.Generator.Parser();
             var result = parser.GetMatch(literal, parser.CSharpCodeItem);
-            Assert.True(result.Success);
+            Assert.IsTrue(result.Success);
         }
 
-        [Fact]
-        public void Test_FromNarwhal()
+        [TestMethod]
+        public void TestStringsFromNarwhal()
         {
             var grammar = @"
     ironmeta StrGrammar<char, string> : CharMatcher<string> {
@@ -80,7 +81,7 @@ namespace IronMeta.UnitTests
 
     }
 ";
-            Assert.True(TestParse(grammar));
+            Assert.IsTrue(TestParse(grammar));
         }
 
     }

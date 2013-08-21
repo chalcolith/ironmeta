@@ -2,62 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Xunit;
-
-namespace IronMeta.UnitTests
+namespace IronMeta.Tests.Matcher.LeftRecursion
 {
 
-    public class LRTests
+    [TestClass]
+    public class TestLeftRecursion
     {
 
-        [Fact]
-        public void TestParseTree()
+        [TestMethod]
+        public void TestLeftRecursionParseTree()
         {
             var parser = new LRParser();
             var match = parser.GetMatch("aaaa", parser.A);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
             var res = match.Result;
         }
 
-        [Fact]
-        public void TestAssociation()
+        [TestMethod]
+        public void TestLeftRecursionAssociation()
         {
             var parser = new LRParser();
             var match = parser.GetMatch("1+1+1+1", parser.Exp);
-            Assert.True(match.Success);
-            Assert.Equal("(((1 + 1) + 1) + 1)", match.Result);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual("(((1 + 1) + 1) + 1)", match.Result);
         }
 
-        [Fact]
-        public void TestNonLR()
+        [TestMethod]
+        public void TestLeftRecursionNonLR()
         {
             var parser = new LRParser(false);
             var match = parser.GetMatch("ab", parser.NonLR);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
 
             match = parser.GetMatch("ac", parser.NonLR);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
 
             match = parser.GetMatch("ad", parser.NonLR);
-            Assert.False(match.Success);
+            Assert.IsFalse(match.Success);
         }
 
-        [Fact]
-        public void TestLR2()
+        [TestMethod]
+        public void TestLeftRecursionLR2()
         {
             var parser = new LRParser();
             var match = parser.GetMatch("ababbba", parser.AAA);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
             var res = match.Result;
         }
 
-        [Fact]
-        public void TestHexEscape()
+        [TestMethod]
+        public void TestLeftRecursionHexEscape()
         {
             var parser = new LRParser();
             var match = parser.GetMatch("#\\x000", parser.HexEscapeCharacter);
-            Assert.True(match.Success);
+            Assert.IsTrue(match.Success);
         }
 
     }
