@@ -1,4 +1,4 @@
-﻿# Runs the first time a package is installed in a solution, and every time the solution is opened.
+# Runs the first time a package is installed in a solution, and every time the solution is opened.
 
 param($installPath, $toolsPath, $package, $project)
 
@@ -10,8 +10,17 @@ param($installPath, $toolsPath, $package, $project)
 $latest = (Get-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -ErrorAction SilentlyContinue).Latest
 
 if ($latest -ne $package.version) {
-	iex ((join-path $installPath "\tools\net45\IronMeta.VSPackage.exe") + " " + (join-path $installPath "\lib\net45\IronMeta.VSPlugin.dll") + " " + (join-path $installPath "\lib\net45\IronMeta.Generator.dll") + " " + (join-path $installPath "\lib\net45\IronMeta.Matcher.dll"))
+	$pkg = join-path "$installPath" "\tools\net45\IronMeta.VSPackage.exe"
+	$plugin = join-path "$installPath" "\lib\net45\IronMeta.VSPlugin.dll"
+	$generator = join-path "$installPath" "\lib\net45\IronMeta.Generator.dll"
+	$matcher = join-path "$installPath" "\lib\net45\IronMeta.Matcher.dll"
 
-	New-Item -Path 'hkcu:Software\IronMeta' -Name VSPackage -Force
-	Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name Latest -Value $package.version
+	try {
+		& $pkg $plugin $generator $matcher
+		New-Item -Path 'hkcu:Software\IronMeta' -Name VSPackage -Force
+		Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name Latest -Value $package.version
+	} catch {
+		Write-Warning "Failed to install"
+		exit
+	}
 }
