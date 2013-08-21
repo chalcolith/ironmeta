@@ -1,0 +1,14 @@
+﻿ironmeta MemoizeParser<char, Node> : CharMatcher<Node>
+{
+	AlternateEOF = Alternate EOF;
+	SequenceEOF = Sequence EOF;
+
+	Alternate = (Alternate " | " Sequence) | Sequence;
+	Sequence = (Sequence " " Single) | Single;
+
+	Single = Category | Char;
+	Category = "[" Sequence:s "]" -> { categoryCount++; return new CategoryNode { Children = s.Results }; };
+	Char = ['a' - 'z']:c -> { charCount++; return new CharNode { Value = c }; };
+
+	EOF = ~.;
+}

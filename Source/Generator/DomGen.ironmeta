@@ -1,0 +1,6 @@
+﻿using System.CodeDom;
+
+ironmeta DomGen<AST.Node, CodeObject> : Matcher<AST.Node, CodeObject>
+{
+	
+}

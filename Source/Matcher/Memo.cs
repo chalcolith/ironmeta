@@ -347,7 +347,7 @@ namespace IronMeta.Matcher
     /// <summary>
     /// Records the production name and current expansion for left-recursion handling.
     /// </summary>
-    public class Expansion
+    public struct Expansion
     {
         /// <summary>
         /// The name of the production.

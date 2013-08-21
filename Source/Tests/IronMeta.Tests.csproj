@@ -53,7 +53,19 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Matcher\Basics\MatcherTests.cs" />
+    <Compile Include="Matcher\Basics\TestParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestParser.ironmeta</DependentUpon>
+    </Compile>
     <Compile Include="Matcher\LineNumbers\TestLineNumbers.cs" />
+    <Compile Include="Matcher\Memoization\MemoizeParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemoizeParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Memoization\TestMemoize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +77,16 @@
       <Project>{ef704069-517a-48a5-9af2-1b257544d358}</Project>
       <Name>IronMeta.Matcher</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Matcher\Basics\TestParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>TestParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Memoization\MemoizeParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>MemoizeParser.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

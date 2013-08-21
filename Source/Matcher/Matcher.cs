@@ -175,29 +175,30 @@ namespace IronMeta.Matcher
         {
             MatchItem<TInput, TResult> result;
 
-            // if we are not handling left recursion, just call the production directly.
-            if (!HandleLeftRecursion)
-            {
-                production(memo, index, args);
-                result = memo.Results.Peek();
-
-                if (result == null)
-                    memo.AddError(index, () => "expected " + ruleName);
-
-                return result;
-            }
-
             var expansion = new Expansion
             {
                 Name = args == null ? ruleName : ruleName + string.Join(", ", args.Select(arg => arg.ToString()).ToArray()),
                 Num = 0
             };
 
-
             // if we have a memo record, use that
             if (memo.TryGetMemo(expansion, index, out result))
             {
                 memo.Results.Push(result);
+                return result;
+            }
+
+            // if we are not handling left recursion, just call the production directly.
+            if (!HandleLeftRecursion)
+            {
+                production(memo, index, args);
+                result = memo.Results.Peek();
+
+                memo.Memoize(expansion, index, result);
+
+                if (result == null)
+                    memo.AddError(index, () => "expected " + ruleName);
+
                 return result;
             }
 
@@ -248,19 +249,10 @@ namespace IronMeta.Matcher
                         memo.ForgetLRRecord(expansion, index);
                         memo.Results.Push(result);
 
-                        // if there are no LR-processing rules at or above us in the stack, memoize
+                        // if there are no LR-processing rules associated with us in the stack, memoize
                         memo.CallStack.Pop();
 
-                        bool found_lr = false;
-                        foreach (var rec in memo.CallStack)
-                        {
-                            if (rec.LRDetected)
-                            {
-                                found_lr = true;
-                                break;
-                            }
-                        }
-
+                        bool found_lr = memo.CallStack.Any(rec => rec.CurrentExpansion.Name == expansion.Name && rec.LRDetected);
                         if (!found_lr)
                             memo.Memoize(expansion, index, result);
 
