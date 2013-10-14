@@ -213,8 +213,8 @@ namespace IronMeta.Matcher
             {
                 record.LRDetected = true;
 
-                var involved = memo.CallStack.Reverse()
-                    .SkipWhile(rec => rec.CurrentExpansion.Name != expansion.Name)
+                var involved = memo.CallStack
+                    .TakeWhile(rec => rec.CurrentExpansion.Name != expansion.Name)
                     .Select(rec => rec.CurrentExpansion.Name);
 
                 if (record.InvolvedRules != null)

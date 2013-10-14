@@ -88,7 +88,7 @@ namespace IronMeta.Tests.Matcher.Memoization
 
             Assert.IsTrue(match.Success);
             Assert.AreEqual(3, parser.charCount);
-            Assert.AreEqual(3, parser.categoryCount);
+            Assert.AreEqual(2, parser.categoryCount);
         }
 
         [TestMethod]
