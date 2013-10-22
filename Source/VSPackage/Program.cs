@@ -49,7 +49,7 @@ namespace IronMeta.VSPackage
         #region Registration
 
         static readonly string[] VS_PRODUCTS = { "VisualStudio", "VSWinExpress", "VWDExpress", "WDExpress" };
-        static readonly string[] VS_VERSIONS = { "11.0_Config", "11.0" };
+        static readonly string[] VS_VERSIONS = { "12.0_Config", "12.0", "11.0_Config", "11.0" };
 
         const string VS_PREFIX = @"Software\Microsoft\";
         const string VS_KEY = @"\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}";

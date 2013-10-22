@@ -8,8 +8,9 @@ param($installPath, $toolsPath, $package, $project)
 # $project is null in init.ps1
 
 $latest = (Get-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -ErrorAction SilentlyContinue).Latest
+$prevPath = (Get-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -ErrorAction SilentlyContinue).InstallPath
 
-if ($latest -ne $package.version) {
+if ($latest -ne $package.version -or $prevPath -ne $installPath) {
 	$pkg = join-path "$installPath" "\tools\net45\IronMeta.VSPackage.exe"
 	$plugin = join-path "$installPath" "\lib\net45\IronMeta.VSPlugin.dll"
 	$generator = join-path "$installPath" "\lib\net45\IronMeta.Generator.dll"
@@ -19,6 +20,7 @@ if ($latest -ne $package.version) {
 		& $pkg $plugin $generator $matcher
 		New-Item -Path 'hkcu:Software\IronMeta' -Name VSPackage -Force
 		Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name Latest -Value $package.version
+		Set-ItemProperty 'hkcu:Software\IronMeta\VSPackage' -Name InstallPath -Value $installPath
 	} catch {
 		Write-Warning "Failed to install"
 		exit
