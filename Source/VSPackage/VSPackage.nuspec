@@ -10,6 +10,7 @@
       A programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.
     </description>
     <releaseNotes>
+      3.2 Optimization and VS2103 support.
       3.1 Bug fixes and optimization.
       3.0 NuGet package.
     </releaseNotes>
