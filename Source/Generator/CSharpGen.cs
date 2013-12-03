@@ -167,6 +167,7 @@ namespace IronMeta
             GenerateNamespaceUsings(tw);
 
             // ignore uncommented
+			tw.WriteLine("#pragma warning disable 0219");
             tw.WriteLine("#pragma warning disable 1591");
             tw.WriteLine();
 

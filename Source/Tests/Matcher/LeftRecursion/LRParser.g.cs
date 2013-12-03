@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
 
+#pragma warning disable 0219
 #pragma warning disable 1591
 
 namespace IronMeta.Tests.Matcher.LeftRecursion

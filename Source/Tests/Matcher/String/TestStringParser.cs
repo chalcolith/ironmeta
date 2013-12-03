@@ -38,7 +38,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+#if __MonoCS__
+using NUnit.Framework;
+using TestClassAttribute = NUnit.Framework.TestFixtureAttribute;
+using TestMethodAttribute = NUnit.Framework.TestAttribute;
+#else
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#endif
 
 namespace IronMeta.Tests.Matcher.String
 {
@@ -46,7 +53,7 @@ namespace IronMeta.Tests.Matcher.String
     public class StringParserTests
     {
         static readonly IEnumerable<string> StrList1 = new List<string> { "one" };
-        static readonly IEnumerable<string> StrList2 = new List<string> { "two" };
+		//static readonly IEnumerable<string> StrList2 = new List<string> { "two" };
         static readonly IEnumerable<string> StrListPi = new List<string> { "three", "point", "one", "four", "one", "five", "nine" };
 
         [TestMethod]

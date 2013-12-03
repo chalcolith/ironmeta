@@ -686,6 +686,7 @@ namespace IronMeta.Matcher
 
         #region ANY
 
+#pragma warning disable 0219
         /// <summary>
         /// Matches any input.
         /// </summary>
@@ -697,7 +698,7 @@ namespace IronMeta.Matcher
             {
                 try
                 {
-                    var _temp = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
+					var _temp = memo.InputList != null ? memo.InputList[index] : memo.InputEnumerable.ElementAt(index);
                     var result = new MatchItem<TInput, TResult>
                     {
                         StartIndex = index,
@@ -716,6 +717,7 @@ namespace IronMeta.Matcher
             memo.AddError(index, () => "unexpected end of file");
             return null;
         }
+#pragma warning restore 0219
 
         /// <summary>
         /// Matches any input in an argument stream.
@@ -800,11 +802,9 @@ namespace IronMeta.Matcher
             if (!hasCompilerGeneratedAttribute)
                 return false;
 
-            bool nameContainsAnonymousType = type.FullName.Contains("AnonymousType");
-            if (!nameContainsAnonymousType)
-                return false;
-
-            return true;
+			bool nameContainsAnonymousType = (type.FullName.Contains("AnonymousType") || type.FullName.Contains("AnonType"))
+			                                 && (type.FullName.StartsWith("<>") || type.FullName.StartsWith("VB$"));
+			return nameContainsAnonymousType;
         }
 
     }

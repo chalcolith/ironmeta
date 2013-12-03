@@ -8,6 +8,7 @@ using System.Linq;
 using IronMeta.Matcher;
 using System.CodeDom;
 
+#pragma warning disable 0219
 #pragma warning disable 1591
 
 namespace IronMeta.Generator

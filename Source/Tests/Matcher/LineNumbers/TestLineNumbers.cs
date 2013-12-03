@@ -36,7 +36,16 @@
 
 using System;
 using System.Linq;
+
+#if __MonoCS__
+using NUnit.Framework;
+using TestClassAttribute = NUnit.Framework.TestFixtureAttribute;
+using TestInitializeAttribute = NUnit.Framework.TestFixtureSetUpAttribute;
+using TestCleanupAttribute = NUnit.Framework.TestFixtureTearDownAttribute;
+using TestMethodAttribute = NUnit.Framework.TestAttribute;
+#else
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#endif
 
 namespace IronMeta.Tests.Matcher.LineNumbers
 {
@@ -155,7 +164,7 @@ ironmeta Parser<char, AST.Node> : IronMeta.Matcher.CharMatcher<AST.Node>
             Assert.IsFalse(match.Success, "match should fail");
 
             int num, offset;
-            var line = Generator.Parser.GetLine(match.Memo, match.ErrorIndex, out num, out offset);
+            Generator.Parser.GetLine(match.Memo, match.ErrorIndex, out num, out offset);
 
             Assert.AreEqual(38, num, "line number should be 38");
             Assert.AreEqual(4, offset, "offset should be 4");

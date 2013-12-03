@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DCA1CEE3-9947-4777-A251-2BB0773DA0E8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Tests.Mono</RootNamespace>
+    <AssemblyName>IronMeta.Tests.Mono</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\..\Program Files %28x86%29\Xamarin Studio\AddIns\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BugFixes\BugFixes.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BugFixes.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="BugFixes\TestBugFixes.cs" />
+    <Compile Include="Matcher\AnonObject\AnonObjectParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnonObjectParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\AnonObject\InputObject.cs" />
+    <Compile Include="Matcher\AnonObject\TestAnonObject.cs" />
+    <Compile Include="Matcher\Basics\MatcherTests.cs" />
+    <Compile Include="Matcher\Basics\TestParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Combine\Combine1.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Combine1.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Combine\Combine2.cs" />
+    <Compile Include="Matcher\Combine\Combine2.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Combine2.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Combine\TestCombine.cs" />
+    <Compile Include="Matcher\LeftRecursion\LRParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LRParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\LeftRecursion\TestLeftRecursion.cs" />
+    <Compile Include="Matcher\LineNumbers\TestLineNumbers.cs" />
+    <Compile Include="Matcher\Memoization\MemoizeParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemoizeParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\Memoization\TestMemoize.cs" />
+    <Compile Include="Matcher\String\StringParser.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringParser.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\String\TestStringParser.cs" />
+    <Compile Include="Parser\TestStrings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tester.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BugFixes\BugFixes.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>BugFixes.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\AnonObject\AnonObjectParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>AnonObjectParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Basics\TestParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>TestParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Combine\Combine1.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Combine1.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Combine\Combine2.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Combine2.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\LeftRecursion\LRParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>LRParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\Memoization\MemoizeParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>MemoizeParser.g.cs</LastGenOutput>
+    </None>
+    <None Include="Matcher\String\StringParser.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>StringParser.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Matcher\IronMeta.Matcher.Mono.csproj">
+      <Project>{EF704069-517A-48A5-9AF2-1B257544D358}</Project>
+      <Name>IronMeta.Matcher.Mono</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Generator\IronMeta.Generator.Mono.csproj">
+      <Project>{6767D6B1-E18E-4778-8E4F-8870B881ECF1}</Project>
+      <Name>IronMeta.Generator.Mono</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

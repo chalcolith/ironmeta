@@ -37,7 +37,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if __MonoCS__
+using NUnit.Framework;
+using TestClassAttribute = NUnit.Framework.TestFixtureAttribute;
+using TestMethodAttribute = NUnit.Framework.TestAttribute;
+#else
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#endif
 
 namespace IronMeta.Tests.Matcher.Memoization
 {
