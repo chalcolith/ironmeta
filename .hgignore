@@ -1,5 +1,4 @@
 syntax: glob
-*.g.cs
 *.suo
 *.user
 bin/
