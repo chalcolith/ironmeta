@@ -1,38 +1,6 @@
-//////////////////////////////////////////////////////////////////////
 //
-// Copyright © 2013 Verophyle Informatics
-// All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without 
-// modification, are permitted provided that the following conditions 
-// are met:
-// 
-//     * Redistributions of source code must retain the above 
-//       copyright notice, this list of conditions and the following 
-//       disclaimer.
-//     * Redistributions in binary form must reproduce the above 
-//       copyright notice, this list of conditions and the following 
-//       disclaimer in the documentation and/or other materials 
-//       provided with the distribution.
-//     * Neither the name of the IronMeta Project nor the names of its 
-//       contributors may be used to endorse or promote products 
-//       derived from this software without specific prior written 
-//       permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-// "AS IS" AND  ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-// LIMITED TO, THE  IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS 
-// FOR  A  PARTICULAR  PURPOSE  ARE DISCLAIMED. IN  NO EVENT SHALL THE 
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-// BUT NOT  LIMITED TO, PROCUREMENT  OF SUBSTITUTE  GOODS  OR SERVICES; 
-// LOSS OF USE, DATA, OR  PROFITS; OR  BUSINESS  INTERRUPTION) HOWEVER 
-// CAUSED AND ON ANY THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT 
-// LIABILITY, OR  TORT (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN 
-// ANY WAY OUT  OF THE  USE OF THIS SOFTWARE, EVEN  IF ADVISED  OF THE 
-// POSSIBILITY OF SUCH DAMAGE.
+// IronMeta Parser Parser; Generated 2014-05-30 23:31:15Z UTC
 //
-//////////////////////////////////////////////////////////////////////
 
 using System;
 using System.Collections.Generic;
@@ -58,11 +26,64 @@ namespace IronMeta.Generator
     {
         public BootstrapParser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public BootstrapParser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_Parser_Rule>()
+            {
+                ACTION,
+                AND_PRE,
+                AnyTerm,
+                BANG,
+                BRA,
+                CallOrVar,
+                CLOSE,
+                COLON,
+                COMMA,
+                Comment,
+                DOT,
+                EOF,
+                EOL,
+                EQUALS,
+                GREATER,
+                Ident,
+                IdentBegin,
+                IdentBody,
+                Identifier,
+                IRONMETA,
+                KET,
+                KEYWORD,
+                LESS,
+                LR,
+                NEW,
+                NOT_PRE,
+                Number,
+                OPEN,
+                OR,
+                OVERRIDE,
+                PERIOD,
+                PLUS,
+                Preamble,
+                QualifiedId,
+                QUES,
+                SEMI,
+                SP,
+                STAR,
+                Using,
+                USING,
+                WS,
+            };
+        }
+
 
         public void IronMetaFile(_Parser_Memo _memo, int _index, _Parser_Args _args)
         {
@@ -104,7 +125,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -134,7 +155,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -161,7 +182,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -185,7 +206,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -198,7 +219,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.GrammarFile(p, g); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.GrammarFile(p, g); }, _r0), true) );
             }
 
         }
@@ -244,7 +265,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Preamble(u.Results); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Preamble(u.Results); }, _r0), true) );
             }
 
         }
@@ -318,7 +339,7 @@ namespace IronMeta.Generator
 
             if (_r9_1 != null && _r9_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i9, _index, _memo.InputEnumerable, _r9_1.Results.Concat(_r9_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i9, _index, _memo.InputEnumerable, _r9_1.Results.Concat(_r9_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -344,7 +365,7 @@ namespace IronMeta.Generator
 
             if (_r6_1 != null && _r6_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -361,7 +382,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -385,7 +406,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -409,7 +430,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -422,7 +443,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Using(name); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Using(name); }, _r0), true) );
             }
 
         }
@@ -496,7 +517,7 @@ namespace IronMeta.Generator
 
             if (_r11_1 != null && _r11_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -520,7 +541,7 @@ namespace IronMeta.Generator
 
             if (_r10_1 != null && _r10_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i10, _index, _memo.InputEnumerable, _r10_1.Results.Concat(_r10_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i10, _index, _memo.InputEnumerable, _r10_1.Results.Concat(_r10_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -547,7 +568,7 @@ namespace IronMeta.Generator
 
             if (_r9_1 != null && _r9_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i9, _index, _memo.InputEnumerable, _r9_1.Results.Concat(_r9_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i9, _index, _memo.InputEnumerable, _r9_1.Results.Concat(_r9_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -571,7 +592,7 @@ namespace IronMeta.Generator
 
             if (_r8_1 != null && _r8_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i8, _index, _memo.InputEnumerable, _r8_1.Results.Concat(_r8_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i8, _index, _memo.InputEnumerable, _r8_1.Results.Concat(_r8_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -598,7 +619,7 @@ namespace IronMeta.Generator
 
             if (_r7_1 != null && _r7_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -622,7 +643,7 @@ namespace IronMeta.Generator
 
             if (_r6_1 != null && _r6_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -646,7 +667,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -673,7 +694,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -697,7 +718,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -741,7 +762,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -765,7 +786,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -778,7 +799,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); }, _r0), true) );
             }
 
         }
@@ -839,7 +860,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -869,7 +890,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -893,7 +914,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -920,7 +941,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -944,7 +965,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -957,7 +978,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Rule(name, parms.Inputs.Any() ? new AST.Args(parms, body) : (AST.Node)body, Trimmed(ovr)); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Rule(name, parms.Inputs.Any() ? new AST.Args(parms, body) : (AST.Node)body, Trimmed(ovr)); }, _r0), true) );
             }
 
         }
@@ -1010,7 +1031,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1036,7 +1057,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1049,12 +1070,9 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result =>
-                {
-                    return _IM_Result.Results
-                        .Where(node => node != null)
-                        .Aggregate<AST.Node, AST.Node>(null, (prev, cur) => prev != null ? new AST.Or(prev, cur) : cur);
-                }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results
+                    .Where(node => node != null)
+                    .Aggregate<AST.Node, AST.Node>(null, (prev, cur) => prev != null ? new AST.Or(prev, cur) : cur); }, _r0), true) );
             }
 
         }
@@ -1104,7 +1122,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1127,7 +1145,7 @@ namespace IronMeta.Generator
 
             // LOOK 8
             var _r8 = _memo.Results.Pop();
-            _memo.Results.Push(_r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null );
             _index = _start_i8;
 
         label3: // AND
@@ -1136,7 +1154,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1163,7 +1181,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1176,7 +1194,7 @@ namespace IronMeta.Generator
             if (_r1 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r1.StartIndex, _r1.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Act(body, action); }, _r1), true));
+                _memo.Results.Push( new _Parser_Item(_r1.StartIndex, _r1.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Act(body, action); }, _r1), true) );
             }
 
             // OR shortcut
@@ -1232,7 +1250,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1245,7 +1263,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Fail(msg); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Fail(msg); }, _r0), true) );
             }
 
         }
@@ -1286,12 +1304,9 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result =>
-                {
-                    return _IM_Result.Results
-                        .Where(node => node != null)
-                        .Aggregate<AST.Node, AST.Node>(null, (prev, cur) => prev != null ? new AST.And(prev, cur) : cur);
-                }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results
+                    .Where(node => node != null)
+                    .Aggregate<AST.Node, AST.Node>(null, (prev, cur) => prev != null ? new AST.And(prev, cur) : cur); }, _r0), true) );
             }
 
         }
@@ -1354,7 +1369,7 @@ namespace IronMeta.Generator
 
             if (_r6_1 != null && _r6_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1377,7 +1392,7 @@ namespace IronMeta.Generator
 
             // LOOK 10
             var _r10 = _memo.Results.Pop();
-            _memo.Results.Push(_r10 != null ? new _Parser_Item(_start_i10, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r10 != null ? new _Parser_Item(_start_i10, _memo.InputEnumerable) : null );
             _index = _start_i10;
 
         label5: // AND
@@ -1386,7 +1401,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1413,7 +1428,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1426,7 +1441,7 @@ namespace IronMeta.Generator
             if (_r3 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Cond(body, cond); }, _r3), true));
+                _memo.Results.Push( new _Parser_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Cond(body, cond); }, _r3), true) );
             }
 
         label1: // OR
@@ -1492,7 +1507,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1519,7 +1534,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1532,7 +1547,7 @@ namespace IronMeta.Generator
             if (_r2 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r2.StartIndex, _r2.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Bind(exp, id); }, _r2), true));
+                _memo.Results.Push( new _Parser_Item(_r2.StartIndex, _r2.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Bind(exp, id); }, _r2), true) );
             }
 
             // OR shortcut
@@ -1567,7 +1582,7 @@ namespace IronMeta.Generator
 
             if (_r11_1 != null && _r11_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1580,7 +1595,7 @@ namespace IronMeta.Generator
             if (_r10 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r10.StartIndex, _r10.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Bind(new AST.Any(), id); }, _r10), true));
+                _memo.Results.Push( new _Parser_Item(_r10.StartIndex, _r10.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Bind(new AST.Any(), id); }, _r10), true) );
             }
 
         label1: // OR
@@ -1681,7 +1696,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1694,7 +1709,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Look(exp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Look(exp); }, _r0), true) );
             }
 
         }
@@ -1734,7 +1749,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1747,7 +1762,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Not(exp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Not(exp); }, _r0), true) );
             }
 
         }
@@ -1875,7 +1890,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1902,7 +1917,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1942,7 +1957,7 @@ namespace IronMeta.Generator
 
             if (_r11_1 != null && _r11_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1959,7 +1974,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1983,7 +1998,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -1996,25 +2011,22 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result =>
-                {
-                    int min = int.Parse(Input(n));
-                    int max = x != null && x.Inputs.Any() ? int.Parse(Input(x)) : min;
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { int min = int.Parse(Input(n));
+            int max = x != null && x.Inputs.Any() ? int.Parse(Input(x)) : min;
 
-                    if (min < 0)
-                        throw new MatcherException(n.StartIndex, "min must be >= 0");
-                    if (max < 1)
-                        throw new MatcherException(x.StartIndex, "max must be > 1");
-                    if (max < min)
-                        throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
+            if (min < 0)
+                throw new MatcherException(n.StartIndex, "min must be >= 0");
+            if (max < 1)
+                throw new MatcherException(x.StartIndex, "max must be > 1");
+            if (max < min)
+                throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
 
-                    AST.Node res = null;
-                    for (int i = 0; i < min; ++i)
-                        res = res != null ? new AST.And(res, exp) : (AST.Node)exp;
-                    for (int i = 0; i < (max - min); ++i)
-                        res = res != null ? new AST.And(res, new AST.Ques(exp)) : (AST.Node)new AST.Ques(exp);
-                    return res;
-                }, _r0), true));
+            AST.Node res = null;
+            for (int i = 0; i < min; ++i)
+                res = res != null ? new AST.And(res, exp) : (AST.Node)exp;
+            for (int i = 0; i < (max-min); ++i)
+                res = res != null ? new AST.And(res, new AST.Ques(exp)) : (AST.Node)new AST.Ques(exp);
+            return res; }, _r0), true) );
             }
 
         }
@@ -2054,7 +2066,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2067,7 +2079,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Star(exp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Star(exp); }, _r0), true) );
             }
 
         }
@@ -2107,7 +2119,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2120,7 +2132,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Plus(exp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Plus(exp); }, _r0), true) );
             }
 
         }
@@ -2166,7 +2178,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2189,7 +2201,7 @@ namespace IronMeta.Generator
 
             // NOT 7
             var _r7 = _memo.Results.Pop();
-            _memo.Results.Push(_r7 == null ? new _Parser_Item(_start_i7, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r7 == null ? new _Parser_Item(_start_i7, _memo.InputEnumerable) : null);
             _index = _start_i7;
 
         label2: // AND
@@ -2198,7 +2210,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2222,7 +2234,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2235,7 +2247,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Ques(exp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Ques(exp); }, _r0), true) );
             }
 
         }
@@ -2371,7 +2383,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2395,7 +2407,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2408,7 +2420,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return exp; }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return exp; }, _r0), true) );
             }
 
         }
@@ -2429,7 +2441,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Any(); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Any(); }, _r0), true) );
             }
 
         }
@@ -2476,7 +2488,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2506,7 +2518,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2530,7 +2542,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2543,7 +2555,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Call(name, p.Results); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Call(name, p.Results); }, _r0), true) );
             }
 
         }
@@ -2596,7 +2608,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2622,7 +2634,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2635,7 +2647,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Where(node => node != null); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Where(node => node != null); }, _r0), true) );
             }
 
         }
@@ -2690,7 +2702,7 @@ namespace IronMeta.Generator
 
             // NOT 2
             var _r2 = _memo.Results.Pop();
-            _memo.Results.Push(_r2 == null ? new _Parser_Item(_start_i2, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r2 == null ? new _Parser_Item(_start_i2, _memo.InputEnumerable) : null);
             _index = _start_i2;
 
             // AND shortcut
@@ -2712,7 +2724,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2725,7 +2737,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.CallOrVar(name); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.CallOrVar(name); }, _r0), true) );
             }
 
         }
@@ -2772,7 +2784,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2791,7 +2803,7 @@ namespace IronMeta.Generator
 
             // LOOK 8
             var _r8 = _memo.Results.Pop();
-            _memo.Results.Push(_r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null );
             _index = _start_i8;
 
         label3: // AND
@@ -2800,7 +2812,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2843,7 +2855,7 @@ namespace IronMeta.Generator
 
             // LOOK 10
             var _r10 = _memo.Results.Pop();
-            _memo.Results.Push(_r10 != null ? new _Parser_Item(_start_i10, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r10 != null ? new _Parser_Item(_start_i10, _memo.InputEnumerable) : null );
             _index = _start_i10;
 
         label2: // OR
@@ -2865,7 +2877,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2878,7 +2890,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Code(_IM_Result); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Code(_IM_Result); }, _r0), true) );
             }
 
         }
@@ -2920,7 +2932,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -2960,7 +2972,7 @@ namespace IronMeta.Generator
 
             // LOOK 12
             var _r12 = _memo.Results.Pop();
-            _memo.Results.Push(_r12 != null ? new _Parser_Item(_start_i12, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r12 != null ? new _Parser_Item(_start_i12, _memo.InputEnumerable) : null );
             _index = _start_i12;
 
             // AND shortcut
@@ -2979,7 +2991,7 @@ namespace IronMeta.Generator
 
             if (_r11_1 != null && _r11_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3014,7 +3026,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3034,7 +3046,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3058,7 +3070,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3071,7 +3083,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.InputClass(c.Results); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.InputClass(c.Results); }, _r0), true) );
             }
 
         }
@@ -3112,7 +3124,7 @@ namespace IronMeta.Generator
 
             // LOOK 8
             var _r8 = _memo.Results.Pop();
-            _memo.Results.Push(_r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r8 != null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null );
             _index = _start_i8;
 
             // AND shortcut
@@ -3134,7 +3146,7 @@ namespace IronMeta.Generator
 
             if (_r7_1 != null && _r7_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3158,7 +3170,7 @@ namespace IronMeta.Generator
 
             if (_r6_1 != null && _r6_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3178,7 +3190,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3202,7 +3214,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3221,7 +3233,7 @@ namespace IronMeta.Generator
 
             // LOOK 15
             var _r15 = _memo.Results.Pop();
-            _memo.Results.Push(_r15 != null ? new _Parser_Item(_start_i15, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r15 != null ? new _Parser_Item(_start_i15, _memo.InputEnumerable) : null );
             _index = _start_i15;
 
         label3: // AND
@@ -3230,7 +3242,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3257,7 +3269,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3281,7 +3293,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3294,25 +3306,22 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result =>
-                {
-                    char ch_from = AST.ClassRange.GetChar(from);
-                    char ch_to = AST.ClassRange.GetChar(to);
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { char ch_from = AST.ClassRange.GetChar(from);
+            char ch_to = AST.ClassRange.GetChar(to);
 
-                    List<char> range = new List<char>();
-                    if (ch_from > ch_to)
-                    {
-                        range.Add(ch_from);
-                        range.Add(ch_to);
-                    }
-                    else
-                    {
-                        for (char ch = ch_from; ch <= ch_to; ++ch)
-                            range.Add(ch);
-                    }
+            List<char> range = new List<char>();
+            if (ch_from > ch_to)
+            {
+                range.Add(ch_from);
+                range.Add(ch_to);
+            }
+            else
+            {
+                for (char ch = ch_from ; ch <= ch_to; ++ch)
+                    range.Add(ch);
+            }
 
-                    return new AST.ClassRange(_IM_Result, range);
-                }, _r0), true));
+            return new AST.ClassRange(_IM_Result, range); }, _r0), true) );
             }
 
         }
@@ -3352,7 +3361,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3365,7 +3374,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Code(code); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Code(code); }, _r0), true) );
             }
 
         }
@@ -3411,7 +3420,7 @@ namespace IronMeta.Generator
 
             // NOT 8
             var _r8 = _memo.Results.Pop();
-            _memo.Results.Push(_r8 == null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r8 == null ? new _Parser_Item(_start_i8, _memo.InputEnumerable) : null);
             _index = _start_i8;
 
             // AND shortcut
@@ -3474,7 +3483,7 @@ namespace IronMeta.Generator
 
             if (_r7_1 != null && _r7_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3500,7 +3509,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3520,7 +3529,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3559,7 +3568,7 @@ namespace IronMeta.Generator
 
             // NOT 23
             var _r23 = _memo.Results.Pop();
-            _memo.Results.Push(_r23 == null ? new _Parser_Item(_start_i23, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r23 == null ? new _Parser_Item(_start_i23, _memo.InputEnumerable) : null);
             _index = _start_i23;
 
             // AND shortcut
@@ -3622,7 +3631,7 @@ namespace IronMeta.Generator
 
             if (_r22_1 != null && _r22_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i22, _index, _memo.InputEnumerable, _r22_1.Results.Concat(_r22_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i22, _index, _memo.InputEnumerable, _r22_1.Results.Concat(_r22_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3648,7 +3657,7 @@ namespace IronMeta.Generator
 
             if (_r19_1 != null && _r19_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i19, _index, _memo.InputEnumerable, _r19_1.Results.Concat(_r19_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i19, _index, _memo.InputEnumerable, _r19_1.Results.Concat(_r19_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3668,7 +3677,7 @@ namespace IronMeta.Generator
 
             if (_r18_1 != null && _r18_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i18, _index, _memo.InputEnumerable, _r18_1.Results.Concat(_r18_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i18, _index, _memo.InputEnumerable, _r18_1.Results.Concat(_r18_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3747,7 +3756,7 @@ namespace IronMeta.Generator
 
             // NOT 44
             var _r44 = _memo.Results.Pop();
-            _memo.Results.Push(_r44 == null ? new _Parser_Item(_start_i44, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r44 == null ? new _Parser_Item(_start_i44, _memo.InputEnumerable) : null);
             _index = _start_i44;
 
             // AND shortcut
@@ -3762,7 +3771,7 @@ namespace IronMeta.Generator
 
             if (_r43_1 != null && _r43_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i43, _index, _memo.InputEnumerable, _r43_1.Results.Concat(_r43_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i43, _index, _memo.InputEnumerable, _r43_1.Results.Concat(_r43_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3791,7 +3800,7 @@ namespace IronMeta.Generator
 
             if (_r34_1 != null && _r34_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i34, _index, _memo.InputEnumerable, _r34_1.Results.Concat(_r34_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i34, _index, _memo.InputEnumerable, _r34_1.Results.Concat(_r34_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3811,7 +3820,7 @@ namespace IronMeta.Generator
 
             if (_r33_1 != null && _r33_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i33, _index, _memo.InputEnumerable, _r33_1.Results.Concat(_r33_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i33, _index, _memo.InputEnumerable, _r33_1.Results.Concat(_r33_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3890,7 +3899,7 @@ namespace IronMeta.Generator
 
             // NOT 59
             var _r59 = _memo.Results.Pop();
-            _memo.Results.Push(_r59 == null ? new _Parser_Item(_start_i59, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r59 == null ? new _Parser_Item(_start_i59, _memo.InputEnumerable) : null);
             _index = _start_i59;
 
             // AND shortcut
@@ -3905,7 +3914,7 @@ namespace IronMeta.Generator
 
             if (_r58_1 != null && _r58_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i58, _index, _memo.InputEnumerable, _r58_1.Results.Concat(_r58_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i58, _index, _memo.InputEnumerable, _r58_1.Results.Concat(_r58_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3934,7 +3943,7 @@ namespace IronMeta.Generator
 
             if (_r49_1 != null && _r49_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i49, _index, _memo.InputEnumerable, _r49_1.Results.Concat(_r49_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i49, _index, _memo.InputEnumerable, _r49_1.Results.Concat(_r49_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -3954,7 +3963,7 @@ namespace IronMeta.Generator
 
             if (_r48_1 != null && _r48_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i48, _index, _memo.InputEnumerable, _r48_1.Results.Concat(_r48_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i48, _index, _memo.InputEnumerable, _r48_1.Results.Concat(_r48_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4002,7 +4011,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4015,7 +4024,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return id; }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return id; }, _r0), true) );
             }
 
         }
@@ -4069,7 +4078,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4085,7 +4094,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(id); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(id); }, _r0), true) );
             }
 
         }
@@ -4197,7 +4206,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4223,7 +4232,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4247,7 +4256,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4260,7 +4269,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(_IM_Result); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(_IM_Result); }, _r0), true) );
             }
 
         }
@@ -4322,7 +4331,7 @@ namespace IronMeta.Generator
 
             if (_r7_1 != null && _r7_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4348,7 +4357,7 @@ namespace IronMeta.Generator
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4375,7 +4384,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4446,7 +4455,7 @@ namespace IronMeta.Generator
 
             if (_r19_1 != null && _r19_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i19, _index, _memo.InputEnumerable, _r19_1.Results.Concat(_r19_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i19, _index, _memo.InputEnumerable, _r19_1.Results.Concat(_r19_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4472,7 +4481,7 @@ namespace IronMeta.Generator
 
             if (_r16_1 != null && _r16_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i16, _index, _memo.InputEnumerable, _r16_1.Results.Concat(_r16_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i16, _index, _memo.InputEnumerable, _r16_1.Results.Concat(_r16_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4486,7 +4495,7 @@ namespace IronMeta.Generator
 
             if (_r14_1 != null && _r14_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4510,7 +4519,7 @@ namespace IronMeta.Generator
 
             if (_r13_1 != null && _r13_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i13, _index, _memo.InputEnumerable, _r13_1.Results.Concat(_r13_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i13, _index, _memo.InputEnumerable, _r13_1.Results.Concat(_r13_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4530,7 +4539,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4543,7 +4552,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(ids, gp); }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new AST.Idfr(ids, gp); }, _r0), true) );
             }
 
         }
@@ -4594,7 +4603,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4707,7 +4716,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4743,7 +4752,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4791,7 +4800,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4851,7 +4860,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4887,7 +4896,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4923,7 +4932,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -4971,7 +4980,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5007,7 +5016,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5043,7 +5052,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5079,7 +5088,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5115,7 +5124,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5151,7 +5160,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5200,7 +5209,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5236,7 +5245,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5272,7 +5281,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5308,7 +5317,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5344,7 +5353,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5380,7 +5389,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5416,7 +5425,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5479,7 +5488,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5515,7 +5524,7 @@ namespace IronMeta.Generator
 
             if (_r0_1 != null && _r0_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5591,20 +5600,8 @@ namespace IronMeta.Generator
         public void WS(_Parser_Memo _memo, int _index, _Parser_Args _args)
         {
 
-            // OR 0
-            int _start_i0 = _index;
-
-            // LITERAL ' '
-            _ParseLiteralChar(_memo, ref _index, ' ');
-
-            // OR shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
-
-            // LITERAL '\t'
-            _ParseLiteralChar(_memo, ref _index, '\t');
-
-        label0: // OR
-            int _dummy_i0 = _index; // no-op for label
+            // INPUT CLASS
+            _ParseInputClass(_memo, ref _index, ' ', '\t');
 
         }
 
@@ -5647,7 +5644,7 @@ namespace IronMeta.Generator
 
             // NOT 6
             var _r6 = _memo.Results.Pop();
-            _memo.Results.Push(_r6 == null ? new _Parser_Item(_start_i6, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r6 == null ? new _Parser_Item(_start_i6, _memo.InputEnumerable) : null);
             _index = _start_i6;
 
             // AND shortcut
@@ -5662,7 +5659,7 @@ namespace IronMeta.Generator
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5688,7 +5685,7 @@ namespace IronMeta.Generator
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i2, _index, _memo.InputEnumerable, _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5712,7 +5709,7 @@ namespace IronMeta.Generator
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5751,7 +5748,7 @@ namespace IronMeta.Generator
 
             // NOT 15
             var _r15 = _memo.Results.Pop();
-            _memo.Results.Push(_r15 == null ? new _Parser_Item(_start_i15, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r15 == null ? new _Parser_Item(_start_i15, _memo.InputEnumerable) : null);
             _index = _start_i15;
 
             // AND shortcut
@@ -5782,7 +5779,7 @@ namespace IronMeta.Generator
 
             if (_r14_1 != null && _r14_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5808,7 +5805,7 @@ namespace IronMeta.Generator
 
             if (_r11_1 != null && _r11_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5828,7 +5825,7 @@ namespace IronMeta.Generator
 
             if (_r10_1 != null && _r10_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i10, _index, _memo.InputEnumerable, _r10_1.Results.Concat(_r10_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i10, _index, _memo.InputEnumerable, _r10_1.Results.Concat(_r10_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5871,7 +5868,7 @@ namespace IronMeta.Generator
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push(new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true));
+                _memo.Results.Push( new _Parser_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -5896,7 +5893,7 @@ namespace IronMeta.Generator
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push(new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { _memo.Positions.Add(nl.NextIndex); return nl; }, _r0), true));
+                _memo.Results.Push( new _Parser_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { _memo.Positions.Add(nl.NextIndex); return nl; }, _r0), true) );
             }
 
         }
@@ -5913,7 +5910,7 @@ namespace IronMeta.Generator
 
             // NOT 0
             var _r0 = _memo.Results.Pop();
-            _memo.Results.Push(_r0 == null ? new _Parser_Item(_start_i0, _memo.InputEnumerable) : null);
+            _memo.Results.Push( _r0 == null ? new _Parser_Item(_start_i0, _memo.InputEnumerable) : null);
             _index = _start_i0;
 
         }

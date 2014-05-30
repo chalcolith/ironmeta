@@ -1,5 +1,5 @@
-﻿//
-// IronMeta Combine1 Parser; Generated 2013-08-21 05:02:09Z UTC
+//
+// IronMeta Combine1 Parser; Generated 2014-05-30 23:38:49Z UTC
 //
 
 using System;
@@ -25,11 +25,26 @@ namespace IronMeta.Tests.Matcher.Combine
     {
         public Combine1()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public Combine1(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_Combine1_Rule>()
+            {
+                Rule1,
+                Rule2,
+                VirtualRule,
+            };
+        }
+
 
         public void Rule1(_Combine1_Memo _memo, int _index, _Combine1_Args _args)
         {
@@ -83,5 +98,5 @@ namespace IronMeta.Tests.Matcher.Combine
 
     } // class Combine1
 
-} // namespace IronMeta.Tests.Matcher.Combine
+} // namespace Combine
 

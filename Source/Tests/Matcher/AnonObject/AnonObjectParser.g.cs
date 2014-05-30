@@ -1,5 +1,5 @@
-﻿//
-// IronMeta AnonObjectParser Parser; Generated 2013-08-21 05:01:44Z UTC
+//
+// IronMeta AnonObjectParser Parser; Generated 2014-05-30 23:38:48Z UTC
 //
 
 using System;
@@ -25,11 +25,25 @@ namespace IronMeta.Tests.Matcher.AnonObject
     {
         public AnonObjectParser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public AnonObjectParser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_AnonObjectParser_Rule>()
+            {
+                ActualObject,
+                ImplicitObject,
+            };
+        }
+
 
         public void ActualObject(_AnonObjectParser_Memo _memo, int _index, _AnonObjectParser_Args _args)
         {
@@ -96,5 +110,5 @@ namespace IronMeta.Tests.Matcher.AnonObject
 
     } // class AnonObjectParser
 
-} // namespace IronMeta.Tests.Matcher.AnonObject
+} // namespace AnonObject
 

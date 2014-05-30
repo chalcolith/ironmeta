@@ -55,12 +55,6 @@
     <Compile Include="BootstrapParser.cs" />
     <Compile Include="CSharpGen.cs" />
     <Compile Include="CSharpShell.cs" />
-    <Compile Include="DomGen.cs" />
-    <Compile Include="DomGen.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DomGen.ironmeta</DependentUpon>
-    </Compile>
     <Compile Include="IGenerator.cs" />
     <Compile Include="Parser.g.cs">
       <AutoGen>True</AutoGen>
@@ -72,10 +66,6 @@
   <ItemGroup>
     <None Include="..\IronMeta.snk">
       <Link>IronMeta.snk</Link>
-    </None>
-    <None Include="DomGen.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>DomGen.g.cs</LastGenOutput>
     </None>
     <None Include="Parser.ironmeta">
       <Generator>IronMetaGenerator</Generator>
@@ -89,7 +79,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

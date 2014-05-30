@@ -1,5 +1,5 @@
-﻿//
-// IronMeta StringParser Parser; Generated 2013-08-21 05:02:56Z UTC
+//
+// IronMeta StringParser Parser; Generated 2014-05-30 23:38:50Z UTC
 //
 
 using System;
@@ -25,11 +25,26 @@ namespace IronMeta.Tests.Matcher.String
     {
         public StringParser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public StringParser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_StringParser_Rule>()
+            {
+                One,
+                Pi,
+                Two,
+            };
+        }
+
 
         public void One(_StringParser_Memo _memo, int _index, _StringParser_Args _args)
         {
@@ -221,5 +236,5 @@ namespace IronMeta.Tests.Matcher.String
 
     } // class StringParser
 
-} // namespace IronMeta.Tests.Matcher.String
+} // namespace String
 

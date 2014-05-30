@@ -1,5 +1,5 @@
-﻿//
-// IronMeta Parser Parser; Generated 2013-08-21 05:00:52Z UTC
+//
+// IronMeta Parser Parser; Generated 2014-05-30 23:41:45Z UTC
 //
 
 using System;
@@ -26,11 +26,64 @@ namespace IronMeta.Generator
     {
         public Parser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public Parser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_Parser_Rule>()
+            {
+                ACTION,
+                AND_PRE,
+                AnyTerm,
+                BANG,
+                BRA,
+                CallOrVar,
+                CLOSE,
+                COLON,
+                COMMA,
+                Comment,
+                DOT,
+                EOF,
+                EOL,
+                EQUALS,
+                GREATER,
+                Ident,
+                IdentBegin,
+                IdentBody,
+                Identifier,
+                IRONMETA,
+                KET,
+                KEYWORD,
+                LESS,
+                LR,
+                NEW,
+                NOT_PRE,
+                Number,
+                OPEN,
+                OR,
+                OVERRIDE,
+                PERIOD,
+                PLUS,
+                Preamble,
+                QualifiedId,
+                QUES,
+                SEMI,
+                SP,
+                STAR,
+                Using,
+                USING,
+                WS,
+            };
+        }
+
 
         public void IronMetaFile(_Parser_Memo _memo, int _index, _Parser_Args _args)
         {

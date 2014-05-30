@@ -1,5 +1,5 @@
-﻿//
-// IronMeta TestParser Parser; Generated 2013-08-21 05:02:03Z UTC
+//
+// IronMeta TestParser Parser; Generated 2014-05-30 23:38:48Z UTC
 //
 
 using System;
@@ -25,11 +25,99 @@ namespace IronMeta.Tests.Matcher.Basics
     {
         public TestParser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public TestParser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_TestParser_Rule>()
+            {
+                Action,
+                AndLiteral,
+                AndString,
+                Any,
+                Call1,
+                Call2,
+                Call3,
+                Call4,
+                Call5,
+                Call6,
+                Call7,
+                CallAct,
+                CallAct2,
+                CallAnd,
+                CallAnd2,
+                CallAny,
+                CallAny2,
+                CallCallRule,
+                CallCallVar,
+                CallCallVar2,
+                CallClass,
+                CallCond,
+                CallCond2,
+                CallFail,
+                CallLook,
+                CallNot,
+                CallNot2,
+                CallOr,
+                CallOr2,
+                CallOr3,
+                CallPlus,
+                CallPlus2,
+                CallQues,
+                CallQues2,
+                CallStar,
+                CallStar2,
+                Class,
+                Class2,
+                Cond,
+                Cond2,
+                Fail,
+                Literal,
+                LiteralString,
+                Look,
+                Not,
+                OrLiteral,
+                OrString,
+                Plus1,
+                Plus2,
+                Ques,
+                Star1,
+                Star2,
+                SubCall,
+                SubCall2,
+                SubCallAnd,
+                SubCallAny,
+                SubCallClass,
+                SubCallCond,
+                SubCallFail,
+                SubCallLook,
+                SubCallNot,
+                SubCallOr,
+                SubCallPlus,
+                SubCallQues,
+                SubCallStar,
+                SubCallVar,
+                TestBuildTasks,
+                TestCount,
+                TestInputs,
+                TestMinMax1,
+                TestMinMax2,
+                TestReturn,
+                TestReturn1,
+                TestReturn2,
+                TestReturn3,
+                XOrY,
+            };
+        }
+
 
         public void Literal(_TestParser_Memo _memo, int _index, _TestParser_Args _args)
         {
@@ -3401,5 +3489,5 @@ namespace IronMeta.Tests.Matcher.Basics
 
     } // class TestParser
 
-} // namespace IronMeta.Tests.Matcher.Basics
+} // namespace Basics
 

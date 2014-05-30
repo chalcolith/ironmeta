@@ -53,6 +53,7 @@ namespace IronMeta
         bool add_timestamp = true;
         string gName, gBase, tInput, tResult, tItem;
 
+        List<AST.Rule> ruleNodes = new List<AST.Rule>();
         Dictionary<string, AST.Node> ruleBodies = new Dictionary<string, AST.Node>();
         Dictionary<string, string> overrides = new Dictionary<string, string>();
 
@@ -107,6 +108,8 @@ namespace IronMeta
             else if (node is AST.Rule)
             {
                 currentRule = node as AST.Rule;
+                ruleNodes.Add(currentRule);
+
                 string ruleName = node.GetText().Trim();
 
                 if (!string.IsNullOrEmpty(currentRule.Override))
@@ -269,12 +272,38 @@ namespace IronMeta
             // generate constructor
             tw.Write(innerIndent); tw.WriteLine("public {0}()", gName);
             tw.Write(innerIndent); tw.WriteLine("    : base()");
-            tw.Write(innerIndent); tw.WriteLine("{ }");
+            tw.Write(innerIndent); tw.WriteLine("{");
+            tw.Write(innerIndent); tw.WriteLine("    _setTerminals();");
+            tw.Write(innerIndent); tw.WriteLine("}");
             tw.WriteLine();
 
             tw.Write(innerIndent); tw.WriteLine("public {0}(bool handle_left_recursion)", gName);
             tw.Write(innerIndent); tw.WriteLine("    : base(handle_left_recursion)");
-            tw.Write(innerIndent); tw.WriteLine("{ }");
+            tw.Write(innerIndent); tw.WriteLine("{");
+            tw.Write(innerIndent); tw.WriteLine("    _setTerminals();");
+            tw.Write(innerIndent); tw.WriteLine("}");
+            tw.WriteLine();
+
+            // set terminals
+            var terminalMemo = new Dictionary<string, bool>();
+            var terminals = ruleBodies.Keys.Where(ruleName => 
+                {
+                    var involved = new HashSet<string>();
+                    return IsTerminal(ruleName, involved, terminalMemo);
+                })
+                .ToList();
+
+            tw.Write(innerIndent); tw.WriteLine("void _setTerminals()");
+            tw.Write(innerIndent); tw.WriteLine("{");
+            tw.Write(innerIndent); tw.WriteLine("    this.Terminals = new HashSet<_{0}_Rule>()", gName);
+            tw.Write(innerIndent); tw.WriteLine("    {");
+            foreach (var terminal in terminals.OrderBy(k => k))
+            {
+                tw.Write(innerIndent); tw.WriteLine("        {0},", terminal);
+            }
+            tw.Write(innerIndent); tw.WriteLine("    };");
+            tw.Write(innerIndent); tw.WriteLine("}");
+            tw.WriteLine();
 
             // generate rules
             foreach (KeyValuePair<string, AST.Node> item in ruleBodies)
@@ -288,6 +317,46 @@ namespace IronMeta
 
             // generate Item class
             //GenerateItemClass(tw, indent);
+        }
+
+        bool IsTerminal(string ruleName, ISet<string> involved, IDictionary<string, bool> memo)
+        {
+            bool isTerminal;
+            if (memo.TryGetValue(ruleName, out isTerminal))
+                return isTerminal;
+
+            if (involved.Contains(ruleName))
+                return memo[ruleName] = false;
+
+            involved.Add(ruleName);
+
+            AST.Node body;
+            if (!ruleBodies.TryGetValue(ruleName, out body))
+                return false;
+
+            var calls = body.GetAllChildren()
+                .Select(child =>
+                {
+                    if (child is AST.Call)
+                    {
+                        return new string(((AST.Call)child).Rule.Inputs.ToArray()).Trim();
+                    }
+                    else if (child is AST.CallOrVar)
+                    {
+                        return new string(((AST.CallOrVar)child).Name.Inputs.ToArray()).Trim();
+                    }
+                    return null;
+                })
+                .Where(name => name != null)
+                .Distinct();
+
+            foreach (var call in calls)
+            {
+                if (!IsTerminal(call, involved, memo))
+                    return memo[ruleName] = false;
+            }
+
+            return memo[ruleName] = true;
         }
 
         void GenerateRule(TextWriter tw, string ruleName, AST.Node body, string indent)

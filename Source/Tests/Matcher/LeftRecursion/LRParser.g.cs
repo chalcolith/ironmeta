@@ -1,5 +1,5 @@
-﻿//
-// IronMeta LRParser Parser; Generated 2013-08-21 05:02:30Z UTC
+//
+// IronMeta LRParser Parser; Generated 2014-05-30 23:38:49Z UTC
 //
 
 using System;
@@ -25,11 +25,33 @@ namespace IronMeta.Tests.Matcher.LeftRecursion
     {
         public LRParser()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public LRParser(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_LRParser_Rule>()
+            {
+                Character,
+                Digit,
+                HexDigit,
+                HexEscapeCharacter,
+                HexScalarValue,
+                NonLR,
+                NonLR_A,
+                NonLR_B,
+                NonLR_C,
+                Term,
+            };
+        }
+
 
         public void A(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
@@ -770,5 +792,5 @@ namespace IronMeta.Tests.Matcher.LeftRecursion
 
     } // class LRParser
 
-} // namespace IronMeta.Tests.Matcher.LeftRecursion
+} // namespace LeftRecursion
 

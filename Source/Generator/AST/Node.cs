@@ -108,6 +108,13 @@ namespace IronMeta.AST
             }
             return sb.ToString();
         }
+
+        public IEnumerable<Node> GetAllChildren()
+        {
+            return Children != null
+                ? Children.SelectMany(child => new[] { child }.Concat(child.GetAllChildren()))
+                : Enumerable.Empty<Node>();
+        }
     }
 
     class Fail : Node
@@ -371,6 +378,8 @@ namespace IronMeta.AST
 
     class Rule : Node
     {
+        string name = null;
+
         public TItem Name { get; protected set; }
         public Node Body { get; protected set; }
         public string Override { get; protected set; }
@@ -383,6 +392,11 @@ namespace IronMeta.AST
 
             Items = new List<TItem> { name };
             Children = new List<Node> { body };
+        }
+
+        public string GetName()
+        {
+            return name ?? (name = this.GetText().Trim());
         }
     }
 

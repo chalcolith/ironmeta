@@ -1,5 +1,5 @@
-﻿//
-// IronMeta BugFixes Parser; Generated 2013-08-21 05:01:33Z UTC
+//
+// IronMeta BugFixes Parser; Generated 2014-05-30 23:38:48Z UTC
 //
 
 using System;
@@ -25,11 +25,27 @@ namespace IronMeta.Tests.BugFixes
     {
         public BugFixes()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public BugFixes(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<_BugFixes_Rule>()
+            {
+                Bug_3490042_Digit,
+                Bug_3490042_HexDigit,
+                Bug_3490042_HexEscapeCharacter,
+                Bug_3490042_HexScalarValue,
+            };
+        }
+
 
         public void Bug_3490042_HexEscapeCharacter(_BugFixes_Memo _memo, int _index, _BugFixes_Args _args)
         {
@@ -389,5 +405,5 @@ namespace IronMeta.Tests.BugFixes
 
     } // class BugFixes
 
-} // namespace IronMeta.Tests.BugFixes
+} // namespace BugFixes
 
