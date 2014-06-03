@@ -295,11 +295,11 @@ namespace IronMeta
 
             tw.Write(innerIndent); tw.WriteLine("void _setTerminals()");
             tw.Write(innerIndent); tw.WriteLine("{");
-            tw.Write(innerIndent); tw.WriteLine("    this.Terminals = new HashSet<_{0}_Rule>()", gName);
+            tw.Write(innerIndent); tw.WriteLine("    this.Terminals = new HashSet<string>()", gName);
             tw.Write(innerIndent); tw.WriteLine("    {");
             foreach (var terminal in terminals.OrderBy(k => k))
             {
-                tw.Write(innerIndent); tw.WriteLine("        {0},", terminal);
+                tw.Write(innerIndent); tw.WriteLine("        \"{0}\",", terminal);
             }
             tw.Write(innerIndent); tw.WriteLine("    };");
             tw.Write(innerIndent); tw.WriteLine("}");

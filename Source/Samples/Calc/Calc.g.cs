@@ -1,5 +1,5 @@
-﻿//
-// IronMeta Calc Parser; Generated 2014-06-02 23:58:45Z UTC
+//
+// IronMeta Calc Parser; Generated 2014-06-03 18:12:50Z UTC
 //
 
 using System;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IronMeta.Matcher;
 
+#pragma warning disable 0219
 #pragma warning disable 1591
 
 namespace IronMeta.Calc
@@ -24,11 +25,26 @@ namespace IronMeta.Calc
     {
         public Calc()
             : base()
-        { }
+        {
+            _setTerminals();
+        }
 
         public Calc(bool handle_left_recursion)
             : base(handle_left_recursion)
-        { }
+        {
+            _setTerminals();
+        }
+
+        void _setTerminals()
+        {
+            this.Terminals = new HashSet<string>()
+            {
+                "DecimalDigit",
+                "Expression",
+                "WS",
+            };
+        }
+
 
         public void Expression(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
@@ -810,5 +826,5 @@ namespace IronMeta.Calc
 
     } // class Calc
 
-} // namespace IronMeta.Calc
+} // namespace Calc
 

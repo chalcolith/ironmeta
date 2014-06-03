@@ -1,5 +1,5 @@
 //
-// IronMeta Combine2 Parser; Generated 2014-05-30 23:38:49Z UTC
+// IronMeta Combine2 Parser; Generated 2014-06-03 18:12:52Z UTC
 //
 
 using System;
@@ -37,13 +37,13 @@ namespace IronMeta.Tests.Matcher.Combine
 
         void _setTerminals()
         {
-            this.Terminals = new HashSet<_Combine2_Rule>()
+            this.Terminals = new HashSet<string>()
             {
-                Rule1,
-                Rule2,
-                Rule5,
-                Rule6,
-                VirtualRule,
+                "Rule1",
+                "Rule2",
+                "Rule5",
+                "Rule6",
+                "VirtualRule",
             };
         }
 

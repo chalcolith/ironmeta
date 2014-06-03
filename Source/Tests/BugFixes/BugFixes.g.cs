@@ -1,5 +1,5 @@
 //
-// IronMeta BugFixes Parser; Generated 2014-05-30 23:38:48Z UTC
+// IronMeta BugFixes Parser; Generated 2014-06-03 18:12:51Z UTC
 //
 
 using System;
@@ -37,12 +37,12 @@ namespace IronMeta.Tests.BugFixes
 
         void _setTerminals()
         {
-            this.Terminals = new HashSet<_BugFixes_Rule>()
+            this.Terminals = new HashSet<string>()
             {
-                Bug_3490042_Digit,
-                Bug_3490042_HexDigit,
-                Bug_3490042_HexEscapeCharacter,
-                Bug_3490042_HexScalarValue,
+                "Bug_3490042_Digit",
+                "Bug_3490042_HexDigit",
+                "Bug_3490042_HexEscapeCharacter",
+                "Bug_3490042_HexScalarValue",
             };
         }
 

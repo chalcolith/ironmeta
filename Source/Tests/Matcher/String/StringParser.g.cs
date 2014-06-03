@@ -1,5 +1,5 @@
 //
-// IronMeta StringParser Parser; Generated 2014-05-30 23:38:50Z UTC
+// IronMeta StringParser Parser; Generated 2014-06-03 18:12:52Z UTC
 //
 
 using System;
@@ -37,11 +37,11 @@ namespace IronMeta.Tests.Matcher.String
 
         void _setTerminals()
         {
-            this.Terminals = new HashSet<_StringParser_Rule>()
+            this.Terminals = new HashSet<string>()
             {
-                One,
-                Pi,
-                Two,
+                "One",
+                "Pi",
+                "Two",
             };
         }
 

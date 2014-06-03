@@ -1,5 +1,5 @@
 //
-// IronMeta AnonObjectParser Parser; Generated 2014-05-30 23:38:48Z UTC
+// IronMeta AnonObjectParser Parser; Generated 2014-06-03 18:12:51Z UTC
 //
 
 using System;
@@ -37,10 +37,10 @@ namespace IronMeta.Tests.Matcher.AnonObject
 
         void _setTerminals()
         {
-            this.Terminals = new HashSet<_AnonObjectParser_Rule>()
+            this.Terminals = new HashSet<string>()
             {
-                ActualObject,
-                ImplicitObject,
+                "ActualObject",
+                "ImplicitObject",
             };
         }
 

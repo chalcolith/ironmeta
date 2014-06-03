@@ -184,7 +184,7 @@ namespace IronMeta.Matcher
         /// <param name="input">Input to be matches.</param>
         public Memo(IEnumerable<TInput> input)
         {
-            Input = input is IList<TInput> ? input : input.Memoize();
+            Input = (input is string || input is IList<TInput>) ? input : input.Memoize();
             Results = new Stack<MatchItem<TInput, TResult>>();
             ArgResults = new Stack<MatchItem<TInput, TResult>>();
             CallStack = new Stack<LRRecord<MatchItem<TInput, TResult>>>();

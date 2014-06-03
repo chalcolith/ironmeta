@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 2014-05-30 23:38:49Z UTC
+// IronMeta LRParser Parser; Generated 2014-06-03 18:12:52Z UTC
 //
 
 using System;
@@ -37,18 +37,18 @@ namespace IronMeta.Tests.Matcher.LeftRecursion
 
         void _setTerminals()
         {
-            this.Terminals = new HashSet<_LRParser_Rule>()
+            this.Terminals = new HashSet<string>()
             {
-                Character,
-                Digit,
-                HexDigit,
-                HexEscapeCharacter,
-                HexScalarValue,
-                NonLR,
-                NonLR_A,
-                NonLR_B,
-                NonLR_C,
-                Term,
+                "Character",
+                "Digit",
+                "HexDigit",
+                "HexEscapeCharacter",
+                "HexScalarValue",
+                "NonLR",
+                "NonLR_A",
+                "NonLR_B",
+                "NonLR_C",
+                "Term",
             };
         }
 

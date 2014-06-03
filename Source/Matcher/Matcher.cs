@@ -78,7 +78,7 @@ namespace IronMeta.Matcher
         /// </summary>
         public bool HandleLeftRecursion { get; private set; }
 
-        protected ISet<Action<Memo<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>>> Terminals { get; set; }
+        protected ISet<string> Terminals { get; set; }
 
         #endregion
 
@@ -115,6 +115,9 @@ namespace IronMeta.Matcher
 
             try
             {
+                if (Terminals == null)
+                    Terminals = new HashSet<string>();
+
                 result = _MemoCall(memo, production.Method.Name, 0, production, null);
             }
             catch (MatcherException me)
@@ -196,7 +199,7 @@ namespace IronMeta.Matcher
             }
 
             // if we are not handling left recursion, just call the production directly.
-            if (!HandleLeftRecursion || (Terminals != null && Terminals.Contains(production)))
+            if (!HandleLeftRecursion || Terminals.Contains(ruleName))
             {
                 production(memo, index, args);
                 result = memo.Results.Peek();
