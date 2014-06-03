@@ -1,6 +1,6 @@
 ﻿//////////////////////////////////////////////////////////////////////
 //
-// Copyright © 2013 Verophyle Informatics
+// Copyright © 2014 Gordon Tisher
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -184,7 +184,7 @@ namespace IronMeta.Matcher
         /// <param name="input">Input to be matches.</param>
         public Memo(IEnumerable<TInput> input)
         {
-            Input = input;
+            Input = input is IList<TInput> ? input : input.Memoize();
             Results = new Stack<MatchItem<TInput, TResult>>();
             ArgResults = new Stack<MatchItem<TInput, TResult>>();
             CallStack = new Stack<LRRecord<MatchItem<TInput, TResult>>>();

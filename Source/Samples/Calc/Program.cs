@@ -1,6 +1,6 @@
 ﻿//////////////////////////////////////////////////////////////////////
 //
-// Copyright © 2013 Verophyle Informatics
+// Copyright © 2014 Gordon Tisher
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -39,7 +39,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Calc
+namespace IronMeta.Calc
 {
 
     class Program

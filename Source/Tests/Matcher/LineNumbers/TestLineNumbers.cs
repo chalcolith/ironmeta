@@ -1,6 +1,6 @@
 ﻿//////////////////////////////////////////////////////////////////////
 //
-// Copyright © 2013 Verophyle Informatics
+// Copyright © 2014 Gordon Tisher
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 
@@ -112,7 +112,7 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
         }
 
         const string SOURCE2 = @"//////////////////////////////////////////////////////////////////////
-// Copyright © 2013 Verophyle Informatics
+// Copyright © 2014 Gordon Tisher
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without 

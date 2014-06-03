@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>IronMeta</title>
     <authors>Gordon Tisher</authors>
-    <owners>Verophyle Informatics</owners>
+    <owners>Gordon Tisher</owners>
     <description>
       A programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.
     </description>
@@ -22,13 +22,16 @@
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>http://ironmeta.sourceforge.net/_b_s_d_license.html</licenseUrl>
-    <copyright>Copyright (C) 2013 Verophyle Informatics</copyright>
+    <copyright>Copyright (C) 2013 Gordon Tisher</copyright>
     <dependencies>
+      <dependency id="Ix-Main" version="1.2.2" />
     </dependencies>
-    <references></references>
-    <tags></tags>
+    <references>      
+    </references>
+    <tags>      
+    </tags>
   </metadata>
-  <files>
+  <files> 
     <file src="lib\" target="lib" />
     <file src="tools\" target="tools" />
     <file src="content\" target="content" />
