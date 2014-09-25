@@ -5,4 +5,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Gordon Tisher 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("3.6.*")]
+[assembly: AssemblyVersion("3.7.*")]

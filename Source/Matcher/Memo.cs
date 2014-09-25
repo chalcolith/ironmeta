@@ -181,10 +181,10 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="input">Input to be matches.</param>
+        /// <param name="input">Input to be matched.</param>
         public Memo(IEnumerable<TInput> input)
         {
-            Input = (input is string || input is IList<TInput>) ? input : input.Memoize();
+            Input = (input is string || input is IList<TInput>) ? input : new MemoizingEnumerable<TInput>(input);
             Results = new Stack<MatchItem<TInput, TResult>>();
             ArgResults = new Stack<MatchItem<TInput, TResult>>();
             CallStack = new Stack<LRRecord<MatchItem<TInput, TResult>>>();

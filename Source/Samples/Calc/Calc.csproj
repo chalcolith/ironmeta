@@ -46,11 +46,7 @@
     <Compile Include="..\..\IronMeta\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Calc.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Calc.ironmeta</DependentUpon>
-    </Compile>
+    <Compile Include="Calc.g.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,7 +54,7 @@
     <None Include="App.config" />
     <None Include="Calc.ironmeta">
       <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>Calc.g.cs</LastGenOutput>
+      <LastGenOutput>Calc1.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

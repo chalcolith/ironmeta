@@ -44,7 +44,8 @@ namespace IronMeta.Matcher
 
     /// <summary>
     /// A utility class that implements a slice of an enumerable.
-    /// Uses copy-on-write semantics; if the slice's data is modified then a copy is taken of the original data and the copy modified instead of the original.
+    /// Uses copy-on-write semantics; if the slice's data is modified then a 
+    /// copy is taken of the original data and the copy modified instead of the original.
     /// </summary>
     /// <typeparam name="T">The enumerable's data type.</typeparam>
     public class Slice<T> : IList<T>

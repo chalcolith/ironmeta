@@ -62,6 +62,7 @@
       <DependentUpon>BugFixes.ironmeta</DependentUpon>
     </Compile>
     <Compile Include="BugFixes\TestBugFixes.cs" />
+    <Compile Include="Calc\TestCalc.cs" />
     <Compile Include="Matcher\AnonObject\AnonObjectParser.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,6 +109,7 @@
     <Compile Include="Matcher\String\TestStringParser.cs" />
     <Compile Include="Parser\TestStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MemoizeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Generator\IronMeta.Generator.csproj">
@@ -117,6 +119,10 @@
     <ProjectReference Include="..\Matcher\IronMeta.Matcher.csproj">
       <Project>{ef704069-517a-48a5-9af2-1b257544d358}</Project>
       <Name>IronMeta.Matcher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Samples\Calc\Calc.csproj">
+      <Project>{0219b7f1-7e4f-4fe0-a0b4-35ed1cc6e3c0}</Project>
+      <Name>Calc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

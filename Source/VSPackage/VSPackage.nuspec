@@ -24,7 +24,6 @@
     <licenseUrl>http://ironmeta.sourceforge.net/_b_s_d_license.html</licenseUrl>
     <copyright>Copyright (C) 2013 Gordon Tisher</copyright>
     <dependencies>
-      <dependency id="Ix-Main" version="1.2.2" />
     </dependencies>
     <references>      
     </references>
