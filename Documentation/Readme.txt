@@ -1,3 +1,10 @@
+3.8: September 25, 2014:
+    - Numerous bug-fixes and tweaks to the NuGet package.
+
+3.2: October 22, 2013:
+	- Memoization of left-recursive productions more memory efficient (thanks to pragmatrix)
+	- Plugin now installs in VS 2013.
+
 3.0: April 9, 2013: VS 2012 and NuGet package.
 	- Now set up to build with Visual Studio 2012.
 	- Now distributed as a NuGet package.

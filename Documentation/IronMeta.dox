@@ -52,6 +52,9 @@ Current limitations:
 
 \section changelog Changelog
 
+3.8: September 25, 2014:
+    - Numerous bug-fixes and tweaks to the NuGet package.
+
 3.2: October 22, 2013:
 	- Memoization of left-recursive productions more memory efficient (thanks to pragmatrix)
 	- Plugin now installs in VS 2013.
@@ -157,9 +160,10 @@ If you come across a bug in IronMeta, please fill out a bug report at the <a hre
 
 \section buildIronMeta Building IronMeta from Source
 
-In order to build IronMeta, you must download the source code using a <a href="http://mercurial.selenic.com">Mercurial</a> client:
+In order to build IronMeta, you must download the source code using a <a href="http://git-scm.com">Git</a> or <a href="http://mercurial.selenic.com">Mercurial</a> client:
 
 \verbatim
+git clone git@github.com:kulibali/ironmeta.git
 hg clone http://hg.code.sf.net/p/ironmeta/code ironmeta
 \endverbatim
 
@@ -207,7 +211,7 @@ ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
     Digits :type = type;
 
-    DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+    DecimalDigit = .:c ?( (char)c >= '0' && (char)c <= '9' ) -> { return (char)c - '0'; };
     KW :str = str WS*;
     WS = ' ' | '\n' | '\r' | '\t';
 }
@@ -333,7 +337,7 @@ You can stop them from matching by using the prefix operators:
 \section langVarCondAction Conditions and Actions
 
 \verbatim
-    DecimalDigit = .:c ?( c >= '0' && c <= '9' ) -> { return (int)c - '0'; };
+    DecimalDigit = .:c ?( (char)c >= '0' && (char)c <= '9' ) -> { return (char)c - '0'; };
 \endverbatim
 
 Here things get more interesting.  This rule has only one expression, the period \c ".".  This will match a single item of input.  It is then bound to the variable \c c by means of the colon \c ":".
@@ -343,8 +347,6 @@ Here things get more interesting.  This rule has only one expression, the period
 However, this rule will not necessarily match any character, because it contains a \em condition.  A condition is written with \c "?" followed immediately by a C# expression in parentheses.  The C# expression must evaluate to a \c bool value.  Once the expression matches (in this case it will match anything), it is bound to the variable \c c, which is then available for use in your C# code.
 
 The rule also contains an \em action.  Actions are written with \c "-\>" followed by a C# block surrounded by curly braces.  This block must contain a \c return statement that returns a value of the output type, or a \c List<> of the output type.
-
-In this case, the variable \c c is explicitly cast to an \c int in order to force the variable to return its result, because otherwise C# would implicitly cast it to \c char because of the \c '0' in the expression.
 
 \note If you do not provide an action for the expression, it will simply return the results of its patterns, as a list.  Matching a single item will return \c default(TResult) by default, or you can pass a delegate or lambda function to the matcher when you create it that will convert values of the input type to the output type.
 
@@ -661,7 +663,7 @@ ironmeta Parser<char, ASTNode> : IronMeta.Matcher.CharMatcher<ASTNode>
 
 IronMeta
 
-Copyright (c) 2013, Verophyle Informatics
+Copyright (c) 2014, Gordon Tisher
 
 All rights reserved.
 
