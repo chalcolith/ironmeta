@@ -1,0 +1,167 @@
+// IronMeta Copyright © Gordon Tisher 2015
+
+using IronMeta.Matcher;
+
+ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
+{
+
+    IronMetaFile = '\ufeff'? SP Preamble?:p Grammar:g SP EOF -> { return new AST.GrammarFile(p, g); };
+
+    Preamble = Using+:u -> { return new AST.Preamble(u.Results); };
+
+    Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new AST.Using(name); };
+
+    Grammar = IRONMETA Identifier:name
+            LESS GenericId:tinput COMMA GenericId:tresult GREATER
+            COLON GenericId:baseclass
+            BRA Rule*:rules KET
+        -> { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); };
+
+    Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
+        -> { return new AST.Rule(name, parms.Inputs.Any() ? new AST.Args(parms, body) : (AST.AstNode)body, new string(ovr.Inputs.ToArray())); };
+
+    Disjunction = ActionExp ( OR ActionExp )*
+        -> {
+               return _IM_Result.Results
+                   .Where(node => node != null)
+                   .Aggregate<AST.AstNode, AST.AstNode>(null, (prev, cur) => prev != null ? new AST.Or(prev, cur) : cur);
+           };
+
+    ActionExp = SequenceExp:body ACTION &BRA CSharpCode:action -> { return new AST.Act(body, action); };
+    ActionExp = SequenceExp;
+
+    FailExp = BANG (CSharpCode:msg)? -> { return new AST.Fail(msg); };
+
+    SequenceExp = ConditionExp+
+        ->  {
+                return _IM_Result.Results
+                    .Where(node => node != null)
+                    .Aggregate<AST.AstNode, AST.AstNode>(null, (prev, cur) => prev != null ? new AST.And(prev, cur) : cur);
+            };
+
+    ConditionExp = FailExp;
+    ConditionExp = BoundTerm:body QUES &OPEN CSharpCode:cond -> { return new AST.Cond(body, cond); };
+    ConditionExp = BoundTerm;
+
+    BoundTerm = PrefixedTerm:exp COLON Identifier:id -> { return new AST.Bind(exp, id); };
+    BoundTerm = COLON Identifier:id -> { return new AST.Bind(new AST.Any(), id); };
+    BoundTerm = PrefixedTerm;
+
+    PrefixedTerm = LookTerm | NotTerm | PostfixedTerm;
+    LookTerm = AND_PRE PostfixedTerm:exp -> { return new AST.Look(exp); };
+    NotTerm = NOT_PRE PostfixedTerm:exp -> { return new AST.Not(exp); };
+
+    PostfixedTerm = MinMaxTerm | StarTerm | PlusTerm | QuesTerm | Term;
+
+    MinMaxTerm = Term:exp BRA Number:n (COMMA Number:x)? KET ->
+        {
+            int min = int.Parse(new string(n.Inputs.ToArray()));
+            int max = x != null && x.Inputs.Any() ? int.Parse(new string(x.Inputs.ToArray())) : min;
+
+            if (min < 0)
+                throw new MatcherException(n.StartIndex, "min must be >= 0");
+            if (max < 1)
+                throw new MatcherException(x.StartIndex, "max must be > 1");
+            if (max < min)
+                throw new MatcherException(n.NextIndex, "max cannot be less than min for a MinMaxTerm");
+
+            AST.AstNode res = null;
+            for (int i = 0; i < min; ++i)
+                res = res != null ? new AST.And(res, exp) : (AST.AstNode)exp;
+            for (int i = 0; i < (max-min); ++i)
+                res = res != null ? new AST.And(res, new AST.Ques(exp)) : (AST.AstNode)new AST.Ques(exp);
+            return res;
+        };
+
+    StarTerm = Term:exp STAR -> { return new AST.Star(exp); };
+    PlusTerm = Term:exp PLUS -> { return new AST.Plus(exp); };
+    QuesTerm = Term:exp QUES ~OPEN SP -> { return new AST.Ques(exp); };
+
+    Term = InputClass | ParenTerm | RuleCall | CallOrVar | Literal | AnyTerm;
+
+    ParenTerm = OPEN Disjunction:exp CLOSE -> { return exp; };
+    AnyTerm = PERIOD -> { return new AST.Any(); };
+
+    RuleCall = QualifiedId:name OPEN ParameterList?:p CLOSE -> { return new AST.Call(name, p.Results); };
+    ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
+    Parameter = CallOrVar | Literal;
+
+    CallOrVar = ~KEYWORD QualifiedId:name -> { return new AST.CallOrVar(name); };
+    Literal = ((NEW GenericId? &'{') | &('\x22' | '\x27' | '{')) CSharpCode -> { return new AST.Code(_IM_Result); };
+
+    InputClass = '[' SP (ClassRange | &'\x27' Literal)+:c ']' SP -> { return new AST.InputClass(c.Results); };
+    ClassRange = &'\x27' Literal:from SP '-' SP &'\x27' Literal:to SP ->
+        {
+            char ch_from = AST.ClassRange.GetChar(from);
+            char ch_to = AST.ClassRange.GetChar(to);
+
+            List<char> range = new List<char>();
+            if (ch_from > ch_to)
+            {
+                range.Add(ch_from);
+                range.Add(ch_to);
+            }
+            else
+            {
+                for (char ch = ch_from ; ch <= ch_to; ++ch)
+                    range.Add(ch);
+            }
+
+            return new AST.ClassRange(_IM_Result, range);
+        };
+
+    CSharpCode = CSharpCodeItem:code SP -> { return new AST.Code(code); };
+
+    CSharpCodeItem = '{' (~'}' (EOL | Comment | CSharpCodeItem | .))* '}';
+    CSharpCodeItem = '(' (~')' (EOL | Comment | CSharpCodeItem | .))* ')';
+    CSharpCodeItem = '\x27' (EOL | "\x5c\x27" | "\x5c\x5c" | ~'\x27' .)* '\x27';   // '
+    CSharpCodeItem = '\x22' (EOL | "\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
+
+    Identifier = Ident:id SP -> { return id; };
+    Ident = (IdentBegin IdentBody*):id -> { return new AST.Idfr(id); };
+    IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
+    IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
+
+    QualifiedId = (Ident (DOT Ident)*) SP -> { new AST.Idfr(_IM_Result) };
+    GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
+        -> { return new AST.Idfr(ids, gp); };
+
+    Number = ['0'-'9']+ SP;
+
+    KEYWORD = USING | IRONMETA | OVERRIDE | NEW | LR;
+
+    USING = "using" SP;
+    IRONMETA = "ironmeta" SP;
+    EQUALS = ('=' | "::=") SP;
+    OVERRIDE = ("override" | "virtual" | "new") SP;
+    NEW = "new" SP;
+    LR = "lr" SP;
+    SEMI = (';' | ',') SP;
+    BANG = '!' SP;
+    OR = '|' SP;
+    ACTION = "->" SP;
+    COLON = ':' SP;
+    COMMA = ',' SP;
+    DOT = '.';
+    PERIOD = DOT SP;
+    BRA = '{' SP;
+    KET = '}' SP;
+    OPEN = '(' SP;
+    CLOSE = ')' SP;
+    LESS = '<' SP;
+    GREATER = '>' SP;
+    QUES = '?'; // note no spacing
+    AND_PRE = '&';
+    NOT_PRE = '~';
+    STAR = '*' SP;
+    PLUS = '+' SP;
+
+    SP = (EOL | WS | Comment)*;
+    WS = [' ' '\t'];
+
+    Comment = "//" (~EOL .)* EOL;
+    Comment = "/*" (~"*/" (EOL | .))* "*/";
+
+    EOL = ('\r' '\n'? | '\n'):nl -> { _memo.Positions.Add(nl.NextIndex); return nl; };
+    EOF = ~.;
+}
