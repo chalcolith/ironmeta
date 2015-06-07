@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "IronMeta\IronMeta.csproj", "{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "Source\IronMeta\IronMeta.csproj", "{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Source\Library\Library.csproj", "{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F144A24C-3201-473F-92C5-78DADBB2976C}"
 EndProject
@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{8221795B-9A6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6617661C-2457-4816-B3FE-ACFDFB46E11F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "..\Samples\Calc\Calc.csproj", "{E4FEE17D-5243-492F-B510-F802B8DD7FF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Samples\Calc\Calc.csproj", "{E4FEE17D-5243-492F-B510-F802B8DD7FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "..\Tests\UnitTests\UnitTests.csproj", "{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "VSExtension\IronMeta.VSExtension.csproj", "{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "Tools\VSExtension\IronMeta.VSExtension.csproj", "{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
