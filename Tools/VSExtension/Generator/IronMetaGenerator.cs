@@ -20,7 +20,6 @@ namespace IronMeta.VSExtension.Generator
 {
     [ComVisible(true)]
     [Guid(VSPackageGuids.SingleFileGeneratorGuidString)]
-    [ProvideObject(typeof(IronMetaGenerator))]
     [CodeGeneratorRegistration(
         typeof(IronMetaGenerator), 
         "IronMetaGenerator", 

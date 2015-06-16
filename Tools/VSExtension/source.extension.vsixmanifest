@@ -5,9 +5,12 @@
   <Metadata>
     <Identity Id="IronMeta.VSExtension.a41b60cb-106c-4576-a281-99d035284179"
               Version="4.0" Language="en-US" Publisher="Gordon Tisher" />
-    <DisplayName>IronMeta.VSExtension</DisplayName>
-    <Description xml:space="preserve">IronMeta Visual Studio Extension</Description>
-    <License>..\..\License.txt</License>
+    <DisplayName>IronMeta Visual Studio Extension</DisplayName>
+    <Description xml:space="preserve">The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system in C#.
+
+The Visual Studio extension provides a custom tool for generating IronMeta parsers.</Description>
+    <MoreInfo>https://github.com/kulibali/ironmeta</MoreInfo>
+    <License>License.txt</License>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0,15.0)" />
@@ -25,9 +28,6 @@
                 Version="[14.0]" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage"
-           d:Source="Project"
-           d:ProjectName="%CurrentProject%"
-           Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
   </Assets>
 </PackageManifest>
