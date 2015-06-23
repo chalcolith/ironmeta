@@ -1,21 +1,12 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿// IronMeta Copyright © Gordon Tisher 2015
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 [assembly: AssemblyTitle("IronMeta")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("IronMeta command-line tool")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Gordon Tisher")]
-[assembly: AssemblyProduct("IronMeta")]
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c8350a3f-5cc8-4f2d-900a-a3f8b8265754")]
-
+[assembly: Guid("5fc20bb7-98a3-4bfc-a2f2-6ec609162c04")]

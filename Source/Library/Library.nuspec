@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>IronMeta</id>
+    <version>$version$</version>
+    <title>IronMeta</title>
+    <authors>Gordon Tisher</authors>
+    <licenseUrl>https://github.com/kulibali/ironmeta/wiki/License</licenseUrl>
+    <projectUrl>https://github.com/kulibali/ironmeta</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>https://github.com/kulibali/ironmeta/wiki/Changelog</releaseNotes>
+    <copyright>Copyright © Gordon Tisher 2015</copyright>
+    <tags>PEG Parser ParserGenerator</tags>
+  </metadata>
+
+  <files>
+    <file src="..\IronMeta\bin\$configuration$\IronMeta.exe" target="tools" />
+    <file src="..\IronMeta\ThirdParty\FluentCommandLineParser.dll" target="tools" />
+    <file src="..\..\Tools\VSExtension\bin\$configuration$\IronMeta.VSExtension.vsix" target="tools" />
+  </files>
+</package>

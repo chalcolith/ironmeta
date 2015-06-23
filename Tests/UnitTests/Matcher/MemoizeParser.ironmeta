@@ -1,0 +1,18 @@
+﻿// IronMeta Copyright © Gordon Tisher 2015
+
+using IronMeta.Matcher;
+
+ironmeta MemoizeParser<char, Node> : Matcher<char, Node>
+{
+	AlternateEOF = Alternate EOF;
+	SequenceEOF = Sequence EOF;
+
+	Alternate = (Alternate " | " Sequence) | Sequence;
+	Sequence = (Sequence " " Single) | Single;
+
+	Single = Category | Char;
+	Category = "[" Sequence:s "]" -> { categoryCount++; return new CategoryNode { Children = s.Results }; };
+	Char = ['a' - 'z']:c -> { charCount++; return new CharNode { Value = c }; };
+
+	EOF = ~.;
+}
