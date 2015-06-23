@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "Source\IronMeta\IronMeta.csproj", "{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}"
+	ProjectSection(ProjectDependencies) = postProject
+		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F} = {892E4FCB-4971-4AF4-8889-F0B1C28DA95F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Source\Library\Library.csproj", "{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}"
 EndProject
