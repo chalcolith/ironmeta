@@ -24,12 +24,12 @@ namespace IronMeta.Generator
         /// <param name="name_space">Namespace to use in the generated parser.</param>
         public static MatchResult<char, AST.AstNode> Process(string src_fname, IEnumerable<char> input, TextWriter output, string name_space)
         {
-            var parser = new BootstrapParser();
+            var parser = new Parser();
             var match = parser.GetMatch(input, parser.IronMetaFile);
 
             if (match.Success)
             {
-                CSharpGen csgen = new CSharpGen(match.Result, name_space);
+                var csgen = new CSharpGen(match.Result, name_space);
                 csgen.Generate(src_fname, output);
             }
 

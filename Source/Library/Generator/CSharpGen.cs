@@ -10,7 +10,7 @@ namespace IronMeta.Generator
     /// <summary>
     /// Generates C# code for an IronMeta parser from an abstract syntax tree.
     /// </summary>
-    class CSharpGen : IGenerator
+    public class CSharpGen : IGenerator
     {
         AST.GrammarFile grammar;
         string gNamespace;
@@ -52,12 +52,13 @@ namespace IronMeta.Generator
             if (node is AST.Grammar)
             {
                 AST.Grammar gr = node as AST.Grammar;
-                gName = gr.GetText(gr.Name).Trim();
-                gBase = gr.GetText(gr.Base).Trim();
-
-                tItem = string.Format("_{0}_Item", gName);
                 tInput = gr.GetText(gr.TInput).Trim();
                 tResult = gr.GetText(gr.TResult).Trim();
+                tItem = string.Format("_{0}_Item", gName);
+                gName = gr.GetText(gr.Name).Trim();
+                gBase = gr.GetText(gr.Base).Trim();
+                if (string.IsNullOrWhiteSpace(gBase))
+                    gBase = string.Format("IronMeta.Matcher.Matcher<{0}, {1}>", tInput, tResult);
             }
 
             // also analyze arguments (because they are not children)

@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using IronMeta.Generator;
 using IronMeta.Matcher;
+using System.IO;
 
 namespace IronMeta.UnitTests
 {
@@ -91,6 +92,26 @@ namespace IronMeta.UnitTests
     }
 ";
             Assert.IsTrue(TestParse(grammar));
+        }
+
+        [TestMethod]
+        public void TestNoBaseClass()
+        {
+            var grammar = @"ironmeta TestGrammar<char, int> { One = ""1""; }";
+
+            var parser = new Parser();
+            var result = parser.GetMatch(grammar, parser.IronMetaFile);
+            Assert.IsTrue(result.Success);
+
+            var gen = new CSharpGen(result.Result, "TestNoBaseClass");
+            string src = null;
+            using (var ms = new MemoryStream())
+            using (var sw = new StreamWriter(ms))
+            {
+                gen.Generate("testNoBaseClass.ironmeta", sw);
+                src = Encoding.UTF8.GetString(ms.ToArray());
+            }
+            Assert.IsTrue(src.Contains("class TestGrammar : IronMeta.Matcher.Matcher<char, int>"));
         }
     }
 }

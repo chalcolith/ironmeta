@@ -13,7 +13,7 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
 
     Grammar = IRONMETA Identifier:name
             LESS GenericId:tinput COMMA GenericId:tresult GREATER
-            COLON GenericId:baseclass
+            (COLON GenericId:baseclass)?
             BRA Rule*:rules KET
         -> { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); };
 
