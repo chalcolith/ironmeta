@@ -563,6 +563,48 @@ namespace IronMeta.Matcher
 
         #endregion
 
+        #region REGEXP
+
+        protected MatchItem<TInput, TResult> _ParseRegexp(MatchState<TInput, TResult> memo, ref int index, Verophyle.Regexp.StringRegexp re)
+        {
+            int cur_index = index;
+            bool failed = false;
+
+            try
+            {
+                re.Reset();
+                while (!re.Succeeded && !re.Failed)
+                {
+                    re.ProcessInput(memo.InputString[cur_index]);
+                    cur_index++;
+                }
+            }
+            catch
+            {
+                failed = true;
+            }
+
+            if (!failed && re.Succeeded)
+            {
+                var result = new MatchItem<TInput, TResult>
+                {
+                    StartIndex = index,
+                    NextIndex = cur_index,
+                    InputEnumerable = memo.InputEnumerable
+                };
+                index = cur_index;
+                memo.Results.Push(result);
+                return result;
+            }
+            else
+            {
+                memo.Results.Push(null);
+                return null;
+            }
+        }
+
+        #endregion
+
         #region INPUTCLASS
 
         /// <summary>

@@ -113,5 +113,14 @@ namespace IronMeta.UnitTests
             }
             Assert.IsTrue(src.Contains("class TestGrammar : IronMeta.Matcher.Matcher<char, int>"));
         }
+
+        [TestMethod]
+        public void TestRegexp()
+        {
+            var grammar = @"ironmeta TestRe<char, int> { One = /1/; }";
+            var parser = new Parser();
+            var result = parser.GetMatch(grammar, parser.IronMetaFile);
+            Assert.IsTrue(result.Success);
+        }
     }
 }

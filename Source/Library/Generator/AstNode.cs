@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace IronMeta.Generator.AST
 {
+    using Verophyle.Regexp;
     using TItem = Matcher.MatchItem<char, AstNode>;
 
     /// <summary>
@@ -238,6 +239,44 @@ namespace IronMeta.Generator.AST
         {
             this.Text = text;
 
+            Items = new List<TItem> { text };
+        }
+    }
+
+    class Regexp : AstNode
+    {
+        StringRegexp regexp;
+
+        public TItem Text { get; protected set; }
+
+        public StringRegexp Re
+        {
+            get
+            {
+                if (regexp == null)
+                    regexp = new StringRegexp(this.GetText().Trim('/'));
+                return regexp;
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                try
+                {
+                    return Re != null;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public Regexp(TItem text)
+        {
+            this.Text = text;
             Items = new List<TItem> { text };
         }
     }

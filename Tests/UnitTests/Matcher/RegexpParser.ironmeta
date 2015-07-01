@@ -1,0 +1,4 @@
+﻿ironmeta RegexpTest<char, int>
+{
+    ABCD = 'a' /bz?c/ 'd';
+}

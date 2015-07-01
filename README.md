@@ -12,10 +12,10 @@ Once you have installed the NuGet package, add a grammar file with the extension
 
 - You can install a [Visual Studio extension](https://visualstudiogallery.msdn.microsoft.com/73263c7c-319f-4f9e-a05a-b493094a4eb0) that provides a custom tool for generating C# code from IronMeta files.  You must set the "Custom Tool" property of your IronMeta file to be `IronMetaGenerator`.  Then the C# code will be generated whenever your grammer file changes.  Syntax errors will appear in your Error List.
 - An a command-line program `IronMeta.exe` is included in the NuGet package, in the `tools` directory.  The program takes the following arguments:
-  - `-i <input>`: Specify the input file name.
   - `-o <output>` (optional): Specify the output file name (defaults to <input>.g.cs).
   - `-n <namespace>` (optional): Specify the namespace to use for the generated parser (defaults to the name of the directory the input file is in).
   - `-f` (optional): Force generation even if the input file is older than the output file.
+  - `<input>`: Specify the input file name (must end in `.ironmeta`.)
 
 To use an IronMeta-generated parser in your C# program, create an instance of the generated parser class. Then all the function `GetMatch()` with the input you wish to parse, and the function of the generated parser class that corresponds to the top-level rule you wish to use. This returns an object of type `IronMeta.Matcher.MatchResult`, which contains information about the result of the match, as well as errors that might have ocurred.
 

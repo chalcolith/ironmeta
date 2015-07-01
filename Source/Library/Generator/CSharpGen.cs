@@ -20,6 +20,7 @@ namespace IronMeta.Generator
         List<AST.Rule> ruleNodes = new List<AST.Rule>();
         Dictionary<string, AST.AstNode> ruleBodies = new Dictionary<string, AST.AstNode>();
         Dictionary<string, string> overrides = new Dictionary<string, string>();
+        Dictionary<string, string> regexps = new Dictionary<string, string>();
 
         public CSharpGen(AST.AstNode topNode, string name_space)
         {
@@ -54,8 +55,8 @@ namespace IronMeta.Generator
                 AST.Grammar gr = node as AST.Grammar;
                 tInput = gr.GetText(gr.TInput).Trim();
                 tResult = gr.GetText(gr.TResult).Trim();
-                tItem = string.Format("_{0}_Item", gName);
                 gName = gr.GetText(gr.Name).Trim();
+                tItem = string.Format("_{0}_Item", gName);
                 gBase = gr.GetText(gr.Base).Trim();
                 if (string.IsNullOrWhiteSpace(gBase))
                     gBase = string.Format("IronMeta.Matcher.Matcher<{0}, {1}>", tInput, tResult);
@@ -273,19 +274,23 @@ namespace IronMeta.Generator
             tw.Write(innerIndent); tw.WriteLine("    };");
             tw.Write(innerIndent); tw.WriteLine("}");
             tw.WriteLine();
-
+            
             // generate rules
-            foreach (KeyValuePair<string, AST.AstNode> item in ruleBodies)
+            foreach (var item in ruleBodies)
             {
                 GenerateRule(tw, item.Key, item.Value, innerIndent);
             }
 
+            // initialize regexps
+            foreach (var kv in regexps)
+            {
+                tw.Write(innerIndent); tw.WriteLine("static readonly Verophyle.Regexp.StringRegexp {0} = new Verophyle.Regexp.StringRegexp(\"{1}\");", kv.Value, kv.Key);
+            }
+            tw.WriteLine();
+
             // close class
             tw.Write(indent); tw.WriteLine("}} // class {0}", gName);
             tw.WriteLine();
-
-            // generate Item class
-            //GenerateItemClass(tw, indent);
         }
 
         bool IsTerminal(string ruleName, ISet<string> involved, IDictionary<string, bool> memo)
@@ -439,6 +444,10 @@ namespace IronMeta.Generator
             {
                 GenerateLiteralPost(tw, node as AST.Code, outer_n, match_args, indent);
             }
+            else if (node is AST.Regexp)
+            {
+                GenerateRegexpPost(tw, node as AST.Regexp, outer_n, match_args, indent);
+            }
             else if (node is AST.Fail)
             {
                 GenerateFailPost(tw, node as AST.Fail, outer_n, match_args, indent);
@@ -535,6 +544,30 @@ namespace IronMeta.Generator
                     tw.WriteLine("_ParseLiteralObj(_memo, ref _index, {0});", literal);
             }
 
+            tw.WriteLine();
+        }
+
+        #endregion
+
+        #region REGEXP
+
+        void GenerateRegexpPost(TextWriter tw, AST.Regexp node, int n, bool match_args, string indent)
+        {
+            bool isCharMatcher = tInput == "char" || tInput.EndsWith("Character");
+            if (!isCharMatcher) throw new Exception("Can only use regular expressions when matching characters.");
+            if (match_args) throw new Exception("Cannot use a regular expression in rule arguments.");
+
+            var text = node.GetText().Trim(' ', '/');
+            string name;
+
+            if (!regexps.TryGetValue(text, out name))
+            {
+                name = string.Format("_re{0}", regexps.Count);
+                regexps.Add(text, name);
+            }
+
+            tw.Write(indent); tw.WriteLine("// REGEXP {0}", text);
+            tw.Write(indent); tw.WriteLine("_ParseRegexp(_memo, ref _index, {0});", name);
             tw.WriteLine();
         }
 

@@ -16,7 +16,5 @@
 
   <files>
     <file src="..\IronMeta\bin\$configuration$\IronMeta.exe" target="tools" />
-    <file src="..\IronMeta\ThirdParty\FluentCommandLineParser.dll" target="tools" />
-    <file src="..\..\Tools\VSExtension\bin\$configuration$\IronMeta.VSExtension.vsix" target="tools" />
   </files>
 </package>
