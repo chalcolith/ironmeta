@@ -573,11 +573,14 @@ namespace IronMeta.Matcher
             try
             {
                 re.Reset();
-                while (!re.Succeeded && !re.Failed)
+                do
                 {
-                    re.ProcessInput(memo.InputString[cur_index]);
-                    cur_index++;
+                    re.ProcessInput(memo.InputString[cur_index++]);
                 }
+                while (cur_index < memo.InputString.Length && !re.Failed);
+
+                if (cur_index == index + 1)
+                    failed = true;
             }
             catch
             {

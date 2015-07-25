@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2015-07-25 16:25:39Z UTC
+// IronMeta RegexpTest Parser; Generated 2015-07-25 17:09:17Z UTC
 //
 
 using System;
@@ -51,37 +51,14 @@ namespace IronMeta.UnitTests.Matcher
             // AND 0
             int _start_i0 = _index;
 
-            // AND 1
-            int _start_i1 = _index;
-
             // LITERAL 'a'
             _ParseLiteralChar(_memo, ref _index, 'a');
 
             // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
-
-            // REGEXP [\+-]?bz?c
-            _ParseRegexp(_memo, ref _index, _re0);
-
-        label1: // AND
-            var _r1_2 = _memo.Results.Pop();
-            var _r1_1 = _memo.Results.Pop();
-
-            if (_r1_1 != null && _r1_2 != null)
-            {
-                _memo.Results.Push( new _RegexpTest_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i1;
-            }
-
-            // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label0; }
 
-            // LITERAL 'd'
-            _ParseLiteralChar(_memo, ref _index, 'd');
+            // REGEXP [\+-]?bz?cd+
+            _ParseRegexp(_memo, ref _index, _re0);
 
         label0: // AND
             var _r0_2 = _memo.Results.Pop();
@@ -99,7 +76,7 @@ namespace IronMeta.UnitTests.Matcher
 
         }
 
-        static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?c");
+        static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?cd+");
 
     } // class RegexpTest
 
