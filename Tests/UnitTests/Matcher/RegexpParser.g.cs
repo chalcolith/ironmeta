@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2015-07-25 17:09:17Z UTC
+// IronMeta RegexpTest Parser; Generated 2015-07-25 18:08:07Z UTC
 //
 
 using System;
@@ -41,6 +41,7 @@ namespace IronMeta.UnitTests.Matcher
             this.Terminals = new HashSet<string>()
             {
                 "ABCD",
+                "Ident",
             };
         }
 
@@ -76,7 +77,17 @@ namespace IronMeta.UnitTests.Matcher
 
         }
 
+
+        public void Ident(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
+        {
+
+            // REGEXP _|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*
+            _ParseRegexp(_memo, ref _index, _re1);
+
+        }
+
         static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?cd+");
+        static readonly Verophyle.Regexp.StringRegexp _re1 = new Verophyle.Regexp.StringRegexp(@"_|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*");
 
     } // class RegexpTest
 

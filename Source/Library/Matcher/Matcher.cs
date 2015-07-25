@@ -578,9 +578,6 @@ namespace IronMeta.Matcher
                     re.ProcessInput(memo.InputString[cur_index++]);
                 }
                 while (cur_index < memo.InputString.Length && !re.Failed);
-
-                if (cur_index == index + 1)
-                    failed = true;
             }
             catch
             {

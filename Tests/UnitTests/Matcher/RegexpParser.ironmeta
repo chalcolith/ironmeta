@@ -1,4 +1,5 @@
 ﻿ironmeta RegexpTest<char, int>
 {
     ABCD = 'a' /[\+-]?bz?cd+/;
+    Ident = /_|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*/;
 }
