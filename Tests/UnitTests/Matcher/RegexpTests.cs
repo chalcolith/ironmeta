@@ -21,6 +21,12 @@ namespace IronMeta.UnitTests.Matcher
 
             var m4 = parser.GetMatch("acd", parser.ABCD);
             Assert.IsFalse(m4.Success);
+
+            var m5 = parser.GetMatch("a+bcd", parser.ABCD);
+            Assert.IsTrue(m5.Success);
+
+            var m6 = parser.GetMatch("a-bzcd", parser.ABCD);
+            Assert.IsTrue(m6.Success);
         }
     }
 }

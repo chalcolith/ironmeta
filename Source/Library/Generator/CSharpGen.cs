@@ -284,7 +284,7 @@ namespace IronMeta.Generator
             // initialize regexps
             foreach (var kv in regexps)
             {
-                tw.Write(innerIndent); tw.WriteLine("static readonly Verophyle.Regexp.StringRegexp {0} = new Verophyle.Regexp.StringRegexp(\"{1}\");", kv.Value, kv.Key);
+                tw.Write(innerIndent); tw.WriteLine("static readonly Verophyle.Regexp.StringRegexp {0} = new Verophyle.Regexp.StringRegexp(@\"{1}\");", kv.Value, kv.Key);
             }
             tw.WriteLine();
 

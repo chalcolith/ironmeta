@@ -41,8 +41,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Verophyle.Regexp, Version=1.0.5659.35452, Culture=neutral, PublicKeyToken=74cddc3ca888ce35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Verophyle.Regexp.1.0.0\lib\net45\Verophyle.Regexp.dll</HintPath>
+    <Reference Include="Verophyle.Regexp, Version=1.1.5684.13780, Culture=neutral, PublicKeyToken=74cddc3ca888ce35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Verophyle.Regexp.1.1.0\lib\net45\Verophyle.Regexp.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

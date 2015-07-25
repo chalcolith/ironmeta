@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2015-07-01 02:53:13Z UTC
+// IronMeta RegexpTest Parser; Generated 2015-07-25 16:25:39Z UTC
 //
 
 using System;
@@ -60,7 +60,7 @@ namespace IronMeta.UnitTests.Matcher
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // REGEXP bz?c
+            // REGEXP [\+-]?bz?c
             _ParseRegexp(_memo, ref _index, _re0);
 
         label1: // AND
@@ -99,7 +99,7 @@ namespace IronMeta.UnitTests.Matcher
 
         }
 
-        static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp("bz?c");
+        static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?c");
 
     } // class RegexpTest
 
