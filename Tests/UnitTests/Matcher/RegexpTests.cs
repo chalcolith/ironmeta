@@ -11,6 +11,10 @@ namespace IronMeta.UnitTests.Matcher
         [TestMethod]
         public void TestSimpleRegexp()
         {
+            var m1a = parser.GetMatch("abcdd ", parser.ABCD);
+            Assert.IsTrue(m1a.Success);
+            Assert.AreEqual(m1a.MatchState.InputString.Length - 1, m1a.NextIndex);
+
             var m1 = parser.GetMatch("abcdd", parser.ABCD);
             Assert.IsTrue(m1.Success);
             Assert.AreEqual(m1.MatchState.InputString.Length, m1.NextIndex);
