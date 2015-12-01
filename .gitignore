@@ -1,10 +1,5 @@
-Source/VSPackage/lib/net45/
-Source/VSPackage/tools/net45/
-Source/VSPackage/package/
-Source/VSGenerate/Lib/SDK.zip
-Source/VSGenerate/Lib/VSSDK
+.vs
 Source/IronMeta.snk
-
 
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/

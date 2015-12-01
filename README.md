@@ -47,7 +47,7 @@ The following is a small sample program that uses the Calc demo parser that is i
 
 Although the most common use for IronMeta is to build parsers on streams of text for use in compiling or other text processing, IronMeta can generate pattern matchers (more accurately, transducers) for any input and output type. You can use C# syntax directly in grammar rules to specify objects to match.
 
-- IronMeta-generated parsers use strict Parsing Expression Grammar semantics; they use ordered choice, are greedy and do not backtrack through productions.
+- IronMeta-generated parsers use strict Parsing Expression Grammar semantics; they are greedy and use committed choice.
 - Generated parsers are implemented as C# partial classes, allowing you to keep ancillary code in a separate file from your grammar.
 - You can use anonymously-typed object literals in rules; they are matched by comparing their properties with the input objects'.
 - Unrestricted use of C# in semantic conditions and match actions.
@@ -149,17 +149,36 @@ In this case, the rule `Expression` has no parameters, and matches by calling an
 
 ## Matching Input
 
-You can use the period `.` to match any item of input, or you can use arbitrary C# expressions. The C# expressions may be a string literal, a character literal, an object created using the `new` keyword, or any other expression that is surrounded by curly braces:
+You can use the period `.` to match any item of input, or you can use arbitrary C# expressions. The C# expressions may be a string literal, a character literal, a regular expression, an object created using the `new` keyword, or any other expression that is surrounded by curly braces:
 
     MyPattern = 'a' "b" {3.14159} {new MyClass()};
 
-IronMeta will use the standard C# `object.Equals()` method to match the items.
+IronMeta will use the standard C# `object.Equals()` method to match the inputs.
+
+### Regular Expressions
+
+If your input type is `char`, you can use simple regular expressions:
+
+    MyPattern = /a?bc(def+|ghi)(kl)*/;
+
+You can use the following constructs in regular expressions:
+
+- One or more single characters, e.g. `/abc/`.  The following syntax characters must be escaped if you want to match them: `|`, `(`, `)`, `[`, `]`, `\`, `+`, `*`.
+- Categories: `\s` matches whitespace, `\d` matches any Unicode digit, `\w` matches any Unicode letter, `\p{Cc}` matches any character in given Unicode general category, e.g. `Lu`, `Nd`.
+- Disjunctions: `/abc|def/`.
+- Classes: `/[abcd-g]/` (syntax characters must be escaped here as well).  You can use negative categories: `/[^xyz]/`.
+- `+` matches one or more elements, star `*` matches zero or more, and `?` matches zero or one.  As usual, these bind tighter than disjunction but looser than sequence.
+- `()` will group sequences.
+
+### Matching Anonymous Objects
 
 You can also use anonymous object syntax (you don't need to surround the whole new expression with braces in this case):
 
     MyPattern = new { Name="MyName", Value="MyValue" }  new { Name="MyName", Value="MySecondValue" };
 
 Literals that you define with anonymous types will be matched according to their public properties; if an input object has the same properties with the same values, it will be considered equal to the anonymous object.
+
+### Matching Sequences
 
 The pattern literal can also be an `IEnumerable` of the input type, including C# strings for sequences of characters.
 
