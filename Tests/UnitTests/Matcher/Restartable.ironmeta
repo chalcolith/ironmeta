@@ -1,0 +1,5 @@
+﻿ironmeta Restartable<char, int>
+{
+    Rule1 = 'a' 'b' 'c';
+    Rule2 = 'd' 'e' 'f';
+}

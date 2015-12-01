@@ -69,41 +69,60 @@ namespace IronMeta.Matcher
         /// <param name="input">The input to be matched.</param>
         /// <param name="production">The top-level grammar production (rule) of the generated parser class to use.</param>
         /// <returns>The result of the match.</returns>
-        public virtual MatchResult<TInput, TResult> GetMatch(IEnumerable<TInput> input, Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production)
+        public virtual MatchResult<TInput, TResult> GetMatch(
+            IEnumerable<TInput> input, 
+            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            int index = 0)
         {
-            var memo = new MatchState<TInput, TResult>(input);
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            var state = new MatchState<TInput, TResult>(input);
+            return GetMatch(state, production, index);
+        }
+
+        public virtual MatchResult<TInput, TResult> GetMatch(
+            MatchState<TInput, TResult> state, 
+            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            int index)
+        {
+            if (state == null)
+                throw new ArgumentNullException("state");
+            if (production == null)
+                throw new ArgumentNullException("production");
+
             MatchItem<TInput, TResult> result = null;
 
             if (BeforeMatch != null)
-                BeforeMatch(memo, input, production);
+                BeforeMatch(state, state.Input, production);
 
             try
             {
                 if (Terminals == null)
                     Terminals = new HashSet<string>();
 
-                result = _MemoCall(memo, production.Method.Name, 0, production, null);
+                result = _MemoCall(state, production.Method.Name, index, production, null);
             }
             catch (MatcherException me)
             {
-                memo.ClearErrors();
-                memo.AddError(me.Index, me.Message);
+                state.ClearErrors();
+                state.AddError(me.Index, me.Message);
             }
             catch (Exception e)
             {
-                memo.ClearErrors();
-                memo.AddError(0, e.Message
+                state.ClearErrors();
+                state.AddError(0, e.Message
 #if DEBUG
                     + "\n" + e.StackTrace
 #endif
                 );
             }
 
-            memo.ClearMemoTable(); // allow memo tables to be gc'd
+            state.ClearMemoTable(); // allow memo tables to be gc'd
 
             var match_result = result != null
-                ? new MatchResult<TInput, TResult>(this, memo, true, result.StartIndex, result.NextIndex, result.Results, memo.LastError, memo.LastErrorIndex)
-                : new MatchResult<TInput, TResult>(this, memo, false, -1, -1, null, memo.LastError, memo.LastErrorIndex);
+                ? new MatchResult<TInput, TResult>(this, state, true, result.StartIndex, result.NextIndex, result.Results, state.LastError, state.LastErrorIndex)
+                : new MatchResult<TInput, TResult>(this, state, false, -1, -1, null, state.LastError, state.LastErrorIndex);
 
             if (AfterMatch != null)
                 AfterMatch(match_result);

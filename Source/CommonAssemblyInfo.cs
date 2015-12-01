@@ -7,5 +7,5 @@ using System.Reflection;
 [assembly: AssemblyProduct("IronMeta")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("4.1.*")]
-[assembly: AssemblyInformationalVersionAttribute("4.1.4")]
+[assembly: AssemblyVersion("4.2.*")]
+[assembly: AssemblyInformationalVersionAttribute("4.2.0")]

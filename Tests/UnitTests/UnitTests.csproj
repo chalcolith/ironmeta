@@ -75,6 +75,12 @@
     <Compile Include="Matcher\MemoizeParser.g.cs" />
     <Compile Include="Matcher\MemoizeTests.cs" />
     <Compile Include="Matcher\RegexpParser.g.cs" />
+    <Compile Include="Matcher\Restartable.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Restartable.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="Matcher\RestartableTests.cs" />
     <Compile Include="Matcher\StringParser.g.cs" />
     <Compile Include="Matcher\StringParserTests.cs" />
     <Compile Include="Matcher\RegexpTests.cs" />
@@ -102,6 +108,10 @@
     <None Include="Matcher\MatcherTestsParser.ironmeta" />
     <None Include="Matcher\MemoizeParser.ironmeta" />
     <None Include="Matcher\RegexpParser.ironmeta" />
+    <None Include="Matcher\Restartable.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>Restartable.g.cs</LastGenOutput>
+    </None>
     <None Include="Matcher\StringParser.ironmeta" />
     <None Include="packages.config" />
   </ItemGroup>
