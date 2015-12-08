@@ -335,15 +335,16 @@ namespace IronMeta.Matcher
         /// <returns></returns>
         public IEnumerable<TInput> GetLine(int index, out int lineNum, out int lineOffset)
         {
-            if (sortedPositions == null)
-                sortedPositions = Positions.OrderBy(n => n).ToArray();
+            if (sortedPositions == null || sortedPositions.Length != Positions.Count)
+            {
+                if (Positions.Count == 0 || !Positions.Contains(0))
+                    Positions.Add(0);
 
-            if (sortedPositions.Length == 0)
-                throw new ArgumentOutOfRangeException("index", "No line positions have been set by the grammar.");
+                sortedPositions = Positions.OrderBy(n => n).ToArray();
+            }
 
             int start, next;
             var srch = Array.BinarySearch(sortedPositions, index);
-
             var srchOffset = sortedPositions[0] == 0 ? 1 : 2;
 
             // we are on the the beginning of the line
