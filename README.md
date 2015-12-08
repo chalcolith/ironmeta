@@ -11,11 +11,11 @@ IronMeta is available on [NuGet](https://www.nuget.org/packages/IronMeta/).  To 
 Once you have installed the NuGet package, add a grammar file with the extension .ironmeta to your project.  Then generate a C# class from it.  You can do this in two ways:
 
 - You can install a [Visual Studio extension](https://visualstudiogallery.msdn.microsoft.com/73263c7c-319f-4f9e-a05a-b493094a4eb0) that provides a custom tool for generating C# code from IronMeta files.  You must set the "Custom Tool" property of your IronMeta file to be `IronMetaGenerator`.  Then the C# code will be generated whenever your grammer file changes.  Syntax errors will appear in your Error List.
-- An a command-line program `IronMeta.exe` is included in the NuGet package, in the `tools` directory.  The program takes the following arguments:
-  - `-o <output>` (optional): Specify the output file name (defaults to <input>.g.cs).
-  - `-n <namespace>` (optional): Specify the namespace to use for the generated parser (defaults to the name of the directory the input file is in).
+- A command-line program `IronMeta.exe` is included in the NuGet package, in the `tools` directory.  The program takes the following arguments:
+  - `-o {output}` (optional): Specify the output file name (defaults to `{input}_.g.cs`).
+  - `-n {namespace}` (optional): Specify the namespace to use for the generated parser (defaults to the name of the directory the input file is in).
   - `-f` (optional): Force generation even if the input file is older than the output file.
-  - `<input>`: Specify the input file name (must end in `.ironmeta`.)
+  - `{input}`: Specify the input file name (must end in `.ironmeta`.)
 
 To use an IronMeta-generated parser in your C# program, create an instance of the generated parser class. Then all the function `GetMatch()` with the input you wish to parse, and the function of the generated parser class that corresponds to the top-level rule you wish to use. This returns an object of type `IronMeta.Matcher.MatchResult`, which contains information about the result of the match, as well as errors that might have ocurred.
 
@@ -42,6 +42,12 @@ The following is a small sample program that uses the Calc demo parser that is i
             }
         }
     }
+
+## Building from Source
+
+When you have checked out the GitHub repository, you will need to generate your own signing key in `Source\IronMeta.snk`; open a Visual Studio Developer Command Prompt and type:
+
+    sn -k Source\IronMeta.snk
 
 ## Features
 
