@@ -67,6 +67,8 @@
     <Compile Include="Matcher\Combine2.cs" />
     <Compile Include="Matcher\Combine2.g.cs" />
     <Compile Include="Matcher\CombineTests.cs" />
+    <Compile Include="Matcher\CommentTests.cs" />
+    <Compile Include="Matcher\CommentTests.g.cs" />
     <Compile Include="Matcher\LeftRecursionTests.cs" />
     <Compile Include="Matcher\LineNumberTests.cs" />
     <Compile Include="Matcher\LRParser.g.cs" />
@@ -104,6 +106,7 @@
     <None Include="Matcher\AnonObjectParser.ironmeta" />
     <None Include="Matcher\Combine1.ironmeta" />
     <None Include="Matcher\Combine2.ironmeta" />
+    <None Include="Matcher\CommentTests.ironmeta" />
     <None Include="Matcher\LRParser.ironmeta" />
     <None Include="Matcher\MatcherTestsParser.ironmeta" />
     <None Include="Matcher\MemoizeParser.ironmeta" />

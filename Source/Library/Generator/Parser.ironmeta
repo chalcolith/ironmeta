@@ -124,12 +124,12 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
     CSharpCodeItem = '\x27' (EOL | "\x5c\x27" | "\x5c\x5c" | ~'\x27' .)* '\x27';   // '
     CSharpCodeItem = '\x22' (EOL | "\x5c\x22" | "\x5c\x5c" | ~'\x22' .)* '\x22';   // "
 
-    Identifier = Ident:id SP -> { return id; };
-    Ident = (IdentBegin IdentBody*):id -> { return new AST.Idfr(id); };
+    Identifier = Ident:id SP -> { id };
+    Ident = (IdentBegin IdentBody*):id -> { new AST.Idfr(id) };
     IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
     IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
 
-    QualifiedId = (Ident (DOT Ident)*) SP -> { new AST.Idfr(_IM_Result) };
+    QualifiedId = (Ident (DOT Ident)*):id SP -> { new AST.Idfr(id) };
     GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
         -> { return new AST.Idfr(ids, gp); };
 

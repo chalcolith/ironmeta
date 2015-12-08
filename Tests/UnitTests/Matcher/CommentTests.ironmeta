@@ -1,0 +1,13 @@
+﻿ironmeta CommentTests<char, bool>
+{
+    s = r1 //
+      | r2;
+
+    r1 = 'a';
+    r2 = 'b';
+
+    s2 = r1 /* */
+       | r2;
+
+    s3 = r1 /* foo */ r2;
+}

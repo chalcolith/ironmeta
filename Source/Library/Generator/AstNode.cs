@@ -28,7 +28,7 @@ namespace IronMeta.Generator.AST
         /// <summary>
         /// Get the text that this node covers.
         /// </summary>
-        public string GetText()
+        public virtual string GetText()
         {
             StringBuilder sb = new StringBuilder();
             if (Items != null)

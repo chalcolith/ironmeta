@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace IronMeta.Generator
 {
@@ -313,15 +314,15 @@ namespace IronMeta.Generator
                 {
                     if (child is AST.Call)
                     {
-                        return new string(((AST.Call)child).Rule.Inputs.ToArray()).Trim();
+                        return ((AST.Call)child).Rule.Results.Single().GetText();
                     }
                     else if (child is AST.CallOrVar)
                     {
-                        return new string(((AST.CallOrVar)child).Name.Inputs.ToArray()).Trim();
+                        return ((AST.CallOrVar)child).Name.Results.Single().GetText();
                     }
                     return null;
                 })
-                .Where(name => name != null)
+                .Where(name => !string.IsNullOrWhiteSpace(name))
                 .Distinct();
 
             foreach (var call in calls)
@@ -1048,7 +1049,7 @@ namespace IronMeta.Generator
 
         void GenerateCallPost(TextWriter tw, HashSet<string> vars, AST.Call node, int n, bool match_args, string indent)
         {
-            string name = node.GetText().Trim();
+            string name = node.Rule.Results.Single().GetText().Trim();
 
             tw.Write(indent); tw.WriteLine("// CALL {0}", name);
 
@@ -1146,7 +1147,7 @@ namespace IronMeta.Generator
 
         void GenerateCallOrVarPost(TextWriter tw, HashSet<string> vars, AST.CallOrVar node, int n, bool match_args, string indent)
         {
-            string name = node.GetText().Trim();
+            string name = node.Name.Results.Single().GetText().Trim();
 
             tw.Write(indent); tw.WriteLine("// CALLORVAR {0}", name);
 
