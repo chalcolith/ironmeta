@@ -19,6 +19,7 @@ namespace IronMeta.Generator
         /// <summary>
         /// Generate a parser from an IronMeta grammar.
         /// </summary>
+        /// <param name="src_fname">The name of the source file (to use for error messages).</param>
         /// <param name="input">Input stream.</param>
         /// <param name="output">Output writer.</param>
         /// <param name="name_space">Namespace to use in the generated parser.</param>

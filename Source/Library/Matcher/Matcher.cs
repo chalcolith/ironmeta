@@ -68,6 +68,7 @@ namespace IronMeta.Matcher
         /// </summary>
         /// <param name="input">The input to be matched.</param>
         /// <param name="production">The top-level grammar production (rule) of the generated parser class to use.</param>
+        /// <param name="index">Index at which to start the match.</param>
         /// <returns>The result of the match.</returns>
         public virtual MatchResult<TInput, TResult> GetMatch(
             IEnumerable<TInput> input, 
