@@ -16,5 +16,7 @@
 
   <files>
     <file src="..\IronMeta\bin\$configuration$\IronMeta.exe" target="tools" />
+    <file src="..\IronMeta\bin\$configuration$\IronMeta.Library.dll" target="tools" />
+    <file src="..\IronMeta\bin\$configuration$\Verophyle.Regexp.dll" target="tools" />
   </files>
 </package>
