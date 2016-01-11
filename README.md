@@ -123,7 +123,7 @@ The Calc grammar is much more complex than it needs to be in order to demonstrat
 
 We will go through this example line by line to introduce the IronMeta language:
 
-    ## Comments
+## Comments
 
     // IronMeta Calculator Example
 

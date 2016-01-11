@@ -23,7 +23,7 @@ namespace IronMeta
 
         public bool Force { get; set; }
 
-        static readonly Regex IronMetaFileName = new Regex(@"^(.*).ironmeta\s*$", RegexOptions.Compiled);
+        static readonly Regex IronMetaFileName = new Regex(@"^(.*).ironmeta\s*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override bool Execute()
         {
