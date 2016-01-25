@@ -26,7 +26,7 @@ Once you have installed the NuGet package, add a grammar file with the extension
   - `-f` (optional): Force generation even if the input file is older than the output file.
   - `{input}`: Specify the input file name (must end in `.ironmeta`.)
 
-To use an IronMeta-generated parser in your C# program, create an instance of the generated parser class. Then all the function `GetMatch()` with the input you wish to parse, and the function of the generated parser class that corresponds to the top-level rule you wish to use. This returns an object of type `IronMeta.Matcher.MatchResult`, which contains information about the result of the match, as well as errors that might have ocurred.
+To use an IronMeta-generated parser in your C# program, create a new instance of the generated parser class. Then call the function `GetMatch()` with the input you wish to parse, and the method of the generated parser object that corresponds to the top-level rule you wish to use. This returns an object of type `IronMeta.Matcher.MatchResult`, which contains information about the result of the match, as well as errors that might have ocurred.
 
 The following is a small sample program that uses the Calc demo parser that is included in the source code:
 
