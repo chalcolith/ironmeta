@@ -1,4 +1,4 @@
-// IronMeta Copyright © Gordon Tisher 2015
+// IronMeta Copyright © Gordon Tisher 2016
 
 ironmeta Combine2<char, int> : Combine1
 {
