@@ -1,5 +1,5 @@
 //
-// IronMeta NestedCall Parser; Generated 2016-03-29 00:08:53Z UTC
+// IronMeta NestedCall Parser; Generated 2016-03-29 23:46:59Z UTC
 //
 
 using System;
@@ -47,6 +47,8 @@ namespace IronMeta.UnitTests
                 "D",
                 "E",
                 "F",
+                "G",
+                "I",
                 "One",
                 "Two",
             };
@@ -55,6 +57,9 @@ namespace IronMeta.UnitTests
 
         public void One(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "one"
             _ParseLiteralString(_memo, ref _index, "one");
@@ -72,6 +77,9 @@ namespace IronMeta.UnitTests
 
         public void Two(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "two"
             _ParseLiteralString(_memo, ref _index, "two");
@@ -120,8 +128,8 @@ namespace IronMeta.UnitTests
 
             if (x.Production != null)
             {
-                var _p6 = (System.Action<_NestedCall_Memo, int, IEnumerable<_NestedCall_Item>>)(object)x.Production; // what type safety?
-                _r6 = _MemoCall(_memo, x.Production.Method.Name, _index, _p6, null);
+                var _p6 = (System.Action<_NestedCall_Memo, int, IEnumerable<_NestedCall_Item>>)(object)x.Production;
+                _r6 = _MemoCall(_memo, x.Production.Method.Name, _index, _p6, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -170,11 +178,16 @@ namespace IronMeta.UnitTests
         public void A(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL Alpha
             var _start_i0 = _index;
             _NestedCall_Item _r0;
 
-            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, new _NestedCall_Item[] { new _NestedCall_Item(One) });
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(One) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -184,11 +197,16 @@ namespace IronMeta.UnitTests
         public void B(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL Alpha
             var _start_i0 = _index;
             _NestedCall_Item _r0;
 
-            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_0) });
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -197,6 +215,9 @@ namespace IronMeta.UnitTests
 
         public void __nested_rule_0(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -259,7 +280,9 @@ namespace IronMeta.UnitTests
             var _start_i3 = _index;
             _NestedCall_Item _r3;
 
-            _r3 = _MemoCall(_memo, "Alpha", _index, Alpha, new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_1) });
+            _NestedCall_Args _actual_args3 = new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_1), c };
+            if (_args != null) _actual_args3 = _actual_args3.Concat(_args.Skip(_arg_index));
+            _r3 = _MemoCall(_memo, "Alpha", _index, Alpha, _actual_args3);
 
             if (_r3 != null) _index = _r3.NextIndex;
 
@@ -301,8 +324,8 @@ namespace IronMeta.UnitTests
 
             if (c.Production != null)
             {
-                var _p4 = (System.Action<_NestedCall_Memo, int, IEnumerable<_NestedCall_Item>>)(object)c.Production; // what type safety?
-                _r4 = _MemoCall(_memo, c.Production.Method.Name, _index, _p4, null);
+                var _p4 = (System.Action<_NestedCall_Memo, int, IEnumerable<_NestedCall_Item>>)(object)c.Production;
+                _r4 = _MemoCall(_memo, c.Production.Method.Name, _index, _p4, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -340,11 +363,16 @@ namespace IronMeta.UnitTests
         public void D(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL C
             var _start_i0 = _index;
             _NestedCall_Item _r0;
 
-            _r0 = _MemoCall(_memo, "C", _index, C, new _NestedCall_Item[] { new _NestedCall_Item(One) });
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(One) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "C", _index, C, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -354,11 +382,16 @@ namespace IronMeta.UnitTests
         public void E(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL Alpha
             var _start_i0 = _index;
             _NestedCall_Item _r0;
 
-            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_2) });
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(__nested_rule_2) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "Alpha", _index, Alpha, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -367,6 +400,9 @@ namespace IronMeta.UnitTests
 
         public void __nested_rule_2(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -400,12 +436,96 @@ namespace IronMeta.UnitTests
         public void F(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL C
             var _start_i0 = _index;
             _NestedCall_Item _r0;
             var _arg0_0 = "a";
 
-            _r0 = _MemoCall(_memo, "C", _index, C, new _NestedCall_Item[] { new _NestedCall_Item(_arg0_0) });
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "C", _index, C, _actual_args0);
+
+            if (_r0 != null) _index = _r0.NextIndex;
+
+        }
+
+
+        public void G(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // CALL C
+            var _start_i0 = _index;
+            _NestedCall_Item _r0;
+
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(Alpha) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "C", _index, C, _actual_args0);
+
+            if (_r0 != null) _index = _r0.NextIndex;
+
+        }
+
+
+        public void H(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            _NestedCall_Item h = null;
+
+            // ARGS 0
+            _arg_index = 0;
+            _arg_input_index = 0;
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND h
+            h = _memo.ArgResults.Peek();
+
+            if (_memo.ArgResults.Pop() == null)
+            {
+                _memo.Results.Push(null);
+                goto label0;
+            }
+
+            // CALL C
+            var _start_i3 = _index;
+            _NestedCall_Item _r3;
+
+            _NestedCall_Args _actual_args3 = new _NestedCall_Item[] { new _NestedCall_Item(Alpha) };
+            if (_args != null) _actual_args3 = _actual_args3.Concat(_args.Skip(_arg_index));
+            _r3 = _MemoCall(_memo, "C", _index, C, _actual_args3);
+
+            if (_r3 != null) _index = _r3.NextIndex;
+
+        label0: // ARGS 0
+            _arg_input_index = _arg_index; // no-op for label
+
+        }
+
+
+        public void I(_NestedCall_Memo _memo, int _index, _NestedCall_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // CALL H
+            var _start_i0 = _index;
+            _NestedCall_Item _r0;
+            var _arg0_0 = "i";
+
+            _NestedCall_Args _actual_args0 = new _NestedCall_Item[] { new _NestedCall_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "H", _index, H, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 

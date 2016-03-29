@@ -14,11 +14,11 @@ namespace IronMeta
         public string OutputFile { get; set; }
         public string InputFile { get; set; }
 
-        const string usage = @"Usage: IronMeta [-f] [-n Custom.Namespace] [-o OutputFile.cs] IronMetaFile.ironmeta";
+        const string Usage = @"Usage: IronMeta [-f] [-n Custom.Namespace] [-o OutputFile.cs] IronMetaFile.ironmeta";
 
         static void FailWithUsage()
         {
-            throw new Exception(usage);
+            throw new Exception(Usage);
         }
 
         public static Options Parse(string[] args)

@@ -211,6 +211,7 @@ namespace IronMeta.Generator.AST
     {
         public TItem Rule { get; protected set; }
         public IEnumerable<AstNode> Params { get; set; }
+        public IEnumerable<TItem> Captures { get; set; }
 
         public Call(TItem rule, IEnumerable<AstNode> parms)
         {

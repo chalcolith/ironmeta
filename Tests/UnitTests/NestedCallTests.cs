@@ -47,5 +47,17 @@ namespace IronMeta.UnitTests
             var m = parser.GetMatch("aca", parser.F);
             Assert.IsTrue(m.Success);
         }
+
+        [TestMethod]
+        public void TestNestedCall6()
+        {
+            var m = parser.GetMatch("baca", parser.G);
+        }
+
+        [TestMethod]
+        public void TestNestedCall7()
+        {
+            var m = parser.GetMatch("iaca", parser.I);
+        }
     }
 }

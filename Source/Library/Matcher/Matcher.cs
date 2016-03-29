@@ -784,6 +784,21 @@ namespace IronMeta.Matcher
             return null;
         }
 
+        protected MatchItem<TInput, TResult> _ParseAnyArgs(MatchState<TInput, TResult> memo, ref int arg_index, IEnumerable<MatchItem<TInput, TResult>> args)
+        {
+            if (args != null)
+            {
+                var item = args.ElementAt(arg_index);
+                memo.ArgResults.Push(item);
+                ++arg_index;
+                return item;
+            }
+
+            memo.ArgResults.Push(null);
+            memo.AddError(arg_index, () => "not enough arguments");
+            return null;
+        }
+
         #endregion
 
         #endregion

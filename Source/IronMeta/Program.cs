@@ -17,7 +17,7 @@ namespace IronMeta
     {
         static int Main(string[] args)
         {
-            const string message = "IronMeta --force {0} --namespace {1} --input {2} --output {3}: {4}";
+            const string message = "IronMeta -n {0} -o {1} {2}: {3}";
 
             try
             {
@@ -28,9 +28,7 @@ namespace IronMeta
 
                 if (outputInfo.Exists && outputInfo.LastWriteTimeUtc > inputInfo.LastWriteTimeUtc && !options.Force)
                 {
-                    Console.WriteLine(string.Format(message, options.Force, 
-                        options.Namespace, inputInfo.FullName, outputInfo.FullName, 
-                        "input is older than output; not generating"));
+                    Console.WriteLine(string.Format(message, options.Namespace, outputInfo.FullName, inputInfo.FullName, "input is older than output; not generating"));
                     return 0;
                 }
                 else
@@ -42,8 +40,7 @@ namespace IronMeta
 
                     if (match.Success)
                     {
-                        Console.WriteLine(string.Format(message, options.Force, 
-                            options.Namespace, inputInfo.FullName, outputInfo.FullName, stopwatch.Elapsed));
+                        Console.WriteLine(string.Format(message, options.Namespace, outputInfo.FullName, inputInfo.FullName, stopwatch.Elapsed));
                         return 0;
                     }
                     else

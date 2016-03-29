@@ -15,4 +15,9 @@ ironmeta NestedCall<char, int> : Matcher<char, int>
 
     E = Alpha("e" "f");
     F = C("a");
+
+    G = C(Alpha("b"));
+
+    H :h = C(Alpha(h));
+    I = H("i");
 }

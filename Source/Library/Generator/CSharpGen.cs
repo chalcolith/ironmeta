@@ -358,12 +358,9 @@ namespace IronMeta.Generator
                 bool use_args = false;
                 GenerateBody(sw, variables, body, ref n, ref use_args, false, innerIndent);
 
-                if (use_args)
-                {
-                    tw.Write(innerIndent); tw.WriteLine("int _arg_index = 0;");
-                    tw.Write(innerIndent); tw.WriteLine("int _arg_input_index = 0;");
-                    tw.WriteLine();
-                }
+                tw.Write(innerIndent); tw.WriteLine("int _arg_index = 0;");
+                tw.Write(innerIndent); tw.WriteLine("int _arg_input_index = 0;");
+                tw.WriteLine();
 
                 foreach (string v in variables)
                 {
@@ -1076,7 +1073,10 @@ namespace IronMeta.Generator
                     GenerateActualParams(tw, vars, node, n, name, indent, actualParams);
 
                     tw.WriteLine();
-                    tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall(_memo, {0}, _index, {4}, new {2}[] {{ {1} }});",
+                    tw.Write(indent); tw.WriteLine("_{3}_Args _actual_args{0} = new {1}[] {{ {2} }};", n, tItem, string.Join(", ", actualParams), gName);
+                    tw.Write(indent); tw.WriteLine("if (_args != null) _actual_args{0} = _actual_args{0}.Concat(_args.Skip(_arg_index));", n);
+
+                    tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall(_memo, {0}, _index, {4}, _actual_args{3});",
                         isVar ? name + ".ProductionName" : "\"" + name + "\"", 
                         string.Join(", ", actualParams.ToArray()), 
                         tItem, 
@@ -1085,7 +1085,7 @@ namespace IronMeta.Generator
                 }
                 else
                 {
-                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, {0}, _index, {2}, null);", 
+                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, {0}, _index, {2}, _args != null ? _args.Skip(_arg_index) : null);", 
                         isVar ? name + ".ProductionName" : "\"" + name + "\"", 
                         n, 
                         isVar ? name + ".Production" : name);
@@ -1120,6 +1120,11 @@ namespace IronMeta.Generator
                     ++i;
                 }
             }
+            if (node.Captures != null)
+            {
+                foreach (var captured in node.Captures)
+                    actualParams.Add(new string(captured.Inputs.ToArray()).Trim());
+            }
 
             if (actualParams.Count == 0 && node.Params.Any())
                 throw new Exception("Unable to process actual parameters for call to " + name);
@@ -1130,6 +1135,8 @@ namespace IronMeta.Generator
         void HoistCalledDisjunctions(AST.Rule currentRule, AST.Call callNode)
         {
             var newParams = new List<AST.AstNode>();
+            var captures = new List<Matcher.MatchItem<char, AST.AstNode>>();
+            callNode.Captures = captures;
 
             foreach (var oldParam in callNode.Params)
             {
@@ -1152,8 +1159,13 @@ namespace IronMeta.Generator
                         if (closedVarNames.Any())
                         {
                             AST.AstNode args = new AST.Bind(new AST.Any(), closedVarNames.First());
+                            captures.Add(closedVarNames.First());
+
                             foreach (var varName in closedVarNames.Skip(1))
+                            {
                                 args = new AST.And(args, new AST.Bind(new AST.Any(), varName));
+                                captures.Add(varName);
+                            }
                             ruleBody = new AST.Args(args, ruleBody);
                         }
                     }
@@ -1231,8 +1243,8 @@ namespace IronMeta.Generator
                 {
                     tw.Write(indent); tw.WriteLine("if ({0}.Production != null)", name);
                     tw.Write(indent); tw.WriteLine("{");
-                    tw.Write(indent); tw.WriteLine("    var _p{0} = (System.Action<_{3}_Memo, int, IEnumerable<{1}>>)(object){2}.Production; // what type safety?", n, tItem, name, gName);
-                    tw.Write(indent); tw.WriteLine("    _r{0} = _MemoCall(_memo, {1}.Production.Method.Name, _index, _p{0}, null);", n, name);
+                    tw.Write(indent); tw.WriteLine("    var _p{0} = (System.Action<_{3}_Memo, int, IEnumerable<{1}>>)(object){2}.Production;", n, tItem, name, gName);
+                    tw.Write(indent); tw.WriteLine("    _r{0} = _MemoCall(_memo, {1}.Production.Method.Name, _index, _p{0}, _args != null ? _args.Skip(_arg_index) : null);", n, name);
                     tw.Write(indent); tw.WriteLine("}");
                     tw.Write(indent); tw.WriteLine("else");
                     tw.Write(indent); tw.WriteLine("{");
