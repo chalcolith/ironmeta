@@ -79,6 +79,17 @@ namespace IronMeta.Generator.AST
                 ? Children.SelectMany(child => new[] { child }.Concat(child.GetAllChildren()))
                 : Enumerable.Empty<AstNode>();
         }
+
+        public IEnumerable<T> OfType<T>() where T : AstNode
+        {
+            var t = this as T;
+            if (t != null) yield return t;
+            if (Children != null)
+            {
+                foreach (var child in Children.OfType<T>())
+                    yield return child;
+            }
+        }
     }
 
     class Fail : AstNode
@@ -199,7 +210,7 @@ namespace IronMeta.Generator.AST
     class Call : AstNode
     {
         public TItem Rule { get; protected set; }
-        public IEnumerable<AstNode> Params { get; protected set; }
+        public IEnumerable<AstNode> Params { get; set; }
 
         public Call(TItem rule, IEnumerable<AstNode> parms)
         {
@@ -393,6 +404,14 @@ namespace IronMeta.Generator.AST
             this.Override = ovr;
 
             Items = new List<TItem> { name };
+            Children = new List<AstNode> { body };
+        }
+
+        internal Rule(string name, AstNode body)
+        {
+            this.name = name;
+            this.Body = body;
+
             Children = new List<AstNode> { body };
         }
 

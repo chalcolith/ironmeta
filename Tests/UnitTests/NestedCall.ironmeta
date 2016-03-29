@@ -1,0 +1,18 @@
+﻿// IronMeta
+
+ironmeta NestedCall<char, int> : Matcher<char, int>
+{
+    One = "one" -> {1};
+    Two = "two" -> {2};
+
+    Alpha :x = x:a "a" -> {a};
+
+    A = Alpha(One);
+    B = Alpha(Two "b");
+    
+    C :c = Alpha(c "c");
+    D = C(One);
+
+    E = Alpha("e" "f");
+    F = C("a");
+}

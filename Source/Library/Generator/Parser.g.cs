@@ -1,5 +1,5 @@
 //
-// IronMeta Parser Parser; Generated 2015-12-08 20:04:45Z UTC
+// IronMeta Parser Parser; Generated 2016-03-28 22:18:42Z UTC
 //
 
 using System;
@@ -70,12 +70,15 @@ namespace IronMeta.Generator
                 "OPEN",
                 "OR",
                 "OVERRIDE",
+                "Parameter",
+                "ParameterList",
                 "PERIOD",
                 "PLUS",
                 "Preamble",
                 "QualifiedId",
                 "QUES",
                 "Regexp",
+                "RuleCall",
                 "SEMI",
                 "SP",
                 "STAR",
@@ -2691,28 +2694,12 @@ namespace IronMeta.Generator
         public void Parameter(_Parser_Memo _memo, int _index, _Parser_Args _args)
         {
 
-            // OR 0
-            int _start_i0 = _index;
+            // CALLORVAR Disjunction
+            _Parser_Item _r0;
 
-            // CALLORVAR CallOrVar
-            _Parser_Item _r1;
+            _r0 = _MemoCall(_memo, "Disjunction", _index, Disjunction, null);
 
-            _r1 = _MemoCall(_memo, "CallOrVar", _index, CallOrVar, null);
-
-            if (_r1 != null) _index = _r1.NextIndex;
-
-            // OR shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
-
-            // CALLORVAR Literal
-            _Parser_Item _r2;
-
-            _r2 = _MemoCall(_memo, "Literal", _index, Literal, null);
-
-            if (_r2 != null) _index = _r2.NextIndex;
-
-        label0: // OR
-            int _dummy_i0 = _index; // no-op for label
+            if (_r0 != null) _index = _r0.NextIndex;
 
         }
 

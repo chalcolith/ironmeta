@@ -110,6 +110,12 @@ namespace IronMeta.Generator
                 }
             }
 
+            // hoist rule bodies inside calls
+            else if (node is AST.Call)
+            {
+                HoistCalledDisjunctions(currentRule, node as AST.Call);
+            }
+
             // recurse
             if (node.Children != null)
             {
@@ -1066,12 +1072,13 @@ namespace IronMeta.Generator
 
                 if (node.Params != null && node.Params.Any())
                 {
-                    List<string> plist = GenerateActualParams(tw, vars, node, n, name, indent);
+                    var actualParams = new List<string>();                    
+                    GenerateActualParams(tw, vars, node, n, name, indent, actualParams);
 
                     tw.WriteLine();
                     tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall(_memo, {0}, _index, {4}, new {2}[] {{ {1} }});",
                         isVar ? name + ".ProductionName" : "\"" + name + "\"", 
-                        string.Join(", ", plist.ToArray()), 
+                        string.Join(", ", actualParams.ToArray()), 
                         tItem, 
                         n, 
                         isVar ? name + ".Production" : name);
@@ -1091,34 +1098,86 @@ namespace IronMeta.Generator
             }
         }
 
-        List<string> GenerateActualParams(TextWriter tw, HashSet<string> vars, AST.Call node, int n, string name, string indent)
+        void GenerateActualParams(TextWriter tw, HashSet<string> vars, AST.Call node, int n, string name, string indent, IList<string> actualParams)
         {
-            List<string> plist = new List<string>();
-
             int i = 0;
             foreach (AST.AstNode pnode in node.Params)
             {
                 string pstr = pnode.GetText().Trim();
 
-                if (pnode is AST.CallOrVar)
+                if (pnode is AST.CallOrVar || pnode is AST.Call)
                 {
-                    //string parm = vars.Contains(pstr) ? string.Format("({0}){1}", tItem, pstr) : pstr;
-                    //plist.Add(string.Format("new {0}({1})", tItem, parm));
-                    plist.Add(vars.Contains(pstr) ? pstr : string.Format("new {0}({1})", tItem, pstr));
+                    actualParams.Add(vars.Contains(pstr) ? pstr : string.Format("new {0}({1})", tItem, pstr));
                 }
                 else
                 {
                     pstr = TrimBraces(pstr).Trim();
-                    plist.Add(string.Format("new {2}(_arg{0}_{1})", n, i, tItem));
-                    tw.Write(indent); tw.WriteLine("var _arg{0}_{1} = {2};", n, i, pstr);
+                    if (!string.IsNullOrWhiteSpace(pstr))
+                    {
+                        actualParams.Add(string.Format("new {2}(_arg{0}_{1})", n, i, tItem));
+                        tw.Write(indent); tw.WriteLine("var _arg{0}_{1} = {2};", n, i, pstr);
+                    }
                     ++i;
                 }
             }
 
-            if (plist.Count == 0)
+            if (actualParams.Count == 0 && node.Params.Any())
                 throw new Exception("Unable to process actual parameters for call to " + name);
+        }
 
-            return plist;
+        int nextHoistedRuleId = 0;
+
+        void HoistCalledDisjunctions(AST.Rule currentRule, AST.Call callNode)
+        {
+            var newParams = new List<AST.AstNode>();
+
+            foreach (var oldParam in callNode.Params)
+            {
+                if (oldParam is AST.And || oldParam is AST.Or)
+                {
+                    AST.AstNode ruleBody = oldParam;
+
+                    // find callorvars in the nested rule body, and match them to params of this current rule
+                    var outerArgs = currentRule.Body as AST.Args;
+                    if (outerArgs != null)
+                    {
+                        var outerVarNames = outerArgs.Parms.OfType<AST.Bind>()
+                            .Select(b => b.VarName)
+                            .ToList();
+                        var closedVarNames = ruleBody.OfType<AST.CallOrVar>()
+                            .Where(cov => outerVarNames.Any(vn => vn.Inputs.SequenceEqual(cov.Name.Inputs)))
+                            .Select(cov => cov.Items.First())
+                            .ToList();
+
+                        if (closedVarNames.Any())
+                        {
+                            AST.AstNode args = new AST.Bind(new AST.Any(), closedVarNames.First());
+                            foreach (var varName in closedVarNames.Skip(1))
+                                args = new AST.And(args, new AST.Bind(new AST.Any(), varName));
+                            ruleBody = new AST.Args(args, ruleBody);
+                        }
+                    }
+
+                    var ruleName = string.Format("__nested_rule_{0}", nextHoistedRuleId++);
+                    var newRule = new AST.Rule(ruleName, ruleBody);
+                    ruleNodes.Add(newRule);
+                    ruleBodies[ruleName] = ruleBody;
+
+                    var nameItem = new Matcher.MatchItem<char, AST.AstNode>(ruleName)
+                    {
+                        StartIndex = 0,
+                        NextIndex = ruleName.Length,
+                    };
+                    var newCall = new AST.Call(nameItem, new AST.AstNode[0]);
+                    newParams.Add(newCall);
+                }
+                else
+                {
+                    newParams.Add(oldParam);
+                }
+            }
+
+            callNode.Params = newParams;
         }
 
         #endregion CALL

@@ -88,7 +88,7 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
 
     RuleCall = QualifiedId:name OPEN ParameterList?:p CLOSE -> { return new AST.Call(name, p.Results); };
     ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
-    Parameter = CallOrVar | Literal;
+    Parameter = Disjunction;
 
     CallOrVar = ~KEYWORD QualifiedId:name -> { return new AST.CallOrVar(name); };
     Literal = (Regexp -> { new AST.Regexp(_IM_Result) }):r ?(((AST.Regexp)r.Results.First()).IsValid)
