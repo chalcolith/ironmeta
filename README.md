@@ -66,7 +66,7 @@ Although the most common use for IronMeta is to build parsers on streams of text
 - Generated parsers are implemented as C# partial classes, allowing you to keep ancillary code in a separate file from your grammar.
 - You can use anonymously-typed object literals in rules; they are matched by comparing their properties with the input objects'.
 - Unrestricted use of C# in semantic conditions and match actions.
-- Higher-order rules: you can pass rules as parameters, and then use them in a pattern.
+- Higher-order rules: you can pass rules (or arbitrary patterns) as parameters, and then use them in a pattern.
 - Pattern matching on rule arguments: you can apply different rule bodies depending on the number and types of parameters.
 - Flexible variables: variables in an IronMeta rule may be used to:
   - get the input of an expression they are bound to.
@@ -297,6 +297,9 @@ This rule demonstrates how to match parameters. The parameter part of a rule is 
 
 These rules show that you can pass rules as parameters to other rules. To match against them, just capture them in a variable in your parameter pattern, and then use the variable as an expression in your pattern. You can pass parameters as usual.
 
+## Patterns as Arguments
+
+You can also pass arbitrary patterns as arguments.  Variables from the outer rule that you use in the argument pattern will be passed to the inner pattern when matching.
 
 ## List Folding
 

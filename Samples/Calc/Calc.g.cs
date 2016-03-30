@@ -1,5 +1,5 @@
 //
-// IronMeta Calc Parser; Generated 2015-06-01 04:42:57Z UTC
+// IronMeta Calc Parser; Generated 2016-03-30 04:36:58Z UTC
 //
 
 using System;
@@ -50,6 +50,9 @@ namespace IronMeta.Samples.Calc
         public void Expression(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALLORVAR Additive
             _Calc_Item _r0;
 
@@ -62,6 +65,9 @@ namespace IronMeta.Samples.Calc
 
         public void Additive(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -108,12 +114,17 @@ namespace IronMeta.Samples.Calc
         public void Add(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL BinaryOp
             var _start_i1 = _index;
             _Calc_Item _r1;
             var _arg1_0 = '+';
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) });
+            _Calc_Args _actual_args1 = new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) };
+            if (_args != null) _actual_args1 = _actual_args1.Concat(_args.Skip(_arg_index));
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, _actual_args1);
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -131,12 +142,17 @@ namespace IronMeta.Samples.Calc
         public void Sub(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL BinaryOp
             var _start_i1 = _index;
             _Calc_Item _r1;
             var _arg1_0 = '-';
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) });
+            _Calc_Args _actual_args1 = new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) };
+            if (_args != null) _actual_args1 = _actual_args1.Concat(_args.Skip(_arg_index));
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, _actual_args1);
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -153,6 +169,9 @@ namespace IronMeta.Samples.Calc
 
         public void Multiplicative(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -187,7 +206,9 @@ namespace IronMeta.Samples.Calc
             var _start_i4 = _index;
             _Calc_Item _r4;
 
-            _r4 = _MemoCall(_memo, "Number", _index, Number, new _Calc_Item[] { new _Calc_Item(DecimalDigit) });
+            _Calc_Args _actual_args4 = new _Calc_Item[] { new _Calc_Item(DecimalDigit) };
+            if (_args != null) _actual_args4 = _actual_args4.Concat(_args.Skip(_arg_index));
+            _r4 = _MemoCall(_memo, "Number", _index, Number, _actual_args4);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
@@ -200,12 +221,17 @@ namespace IronMeta.Samples.Calc
         public void Multiply(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL BinaryOp
             var _start_i1 = _index;
             _Calc_Item _r1;
             var _arg1_0 = "*";
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) });
+            _Calc_Args _actual_args1 = new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) };
+            if (_args != null) _actual_args1 = _actual_args1.Concat(_args.Skip(_arg_index));
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, _actual_args1);
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -223,12 +249,17 @@ namespace IronMeta.Samples.Calc
         public void Divide(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL BinaryOp
             var _start_i1 = _index;
             _Calc_Item _r1;
             var _arg1_0 = "/";
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) });
+            _Calc_Args _actual_args1 = new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) };
+            if (_args != null) _actual_args1 = _actual_args1.Concat(_args.Skip(_arg_index));
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, _actual_args1);
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -364,8 +395,8 @@ namespace IronMeta.Samples.Calc
 
             if (first.Production != null)
             {
-                var _p17 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)first.Production; // what type safety?
-                _r17 = _MemoCall(_memo, first.Production.Method.Name, _index, _p17, null);
+                var _p17 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)first.Production;
+                _r17 = _MemoCall(_memo, first.Production.Method.Name, _index, _p17, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -384,7 +415,9 @@ namespace IronMeta.Samples.Calc
             var _start_i18 = _index;
             _Calc_Item _r18;
 
-            _r18 = _MemoCall(_memo, "KW", _index, KW, new _Calc_Item[] { op });
+            _Calc_Args _actual_args18 = new _Calc_Item[] { op };
+            if (_args != null) _actual_args18 = _actual_args18.Concat(_args.Skip(_arg_index));
+            _r18 = _MemoCall(_memo, "KW", _index, KW, _actual_args18);
 
             if (_r18 != null) _index = _r18.NextIndex;
 
@@ -409,7 +442,9 @@ namespace IronMeta.Samples.Calc
             var _start_i20 = _index;
             _Calc_Item _r20;
 
-            _r20 = _MemoCall(_memo, second.ProductionName, _index, second.Production, new _Calc_Item[] { type });
+            _Calc_Args _actual_args20 = new _Calc_Item[] { type };
+            if (_args != null) _actual_args20 = _actual_args20.Concat(_args.Skip(_arg_index));
+            _r20 = _MemoCall(_memo, second.ProductionName, _index, second.Production, _actual_args20);
 
             if (_r20 != null) _index = _r20.NextIndex;
 
@@ -476,7 +511,9 @@ namespace IronMeta.Samples.Calc
             var _start_i6 = _index;
             _Calc_Item _r6;
 
-            _r6 = _MemoCall(_memo, "Digits", _index, Digits, new _Calc_Item[] { type });
+            _Calc_Args _actual_args6 = new _Calc_Item[] { type };
+            if (_args != null) _actual_args6 = _actual_args6.Concat(_args.Skip(_arg_index));
+            _r6 = _MemoCall(_memo, "Digits", _index, Digits, _actual_args6);
 
             if (_r6 != null) _index = _r6.NextIndex;
 
@@ -574,7 +611,9 @@ namespace IronMeta.Samples.Calc
             var _start_i7 = _index;
             _Calc_Item _r7;
 
-            _r7 = _MemoCall(_memo, "Digits", _index, Digits, new _Calc_Item[] { type });
+            _Calc_Args _actual_args7 = new _Calc_Item[] { type };
+            if (_args != null) _actual_args7 = _actual_args7.Concat(_args.Skip(_arg_index));
+            _r7 = _MemoCall(_memo, "Digits", _index, Digits, _actual_args7);
 
             if (_r7 != null) _index = _r7.NextIndex;
 
@@ -589,8 +628,8 @@ namespace IronMeta.Samples.Calc
 
             if (type.Production != null)
             {
-                var _p9 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production; // what type safety?
-                _r9 = _MemoCall(_memo, type.Production.Method.Name, _index, _p9, null);
+                var _p9 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production;
+                _r9 = _MemoCall(_memo, type.Production.Method.Name, _index, _p9, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -651,8 +690,8 @@ namespace IronMeta.Samples.Calc
 
             if (type.Production != null)
             {
-                var _p13 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production; // what type safety?
-                _r13 = _MemoCall(_memo, type.Production.Method.Name, _index, _p13, null);
+                var _p13 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production;
+                _r13 = _MemoCall(_memo, type.Production.Method.Name, _index, _p13, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -672,6 +711,9 @@ namespace IronMeta.Samples.Calc
 
         public void DecimalDigit(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _Calc_Item c = null;
 
@@ -724,8 +766,8 @@ namespace IronMeta.Samples.Calc
 
             if (str.Production != null)
             {
-                var _p4 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)str.Production; // what type safety?
-                _r4 = _MemoCall(_memo, str.Production.Method.Name, _index, _p4, null);
+                var _p4 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)str.Production;
+                _r4 = _MemoCall(_memo, str.Production.Method.Name, _index, _p4, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -784,6 +826,9 @@ namespace IronMeta.Samples.Calc
         public void WS(_Calc_Memo _memo, int _index, _Calc_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -824,6 +869,7 @@ namespace IronMeta.Samples.Calc
             int _dummy_i0 = _index; // no-op for label
 
         }
+
 
     } // class Calc
 
