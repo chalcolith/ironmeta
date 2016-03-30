@@ -1,5 +1,5 @@
 //
-// IronMeta LRParser Parser; Generated 2015-06-01 04:47:29Z UTC
+// IronMeta LRParser Parser; Generated 2016-03-30 04:29:19Z UTC
 //
 
 using System;
@@ -56,6 +56,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void A(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _LRParser_Item a = null;
             _LRParser_Item b = null;
@@ -133,6 +136,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Exp(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _LRParser_Item e = null;
             _LRParser_Item t = null;
@@ -230,6 +236,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Term(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "1"
             _ParseLiteralString(_memo, ref _index, "1");
 
@@ -246,6 +255,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void NonLR(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -287,6 +299,9 @@ namespace IronMeta.UnitTests.Matcher
         public void NonLR_A(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "a"
             _ParseLiteralString(_memo, ref _index, "a");
 
@@ -295,6 +310,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void NonLR_B(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -321,6 +339,9 @@ namespace IronMeta.UnitTests.Matcher
         public void NonLR_C(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "c"
             _ParseLiteralString(_memo, ref _index, "c");
 
@@ -329,6 +350,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void AAA(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _LRParser_Item x = null;
             _LRParser_Item y = null;
@@ -424,6 +448,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Character(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALLORVAR HexEscapeCharacter
             _LRParser_Item _r0;
 
@@ -436,6 +463,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void HexEscapeCharacter(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _LRParser_Item hex = null;
 
@@ -488,6 +518,9 @@ namespace IronMeta.UnitTests.Matcher
         public void HexScalarValue(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // PLUS 0
             int _start_i0 = _index;
             var _res0 = Enumerable.Empty<string>();
@@ -520,6 +553,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void HexDigit(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -678,6 +714,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Digit(_LRParser_Memo _memo, int _index, _LRParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -790,6 +829,7 @@ namespace IronMeta.UnitTests.Matcher
             int _dummy_i0 = _index; // no-op for label
 
         }
+
 
     } // class LRParser
 

@@ -1,5 +1,5 @@
 //
-// IronMeta MemoizeParser Parser; Generated 2015-06-01 04:47:30Z UTC
+// IronMeta MemoizeParser Parser; Generated 2016-03-30 04:29:19Z UTC
 //
 
 using System;
@@ -49,6 +49,9 @@ namespace IronMeta.UnitTests.Matcher
         public void AlternateEOF(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -89,6 +92,9 @@ namespace IronMeta.UnitTests.Matcher
         public void SequenceEOF(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -128,6 +134,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Alternate(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -208,6 +217,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Sequence(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -287,6 +299,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Single(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -315,6 +330,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Category(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _MemoizeParser_Item s = null;
 
@@ -388,6 +406,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Char(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             _MemoizeParser_Item c = null;
 
             // INPUT CLASS
@@ -410,6 +431,9 @@ namespace IronMeta.UnitTests.Matcher
         public void EOF(_MemoizeParser_Memo _memo, int _index, _MemoizeParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // NOT 0
             int _start_i0 = _index;
 
@@ -422,6 +446,7 @@ namespace IronMeta.UnitTests.Matcher
             _index = _start_i0;
 
         }
+
 
     } // class MemoizeParser
 

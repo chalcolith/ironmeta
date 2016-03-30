@@ -12,8 +12,8 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
     Using = USING (Ident (DOT Ident)*):name SP SEMI -> { return new AST.Using(name); };
 
     Grammar = IRONMETA Identifier:name
-            LESS GenericId:tinput COMMA GenericId:tresult GREATER
-            (COLON GenericId:baseclass)?
+            LESS GenericId:tinput SP COMMA GenericId:tresult SP GREATER
+            (COLON GenericId:baseclass SP)?
             BRA Rule*:rules KET
         -> { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); };
 
@@ -90,9 +90,9 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
     ParameterList = Parameter (COMMA Parameter)* -> { return _IM_Result.Results.Where(node => node != null); };
     Parameter = Disjunction;
 
-    CallOrVar = ~KEYWORD QualifiedId:name -> { return new AST.CallOrVar(name); };
+    CallOrVar = ~KEYWORD QualifiedId:name SP -> { return new AST.CallOrVar(name); };
     Literal = (Regexp -> { new AST.Regexp(_IM_Result) }):r ?(((AST.Regexp)r.Results.First()).IsValid)
-        | ((NEW GenericId? &'{') | &('\x22' | '\x27' | '{')) CSharpCode -> { return new AST.Code(_IM_Result); };
+        | ((NEW (GenericId SP)? &'{') | &('\x22' | '\x27' | '{')) CSharpCode -> { return new AST.Code(_IM_Result); };
 
     Regexp = '/' ('\\' '/' | ~'/' .)+ '/' SP;
 
@@ -129,8 +129,8 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
     IdentBegin = '_' | . ?(System.Char.IsLetter(_IM_Result));
     IdentBody = '_' | . ?(System.Char.IsLetterOrDigit(_IM_Result));
 
-    QualifiedId = (Ident (DOT Ident)*):id SP -> { new AST.Idfr(id) };
-    GenericId = (Ident (DOT Ident)*):ids SP (LESS (GenericId (COMMA GenericId)*) GREATER)?:gp
+    QualifiedId = (Ident (DOT Ident)*):id -> { new AST.Idfr(id) };
+    GenericId = (Ident (DOT Ident)*):ids (LESS (GenericId SP (COMMA GenericId SP)*) GREATER)?:gp
         -> { return new AST.Idfr(ids, gp); };
 
     Number = ['0'-'9']+ SP;

@@ -1149,10 +1149,14 @@ namespace IronMeta.Generator
                     if (outerArgs != null)
                     {
                         var outerVarNames = outerArgs.Parms.OfType<AST.Bind>()
-                            .Select(b => b.VarName)
+                            .Select(b => new string(b.VarName.Inputs.ToArray()).Trim())
                             .ToList();
                         var closedVarNames = ruleBody.OfType<AST.CallOrVar>()
-                            .Where(cov => outerVarNames.Any(vn => vn.Inputs.SequenceEqual(cov.Name.Inputs)))
+                            .Where(cov =>
+                            {
+                                var innerVarName = new string(cov.Name.Inputs.ToArray()).Trim();
+                                return outerVarNames.Contains(innerVarName);
+                            })
                             .Select(cov => cov.Items.First())
                             .ToList();
 

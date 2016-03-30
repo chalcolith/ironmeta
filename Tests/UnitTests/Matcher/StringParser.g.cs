@@ -1,5 +1,5 @@
 //
-// IronMeta StringParser Parser; Generated 2015-06-01 04:47:30Z UTC
+// IronMeta StringParser Parser; Generated 2016-03-30 04:29:20Z UTC
 //
 
 using System;
@@ -50,6 +50,9 @@ namespace IronMeta.UnitTests.Matcher
         public void One(_StringParser_Memo _memo, int _index, _StringParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "one"
             _ParseLiteralObj(_memo, ref _index, "one");
 
@@ -67,6 +70,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Two(_StringParser_Memo _memo, int _index, _StringParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "two"
             _ParseLiteralObj(_memo, ref _index, "two");
 
@@ -83,6 +89,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Pi(_StringParser_Memo _memo, int _index, _StringParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 1
             int _start_i1 = _index;
@@ -234,6 +243,7 @@ namespace IronMeta.UnitTests.Matcher
             }
 
         }
+
 
     } // class StringParser
 

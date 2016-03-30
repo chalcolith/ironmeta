@@ -1,5 +1,5 @@
 //
-// IronMeta BugFixes Parser; Generated 2015-06-01 04:47:48Z UTC
+// IronMeta BugFixes Parser; Generated 2016-03-30 04:29:01Z UTC
 //
 
 using System;
@@ -51,6 +51,9 @@ namespace IronMeta.UnitTests
         public void Bug_3490042_HexEscapeCharacter(_BugFixes_Memo _memo, int _index, _BugFixes_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             _BugFixes_Item hex = null;
 
             // AND 1
@@ -101,6 +104,9 @@ namespace IronMeta.UnitTests
         public void Bug_3490042_HexScalarValue(_BugFixes_Memo _memo, int _index, _BugFixes_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // PLUS 0
             int _start_i0 = _index;
             var _res0 = Enumerable.Empty<object>();
@@ -133,6 +139,9 @@ namespace IronMeta.UnitTests
 
         public void Bug_3490042_HexDigit(_BugFixes_Memo _memo, int _index, _BugFixes_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -291,6 +300,9 @@ namespace IronMeta.UnitTests
         public void Bug_3490042_Digit(_BugFixes_Memo _memo, int _index, _BugFixes_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -403,6 +415,7 @@ namespace IronMeta.UnitTests
             int _dummy_i0 = _index; // no-op for label
 
         }
+
 
     } // class BugFixes
 

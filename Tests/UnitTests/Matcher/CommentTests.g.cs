@@ -1,5 +1,5 @@
 //
-// IronMeta CommentTests Parser; Generated 2015-12-08 20:27:53Z UTC
+// IronMeta CommentTests Parser; Generated 2016-03-30 04:29:19Z UTC
 //
 
 using System;
@@ -52,6 +52,9 @@ namespace IronMeta.UnitTests.Matcher
         public void s(_CommentTests_Memo _memo, int _index, _CommentTests_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -81,6 +84,9 @@ namespace IronMeta.UnitTests.Matcher
         public void r1(_CommentTests_Memo _memo, int _index, _CommentTests_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL 'a'
             _ParseLiteralChar(_memo, ref _index, 'a');
 
@@ -90,6 +96,9 @@ namespace IronMeta.UnitTests.Matcher
         public void r2(_CommentTests_Memo _memo, int _index, _CommentTests_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL 'b'
             _ParseLiteralChar(_memo, ref _index, 'b');
 
@@ -98,6 +107,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void s2(_CommentTests_Memo _memo, int _index, _CommentTests_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -127,6 +139,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void s3(_CommentTests_Memo _memo, int _index, _CommentTests_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;

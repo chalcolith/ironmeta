@@ -1,5 +1,5 @@
-﻿//
-// IronMeta Restartable Parser; Generated 2015-12-01 17:19:32Z UTC
+//
+// IronMeta Restartable Parser; Generated 2016-03-30 04:29:20Z UTC
 //
 
 using System;
@@ -48,6 +48,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Rule1(_Restartable_Memo _memo, int _index, _Restartable_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -103,6 +106,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Rule2(_Restartable_Memo _memo, int _index, _Restartable_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;

@@ -1,5 +1,5 @@
 //
-// IronMeta AnonObjectParser Parser; Generated 2015-06-01 04:47:28Z UTC
+// IronMeta AnonObjectParser Parser; Generated 2016-03-30 04:29:18Z UTC
 //
 
 using System;
@@ -49,6 +49,9 @@ namespace IronMeta.UnitTests.Matcher
         public void ActualObject(_AnonObjectParser_Memo _memo, int _index, _AnonObjectParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -81,6 +84,9 @@ namespace IronMeta.UnitTests.Matcher
         public void ImplicitObject(_AnonObjectParser_Memo _memo, int _index, _AnonObjectParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -108,6 +114,7 @@ namespace IronMeta.UnitTests.Matcher
             }
 
         }
+
 
     } // class AnonObjectParser
 

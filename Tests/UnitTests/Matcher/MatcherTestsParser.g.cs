@@ -1,5 +1,5 @@
 //
-// IronMeta MatcherTestsParser Parser; Generated 2015-06-01 04:47:29Z UTC
+// IronMeta MatcherTestsParser Parser; Generated 2016-03-30 04:29:19Z UTC
 //
 
 using System;
@@ -123,6 +123,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Literal(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL 'a'
             _ParseLiteralChar(_memo, ref _index, 'a');
 
@@ -131,6 +134,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void LiteralString(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "abc"
             _ParseLiteralString(_memo, ref _index, "abc");
@@ -141,6 +147,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Class(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // INPUT CLASS
             _ParseInputClass(_memo, ref _index, 'a', 'b', 'c');
 
@@ -150,6 +159,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Class2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // INPUT CLASS
             _ParseInputClass(_memo, ref _index, '\u0001', '\u0002', '\u0003');
 
@@ -158,6 +170,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void AndLiteral(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -191,6 +206,9 @@ namespace IronMeta.UnitTests.Matcher
         public void OrLiteral(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -211,6 +229,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void AndString(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -244,6 +265,9 @@ namespace IronMeta.UnitTests.Matcher
         public void OrString(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -265,6 +289,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Fail(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // FAIL
             _memo.Results.Push(null);
             _memo.ClearErrors();
@@ -276,6 +303,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Any(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // ANY
             _ParseAny(_memo, ref _index);
 
@@ -284,6 +314,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Look(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -348,6 +381,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Not(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -411,6 +447,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Star1(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -459,6 +498,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Star2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -563,6 +605,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Plus1(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -614,6 +659,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Plus2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -721,6 +769,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Ques(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -778,6 +829,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Cond(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _MatcherTestsParser_Item c = null;
 
@@ -845,6 +899,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Cond2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -907,6 +964,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Action(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -936,6 +996,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Call1(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -945,7 +1008,7 @@ namespace IronMeta.UnitTests.Matcher
             // CALL AndLiteral
             var _start_i2 = _index;
             _MatcherTestsParser_Item _r2;
-            _r2 = _MemoCall(_memo, "AndLiteral", _index, AndLiteral, null);
+            _r2 = _MemoCall(_memo, "AndLiteral", _index, AndLiteral, _args != null ? _args.Skip(_arg_index) : null);
 
             if (_r2 != null) _index = _r2.NextIndex;
 
@@ -983,6 +1046,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Call2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -1094,6 +1160,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Call3(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCall
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
@@ -1102,7 +1171,9 @@ namespace IronMeta.UnitTests.Matcher
             var _arg0_2 = 'c';
             var _arg0_3 = new System.Char();
 
-            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1), new _MatcherTestsParser_Item(_arg0_2), new _MatcherTestsParser_Item(_arg0_3) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1), new _MatcherTestsParser_Item(_arg0_2), new _MatcherTestsParser_Item(_arg0_3) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1111,6 +1182,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Call4(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCall
             _MatcherTestsParser_Item _r0;
@@ -1199,13 +1273,18 @@ namespace IronMeta.UnitTests.Matcher
         public void Call5(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCall
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
             var _arg0_1 = 'b';
 
-            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1215,13 +1294,18 @@ namespace IronMeta.UnitTests.Matcher
         public void Call6(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCall
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'z';
             var _arg0_1 = 'w';
 
-            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1231,12 +1315,17 @@ namespace IronMeta.UnitTests.Matcher
         public void Call7(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCall
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = "ab";
 
-            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCall", _index, SubCall, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1273,6 +1362,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallFail(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallFail
             _MatcherTestsParser_Item _r0;
@@ -1338,6 +1430,9 @@ namespace IronMeta.UnitTests.Matcher
         public void CallClass(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -1349,7 +1444,9 @@ namespace IronMeta.UnitTests.Matcher
             _MatcherTestsParser_Item _r2;
             var _arg2_0 = 'a';
 
-            _r2 = _MemoCall(_memo, "SubCallClass", _index, SubCallClass, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg2_0) });
+            _MatcherTestsParser_Args _actual_args2 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg2_0) };
+            if (_args != null) _actual_args2 = _actual_args2.Concat(_args.Skip(_arg_index));
+            _r2 = _MemoCall(_memo, "SubCallClass", _index, SubCallClass, _actual_args2);
 
             if (_r2 != null) _index = _r2.NextIndex;
 
@@ -1366,7 +1463,9 @@ namespace IronMeta.UnitTests.Matcher
             _MatcherTestsParser_Item _r3;
             var _arg3_0 = 'b';
 
-            _r3 = _MemoCall(_memo, "SubCallClass", _index, SubCallClass, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg3_0) });
+            _MatcherTestsParser_Args _actual_args3 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg3_0) };
+            if (_args != null) _actual_args3 = _actual_args3.Concat(_args.Skip(_arg_index));
+            _r3 = _MemoCall(_memo, "SubCallClass", _index, SubCallClass, _actual_args3);
 
             if (_r3 != null) _index = _r3.NextIndex;
 
@@ -1441,12 +1540,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallAny(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallAny
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallAny", _index, SubCallAny, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallAny", _index, SubCallAny, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1455,6 +1559,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallAny2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallAny
             _MatcherTestsParser_Item _r0;
@@ -1551,12 +1658,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallLook(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallLook
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallLook", _index, SubCallLook, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallLook", _index, SubCallLook, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1648,12 +1760,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallNot(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallNot
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'b';
 
-            _r0 = _MemoCall(_memo, "SubCallNot", _index, SubCallNot, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallNot", _index, SubCallNot, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1663,12 +1780,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallNot2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallNot
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallNot", _index, SubCallNot, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallNot", _index, SubCallNot, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1741,12 +1863,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallOr(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallOr
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1756,12 +1883,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallOr2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallOr
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'b';
 
-            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1771,12 +1903,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallOr3(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallOr
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'c';
 
-            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallOr", _index, SubCallOr, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1860,13 +1997,18 @@ namespace IronMeta.UnitTests.Matcher
         public void CallAnd(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallAnd
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
             var _arg0_1 = 'b';
 
-            _r0 = _MemoCall(_memo, "SubCallAnd", _index, SubCallAnd, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallAnd", _index, SubCallAnd, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1876,13 +2018,18 @@ namespace IronMeta.UnitTests.Matcher
         public void CallAnd2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallAnd
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'w';
             var _arg0_1 = 'z';
 
-            _r0 = _MemoCall(_memo, "SubCallAnd", _index, SubCallAnd, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0), new _MatcherTestsParser_Item(_arg0_1) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallAnd", _index, SubCallAnd, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -1962,6 +2109,9 @@ namespace IronMeta.UnitTests.Matcher
         public void CallStar(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALLORVAR SubCallStar
             _MatcherTestsParser_Item _r0;
 
@@ -1975,12 +2125,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallStar2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallStar
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallStar", _index, SubCallStar, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallStar", _index, SubCallStar, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2063,12 +2218,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallPlus(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallPlus
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallPlus", _index, SubCallPlus, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallPlus", _index, SubCallPlus, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2077,6 +2237,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallPlus2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallPlus
             _MatcherTestsParser_Item _r0;
@@ -2145,12 +2308,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallQues(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallQues
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallQues", _index, SubCallQues, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallQues", _index, SubCallQues, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2159,6 +2327,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallQues2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallQues
             _MatcherTestsParser_Item _r0;
@@ -2235,12 +2406,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallCond(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallCond
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallCond", _index, SubCallCond, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallCond", _index, SubCallCond, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2249,6 +2425,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallCond2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallCond
             _MatcherTestsParser_Item _r0;
@@ -2262,6 +2441,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void VarInput(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             _MatcherTestsParser_Item a = null;
 
@@ -2282,8 +2464,8 @@ namespace IronMeta.UnitTests.Matcher
 
             if (a.Production != null)
             {
-                var _p3 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production; // what type safety?
-                _r3 = _MemoCall(_memo, a.Production.Method.Name, _index, _p3, null);
+                var _p3 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production;
+                _r3 = _MemoCall(_memo, a.Production.Method.Name, _index, _p3, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -2346,8 +2528,8 @@ namespace IronMeta.UnitTests.Matcher
 
             if (a.Production != null)
             {
-                var _p4 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production; // what type safety?
-                _r4 = _MemoCall(_memo, a.Production.Method.Name, _index, _p4, null);
+                var _p4 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production;
+                _r4 = _MemoCall(_memo, a.Production.Method.Name, _index, _p4, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -2365,12 +2547,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallAct(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallAct
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = 'a';
 
-            _r0 = _MemoCall(_memo, "SubCallAct", _index, SubCallAct, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallAct", _index, SubCallAct, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2379,6 +2566,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallAct2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallAct
             _MatcherTestsParser_Item _r0;
@@ -2473,12 +2663,17 @@ namespace IronMeta.UnitTests.Matcher
         public void CallCallVar(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallVar
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
             var _arg0_0 = "aa";
 
-            _r0 = _MemoCall(_memo, "SubCallVar", _index, SubCallVar, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(_arg0_0) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallVar", _index, SubCallVar, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2487,6 +2682,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void CallCallVar2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR SubCallVar
             _MatcherTestsParser_Item _r0;
@@ -2530,8 +2728,8 @@ namespace IronMeta.UnitTests.Matcher
 
             if (a.Production != null)
             {
-                var _p4 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production; // what type safety?
-                _r4 = _MemoCall(_memo, a.Production.Method.Name, _index, _p4, null);
+                var _p4 = (System.Action<_MatcherTestsParser_Memo, int, IEnumerable<_MatcherTestsParser_Item>>)(object)a.Production;
+                _r4 = _MemoCall(_memo, a.Production.Method.Name, _index, _p4, _args != null ? _args.Skip(_arg_index) : null);
             }
             else
             {
@@ -2546,7 +2744,7 @@ namespace IronMeta.UnitTests.Matcher
             // CALL a
             var _start_i5 = _index;
             _MatcherTestsParser_Item _r5;
-            _r5 = _MemoCall(_memo, a.ProductionName, _index, a.Production, null);
+            _r5 = _MemoCall(_memo, a.ProductionName, _index, a.Production, _args != null ? _args.Skip(_arg_index) : null);
 
             if (_r5 != null) _index = _r5.NextIndex;
 
@@ -2573,6 +2771,9 @@ namespace IronMeta.UnitTests.Matcher
         public void XOrY(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -2594,11 +2795,16 @@ namespace IronMeta.UnitTests.Matcher
         public void CallCallRule(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALL SubCallRule
             var _start_i0 = _index;
             _MatcherTestsParser_Item _r0;
 
-            _r0 = _MemoCall(_memo, "SubCallRule", _index, SubCallRule, new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(XOrY) });
+            _MatcherTestsParser_Args _actual_args0 = new _MatcherTestsParser_Item[] { new _MatcherTestsParser_Item(XOrY) };
+            if (_args != null) _actual_args0 = _actual_args0.Concat(_args.Skip(_arg_index));
+            _r0 = _MemoCall(_memo, "SubCallRule", _index, SubCallRule, _actual_args0);
 
             if (_r0 != null) _index = _r0.NextIndex;
 
@@ -2607,6 +2813,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void ChoiceLR(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -2649,6 +2858,9 @@ namespace IronMeta.UnitTests.Matcher
         public void ChoiceA(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -2685,6 +2897,9 @@ namespace IronMeta.UnitTests.Matcher
         public void ChoiceB(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -2720,6 +2935,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void DirectLR(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -2769,6 +2987,9 @@ namespace IronMeta.UnitTests.Matcher
         public void IndirectLR_A(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -2817,6 +3038,9 @@ namespace IronMeta.UnitTests.Matcher
         public void IndirectLR_B(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -2852,6 +3076,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void PathalogicalA(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -2904,6 +3131,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void PathalogicalB(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -2973,6 +3203,9 @@ namespace IronMeta.UnitTests.Matcher
         public void PathalogicalC(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // OR 0
             int _start_i0 = _index;
 
@@ -3037,6 +3270,9 @@ namespace IronMeta.UnitTests.Matcher
         public void TestBuildTasks(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "testBuildTask9"
             _ParseLiteralString(_memo, ref _index, "testBuildTask9");
 
@@ -3045,6 +3281,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void TestInputs(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 1
             int _start_i1 = _index;
@@ -3108,6 +3347,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void TestMinMax1(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -3221,6 +3463,9 @@ namespace IronMeta.UnitTests.Matcher
         public void TestMinMax2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -3263,6 +3508,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void TestReturn(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // OR 0
             int _start_i0 = _index;
@@ -3309,6 +3557,9 @@ namespace IronMeta.UnitTests.Matcher
         public void TestReturn1(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "a"
             _ParseLiteralString(_memo, ref _index, "a");
 
@@ -3325,6 +3576,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void TestReturn2(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "b"
             _ParseLiteralString(_memo, ref _index, "b");
@@ -3343,6 +3597,9 @@ namespace IronMeta.UnitTests.Matcher
         public void TestReturn3(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "c"
             _ParseLiteralString(_memo, ref _index, "c");
 
@@ -3359,6 +3616,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void TestCount(_MatcherTestsParser_Memo _memo, int _index, _MatcherTestsParser_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // AND 0
             int _start_i0 = _index;
@@ -3487,6 +3747,7 @@ namespace IronMeta.UnitTests.Matcher
             }
 
         }
+
 
     } // class MatcherTestsParser
 

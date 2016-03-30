@@ -1,5 +1,5 @@
 //
-// IronMeta Combine1 Parser; Generated 2015-06-01 04:47:29Z UTC
+// IronMeta Combine1 Parser; Generated 2016-03-30 04:29:18Z UTC
 //
 
 using System;
@@ -50,6 +50,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Rule1(_Combine1_Memo _memo, int _index, _Combine1_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "abc"
             _ParseLiteralString(_memo, ref _index, "abc");
 
@@ -66,6 +69,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Rule2(_Combine1_Memo _memo, int _index, _Combine1_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "def"
             _ParseLiteralString(_memo, ref _index, "def");
@@ -84,6 +90,9 @@ namespace IronMeta.UnitTests.Matcher
         public virtual  void VirtualRule(_Combine1_Memo _memo, int _index, _Combine1_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "virtual"
             _ParseLiteralString(_memo, ref _index, "virtual");
 
@@ -96,6 +105,7 @@ namespace IronMeta.UnitTests.Matcher
             }
 
         }
+
 
     } // class Combine1
 

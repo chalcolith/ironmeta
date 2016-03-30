@@ -1,5 +1,5 @@
 //
-// IronMeta Combine2 Parser; Generated 2015-06-01 04:47:29Z UTC
+// IronMeta Combine2 Parser; Generated 2016-03-30 04:29:18Z UTC
 //
 
 using System;
@@ -52,6 +52,9 @@ namespace IronMeta.UnitTests.Matcher
         public new  void Rule1(_Combine2_Memo _memo, int _index, _Combine2_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "ghi"
             _ParseLiteralString(_memo, ref _index, "ghi");
 
@@ -68,6 +71,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public new  void Rule2(_Combine2_Memo _memo, int _index, _Combine2_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // LITERAL "jkl"
             _ParseLiteralString(_memo, ref _index, "jkl");
@@ -86,6 +92,9 @@ namespace IronMeta.UnitTests.Matcher
         public void Rule5(_Combine2_Memo _memo, int _index, _Combine2_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // CALLORVAR OtherCombine.Rule1
             _Combine2_Item _r0;
 
@@ -98,6 +107,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Rule6(_Combine2_Memo _memo, int _index, _Combine2_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // CALLORVAR OtherCombine.Rule2
             _Combine2_Item _r0;
@@ -112,6 +124,9 @@ namespace IronMeta.UnitTests.Matcher
         public override  void VirtualRule(_Combine2_Memo _memo, int _index, _Combine2_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // LITERAL "override"
             _ParseLiteralString(_memo, ref _index, "override");
 
@@ -124,6 +139,7 @@ namespace IronMeta.UnitTests.Matcher
             }
 
         }
+
 
     } // class Combine2
 

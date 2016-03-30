@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2015-07-25 18:08:07Z UTC
+// IronMeta RegexpTest Parser; Generated 2016-03-30 04:29:20Z UTC
 //
 
 using System;
@@ -49,6 +49,9 @@ namespace IronMeta.UnitTests.Matcher
         public void ABCD(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
         {
 
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
             // AND 0
             int _start_i0 = _index;
 
@@ -80,6 +83,9 @@ namespace IronMeta.UnitTests.Matcher
 
         public void Ident(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
         {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
 
             // REGEXP _|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*
             _ParseRegexp(_memo, ref _index, _re1);
