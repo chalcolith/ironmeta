@@ -2,7 +2,9 @@ The IronMeta parser generator provides a programming language and application fo
 
 IronMeta is available under the terms of the [BSD License](https://github.com/kulibali/ironmeta/wiki/License).
 
-## [Changelog](https://github.com/kulibali/ironmeta/wiki/Changelog)
+## Changelog
+
+The changelog is available in the repo: [CHANGELOG](https://github.com/kulibali/ironmeta/blob/master/CHANGELOG.md).
 
 ## Using IronMeta
 
