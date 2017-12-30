@@ -16,5 +16,14 @@ namespace IronMeta.UnitTests
             Assert.IsTrue(match.Success);
             Assert.AreEqual(14, match.Result);
         }
+
+        [TestMethod]
+        public void TestCalcIncomplete_Issue_20()
+        {
+            var parser = new Samples.Calc.Calc();
+            var match = parser.GetMatch("5+", parser.Expression);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual(1, match.NextIndex);
+        }
     }
 }
