@@ -56,5 +56,23 @@ namespace IronMeta.UnitTests.Matcher
             var m4 = parser.GetMatch("0_1", parser.Ident);
             Assert.IsFalse(m4.Success);
         }
+
+        [TestMethod]
+        public void TestRegexpBackup_Issue_19()
+        {
+            CompareRegexpBackup("Hello!");
+            CompareRegexpBackup("Hello!\n");
+            CompareRegexpBackup("Hello!\nWorld!\n");
+        }
+
+        void CompareRegexpBackup(string input)
+        {
+            var m1 = parser.GetMatch(input, parser.Bar);
+            var m2 = parser.GetMatch(input, parser.Foo);
+            Assert.AreEqual(m1.Success, m2.Success);
+            Assert.AreEqual(m1.StartIndex, m2.StartIndex);
+            Assert.AreEqual(m1.NextIndex, m2.NextIndex);
+            Assert.AreEqual(m1.Result, m2.Result);
+        }
     }
 }

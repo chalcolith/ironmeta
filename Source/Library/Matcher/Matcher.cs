@@ -588,36 +588,33 @@ namespace IronMeta.Matcher
         protected MatchItem<TInput, TResult> _ParseRegexp(MatchState<TInput, TResult> memo, ref int index, Verophyle.Regexp.StringRegexp re)
         {
             int cur_index = index;
-            bool succeeded = false;
+            int succ_index = -1;
 
             try
             {
                 re.Reset();
                 do
                 {
-                    succeeded = re.Succeeded;
                     re.ProcessInput(memo.InputString[cur_index++]);
+                    if (re.Succeeded)
+                        succ_index = cur_index;
                 }
                 while (cur_index < memo.InputString.Length && !re.Failed);
-
-                succeeded = succeeded || re.Succeeded;
-
-                if (re.Failed) cur_index--;
             }
             catch
             {
-                succeeded = false;
+                succ_index = -1;
             }
 
-            if (succeeded)
+            if (succ_index >= 0)
             {
                 var result = new MatchItem<TInput, TResult>
                 {
                     StartIndex = index,
-                    NextIndex = cur_index,
+                    NextIndex = succ_index,
                     InputEnumerable = memo.InputEnumerable
                 };
-                index = cur_index;
+                index = succ_index;
                 memo.Results.Push(result);
                 return result;
             }
