@@ -1,0 +1,25 @@
+version: '{build}'
+
+environment:
+  snk_secret:
+    secure: PS4Bb+EzT83oeKqzwgwSr+n116gWIz2MzxDRgHp6Pl1Zx4kEWP0yLpv/ops4WOV1
+
+branches:
+  only:
+  - master
+
+platform: Any CPU
+configuration: Release
+
+before_build:
+- cmd: nuget restore
+
+install:
+  - if defined snk_secret (nuget install secure-file -ExcludeVersion)
+  - if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.snk.enc -secret %snk_secret%)
+  - if not defined snk_secret (copy Source\IronMeta.PRS.snk Source\IronMeta.snk)
+
+build:
+  verbosity: minimal
+
+deploy: off

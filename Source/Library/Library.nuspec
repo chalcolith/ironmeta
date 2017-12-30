@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>https://github.com/kulibali/ironmeta/wiki/Changelog</releaseNotes>
-    <copyright>Copyright © Gordon Tisher 2016</copyright>
+    <copyright>Copyright © Gordon Tisher 2018</copyright>
     <tags>PEG Parser ParserGenerator</tags>
   </metadata>
 
