@@ -1,3 +1,6 @@
+#### 4.3.1: December 29, 2017:
+- Fixed #19: Regex matches broken
+
 #### 4.3: March 29, 2016:
 - Now supports passing arbitrary patterns as rule arguments.
 
