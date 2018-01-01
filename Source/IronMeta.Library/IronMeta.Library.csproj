@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <PackageId>IronMeta.Library</PackageId>
+    <PackageId>IronMeta</PackageId>
     <Version>4.4.0</Version>
     <Authors>Gordon Tisher</Authors>
     <Company>Gordon Tisher</Company>
