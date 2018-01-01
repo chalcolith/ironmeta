@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.0;net471;net462</TargetFrameworks>
+    <PackageId>IronMeta.App</PackageId>
+    <RootNamespace>IronMeta</RootNamespace>
+    <Version>4.4.0</Version>
+    <Authors>Gordon Tisher</Authors>
+    <Company />
+    <Product>IronMeta</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IronMeta.Library\IronMeta.Library.csproj" />
+  </ItemGroup>
+
+</Project>

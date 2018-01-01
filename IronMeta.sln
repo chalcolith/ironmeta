@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta.Library", "Source\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta.Tests", "Source\IronMeta.Tests\IronMeta.Tests.csproj", "{23BA97AC-D864-4D70-A2BD-D564A5ADA325}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta", "Source\IronMeta\IronMeta.csproj", "{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta.App", "Source\IronMeta.App\IronMeta.App.csproj", "{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calc", "Samples\Calc\Calc.csproj", "{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}"
 EndProject
@@ -45,7 +45,9 @@ Global
 		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

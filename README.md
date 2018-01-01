@@ -28,7 +28,7 @@ Once you have installed the NuGet package, add a grammar file with the extension
       </Target>
 ```
 
-- A command-line program `IronMeta.exe` is included in the NuGet package, in the `tools` directory.  The program takes the following arguments:
+- A command-line program `IronMetaApp.exe` is included in the NuGet package, in the `tools` directory.  The program takes the following arguments:
   - `-o {output}` (optional): Specify the output file name (defaults to `{input}_.g.cs`).
   - `-n {namespace}` (optional): Specify the namespace to use for the generated parser (defaults to the name of the directory the input file is in).
   - `-f` (optional): Force generation even if the input file is older than the output file.
