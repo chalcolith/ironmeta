@@ -12,7 +12,6 @@ branches:
   - master
 
 image: Visual Studio 2017
-platform: Any CPU
 configuration: Release
 
 install:
