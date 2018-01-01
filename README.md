@@ -1,3 +1,9 @@
+|       |       |
+| ----- | ----- |
+| Build | [![AppVeyor](https://img.shields.io/appveyor/ci/kulibali/ironmeta.svg)](https://ci.appveyor.com/project/kulibali/ironmeta) |
+| NuGet | [![NuGet](https://img.shields.io/nuget/dt/IronMeta.svg)](https://www.nuget.org/packages/IronMeta) |
+
+
 The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's [OMeta](http://tinlizzie.org/ometa/) system in C#.
 
 IronMeta is available under the terms of the [BSD License](https://github.com/kulibali/ironmeta/wiki/License).

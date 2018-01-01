@@ -52,7 +52,8 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
         [TestMethod]
         public void TestLineNumbers_BeginPositions()
         {
-            var match = parser.GetMatch(SOURCE1, parser.IronMetaFile);
+            var source = SOURCE1.Replace("\r\n", "\n").Replace("\n", "\r\n");
+            var match = parser.GetMatch(source, parser.IronMetaFile);
             var lineBegins = match.MatchState.Positions.OrderBy(n => n).ToArray();
 
             Assert.AreEqual(2, lineBegins[0], "line 2: 2");
