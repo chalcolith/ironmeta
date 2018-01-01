@@ -21,10 +21,13 @@ install:
   - if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 before_build:
-- cmd: nuget restore
+- dotnet restore
 
 build:
   verbosity: minimal
+
+after_build:
+- dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
 
 artifacts:
 - path: '**\IronMeta.*.nupkg'

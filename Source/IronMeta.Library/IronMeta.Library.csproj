@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <PackageId>IronMeta</PackageId>
+    <PackageId>IronMeta.Library</PackageId>
     <Version>4.4.0</Version>
     <Authors>Gordon Tisher</Authors>
     <Company>Gordon Tisher</Company>
@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>
     <PackageTags>PEG parser parsergenerator</PackageTags>
-    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
