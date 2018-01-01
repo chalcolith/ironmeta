@@ -3,9 +3,7 @@
     <Metadata>
         <Identity Id="IronMeta.VSExtension.a41b60cb-106c-4576-a281-99d035284179" Version="4.4.0" Language="en-US" Publisher="Gordon Tisher" />
         <DisplayName>IronMeta Visual Studio Extension</DisplayName>
-        <Description xml:space="preserve">The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system in C#.
-
-The Visual Studio extension provides a custom tool for generating IronMeta parsers.
+        <Description xml:space="preserve">The IronMeta parser generator provides an application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system in C#. The extension provides a custom tool for generating IronMeta parsers.
     </Description>
         <MoreInfo>https://github.com/kulibali/ironmeta</MoreInfo>
         <License>License.txt</License>

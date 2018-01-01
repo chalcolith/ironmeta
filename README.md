@@ -18,7 +18,7 @@ IronMeta is available on [NuGet](https://www.nuget.org/packages/IronMeta/).  To 
 
 Once you have installed the NuGet package, add a grammar file with the extension .ironmeta to your project.  Then generate a C# class from it.  You can do this in two ways:
 
-- You can install a [Visual Studio extension](https://visualstudiogallery.msdn.microsoft.com/73263c7c-319f-4f9e-a05a-b493094a4eb0) that provides a custom tool for generating C# code from IronMeta files.  You must set the "Custom Tool" property of your IronMeta file to be `IronMetaGenerator`.  Then the C# code will be generated whenever your grammar file changes.  Syntax errors will appear in your Error List.
+- You can install a [Visual Studio extension](https://marketplace.visualstudio.com/items?itemName=GordonTisher.IronMetaVisualStudioExtension) that provides a custom tool for generating C# code from IronMeta files.  You must set the "Custom Tool" property of your IronMeta file to be `IronMetaGenerator`.  Then the C# code will be generated whenever your grammar file changes.  Syntax errors will appear in your Error List.
 - `IronMeta.Library.dll` contains an MsBuild task called "IronMetaGenerate".  A simple example of how to use this:
 
 ```
