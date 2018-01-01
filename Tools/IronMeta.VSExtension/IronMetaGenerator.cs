@@ -19,12 +19,23 @@ namespace IronMeta.VSExtension
     [Guid(IronMetaGenerator.GeneratorGuidString)]
     [CodeGeneratorRegistration(
         typeof(IronMetaGenerator), 
-        "IronMetaGenerator", 
+        "IronMetaGenerator",
         vsContextGuids.vsContextGuidVCSProject,
-        GeneratesDesignTimeSource = true)]
+        GeneratesDesignTimeSource = true,
+        GeneratorRegKeyName = "IronMetaGenerator")]
+    [CodeGeneratorRegistration(
+        typeof(IronMetaGenerator),
+        "IronMetaGenerator",
+        "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}", // dot net core
+        GeneratesDesignTimeSource = true,
+        GeneratorRegKeyName = "IronMetaGenerator")]
+    [ProvideObject(
+        typeof(IronMetaGenerator),
+        RegisterUsing = RegistrationMethod.CodeBase)]
     public class IronMetaGenerator : IVsSingleFileGenerator, IObjectWithSite
     {
         public const string GeneratorGuidString = "018E7744-5601-4800-961E-299DD73BF726";
+        internal static string name = "IronMetaGenerator";
 
         object site = null;
 
@@ -80,13 +91,20 @@ namespace IronMeta.VSExtension
         public void GetSite(ref Guid riid, out IntPtr ppvSite)
         {
             if (site == null)
-                Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);
+            {
+                throw new COMException("object is not sited", VSConstants.E_FAIL);
+            }
 
-            // Query for the interface using the site object initially passed to the generator
             IntPtr pUnkSite = Marshal.GetIUnknownForObject(site);
-            int hr = Marshal.QueryInterface(pUnkSite, ref riid, out ppvSite);
-            Marshal.Release(pUnkSite);
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(hr);
+            IntPtr intPointer = IntPtr.Zero;
+            Marshal.QueryInterface(pUnkSite, ref riid, out intPointer);
+
+            if (intPointer == IntPtr.Zero)
+            {
+                throw new COMException("site does not support requested interface", VSConstants.E_NOINTERFACE);
+            }
+
+            ppvSite = intPointer;
         }
 
         public void SetSite(object pUnkSite)
