@@ -25,10 +25,10 @@
     <Content Include="..\IronMeta.App\bin\Release\net471\IronMeta.App.exe">
       <PackagePath>tools\net471</PackagePath>
     </Content>
-    <Content Include="..\IronMeta\bin\Release\net471\IronMeta.Library.dll">
+    <Content Include="..\IronMeta.App\bin\Release\net471\IronMeta.Library.dll">
       <PackagePath>tools\net471</PackagePath>
     </Content>
-    <Content Include="..\IronMeta\bin\Release\net471\Verophyle.Regexp.dll">
+    <Content Include="..\IronMeta.App\bin\Release\net471\Verophyle.Regexp.dll">
       <PackagePath>tools\net471</PackagePath>
     </Content>
   </ItemGroup>
