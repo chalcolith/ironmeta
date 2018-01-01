@@ -21,7 +21,7 @@ install:
   - if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 before_build:
-- dotnet restore
+- nuget restore
 
 build:
   verbosity: minimal
