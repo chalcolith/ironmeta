@@ -1,0 +1,32 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+using IronMeta.Matcher;
+
+ironmeta LRParser<char, string> : Matcher<char, string>
+{
+	A = A:a A:b -> { "(" + (string)a + (string)b + ")" } | 'a' -> { "a" };
+
+	Exp = Exp:e "+" Term:t -> { "(" + (string)e + " + " + (string)t + ")" } | Term;
+	Term = "1" -> { "1" };
+
+	NonLR = NonLR_A NonLR_B;
+
+	NonLR_A = "a";
+	NonLR_B = "b" | NonLR_C;
+	NonLR_C = "c";
+
+	AAA = AAA*:x "a":y -> { "(" + (string)x + "a)" } | "b":z -> { "b" };
+
+
+	Character = HexEscapeCharacter;
+
+	HexEscapeCharacter = "#\\x" HexScalarValue:hex -> 
+	{ 
+		foreach (var input in hex.Inputs)
+			Console.WriteLine("{0}", input);
+		return "";
+	};
+	HexScalarValue = HexDigit+;
+	HexDigit = Digit | 'a' | 'A' | 'b' | 'B' | 'c' | 'C' | 'd' | 'D' | 'e' | 'E' | 'f' | 'F';
+	Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+}

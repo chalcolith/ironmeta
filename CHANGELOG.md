@@ -1,3 +1,6 @@
+#### 4.4.0: December 31, 2017:
+- Updated Visual Studio extension to VS2017
+
 #### 4.3.1: December 29, 2017:
 - Fixed #19: Regex matches broken
 

@@ -1,0 +1,12 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+using IronMeta.Matcher;
+
+ironmeta StringParser<string, int> : Matcher<string, int>
+{
+
+	One = "one" -> {1};
+	Two = "two" -> {2};
+	Pi = "three" "point" "one" "four" "one" "five" "nine" -> { 314 };
+
+}

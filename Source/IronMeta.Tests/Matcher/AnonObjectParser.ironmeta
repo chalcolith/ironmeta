@@ -1,0 +1,14 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+using IronMeta.Matcher;
+
+ironmeta AnonObjectParser<AnonInputObject, int> : Matcher<AnonInputObject, int>
+{
+	ActualObject = 
+		new AnonInputObject { Name = "actual", Value = "one" } 
+		new AnonInputObject { Name = "actual", Value = "two" };
+
+	ImplicitObject = 
+		new { Name = "implicit", Value = "three" }
+		new { Name = "implicit", Value = "four" };
+}

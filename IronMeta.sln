@@ -1,31 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta", "Source\IronMeta\IronMeta.csproj", "{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}"
-	ProjectSection(ProjectDependencies) = postProject
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F} = {892E4FCB-4971-4AF4-8889-F0B1C28DA95F}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta.Library", "Source\IronMeta.Library\IronMeta.Library.csproj", "{B4A3F184-5751-4EF9-AC5E-A326753CB14E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Source\Library\Library.csproj", "{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta.Tests", "Source\IronMeta.Tests\IronMeta.Tests.csproj", "{23BA97AC-D864-4D70-A2BD-D564A5ADA325}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{F144A24C-3201-473F-92C5-78DADBB2976C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronMeta", "Source\IronMeta\IronMeta.csproj", "{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{36F93A0C-BCF7-4433-BFBA-30F322B6B13F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calc", "Samples\Calc\Calc.csproj", "{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{8221795B-9A6A-4CA4-8139-D846F0B44C9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "Tools\IronMeta.VSExtension\IronMeta.VSExtension.csproj", "{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6617661C-2457-4816-B3FE-ACFDFB46E11F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Samples\Calc\Calc.csproj", "{E4FEE17D-5243-492F-B510-F802B8DD7FF7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "Tools\VSExtension\IronMeta.VSExtension.csproj", "{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C34788EB-B554-4E0D-A359-C11385A98AEE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{977A88E9-26EF-4882-BFEC-CFCA89F8F8E8}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
 		CHANGELOG.md = CHANGELOG.md
 		License.txt = License.txt
@@ -38,35 +28,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4FEE17D-5243-492F-B510-F802B8DD7FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4FEE17D-5243-492F-B510-F802B8DD7FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4FEE17D-5243-492F-B510-F802B8DD7FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4FEE17D-5243-492F-B510-F802B8DD7FF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA3389A2-0F23-4DD2-95C3-A758D9C240E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A3F184-5751-4EF9-AC5E-A326753CB14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A3F184-5751-4EF9-AC5E-A326753CB14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A3F184-5751-4EF9-AC5E-A326753CB14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A3F184-5751-4EF9-AC5E-A326753CB14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BA97AC-D864-4D70-A2BD-D564A5ADA325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BA97AC-D864-4D70-A2BD-D564A5ADA325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BA97AC-D864-4D70-A2BD-D564A5ADA325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BA97AC-D864-4D70-A2BD-D564A5ADA325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA44EA8F-27C5-40AA-94B8-D61FE9C4574C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFE9F3E-712A-4076-9F70-A1A03D3BB820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1522FF5D-1356-45F4-BED6-D653DEE0AFC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{5FC20BB7-98A3-4BFC-A2F2-6EC609162C04} = {8221795B-9A6A-4CA4-8139-D846F0B44C9E}
-		{3E82B5C6-AC97-4772-B7D4-DBC15DDA5501} = {8221795B-9A6A-4CA4-8139-D846F0B44C9E}
-		{E4FEE17D-5243-492F-B510-F802B8DD7FF7} = {F144A24C-3201-473F-92C5-78DADBB2976C}
-		{FA3389A2-0F23-4DD2-95C3-A758D9C240E6} = {6617661C-2457-4816-B3FE-ACFDFB46E11F}
-		{892E4FCB-4971-4AF4-8889-F0B1C28DA95F} = {36F93A0C-BCF7-4433-BFBA-30F322B6B13F}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4094F1F-EB10-4B13-9466-140AF24AD50F}
 	EndGlobalSection
 EndGlobal

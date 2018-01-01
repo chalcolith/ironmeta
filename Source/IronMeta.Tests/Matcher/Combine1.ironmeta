@@ -1,0 +1,11 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+using IronMeta.Matcher;
+
+ironmeta Combine1<char, int> : Matcher<char, int>
+{
+	Rule1 = "abc" -> { 1 };
+	Rule2 = "def" -> { 2 };
+
+	virtual VirtualRule = "virtual" -> { 42 };
+}

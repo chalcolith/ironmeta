@@ -1,5 +1,5 @@
 .vs
-Source/IronMeta.snk
+Source/IronMeta.Library/IronMeta.snk
 *.nupkg
 
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)

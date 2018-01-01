@@ -1,0 +1,11 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+ironmeta Combine2<char, int> : Combine1
+{
+	new Rule1 = "ghi" -> { 3 };
+	new Rule2 = "jkl" -> { 4 };
+	Rule5 = OtherCombine.Rule1;
+	Rule6 = OtherCombine.Rule2;
+
+	override VirtualRule = "override" -> { 314 };
+}

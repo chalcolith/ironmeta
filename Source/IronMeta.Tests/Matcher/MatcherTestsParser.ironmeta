@@ -1,0 +1,136 @@
+// IronMeta Copyright © Gordon Tisher 2018
+
+using IronMeta.Matcher;
+
+ironmeta MatcherTestsParser<char, int> : Matcher<char, int>
+{
+
+    Literal = 'a';
+    LiteralString = "abc";
+
+    Class = ['a' 'b' 'c'];
+    Class2 = ['\x01' - '\x03'];
+
+    AndLiteral = 'a' 'b';
+    OrLiteral = 'a' | 'b';
+
+    AndString = "ab" "cd";
+    OrString = "ab" | "cd";
+	
+    Fail = ! "This is a fail.";
+    Any = .;
+
+    Look = 'a' &'b' "bc";
+    Not = 'a' ~'b' 'c';
+
+    Star1 = 'a' 'b'*;
+    Star2 = 'a' (~'c' .)* 'c';
+
+    Plus1 = 'a' 'b'+;
+    Plus2 = 'a' (~'c' .)+ 'c';
+
+    Ques = 'a' 'b'? 'c';
+
+    Cond = 'a' .:c ?((char)c == 'b') 'c';
+    Cond2 = 'a' . ?(return (char)_IM_Result == 'b';) 'c';
+
+    Action = 'a' | 'b' -> { return 123; };
+
+    Call1 = (AndLiteral() | 'a') 'c';
+    Call2 = 'x' OrLiteral 'y';
+    
+    SubCall 'a' = 'x' 'y';
+    Call3 = SubCall('a', 'b', 'c', { new System.Char() });
+    Call4 = SubCall;
+
+    SubCall2 'a' 'b' = 'x' 'y';
+    Call5 = SubCall('a', 'b');
+    Call6 = SubCall('z', 'w');
+    Call7 = SubCall("ab");
+
+    SubCallFail ! = 'a';
+    CallFail = SubCallFail;
+
+    SubCallClass ['a' 'b'] = 'x' 'y';
+    CallClass = &SubCallClass('a') SubCallClass('b');
+
+    SubCallAny . = 'x' 'y';
+    CallAny = SubCallAny('a');
+    CallAny2 = SubCallAny;
+
+    SubCallLook &'a' . = 'x' 'y';
+    CallLook = SubCallLook('a');
+
+    SubCallNot ~'a' 'b' = 'x' 'y';
+    CallNot = SubCallNot('b');
+    CallNot2 = SubCallNot('a');
+
+    SubCallOr 'a' | 'b' = 'x' 'y';
+    CallOr = SubCallOr('a');
+    CallOr2 = SubCallOr('b');
+    CallOr3 = SubCallOr('c');
+    
+    SubCallAnd 'a' 'b' = 'x' 'y';
+    CallAnd = SubCallAnd('a', 'b');
+    CallAnd2 = SubCallAnd('w', 'z');
+
+    SubCallStar 'a'* = 'x' 'y';
+    CallStar = SubCallStar;
+    CallStar2 = SubCallStar('a');
+
+    SubCallPlus 'a'+ = 'x' 'y';
+    CallPlus = SubCallPlus('a');
+    CallPlus2 = SubCallPlus;
+
+    SubCallQues 'a'? = 'x' 'y';
+    CallQues = SubCallQues('a');
+    CallQues2 = SubCallQues;
+
+    SubCallCond .:v ?((char)v == 'a') = 'x' 'y';
+    CallCond = SubCallCond('a');
+    CallCond2 = SubCallCond;
+
+    VarInput = 'a':a a;
+
+    SubCallAct ('a' -> { 42 }):a = a;
+    CallAct = SubCallAct('a');
+    CallAct2 = SubCallAct;
+
+    SubCallVar 'a':a a = 'x' 'y';
+    CallCallVar = SubCallVar("aa");
+    CallCallVar2 = SubCallVar;
+
+    SubCallRule :a = a a();
+    XOrY = 'x' | 'y';
+    CallCallRule = SubCallRule(XOrY);
+
+    ChoiceLR = ChoiceA | ChoiceB | 'x';
+    ChoiceA = ChoiceLR 'y';
+    ChoiceB = ChoiceLR 'z';
+
+    DirectLR = DirectLR 'y' | 'x';
+
+    IndirectLR_A = IndirectLR_B 'y' | 'x';
+    IndirectLR_B = IndirectLR_A 'z';
+
+    PathalogicalA = PathalogicalA 'a' | PathalogicalB;
+    PathalogicalB = PathalogicalB 'b' | PathalogicalA | PathalogicalC;
+    PathalogicalC = PathalogicalC 'c' | PathalogicalB | 'd';
+
+	TestBuildTasks = "testBuildTask9";
+
+	TestInputs = 'a' 'b' 'c' -> { ((IEnumerable<char>)_IM_Result.Inputs).SequenceEqual("abc") ? 1 : 0 };
+
+	TestMinMax1 = 'a'{3,4} ~.;
+	TestMinMax2 = 'b'{0,1} ~.;
+	//TestMinMaxBad = 'd'{0,0} ~.;
+
+	TestReturn = TestReturn1 | TestReturn2 | TestReturn3;
+
+	TestReturn1 = "a" -> { new List<int> { 1, 2, 3} };
+	TestReturn2 = "b" -> { new List<int> { 4, 5, 6} };
+	TestReturn3 = "c" -> { new List<int> { 7, 8, 9} };
+
+	TestCount = 'a'{4} 'b' ~.;
+
+}

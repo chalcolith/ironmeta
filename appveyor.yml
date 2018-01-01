@@ -1,4 +1,7 @@
-version: '{build}'
+version: '4.4.0.{build}'
+
+pull_requests:
+  do_not_increment_build_number: true
 
 environment:
   snk_secret:
@@ -8,18 +11,29 @@ branches:
   only:
   - master
 
+image: Visual Studio 2017
 platform: Any CPU
 configuration: Release
+
+install:
+  - if defined snk_secret (nuget install secure-file -ExcludeVersion)
+  - if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret %snk_secret%)
+  - if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 before_build:
 - cmd: nuget restore
 
-install:
-  - if defined snk_secret (nuget install secure-file -ExcludeVersion)
-  - if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.snk.enc -secret %snk_secret%)
-  - if not defined snk_secret (copy Source\IronMeta.PRS.snk Source\IronMeta.snk)
-
 build:
   verbosity: minimal
 
-deploy: off
+artifacts:
+- path: '**\IronMeta.*.nupkg'
+
+deploy:
+  provider: NuGet
+  on:
+    appveyor_repo_tag: true
+  api_key:
+    secure: zgS1RlHnfRi8sNKEkm2WqqNa9U7fYvJad8z5o0hNsP2VrOcUDuFsTsf28yFNOu0h
+  skip_symbols: false
+  artifact: /.*\.nupkg/
