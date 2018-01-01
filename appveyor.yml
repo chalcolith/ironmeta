@@ -28,6 +28,11 @@ build:
 after_build:
 - dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
 
+test:
+  assemblies:
+    only:
+      - IronMeta.Tests.dll
+
 artifacts:
 - path: '**\IronMeta.*.nupkg'
 
