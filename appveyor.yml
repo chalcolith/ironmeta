@@ -33,6 +33,9 @@ test:
     only:
       - IronMeta.Tests.dll
 
+test_script:
+- dotnet test "%APPVEYOR_BUILD_FOLDER%\Source\IronMeta.Tests\IronMeta.Tests.csproj" --configuration Release --no-build --logger AppVeyor
+
 artifacts:
 - path: '**\IronMeta.*.nupkg'
 
