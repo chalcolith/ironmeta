@@ -839,7 +839,7 @@ namespace IronMeta.Matcher
     /// </summary>
     public static class TypeExtension
     {
-        private static readonly ConcurrentDictionary<Type, bool> _typeCache = new ConcurrentDictionary<Type, bool>();
+        private static readonly ConcurrentDictionary<Type, bool> typeCache = new ConcurrentDictionary<Type, bool>();
 
         /// <summary>
         /// Heuristic test to determine whether a type is anonymous.
@@ -849,28 +849,21 @@ namespace IronMeta.Matcher
         /// <param name="type">The type in question.</param>
         public static bool IsAnonymousType(this Type type)
         {
-            if (_typeCache.TryGetValue(type, out bool isCheckedBefore))
+            if (typeCache.TryGetValue(type, out bool isAnonymous))
             {
-                return isCheckedBefore;
+                return isAnonymous;
             }
 
             bool hasCompilerGeneratedAttribute = type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Any();
             if (!hasCompilerGeneratedAttribute)
             {
-                _typeCache.AddOrUpdate(
-                    type,
-                    false,
-                    (key, oldValue) => false);
+                typeCache.AddOrUpdate(type, false, (key, oldValue) => false);
                 return false;
             }
 
             bool nameContainsAnonymousType = (type.FullName.Contains("AnonymousType") || type.FullName.Contains("AnonType"))
                                              && (type.FullName.StartsWith("<>") || type.FullName.StartsWith("VB$"));
-            _typeCache.AddOrUpdate(
-                type,
-                nameContainsAnonymousType,
-                (key, oldValue) => nameContainsAnonymousType);
-
+            typeCache.AddOrUpdate(type, nameContainsAnonymousType, (key, oldValue) => nameContainsAnonymousType);
             return nameContainsAnonymousType;
         }
     }
