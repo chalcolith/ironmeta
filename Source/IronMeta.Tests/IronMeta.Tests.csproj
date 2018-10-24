@@ -4,6 +4,24 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Version>4.4.1</Version>
+
+    <Authors>Gordon Tisher</Authors>
+
+    <Product>IronMeta</Product>
+
+    <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>
+
+    <Copyright>IronMeta Copyright © Gordon Tisher 2018</Copyright>
+
+    <PackageLicenseUrl>https://github.com/kulibali/ironmeta/blob/master/License.txt</PackageLicenseUrl>
+
+    <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
+
+    <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>
+
+    <PackageTags>PEG parser parsergenerator</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

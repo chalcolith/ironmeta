@@ -1,3 +1,7 @@
+#### 4.4.1: October 24, 2018:
+- Added cache for checking anonymous types; thanks to @AndreyZakatov
+- Updated VS extension to VS2019
+
 #### 4.4.0: January 1, 2018:
 - Updated Visual Studio extension to VS2017
 
