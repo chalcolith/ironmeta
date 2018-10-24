@@ -102,7 +102,7 @@ The Calc grammar is much more complex than it needs to be in order to demonstrat
     using System;
     using System.Linq;
 
-    ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
+    ironmeta Calc<char, int> : Matcher<char, int>
     {
         Expression = Additive;
 
@@ -148,7 +148,7 @@ You can include C# `using `statements at the beginning of an IronMeta file. Iron
 
     ## Parser Declaration
 
-    ironmeta Calc<char, int> : IronMeta.Matcher.CharMatcher<int>
+    ironmeta Calc<char, int> : Matcher<int>
 
 An IronMeta parser always starts with the keyword `ironmeta`. Then comes the name of the parser (`Calc`, in this case), and the input and output types. The generated parser will take as input an `IEnumerable` of the input type, and return as output an object of the output type.
 
@@ -158,9 +158,9 @@ In this case, the Calc parser will operate on a stream of `char` values, and out
 
 You may also optionally include a base class:
 
-    : IronMeta.Matcher.CharMatcher<int>
+    : Matcher<int>
 
-If you do not include a base class, your parser will inherit directly from `IronMeta.Matcher.Matcher`. The `IronMeta.Matcher.CharMatcher` class provides some specialized functionality for dealing with streams of characters.
+If you do not include a base class, your parser will inherit directly from `IronMeta.Matcher.Matcher`.
 
 ## Rules
 
