@@ -561,7 +561,7 @@ namespace IronMeta.Generator
             if (!isCharMatcher) throw new Exception("Can only use regular expressions when matching characters.");
             if (match_args) throw new Exception("Cannot use a regular expression in rule arguments.");
 
-            var text = node.GetText().Trim(' ', '/');
+            var text = node.GetText().Trim(' ', '/').Replace("\"", "\"\"");
             string name;
 
             if (!regexps.TryGetValue(text, out name))

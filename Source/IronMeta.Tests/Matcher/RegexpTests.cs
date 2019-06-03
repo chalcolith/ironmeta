@@ -74,5 +74,14 @@ namespace IronMeta.UnitTests.Matcher
             Assert.AreEqual(m1.NextIndex, m2.NextIndex);
             Assert.AreEqual(m1.Result, m2.Result);
         }
+
+        [TestMethod]
+        public void TestQuoteInRegexp_Issue_25()
+        {
+            var m1 = parser.GetMatch("\"foo\"", parser.Quote);
+            Assert.IsTrue(m1.Success);
+            var m2 = parser.GetMatch("bar", parser.Quote);
+            Assert.IsFalse(m2.Success);
+        }
     }
 }

@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2017-12-30 00:42:38Z UTC
+// IronMeta RegexpTest Parser; Generated 2019-06-03 15:50:45Z UTC
 //
 
 using System;
@@ -44,6 +44,8 @@ namespace IronMeta.UnitTests.Matcher
                 "Bar",
                 "Foo",
                 "Ident",
+                "NonQuote",
+                "Quote",
             };
         }
 
@@ -197,9 +199,84 @@ namespace IronMeta.UnitTests.Matcher
 
         }
 
+
+        public void Quote(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // AND 0
+            int _start_i0 = _index;
+
+            // AND 1
+            int _start_i1 = _index;
+
+            // LITERAL "\""
+            _ParseLiteralString(_memo, ref _index, "\"");
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
+
+            // CALLORVAR NonQuote
+            _RegexpTest_Item _r3;
+
+            _r3 = _MemoCall(_memo, "NonQuote", _index, NonQuote, null);
+
+            if (_r3 != null) _index = _r3.NextIndex;
+
+        label1: // AND
+            var _r1_2 = _memo.Results.Pop();
+            var _r1_1 = _memo.Results.Pop();
+
+            if (_r1_1 != null && _r1_2 != null)
+            {
+                _memo.Results.Push( new _RegexpTest_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i1;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label0; }
+
+            // LITERAL "\""
+            _ParseLiteralString(_memo, ref _index, "\"");
+
+        label0: // AND
+            var _r0_2 = _memo.Results.Pop();
+            var _r0_1 = _memo.Results.Pop();
+
+            if (_r0_1 != null && _r0_2 != null)
+            {
+                _memo.Results.Push( new _RegexpTest_Item(_start_i0, _index, _memo.InputEnumerable, _r0_1.Results.Concat(_r0_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i0;
+            }
+
+        }
+
+
+        public void NonQuote(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // REGEXP [^""]+
+            _ParseRegexp(_memo, ref _index, _re3);
+
+        }
+
         static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?cd+");
         static readonly Verophyle.Regexp.StringRegexp _re1 = new Verophyle.Regexp.StringRegexp(@"_|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*");
         static readonly Verophyle.Regexp.StringRegexp _re2 = new Verophyle.Regexp.StringRegexp(@"[^\r\n]+");
+        static readonly Verophyle.Regexp.StringRegexp _re3 = new Verophyle.Regexp.StringRegexp(@"[^""]+");
 
     } // class RegexpTest
 

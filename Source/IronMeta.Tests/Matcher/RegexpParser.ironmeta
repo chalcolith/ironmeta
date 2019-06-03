@@ -3,7 +3,11 @@
     ABCD = 'a' /[\+-]?bz?cd+/;
     Ident = /_|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*/;
 
-	// From issue #19
-	Foo = /[^\r\n]+/ -> { return new string(_IM_Result.Inputs.ToArray()); };
+    // From issue #19
+    Foo = /[^\r\n]+/ -> { return new string(_IM_Result.Inputs.ToArray()); };
     Bar = (~('\r' | '\n').)+ -> { return new string(_IM_Result.Inputs.ToArray()); };
+
+    // From issue #25
+    Quote = "\"" NonQuote "\"";
+    NonQuote = /[^"]+/;
 }

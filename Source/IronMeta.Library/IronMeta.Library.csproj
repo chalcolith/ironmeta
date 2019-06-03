@@ -22,18 +22,6 @@
     <FileVersion>4.4.1.0</FileVersion>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <Content Include="..\IronMeta.App\bin\Release\net471\IronMeta.App.exe">
-      <PackagePath>tools\net471</PackagePath>
-    </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net471\IronMeta.Library.dll">
-      <PackagePath>tools\net471</PackagePath>
-    </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net471\Verophyle.Regexp.dll">
-      <PackagePath>tools\net471</PackagePath>
-    </Content>
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Verophyle.Regexp" Version="2.2.1" />
   </ItemGroup>
