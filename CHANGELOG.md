@@ -1,3 +1,6 @@
+#### 4.4.2: June 3, 2019:
+- Fixed #25: correctly emit escaped double-quotes for regexes.
+
 #### 4.4.1: October 24, 2018:
 - Added cache for checking anonymous types; thanks to @AndreyZakatov
 - Updated VS extension to VS2019

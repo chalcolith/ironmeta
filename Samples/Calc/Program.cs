@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2018
+﻿// IronMeta Copyright © Gordon Tisher 2019
 
 using System;
 
