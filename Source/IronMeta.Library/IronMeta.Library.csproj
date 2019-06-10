@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Verophyle.Regexp" Version="2.2.1" />
+    <PackageReference Include="Verophyle.Regexp" Version="2.2.2" />
   </ItemGroup>
 
 </Project>
