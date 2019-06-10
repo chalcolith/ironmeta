@@ -7,7 +7,7 @@
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <PackageId>IronMeta</PackageId>
-    <Version>4.4.2</Version>
+    <Version>4.4.3</Version>
     <Authors>Gordon Tisher</Authors>
     <Company>Gordon Tisher</Company>
     <Product>IronMeta</Product>
