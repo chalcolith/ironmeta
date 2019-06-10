@@ -10,4 +10,8 @@
     // From issue #25
     Quote = "\"" NonQuote "\"";
     NonQuote = /[^"]+/;
+
+    // From issue #26
+    Whitespace = /[\t \n\r]+/;
+    GreekAlpha = /\u{03b1}/;
 }

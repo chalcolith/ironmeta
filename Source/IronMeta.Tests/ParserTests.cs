@@ -79,18 +79,18 @@ namespace IronMeta.UnitTests
         public void TestStringsFromNarwhal()
         {
             var grammar = @"
-    ironmeta StrGrammar<char, string> : CharMatcher<string> {
+                ironmeta StrGrammar<char, string> : CharMatcher<string> {
 
-        CharLiteral = SQ ('\\' (['\'' '""' '\\' '0' 'a' 'b' 'f' 'n' 'r' 't' 'v'] | ['u' 'x'] DECDIGIT+) | ~SQ .):ch SQ SP;
-        StrLiteral = DQ (""\\\"""" | ~DQ .)*:str DQ;
+                    CharLiteral = SQ ('\\' (['\'' '""' '\\' '0' 'a' 'b' 'f' 'n' 'r' 't' 'v'] | ['u' 'x'] DECDIGIT+) | ~SQ .):ch SQ SP;
+                    StrLiteral = DQ (""\\\"""" | ~DQ .)*:str DQ;
 
-        DQ = '""';
-	    SQ = '\'';
+                    DQ = '""';
+                    SQ = '\'';
 
-        DECDIGIT = ['0' - '9'];
+                    DECDIGIT = ['0' - '9'];
 
-    }
-";
+                }
+            ";
             Assert.IsTrue(TestParse(grammar));
         }
 

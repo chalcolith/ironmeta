@@ -83,5 +83,21 @@ namespace IronMeta.UnitTests.Matcher
             var m2 = parser.GetMatch("bar", parser.Quote);
             Assert.IsFalse(m2.Success);
         }
+
+        [TestMethod]
+        public void TestWhitespaceInRegexp_Issue_26()
+        {
+            var m1 = parser.GetMatch("\t\r \n", parser.Whitespace);
+            Assert.IsTrue(m1.Success);
+            var m2 = parser.GetMatch("abcd", parser.Whitespace);
+            Assert.IsFalse(m2.Success);
+        }
+
+        [TestMethod]
+        public void TestUnicodeInRegexp_Issue_26()
+        {
+            var m1 = parser.GetMatch("α", parser.GreekAlpha);
+            Assert.IsTrue(m1.Success);
+        }
     }
 }

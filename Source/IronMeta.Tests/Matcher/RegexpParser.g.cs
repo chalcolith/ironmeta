@@ -1,5 +1,5 @@
 //
-// IronMeta RegexpTest Parser; Generated 2019-06-03 15:50:45Z UTC
+// IronMeta RegexpTest Parser; Generated 2019-06-10 18:22:19Z UTC
 //
 
 using System;
@@ -43,9 +43,11 @@ namespace IronMeta.UnitTests.Matcher
                 "ABCD",
                 "Bar",
                 "Foo",
+                "GreekAlpha",
                 "Ident",
                 "NonQuote",
                 "Quote",
+                "Whitespace",
             };
         }
 
@@ -273,10 +275,36 @@ namespace IronMeta.UnitTests.Matcher
 
         }
 
+
+        public void Whitespace(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // REGEXP [\t \n\r]+
+            _ParseRegexp(_memo, ref _index, _re4);
+
+        }
+
+
+        public void GreekAlpha(_RegexpTest_Memo _memo, int _index, _RegexpTest_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            // REGEXP \u{03b1}
+            _ParseRegexp(_memo, ref _index, _re5);
+
+        }
+
         static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[\+-]?bz?cd+");
         static readonly Verophyle.Regexp.StringRegexp _re1 = new Verophyle.Regexp.StringRegexp(@"_|_[_0-9a-zA-Z]+|[a-zA-Z][_0-9a-zA-Z]*");
         static readonly Verophyle.Regexp.StringRegexp _re2 = new Verophyle.Regexp.StringRegexp(@"[^\r\n]+");
         static readonly Verophyle.Regexp.StringRegexp _re3 = new Verophyle.Regexp.StringRegexp(@"[^""]+");
+        static readonly Verophyle.Regexp.StringRegexp _re4 = new Verophyle.Regexp.StringRegexp(@"[\t \n\r]+");
+        static readonly Verophyle.Regexp.StringRegexp _re5 = new Verophyle.Regexp.StringRegexp(@"\u{03b1}");
 
     } // class RegexpTest
 
