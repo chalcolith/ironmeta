@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.1;netstandard2.0</TargetFrameworks>
     <RootNamespace>IronMeta</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <PackageId>IronMeta</PackageId>
-    <Version>4.4.3</Version>
+    <Version>4.4.4</Version>
     <Authors>Gordon Tisher</Authors>
     <Company>Gordon Tisher</Company>
     <Product>IronMeta</Product>
@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Verophyle.Regexp" Version="2.2.2" />
+    <PackageReference Include="Verophyle.Regexp" Version="2.2.3" />
   </ItemGroup>
 
 </Project>

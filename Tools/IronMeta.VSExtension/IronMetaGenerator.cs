@@ -18,7 +18,7 @@ namespace IronMeta.VSExtension
     [ComVisible(true)]
     [Guid(IronMetaGenerator.GeneratorGuidString)]
     [CodeGeneratorRegistration(
-        typeof(IronMetaGenerator), 
+        typeof(IronMetaGenerator),
         "IronMetaGenerator",
         vsContextGuids.vsContextGuidVCSProject,
         GeneratesDesignTimeSource = true,
@@ -47,9 +47,11 @@ namespace IronMeta.VSExtension
             return VSConstants.S_OK;
         }
 
-        public int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, 
+        public int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace,
             IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             using (var ms = new MemoryStream())
             {
                 MatchResult<char, AstNode> result;
@@ -74,6 +76,7 @@ namespace IronMeta.VSExtension
                 {
                     int num, offset;
                     var line = result.MatchState.GetLine(result.ErrorIndex, out num, out offset);
+
                     pGenerateProgress.GeneratorError(0, 0, result.Error, (uint)(num - 1), (uint)offset);
 
                     rgbOutputFileContents = null;
@@ -111,7 +114,7 @@ namespace IronMeta.VSExtension
         {
             site = pUnkSite;
         }
-        
+
         #endregion
     }
 }

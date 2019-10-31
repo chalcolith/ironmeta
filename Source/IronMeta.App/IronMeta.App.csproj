@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.2;net471</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
     <PackageId>IronMeta.App</PackageId>
     <RootNamespace>IronMeta</RootNamespace>
-    <Version>4.4.3</Version>
+    <Version>4.4.4</Version>
     <Authors>Gordon Tisher</Authors>
     <Company />
     <Product>IronMeta</Product>
@@ -18,7 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IronMeta.Library\IronMeta.Library.csproj" />
+    <ProjectReference Include="..\IronMeta.Library\IronMeta.Library.csproj">
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
