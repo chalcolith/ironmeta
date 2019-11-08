@@ -5,7 +5,7 @@
     <TargetFrameworks>net472;netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
     <PackageId>IronMeta.App</PackageId>
     <RootNamespace>IronMeta</RootNamespace>
-    <Version>4.4.4</Version>
+    <Version>4.4.5</Version>
     <Authors>Gordon Tisher</Authors>
     <Company />
     <Product>IronMeta</Product>

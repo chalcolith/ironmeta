@@ -7,7 +7,7 @@
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <PackageId>IronMeta</PackageId>
-    <Version>4.4.4</Version>
+    <Version>4.4.5</Version>
     <Authors>Gordon Tisher</Authors>
     <Company>Gordon Tisher</Company>
     <Product>IronMeta</Product>
@@ -21,6 +21,28 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <FileVersion>4.4.2.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <Content Include="..\IronMeta.App\bin\Release\net472\IronMeta.App.exe">
+      <PackagePath>tools\net472</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net472\IronMeta.Library.dll">
+      <PackagePath>tools\net472</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net472\Verophyle.Regexp.dll">
+      <PackagePath>tools\net472</PackagePath>
+    </Content>
+
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.App.exe">
+      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.Library.dll">
+      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\Verophyle.Regexp.dll">
+      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Verophyle.Regexp" Version="2.2.3" />

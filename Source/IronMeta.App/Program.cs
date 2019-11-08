@@ -1,15 +1,9 @@
 ﻿// IronMeta Copyright © Gordon Tisher 2019
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using IronMeta.Matcher;
-using IronMeta.Generator;
 using System.Diagnostics;
 using System.IO;
+using IronMeta.Generator;
 
 namespace IronMeta
 {
@@ -17,10 +11,16 @@ namespace IronMeta
     {
         static int Main(string[] args)
         {
-            const string message = "IronMeta -n {0} -o {1} {2}: {3}";
+            const string message = "IronMeta.App -n {0} -o {1} {2}: {3}";
 
             try
             {
+                if (args.Length == 1 && args[0].Equals("--version", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Console.WriteLine("IronMeta.App {0}", typeof(CSharpGen).Assembly.GetName().Version.ToString());
+                    return 0;
+                }
+
                 var options = Options.Parse(args);
 
                 var inputInfo = new FileInfo(options.InputFile);
