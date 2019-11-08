@@ -36,6 +36,9 @@
     <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.App.exe">
       <PackagePath>tools\netcoreapp3.0</PackagePath>
     </Content>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.App.dll">
+      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    </Content>
     <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.Library.dll">
       <PackagePath>tools\netcoreapp3.0</PackagePath>
     </Content>
