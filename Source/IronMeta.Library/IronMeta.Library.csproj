@@ -33,17 +33,17 @@
       <PackagePath>tools\net472</PackagePath>
     </Content>
 
-    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.App.exe">
-      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.exe">
+      <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.App.dll">
-      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.dll">
+      <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\IronMeta.Library.dll">
-      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.Library.dll">
+      <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.0\Verophyle.Regexp.dll">
-      <PackagePath>tools\netcoreapp3.0</PackagePath>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\Verophyle.Regexp.dll">
+      <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
   </ItemGroup>
 
