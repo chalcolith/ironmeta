@@ -23,7 +23,26 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.exe" Condition=" '$(OS)' == 'Windows_NT' ">
+      <PackagePath>tools\net5.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.dll">
+      <PackagePath>tools\net5.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.runtimeconfig.json">
+      <PackagePath>tools\net5.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.Library.dll">
+      <PackagePath>tools\net5.0</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\Verophyle.Regexp.dll">
+      <PackagePath>tools\net5.0</PackagePath>
+    </Content>
+
     <Content Include="..\IronMeta.App\bin\Release\net472\IronMeta.App.exe">
+      <PackagePath>tools\net472</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\net472\IronMeta.App.exe.config">
       <PackagePath>tools\net472</PackagePath>
     </Content>
     <Content Include="..\IronMeta.App\bin\Release\net472\IronMeta.Library.dll">
@@ -33,10 +52,13 @@
       <PackagePath>tools\net472</PackagePath>
     </Content>
 
-    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.exe">
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.exe" Condition=" '$(OS)' == 'Windows_NT' ">
       <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
     <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.dll">
+      <PackagePath>tools\netcoreapp3.1</PackagePath>
+    </Content>
+    <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.App.runtimeconfig.json">
       <PackagePath>tools\netcoreapp3.1</PackagePath>
     </Content>
     <Content Include="..\IronMeta.App\bin\Release\netcoreapp3.1\IronMeta.Library.dll">
