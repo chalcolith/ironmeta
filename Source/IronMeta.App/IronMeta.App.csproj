@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net472;netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.2;netcoreapp3.1;net5.0</TargetFrameworks>
     <PackageId>IronMeta.App</PackageId>
     <RootNamespace>IronMeta</RootNamespace>
     <Version>4.4.5</Version>
