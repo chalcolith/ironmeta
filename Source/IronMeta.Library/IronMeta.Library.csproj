@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.1;netstandard2.0;net5.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>IronMeta</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
@@ -20,6 +21,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <FileVersion>4.4.5.0</FileVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
