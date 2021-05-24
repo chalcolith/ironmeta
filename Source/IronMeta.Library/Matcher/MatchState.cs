@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,11 @@ namespace IronMeta.Matcher
         IDictionary<string, object> properties = new Dictionary<string, object>();
 
         // rulename -> expansion -> index -> item
-        IDictionary<string, Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>> memo_table 
+        IDictionary<string, Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>> memo_table
             = new Dictionary<string, Dictionary<int, Dictionary<int, MatchItem<TInput, TResult>>>>();
 
         // rulename -> index -> lrrecord
-        IDictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions 
+        IDictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>> current_recursions
             = new Dictionary<string, Dictionary<int, LRRecord<MatchItem<TInput, TResult>>>>();
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace IronMeta.Matcher
         public bool TryGetLRRecord(Expansion expansion, int index, out LRRecord<MatchItem<TInput, TResult>> record)
         {
             Dictionary<int, LRRecord<MatchItem<TInput, TResult>>> record_dict;
-            if (current_recursions.TryGetValue(expansion.Name, out record_dict) 
+            if (current_recursions.TryGetValue(expansion.Name, out record_dict)
                 && record_dict.TryGetValue(index, out record))
                 return true;
 
@@ -314,7 +314,7 @@ namespace IronMeta.Matcher
         /// Clears all errors for a given position.
         /// </summary>
         public void ClearErrors()
-        {            
+        {
             error_msgs.Clear();
             last_error_pos = -1;
         }
@@ -388,7 +388,7 @@ namespace IronMeta.Matcher
             if (InputString != null)
             {
                 int li = start;
-                while (li < next && li < InputString.Length 
+                while (li < next && li < InputString.Length
                     && InputString[li] != '\r' && InputString[li] != '\n')
                     ++li;
                 return (IEnumerable<TInput>)(object)InputString.Substring(start, li - start);

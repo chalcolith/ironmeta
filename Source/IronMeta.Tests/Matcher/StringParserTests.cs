@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace IronMeta.UnitTests.Matcher
     public class StringParserTests
     {
         static readonly IEnumerable<string> StrList1 = new List<string> { "one" };
-		//static readonly IEnumerable<string> StrList2 = new List<string> { "two" };
+        //static readonly IEnumerable<string> StrList2 = new List<string> { "two" };
         static readonly IEnumerable<string> StrListPi = new List<string> { "three", "point", "one", "four", "one", "five", "nine" };
 
         [TestMethod]

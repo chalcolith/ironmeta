@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -103,5 +103,5 @@ namespace IronMeta.UnitTests.Matcher
     public class CategoryNode : Node
     {
         public IEnumerable<Node> Children { get; set; }
-    }    
+    }
 }

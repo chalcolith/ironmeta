@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -247,9 +247,9 @@ namespace IronMeta.Matcher
                 {
                     try
                     {
-                        string inputs = string.Join(",", 
+                        string inputs = string.Join(",",
                             Inputs.Select(i => i != null ? i.ToString() : "<null>").ToArray());
-                        string results = string.Join(",", 
+                        string results = string.Join(",",
                             Results.Select(r => r != null ? r.ToString() : "<null>").ToArray());
 
                         id = string.Format("{0}-{1} [{2}] -> [{3}]", StartIndex, NextIndex, inputs, results);
