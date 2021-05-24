@@ -46,15 +46,7 @@ namespace IronMeta.Utils
 
         string BuildString()
         {
-            StringBuilder sb = new StringBuilder();
-            var e = GetEnumerator();
-            while (e.MoveNext())
-            {
-                if (sb.Length > 0)
-                    sb.Append(" ");
-                sb.Append(e.Current.ToString());
-            }
-            return str = sb.ToString();
+            return str = string.Join(" ", this);
         }
 
         void Detach()
@@ -286,7 +278,18 @@ namespace IronMeta.Utils
             /// <summary>
             /// The current value.
             /// </summary>
-            public T Current { get { return source_enumerator.Current; } }
+            public T Current
+            {
+                get
+                {
+                    return slice.enumerable switch
+                    {
+                        IList<T> list => list[slice.start + pos],
+                        string str => (T)((object)str[slice.start + pos]),
+                        _ => source_enumerator.Current,
+                    };
+                }
+            }
 
             #endregion
 
@@ -319,7 +322,12 @@ namespace IronMeta.Utils
             /// <returns>Whether or not the move succeeded.</returns>
             public bool MoveNext()
             {
-                return ++pos < slice.Count && source_enumerator.MoveNext();
+                return ++pos < slice.Count && slice.enumerable switch
+                {
+                    IList<T> list => slice.start + pos < list.Count,
+                    string str => slice.start + pos < str.Length,
+                    _ => source_enumerator.MoveNext(),
+                };
             }
 
             /// <summary>
@@ -327,10 +335,12 @@ namespace IronMeta.Utils
             /// </summary>
             public void Reset()
             {
+                pos = -1;
+                if (slice.list != null)
+                    return;
                 source_enumerator = slice.enumerable.GetEnumerator();
                 for (int i = 0; i < slice.start; ++i)
                     source_enumerator.MoveNext();
-                pos = -1;
             }
 
             #endregion
