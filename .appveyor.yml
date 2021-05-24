@@ -1,0 +1,37 @@
+version: '4.4.6.{build}'
+
+pull_requests:
+  do_not_increment_build_number: true
+
+environment:
+  snk_secret:
+    secure: PS4Bb+EzT83oeKqzwgwSr+n116gWIz2MzxDRgHp6Pl1Zx4kEWP0yLpv/ops4WOV1
+
+branches:
+  only:
+    - master
+
+image: Visual Studio 2019
+configuration: Release
+
+build_script:
+  - pwsh: >-
+      iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+      appveyor-tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret $env:snk_secret
+      dotnet build IronMeta.sln -c $env:CONFIGURATION
+      dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c $env:CONFIGURATION
+
+test_script:
+  - pwsh: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration $env:CONFIGURATION --no-restore --no-build --logger AppVeyor
+
+artifacts:
+  - path: '**\IronMeta.*.nupkg'
+
+deploy:
+  - provider: NuGet
+    on:
+      appveyor_repo_tag: true
+    api_key:
+      secure: Nkvb4OfARXcriqmGGzoEiIDTmz8IUdT4ONkZpm/9+qWhnmFo9JS65/QrwkE/iW6N
+    skip_symbols: false
+    artifact: /.*\.nupkg/

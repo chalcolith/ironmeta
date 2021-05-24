@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace IronMeta.Tests.Parser
         StrLiteral = DQ (""\\\"""" | ~DQ .)*:str DQ;
 
         DQ = '""';
-	    SQ = '\'';
+        SQ = '\'';
 
         DECDIGIT = ['0' - '9'];
 

@@ -15,8 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "Too
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{977A88E9-26EF-4882-BFEC-CFCA89F8F8E8}"
 	ProjectSection(SolutionItems) = preProject
+		.appveyor.yml = .appveyor.yml
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
 		CHANGELOG.md = CHANGELOG.md
 		License.txt = License.txt
 		README.md = README.md
