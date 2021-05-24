@@ -79,16 +79,25 @@ namespace IronMeta.Utils
         public int IndexOf(T item)
         {
             if (list != null)
-                return list.IndexOf(item);
+                return IndexOfInList(item);
 
-            int i = 0;
-            foreach (T in_list in enumerable)
+            int index = 0;
+            foreach (T in_list in this)
             {
-                if (in_list.Equals(item))
-                    return i;
-                ++i;
+                if (Equals(in_list, item))
+                    return index;
+                ++index;
             }
 
+            return -1;
+        }
+
+        private int IndexOfInList(T item)
+        {
+            int end = start + count;
+            for (int i = start; i < end; i++)
+                if (Equals(list[i], item))
+                    return i - start;
             return -1;
         }
 
@@ -128,7 +137,12 @@ namespace IronMeta.Utils
         {
             get
             {
-                return list != null ? list[index + start] : enumerable.ElementAt(index + start);
+                int actualIndex = index + start;
+                if (actualIndex < 0 || actualIndex >= start + count)
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                if (list != null)
+                    return list[actualIndex];
+                return enumerable.ElementAt(actualIndex);
             }
             set
             {
@@ -230,6 +244,7 @@ namespace IronMeta.Utils
         /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
+            //return enumerable.Skip(start).Take(count).GetEnumerator();
             return new SliceEnumerator(this);
         }
 
