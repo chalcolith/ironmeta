@@ -22,12 +22,12 @@ install:
       if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 build_script:
-- pwsh: >-
+- cmd: >-
     dotnet build IronMeta.sln -c %CONFIGURATION%
     dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
 
 test_script:
-  - pwsh: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration %CONFIGURATION% --no-build --logger AppVeyor
+  - cmd: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration %CONFIGURATION% --no-build --logger AppVeyor
 
 artifacts:
   - path: '**\IronMeta.*.nupkg'
