@@ -20,10 +20,10 @@ install:
   - if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 before_build:
-  - nuget restore
+  - dotnet restore
 
-build:
-  verbosity: minimal
+build_script:
+  - dotnet build IronMeta.sln
 
 after_build:
   - dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
@@ -34,7 +34,7 @@ test:
       - IronMeta.Tests.dll
 
 test_script:
-  - dotnet test "%APPVEYOR_BUILD_FOLDER%\Source\IronMeta.Tests\IronMeta.Tests.csproj" --configuration Release --no-build --logger AppVeyor
+  - dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration %CONFIGURATION% --no-build --logger AppVeyor
 
 artifacts:
   - path: '**\IronMeta.*.nupkg'
