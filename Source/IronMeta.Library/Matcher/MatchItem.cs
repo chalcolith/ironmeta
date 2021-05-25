@@ -69,11 +69,12 @@ namespace IronMeta.Matcher
                 {
                     if (input_start >= 0 && input_next > input_start)
                     {
-                        TInput[] input_array = input_enumerable as TInput[];
-                        if (input_array != null)
-                            input_slice = new ArraySegment<TInput>(input_array, input_start, input_next - input_start);
-                        else
-                            input_slice = new Slice<TInput>(input_enumerable, input_start, input_next - input_start);
+                        int count = input_next - input_start;
+                        input_slice = input_enumerable switch {
+                            string str => System.Runtime.InteropServices.MemoryMarshal.ToEnumerable(str.AsMemory(input_start, count)) as IEnumerable<TInput>,
+                            TInput[] arr => new ArraySegment<TInput>(arr, input_start, count),
+                            _ => new Slice<TInput>(input_enumerable, input_start, count)
+                        };
                     }
                     else
                     {
