@@ -9,7 +9,7 @@ environment:
 
 branches:
   only:
-  - master
+    - master
 
 image: Visual Studio 2019
 configuration: Release
@@ -20,13 +20,13 @@ install:
   - if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
 
 before_build:
-- nuget restore
+  - nuget restore
 
 build:
   verbosity: minimal
 
 after_build:
-- dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
+  - dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
 
 test:
   assemblies:
@@ -34,16 +34,16 @@ test:
       - IronMeta.Tests.dll
 
 test_script:
-- dotnet test "%APPVEYOR_BUILD_FOLDER%\Source\IronMeta.Tests\IronMeta.Tests.csproj" --configuration Release --no-build --logger AppVeyor
+  - dotnet test "%APPVEYOR_BUILD_FOLDER%\Source\IronMeta.Tests\IronMeta.Tests.csproj" --configuration Release --no-build --logger AppVeyor
 
 artifacts:
-- path: '**\IronMeta.*.nupkg'
+  - path: '**\IronMeta.*.nupkg'
 
 deploy:
-  provider: NuGet
-  on:
-    appveyor_repo_tag: true
-  api_key:
-    secure: Nkvb4OfARXcriqmGGzoEiIDTmz8IUdT4ONkZpm/9+qWhnmFo9JS65/QrwkE/iW6N
-  skip_symbols: false
-  artifact: /.*\.nupkg/
+  - provider: NuGet
+    on:
+      appveyor_repo_tag: true
+    api_key:
+      secure: Nkvb4OfARXcriqmGGzoEiIDTmz8IUdT4ONkZpm/9+qWhnmFo9JS65/QrwkE/iW6N
+    skip_symbols: false
+    artifact: /.*\.nupkg/
