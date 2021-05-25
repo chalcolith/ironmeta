@@ -16,7 +16,7 @@ image: Visual Studio 2019
 configuration: Release
 
 install:
-  - pwsh: >-
+  - cmd: >-
       if defined snk_secret (nuget install secure-file -ExcludeVersion)
       if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret %snk_secret%)
       if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
