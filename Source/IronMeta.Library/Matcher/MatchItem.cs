@@ -67,7 +67,7 @@ namespace IronMeta.Matcher
             {
                 if (input_slice == null)
                 {
-                    if (input_start >= 0 && input_next >= 0)
+                    if (input_start >= 0 && input_next > input_start)
                     {
                         TInput[] input_array = input_enumerable as TInput[];
                         if (input_array != null)
