@@ -122,9 +122,11 @@ namespace IronMeta.Matcher
 
             state.ClearMemoTable(); // allow memo tables to be gc'd
 
+            string GetLastError() => state.LastError;
+
             var match_result = result != null
-                ? new MatchResult<TInput, TResult>(this, state, true, result.StartIndex, result.NextIndex, result.Results, state.LastError, state.LastErrorIndex)
-                : new MatchResult<TInput, TResult>(this, state, false, -1, -1, null, state.LastError, state.LastErrorIndex);
+                ? new MatchResult<TInput, TResult>(this, state, true, result.StartIndex, result.NextIndex, result.Results, GetLastError, state.LastErrorIndex)
+                : new MatchResult<TInput, TResult>(this, state, false, -1, -1, null, GetLastError, state.LastErrorIndex);
 
             if (AfterMatch != null)
                 AfterMatch(match_result);

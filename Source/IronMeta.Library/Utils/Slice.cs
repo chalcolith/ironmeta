@@ -282,11 +282,10 @@ namespace IronMeta.Utils
             {
                 get
                 {
-                    return slice.enumerable switch
+                    return slice.list switch
                     {
-                        IList<T> list => list[slice.start + pos],
-                        string str => (T)((object)str[slice.start + pos]),
-                        _ => source_enumerator.Current,
+                        null => source_enumerator.Current,
+                        _ => slice.list[slice.start + pos],
                     };
                 }
             }
@@ -301,6 +300,7 @@ namespace IronMeta.Utils
             public void Dispose()
             {
                 slice = null;
+                source_enumerator?.Dispose();
                 source_enumerator = null;
             }
 
@@ -322,11 +322,10 @@ namespace IronMeta.Utils
             /// <returns>Whether or not the move succeeded.</returns>
             public bool MoveNext()
             {
-                return ++pos < slice.Count && slice.enumerable switch
+                return ++pos < slice.Count && slice.list switch
                 {
-                    IList<T> list => slice.start + pos < list.Count,
-                    string str => slice.start + pos < str.Length,
-                    _ => source_enumerator.MoveNext(),
+                    null => source_enumerator.MoveNext(),
+                    _ => slice.start + pos < slice.list.Count,
                 };
             }
 
@@ -338,9 +337,11 @@ namespace IronMeta.Utils
                 pos = -1;
                 if (slice.list != null)
                     return;
-                source_enumerator = slice.enumerable.GetEnumerator();
-                for (int i = 0; i < slice.start; ++i)
-                    source_enumerator.MoveNext();
+                source_enumerator = slice.enumerable switch
+                {
+                    string str => (IEnumerator<T>)System.Runtime.InteropServices.MemoryMarshal.ToEnumerable(str.AsMemory(slice.start, slice.count)).GetEnumerator(),
+                    _ => slice.enumerable.Skip(slice.start).GetEnumerator(),
+                };
             }
 
             #endregion
