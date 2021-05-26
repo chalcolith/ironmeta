@@ -9,7 +9,7 @@ environment:
 
 branches:
   only:
-    - master
+    - main
 
 image: Visual Studio 2019
 configuration: Release
