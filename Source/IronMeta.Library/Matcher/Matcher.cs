@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Concurrent;
@@ -72,8 +72,8 @@ namespace IronMeta.Matcher
         /// <param name="index">Index at which to start the match.</param>
         /// <returns>The result of the match.</returns>
         public virtual MatchResult<TInput, TResult> GetMatch(
-            IEnumerable<TInput> input, 
-            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            IEnumerable<TInput> input,
+            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production,
             int index = 0)
         {
             if (input == null)
@@ -84,8 +84,8 @@ namespace IronMeta.Matcher
         }
 
         public virtual MatchResult<TInput, TResult> GetMatch(
-            MatchState<TInput, TResult> state, 
-            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            MatchState<TInput, TResult> state,
+            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production,
             int index)
         {
             if (state == null)
@@ -163,10 +163,10 @@ namespace IronMeta.Matcher
         /// <returns>The result of the production at the given input index.</returns>
         protected MatchItem<TInput, TResult> _MemoCall
         (
-            MatchState<TInput, TResult> memo, 
-            string ruleName, 
-            int index, 
-            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production, 
+            MatchState<TInput, TResult> memo,
+            string ruleName,
+            int index,
+            Action<MatchState<TInput, TResult>, int, IEnumerable<MatchItem<TInput, TResult>>> production,
             IEnumerable<MatchItem<TInput, TResult>> args
         )
         {
@@ -563,7 +563,7 @@ namespace IronMeta.Matcher
                                 ++input_index;
                             }
 
-                            // 
+                            //
                             var result = new MatchItem<TInput, TResult>
                             {
                                 StartIndex = old_item_index,

@@ -1,3 +1,7 @@
+#### 4.4.6: May 24, 2021:
+- Some cleanup and added .NET 5
+- Merge fixes and tests for `Slice` from @steve7411.
+
 #### 4.4.2: June 3, 2019:
 - Fixed #25: correctly emit escaped double-quotes for regexes.
 

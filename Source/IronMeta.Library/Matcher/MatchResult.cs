@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// Constructor.
         /// </summary>
-        internal MatchResult(Matcher<TInput, TResult> matcher, MatchState<TInput, TResult> memo, 
+        internal MatchResult(Matcher<TInput, TResult> matcher, MatchState<TInput, TResult> memo,
             bool success, int start, int next, IEnumerable<TResult> result, Func<string> error_func, int errorIndex)
         {
             this.matcher = matcher;
@@ -49,7 +49,7 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The matcher that generated this result.
         /// </summary>
-        public Matcher<TInput, TResult> Matcher { get { return matcher; } } 
+        public Matcher<TInput, TResult> Matcher { get { return matcher; } }
 
         /// <summary>
         /// The memo object that holds the match state.
