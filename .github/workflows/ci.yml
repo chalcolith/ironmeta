@@ -17,6 +17,8 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install Dependencies
         run: dotnet restore
+      - name: Get SNK
+        run: move Source/IronMeta.Library/IronMeta.PRS.snk Source/IronMeta.Library/IronMeta.snk
       - name: Build
         run: dotnet build -c Release --no-restore IronMeta.sln
       - name: Test
