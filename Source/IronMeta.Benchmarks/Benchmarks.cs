@@ -7,9 +7,8 @@ using System.Linq;
 namespace IronMeta.Benchmarks
 {
 
-    [SimpleJob(RuntimeMoniker.Net472, baseline: true)]
-    [SimpleJob(RuntimeMoniker.NetCoreApp21)]
-    [SimpleJob(RuntimeMoniker.NetCoreApp30)]
+    [SimpleJob(RuntimeMoniker.Net48, baseline: true)]
+    [SimpleJob(RuntimeMoniker.NetCoreApp31)]
     [SimpleJob(RuntimeMoniker.Net50)]
     [RPlotExporter]
     public class Benchmarks
@@ -55,7 +54,7 @@ namespace IronMeta.Benchmarks
             var match = parser.GetMatch(inputString, parser.Expression);
             try
             {
-                Console.WriteLine($"Result: {match.Result}");
+                var r = match.Result;
             } catch (Exception)
             {
                 Console.Error.WriteLine($"Error: {match.Error}");

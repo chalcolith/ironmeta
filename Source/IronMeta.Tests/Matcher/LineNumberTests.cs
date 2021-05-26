@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace IronMeta.UnitTests.Matcher
     public class TestLineNumbers
     {
 
-        const string SOURCE1 = 
+        const string SOURCE1 =
 @"
 //////////////////
 // line 3; comment
@@ -80,7 +80,7 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
             Assert.AreEqual("    8238gb jd uuuuuu34u4u", line);
         }
 
-        const string SOURCE2 = @"// IronMeta Copyright © Gordon Tisher 2019
+        const string SOURCE2 = @"// IronMeta Copyright © Gordon Tisher
 
 using IronMeta;
 

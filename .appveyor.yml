@@ -1,0 +1,42 @@
+version: '4.4.6.{build}'
+
+pull_requests:
+  do_not_increment_build_number: true
+
+environment:
+  snk_secret:
+    secure: PS4Bb+EzT83oeKqzwgwSr+n116gWIz2MzxDRgHp6Pl1Zx4kEWP0yLpv/ops4WOV1
+
+branches:
+  only:
+    - master
+skip_non_tags: true
+
+image: Visual Studio 2019
+configuration: Release
+
+install:
+  - cmd: >-
+      if defined snk_secret (nuget install secure-file -ExcludeVersion)
+      if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret %snk_secret%)
+      if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
+
+build_script:
+- cmd: >-
+    dotnet build IronMeta.sln -c %CONFIGURATION%
+    dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
+
+test_script:
+  - cmd: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration %CONFIGURATION% --no-build --logger AppVeyor
+
+artifacts:
+  - path: '**\IronMeta.*.nupkg'
+
+deploy:
+  - provider: NuGet
+    on:
+      appveyor_repo_tag: true
+    api_key:
+      secure: Nkvb4OfARXcriqmGGzoEiIDTmz8IUdT4ONkZpm/9+qWhnmFo9JS65/QrwkE/iW6N
+    skip_symbols: false
+    artifact: /.*\.nupkg/

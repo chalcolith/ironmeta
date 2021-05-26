@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <Version>4.4.3</Version>
+    <Version>4.4.6</Version>
     <Authors>Gordon Tisher</Authors>
     <Product>IronMeta</Product>
     <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>
-    <Copyright>IronMeta Copyright © Gordon Tisher 2019</Copyright>
+    <Copyright>IronMeta Copyright © Gordon Tisher</Copyright>
     <PackageLicenseUrl>https://github.com/kulibali/ironmeta/blob/master/License.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>
@@ -15,9 +15,9 @@
 
   <ItemGroup>
     <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>

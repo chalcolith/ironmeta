@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -263,7 +263,7 @@ namespace IronMeta.Generator
 
             // set terminals
             var terminalMemo = new Dictionary<string, bool>();
-            var terminals = ruleBodies.Keys.Where(ruleName => 
+            var terminals = ruleBodies.Keys.Where(ruleName =>
                 {
                     var involved = new HashSet<string>();
                     return IsTerminal(ruleName, involved, terminalMemo);
@@ -281,7 +281,7 @@ namespace IronMeta.Generator
             tw.Write(innerIndent); tw.WriteLine("    };");
             tw.Write(innerIndent); tw.WriteLine("}");
             tw.WriteLine();
-            
+
             // generate rules
             foreach (var item in ruleBodies)
             {
@@ -443,7 +443,7 @@ namespace IronMeta.Generator
             }
 
             #region POST: Giant Switch Statement
-            // 
+            //
             if (node is AST.Code)
             {
                 GenerateLiteralPost(tw, node as AST.Code, outer_n, match_args, indent);
@@ -605,7 +605,7 @@ namespace IronMeta.Generator
                 tw.WriteLine("_memo.ArgResults.Push(null);");
             else
                 tw.WriteLine("_memo.Results.Push(null);");
-            
+
             if (!string.IsNullOrEmpty(node.Message))
             {
                 var msg = node.Message;
@@ -680,7 +680,7 @@ namespace IronMeta.Generator
         void GenerateNotPre(TextWriter tw, AST.Not node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// NOT {0}", n);
-            tw.Write(indent); 
+            tw.Write(indent);
 
             if (match_args)
                 tw.WriteLine("int _start_i{0} = _arg_index;", n);
@@ -717,7 +717,7 @@ namespace IronMeta.Generator
         void GenerateOrPre(TextWriter tw, AST.Or node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// OR {0}", n);
-            tw.Write(indent); 
+            tw.Write(indent);
 
             if (match_args)
                 tw.WriteLine("int _start_i{0} = _arg_index;", n);
@@ -730,7 +730,7 @@ namespace IronMeta.Generator
         void GenerateOrShortcut(TextWriter tw, AST.Or node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// OR shortcut");
-            tw.Write(indent); 
+            tw.Write(indent);
 
             if (match_args)
                 tw.WriteLine("if (_memo.ArgResults.Peek() == null) {{ _memo.ArgResults.Pop(); _arg_index = _start_i{0}; }} else goto label{0};", n);
@@ -754,7 +754,7 @@ namespace IronMeta.Generator
         void GenerateAndPre(TextWriter tw, AST.And node, int n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// AND {0}", n);
-            tw.Write(indent); 
+            tw.Write(indent);
 
             if (match_args)
                 tw.WriteLine("int _start_i{0} = _arg_index;", n);
@@ -767,7 +767,7 @@ namespace IronMeta.Generator
         void GenerateAndShortcut(TextWriter tw, AST.And node, int outer_n, bool match_args, string indent)
         {
             tw.Write(indent); tw.WriteLine("// AND shortcut");
-            tw.Write(indent); 
+            tw.Write(indent);
 
             if (match_args)
                 tw.WriteLine("if (_memo.ArgResults.Peek() == null) {{ _memo.ArgResults.Push(null); goto label{0}; }}", outer_n);
@@ -1069,7 +1069,7 @@ namespace IronMeta.Generator
 
                 if (node.Params != null && node.Params.Any())
                 {
-                    var actualParams = new List<string>();                    
+                    var actualParams = new List<string>();
                     GenerateActualParams(tw, vars, node, n, name, indent, actualParams);
 
                     tw.WriteLine();
@@ -1077,17 +1077,17 @@ namespace IronMeta.Generator
                     tw.Write(indent); tw.WriteLine("if (_args != null) _actual_args{0} = _actual_args{0}.Concat(_args.Skip(_arg_index));", n);
 
                     tw.Write(indent); tw.WriteLine("_r{3} = _MemoCall(_memo, {0}, _index, {4}, _actual_args{3});",
-                        isVar ? name + ".ProductionName" : "\"" + name + "\"", 
-                        string.Join(", ", actualParams.ToArray()), 
-                        tItem, 
-                        n, 
+                        isVar ? name + ".ProductionName" : "\"" + name + "\"",
+                        string.Join(", ", actualParams.ToArray()),
+                        tItem,
+                        n,
                         isVar ? name + ".Production" : name);
                 }
                 else
                 {
-                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, {0}, _index, {2}, _args != null ? _args.Skip(_arg_index) : null);", 
-                        isVar ? name + ".ProductionName" : "\"" + name + "\"", 
-                        n, 
+                    tw.Write(indent); tw.WriteLine("_r{1} = _MemoCall(_memo, {0}, _index, {2}, _args != null ? _args.Skip(_arg_index) : null);",
+                        isVar ? name + ".ProductionName" : "\"" + name + "\"",
+                        n,
                         isVar ? name + ".Production" : name);
                 }
 
