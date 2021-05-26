@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher 2019
+﻿// IronMeta Copyright © Gordon Tisher
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 #endif
 
 namespace IronMeta.UnitTests
-{    
+{
     [TestClass]
     public class BugFixesTests
     {
@@ -24,7 +24,7 @@ namespace IronMeta.UnitTests
             var matcher = new BugFixes();
             var match = matcher.GetMatch("#\\x000", matcher.Bug_3490042_HexEscapeCharacter);
             Assert.IsTrue(match.Success);
-            
+
             var chars = match.Result as IEnumerable<char>;
             Assert.IsNotNull(chars);
 
