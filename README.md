@@ -1,6 +1,6 @@
 |       |       |
 | ----- | ----- |
-| Build | [![AppVeyor](https://img.shields.io/appveyor/ci/kulibali/ironmeta.svg)](https://ci.appveyor.com/project/kulibali/ironmeta) |
+| Build | [![CI](https://github.com/kulibali/ironmeta/actions/workflows/ci.yml/badge.svg)](https://github.com/kulibali/ironmeta/actions/workflows/ci.yml) |
 | NuGet | [![NuGet](https://img.shields.io/nuget/dt/IronMeta.svg)](https://www.nuget.org/packages/IronMeta) |
 
 
