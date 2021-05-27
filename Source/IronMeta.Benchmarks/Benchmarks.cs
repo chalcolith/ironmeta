@@ -52,6 +52,8 @@ namespace IronMeta.Benchmarks
         {
             var parser = new IronMeta.Samples.Calc.Calc();
             var match = parser.GetMatch(inputString, parser.Expression);
+            if (match.NextIndex != inputString.Length)
+                Console.Error.WriteLine("INPUT NOT FULLY PARSED");
             try
             {
                 var r = match.Result;

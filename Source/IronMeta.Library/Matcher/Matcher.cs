@@ -96,7 +96,7 @@ namespace IronMeta.Matcher
             MatchItem<TInput, TResult> result = null;
 
             if (BeforeMatch != null)
-                BeforeMatch(state, state.Input, production);
+                BeforeMatch(state, state.InputList, production);
 
             try
             {

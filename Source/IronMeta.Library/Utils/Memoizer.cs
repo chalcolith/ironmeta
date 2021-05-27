@@ -11,7 +11,7 @@ namespace IronMeta.Utils
     /// <typeparam name="T">Element type.</typeparam>
     public class Memoizer<T> : IList<T>
     {
-        IList<T> memoList = new List<T>();
+        List<T> memoList = new List<T>();
         readonly IEnumerator<T> innerEnumerator;
 
         public Memoizer(IEnumerable<T> inner)
@@ -21,6 +21,9 @@ namespace IronMeta.Utils
 
         void ReadToIndex(int index)
         {
+            if (memoList.Capacity < index + 1)
+                memoList.Capacity = Math.Max(index + 1, memoList.Capacity * 2);
+
             while (index >= memoList.Count)
             {
                 if (!innerEnumerator.MoveNext())

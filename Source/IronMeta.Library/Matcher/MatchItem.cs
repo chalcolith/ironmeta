@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using IronMeta.Utils;
+using IronMeta.Utils.Slices;
 
 namespace IronMeta.Matcher
 {
@@ -70,11 +71,7 @@ namespace IronMeta.Matcher
                     if (input_start >= 0 && input_next > input_start)
                     {
                         int count = input_next - input_start;
-                        input_slice = input_enumerable switch {
-                            string str => System.Runtime.InteropServices.MemoryMarshal.ToEnumerable(str.AsMemory(input_start, count)) as IEnumerable<TInput>,
-                            TInput[] arr => new ArraySegment<TInput>(arr, input_start, count),
-                            _ => new Slice<TInput>(input_enumerable, input_start, count)
-                        };
+                        input_slice = new Slice<TInput>(input_enumerable, input_start, count);
                     }
                     else
                     {
