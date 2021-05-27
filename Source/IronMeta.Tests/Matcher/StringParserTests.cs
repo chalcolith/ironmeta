@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher
+﻿// IronMeta Copyright © The IronMeta Developers
 
 using System;
 using System.Collections.Generic;

@@ -1,42 +1,42 @@
-// IronMeta Copyright © Gordon Tisher 2018
+// IronMeta Copyright © The IronMeta Developers
 
 using System;
 using System.Linq;
 
 using IronMeta.Matcher;
 
-// This grammar is far more complicated than 
+// This grammar is far more complicated than
 // it needs to be, in order to demonstrate
 // the features of the IronMeta system.
 
 ironmeta Calc<char, int> : Matcher<char, int>
 {
     Expression = Additive;
-    
+
     Additive = Add | Sub | Multiplicative;
-    
-    Add = BinaryOp(Additive, '+', Multiplicative) 
+
+    Add = BinaryOp(Additive, '+', Multiplicative)
        -> { return _IM_Result.Results.Aggregate((total, n) => total + n); };
-    Sub = BinaryOp(Additive, '-', Multiplicative) 
+    Sub = BinaryOp(Additive, '-', Multiplicative)
        -> { return _IM_Result.Results.Aggregate((total, n) => total - n); };
-    
+
     Multiplicative = Multiply | Divide;
     Multiplicative = Number(DecimalDigit);
-    
-    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit) 
+
+    Multiply = BinaryOp(Multiplicative, "*", Number, DecimalDigit)
             -> { return _IM_Result.Results.Aggregate((p, n) => p * n); };
-    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit) 
+    Divide = BinaryOp(Multiplicative, "/", Number, DecimalDigit)
           -> { return _IM_Result.Results.Aggregate((q, n) => q / n); };
-        
-    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b 
+
+    BinaryOp :first :op :second .?:type = first:a KW(op) second(type):b
                                        -> { return new List<int> { a, b }; };
-    
+
     Number :type = Digits(type):n WS* -> { return n; };
-    
+
     Digits :type = Digits(type):a type:b -> { return a*10 + b; };
     Digits :type = type;
-            
-    DecimalDigit = ['0'-'9']:c -> { return (char)c - '0'; };    
+
+    DecimalDigit = ['0'-'9']:c -> { return (char)c - '0'; };
     KW :str = str WS*;
     WS = ' ' | '\n' | '\r' | '\t';
 }

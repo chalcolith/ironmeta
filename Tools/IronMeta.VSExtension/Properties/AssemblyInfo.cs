@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("IronMeta.VSExtension")]
-[assembly: AssemblyCopyright("IronMeta Copyright © Gordon Tisher")]
+[assembly: AssemblyCopyright("IronMeta Copyright © The IronMeta Developers")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

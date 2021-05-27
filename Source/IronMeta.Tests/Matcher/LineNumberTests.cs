@@ -1,4 +1,4 @@
-﻿// IronMeta Copyright © Gordon Tisher
+﻿// IronMeta Copyright © The IronMeta Developers
 
 using System;
 using System.Linq;
@@ -80,7 +80,7 @@ ironmeta Test<char, int> : IronMeta.Matcher.Matcher<char, int>
             Assert.AreEqual("    8238gb jd uuuuuu34u4u", line);
         }
 
-        const string SOURCE2 = @"// IronMeta Copyright © Gordon Tisher
+        const string SOURCE2 = @"// IronMeta Copyright © The IronMeta Developers
 
 using IronMeta;
 

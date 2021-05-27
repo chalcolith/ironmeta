@@ -12,11 +12,11 @@
   <PropertyGroup>
     <PackageId>IronMeta</PackageId>
     <Version>4.4.6</Version>
-    <Authors>Gordon Tisher</Authors>
-    <Company>Gordon Tisher</Company>
+    <Authors>The IronMeta Developers</Authors>
+    <Company>The IronMeta Developers</Company>
     <Product>IronMeta</Product>
     <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>
-    <Copyright>IronMeta Copyright © Gordon Tisher</Copyright>
+    <Copyright>IronMeta Copyright © The IronMeta Developers</Copyright>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>

@@ -6,10 +6,10 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>IronMeta.Samples.Calc</RootNamespace>
     <Version>4.4.6</Version>
-    <Authors>Gordon Tisher</Authors>
+    <Authors>The IronMeta Developers</Authors>
     <Product>IronMeta</Product>
     <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>
-    <Copyright>IronMeta Copyright © Gordon Tisher</Copyright>
+    <Copyright>IronMeta Copyright © The IronMeta Developers</Copyright>
     <PackageLicenseUrl>https://github.com/kulibali/ironmeta/blob/master/License.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>

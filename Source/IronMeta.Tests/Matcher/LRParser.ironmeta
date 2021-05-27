@@ -1,4 +1,4 @@
-// IronMeta Copyright © Gordon Tisher 2018
+// IronMeta Copyright © The IronMeta Developers
 
 using IronMeta.Matcher;
 
@@ -20,8 +20,8 @@ ironmeta LRParser<char, string> : Matcher<char, string>
 
 	Character = HexEscapeCharacter;
 
-	HexEscapeCharacter = "#\\x" HexScalarValue:hex -> 
-	{ 
+	HexEscapeCharacter = "#\\x" HexScalarValue:hex ->
+	{
 		foreach (var input in hex.Inputs)
 			Console.WriteLine("{0}", input);
 		return "";

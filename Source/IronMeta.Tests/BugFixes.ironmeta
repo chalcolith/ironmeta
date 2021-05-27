@@ -1,10 +1,10 @@
-// IronMeta Copyright © Gordon Tisher 2018
+// IronMeta Copyright © The IronMeta Developers
 
 using IronMeta.Matcher;
 
 ironmeta BugFixes<char, object> : Matcher<char, object>
 {
-    Bug_3490042_HexEscapeCharacter = "#\\x" Bug_3490042_HexScalarValue:hex -> 
+    Bug_3490042_HexEscapeCharacter = "#\\x" Bug_3490042_HexScalarValue:hex ->
     {
         Console.WriteLine("inputs {0}", hex.Inputs);
         return hex.Inputs;

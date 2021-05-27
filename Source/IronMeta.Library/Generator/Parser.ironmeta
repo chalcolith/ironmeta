@@ -1,4 +1,4 @@
-// IronMeta Copyright © Gordon Tisher 2018
+// IronMeta Copyright © The IronMeta Developers
 
 using IronMeta.Matcher;
 
@@ -18,10 +18,10 @@ ironmeta Parser<char, AST.AstNode> : Matcher<char, AST.AstNode>
         -> { return new AST.Grammar(name, tinput, tresult, baseclass, rules.Results); };
 
     Rule = OVERRIDE?:ovr Identifier:name Disjunction?:parms EQUALS Disjunction:body SEMI
-        -> { return new AST.Rule(name, 
-                                 parms.Inputs.Any() 
-                                     ? new AST.Args(parms, body) 
-                                     : (AST.AstNode)body, 
+        -> { return new AST.Rule(name,
+                                 parms.Inputs.Any()
+                                     ? new AST.Args(parms, body)
+                                     : (AST.AstNode)body,
                                  new string(ovr.Inputs.ToArray())); };
 
     Disjunction = ActionExp ( OR ActionExp )*
