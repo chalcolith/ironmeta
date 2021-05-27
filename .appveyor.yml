@@ -9,25 +9,20 @@ environment:
 
 branches:
   only:
-    - master
-skip_non_tags: true
+    - main
 
 image: Visual Studio 2019
 configuration: Release
 
-install:
-  - cmd: >-
-      if defined snk_secret (nuget install secure-file -ExcludeVersion)
-      if defined snk_secret (secure-file\tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret %snk_secret%)
-      if not defined snk_secret (copy Source\IronMeta.Library\IronMeta.PRS.snk Source\IronMeta.Library\IronMeta.snk)
-
 build_script:
-- cmd: >-
-    dotnet build IronMeta.sln -c %CONFIGURATION%
-    dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c %CONFIGURATION%
+  - pwsh: >-
+      iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+      appveyor-tools\secure-file -decrypt Source\IronMeta.Library\IronMeta.snk.enc -secret $env:snk_secret
+      dotnet build IronMeta.sln -c $env:CONFIGURATION
+      dotnet pack Source\IronMeta.Library\IronMeta.Library.csproj -c $env:CONFIGURATION
 
 test_script:
-  - cmd: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration %CONFIGURATION% --no-build --logger AppVeyor
+  - pwsh: dotnet test Source\IronMeta.Tests\IronMeta.Tests.csproj --configuration $env:CONFIGURATION --no-restore --no-build --logger AppVeyor
 
 artifacts:
   - path: '**\IronMeta.*.nupkg'
