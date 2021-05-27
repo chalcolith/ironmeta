@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <Version>4.4.6</Version>
+    <Version>4.5.0</Version>
     <Authors>The IronMeta Developers</Authors>
     <Product>IronMeta</Product>
     <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>

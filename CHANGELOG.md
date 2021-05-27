@@ -1,3 +1,6 @@
+#### 4.5.0: May 27, 2021:
+- Vast performance improvements from @steve7411: https://github.com/kulibali/ironmeta/pull/35
+
 #### 4.4.6: May 24, 2021:
 - Some cleanup and added .NET 5
 - Merge fixes and tests for `Slice` from @steve7411.

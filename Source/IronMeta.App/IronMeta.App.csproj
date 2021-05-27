@@ -6,7 +6,7 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <PackageId>IronMeta.App</PackageId>
     <RootNamespace>IronMeta</RootNamespace>
-    <Version>4.4.6</Version>
+    <Version>4.5.0</Version>
     <Authors>The IronMeta Developers</Authors>
     <Company />
     <Product>IronMeta</Product>

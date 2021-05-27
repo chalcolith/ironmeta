@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>IronMeta</PackageId>
-    <Version>4.4.6</Version>
+    <Version>4.5.0</Version>
     <Authors>The IronMeta Developers</Authors>
     <Company>The IronMeta Developers</Company>
     <Product>IronMeta</Product>
@@ -23,7 +23,7 @@
     <PackageTags>PEG parser parsergenerator</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <FileVersion>4.4.6.0</FileVersion>
+    <FileVersion>4.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
