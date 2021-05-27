@@ -15,13 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.VSExtension", "Too
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{977A88E9-26EF-4882-BFEC-CFCA89F8F8E8}"
 	ProjectSection(SolutionItems) = preProject
-		.appveyor.yml = .appveyor.yml
 		.gitignore = .gitignore
 		CHANGELOG.md = CHANGELOG.md
 		License.txt = License.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C06CFD1E-00C7-4181-A332-2306CB5559A7}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronMeta.Benchmarks", "Source\IronMeta.Benchmarks\IronMeta.Benchmarks.csproj", "{33D8CE3F-B6B9-4545-B16D-2D7AE83199BF}"
 EndProject
 Global
@@ -55,6 +59,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C06CFD1E-00C7-4181-A332-2306CB5559A7} = {977A88E9-26EF-4882-BFEC-CFCA89F8F8E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4094F1F-EB10-4B13-9466-140AF24AD50F}
