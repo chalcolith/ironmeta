@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using IronMeta.Utils;
+using IronMeta.Utils.Slices;
 
 namespace IronMeta.Matcher
 {
@@ -67,13 +68,10 @@ namespace IronMeta.Matcher
             {
                 if (input_slice == null)
                 {
-                    if (input_start >= 0 && input_next >= 0)
+                    if (input_start >= 0 && input_next > input_start)
                     {
-                        TInput[] input_array = input_enumerable as TInput[];
-                        if (input_array != null)
-                            input_slice = new ArraySegment<TInput>(input_array, input_start, input_next - input_start);
-                        else
-                            input_slice = new Slice<TInput>(input_enumerable, input_start, input_next - input_start);
+                        int count = input_next - input_start;
+                        input_slice = new Slice<TInput>(input_enumerable, input_start, count);
                     }
                     else
                     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IronMeta.Utils;
+using IronMeta.Utils.Slices;
 
 #if __MonoCS__
 using NUnit.Framework;
@@ -17,6 +18,13 @@ namespace IronMeta.UnitTests
     [TestClass]
     public class SliceTests
     {
+        private static IEnumerable<T> EnumerateValues<T>(params T[] items)
+        {
+            for (int i = 0; i < items.Length; i++)
+                yield return items[i];
+        }
+
+
         [TestMethod]
         public void TestIndexOfHandlesNullsForIList()
         {
@@ -102,7 +110,7 @@ namespace IronMeta.UnitTests
         {
             var list = "asdfj";
             var slice = new Slice<char>(list, 2, 2);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => slice[2]);
+            Assert.ThrowsException<IndexOutOfRangeException>(() => slice[2]);
         }
 
         [TestMethod]
@@ -110,15 +118,7 @@ namespace IronMeta.UnitTests
         {
             var list = new[] { 0, 1, 2, 3, 4 };
             var slice = new Slice<int>(list, 2, 2);
-            slice.Insert(0, 5);
-            Assert.AreEqual(3, slice.Count);
-            slice.Insert(2, 6);
-            Assert.AreEqual(4, slice.Count);
-            slice.Insert(4, 7);
-            Assert.AreEqual(5, slice.Count);
-            int[] expected = new[] { 5, 2, 6, 3, 7 }.ToArray();
-            int[] actual = slice.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.ThrowsException<InvalidOperationException>(() => slice.Insert(0, 5));
         }
 
         [TestMethod]
@@ -126,15 +126,7 @@ namespace IronMeta.UnitTests
         {
             var list = new[] { 0, 1, 2, 3, 4 };
             var slice = new Slice<int>(list, 2, 2);
-            slice.Add(5);
-            Assert.AreEqual(3, slice.Count);
-            slice.Add(6);
-            Assert.AreEqual(4, slice.Count);
-            slice.Add(7);
-            Assert.AreEqual(5, slice.Count);
-            int[] expected = list[2..4].Concat(new[] { 5, 6, 7 }).ToArray();
-            int[] actual = slice.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.ThrowsException<InvalidOperationException>(() => slice.Add(5));
         }
 
         [TestMethod]
@@ -142,10 +134,7 @@ namespace IronMeta.UnitTests
         {
             var list = new[] { 0, 1, 2, 3, 4 };
             var slice = new Slice<int>(list, 2, 2);
-            slice.Clear();
-            int[] expected = Array.Empty<int>();
-            int[] actual = slice.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.ThrowsException<InvalidOperationException>(() => slice.Clear());
         }
 
         [TestMethod]
@@ -182,11 +171,7 @@ namespace IronMeta.UnitTests
         {
             var list = new[] { 0, 1, 2, 3, 4 };
             var slice = new Slice<int>(list, 2, 2);
-            bool removed = slice.Remove(2);
-            Assert.IsTrue(removed);
-            var expected = new[] { 3 };
-            var actual = slice.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.ThrowsException<InvalidOperationException>(() => slice.Remove(2));
         }
 
         [TestMethod]
@@ -194,11 +179,43 @@ namespace IronMeta.UnitTests
         {
             var list = new[] { 0, 1, 2, 3, 4 };
             var slice = new Slice<int>(list, 2, 2);
-            bool removed = slice.Remove(4);
-            Assert.IsFalse(removed);
-            var expected = list[2..4];
-            var actual = slice.ToArray();
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.ThrowsException<InvalidOperationException>(() => slice.Remove(4));
+        }
+
+        [TestMethod]
+        public void TestShouldContainCorrectElementsWhenMadeFromExistingSliceForArray()
+        {
+            var list = new[] { 0, 1, 2, 3, 4 };
+            var slice1 = new Slice<int>(list, 2, 3);
+            var slice2 = new Slice<int>(slice1, 1, 2);
+            CollectionAssert.AreEqual(list[3..], slice2.ToArray());
+        }
+
+        [TestMethod]
+        public void TestShouldContainCorrectElementsWhenMadeFromExistingSliceForList()
+        {
+            var list = new List<int> { 0, 1, 2, 3, 4 };
+            var slice1 = new Slice<int>(list, 2, 3);
+            var slice2 = new Slice<int>(slice1, 1, 2);
+            CollectionAssert.AreEqual(new int[] { 3, 4 }, slice2.ToArray());
+        }
+
+        [TestMethod]
+        public void TestShouldContainCorrectElementsWhenMadeFromExistingSliceForEnumerable()
+        {
+            var list = EnumerateValues(0, 1, 2, 3, 4);
+            var slice1 = new Slice<int>(list, 2, 3);
+            var slice2 = new Slice<int>(slice1, 1, 2);
+            CollectionAssert.AreEqual(new int[] { 3, 4 }, slice2.ToArray());
+        }
+
+        [TestMethod]
+        public void TestShouldContainCorrectElementsWhenMadeFromExistingSliceForString()
+        {
+            var list = "asdfj";
+            var slice1 = new Slice<char>(list, 2, 3);
+            var slice2 = new Slice<char>(slice1, 1, 2);
+            CollectionAssert.AreEqual(new char[] { 'f', 'j' }, slice2.ToArray());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿// IronMeta Copyright © Gordon Tisher
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace IronMeta.Matcher
         int start = -1;
         int next = -1;
         IEnumerable<TResult> result;
+        Func<string> error_func;
         string error;
         int errorIndex;
 
@@ -31,7 +33,7 @@ namespace IronMeta.Matcher
         /// Constructor.
         /// </summary>
         internal MatchResult(Matcher<TInput, TResult> matcher, MatchState<TInput, TResult> memo,
-            bool success, int start, int next, IEnumerable<TResult> result, string error, int errorIndex)
+            bool success, int start, int next, IEnumerable<TResult> result, Func<string> error_func, int errorIndex)
         {
             this.matcher = matcher;
             this.state = memo;
@@ -39,7 +41,8 @@ namespace IronMeta.Matcher
             this.start = start;
             this.next = next;
             this.result = result;
-            this.error = error;
+            this.error_func = error_func;
+            //this.error = error_func();
             this.errorIndex = errorIndex;
         }
 
@@ -82,7 +85,13 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The error that caused the match to fail, if it failed.
         /// </summary>
-        public string Error { get { return error; } }
+        public string Error
+        {
+            get
+            {
+                return error ??= error_func();
+            }
+        }
 
         /// <summary>
         /// The index in the input stream at which the error occurred.

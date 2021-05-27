@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using IronMeta.Utils;
+using IronMeta.Utils.Slices;
 
 namespace IronMeta.Matcher
 {
@@ -30,26 +31,16 @@ namespace IronMeta.Matcher
         /// <summary>
         /// The input stream for the grammar to parse.
         /// </summary>
-        public IEnumerable<TInput> Input
-        {
-            get { return InputEnumerable; }
-
-            protected set
-            {
-                InputEnumerable = value;
-                InputList = InputEnumerable as IList<TInput>;
-                InputString = InputEnumerable as string;
-            }
-        }
+        public IEnumerable<TInput> Input => InputList;
 
         /// <summary>
         /// The input enumerable for this match.
         /// </summary>
-        public IEnumerable<TInput> InputEnumerable { get; set; }
+        public IEnumerable<TInput> InputEnumerable => InputList;
 
         /// <summary>
         /// The input enumerable for this match (<see cref="InputEnumerable"/>) as an <c>IList&lt;&gt;</c>.
-        /// Is <c>null</c> if the input enumerable is not an <c>IList&lt;&gt;</c>.
+        /// Should never be <c>null</c>, because non-lists will be wrapped.
         /// </summary>
         public IList<TInput> InputList { get; set; }
 
@@ -149,7 +140,17 @@ namespace IronMeta.Matcher
         /// <param name="input">Input to be matched.</param>
         public MatchState(IEnumerable<TInput> input)
         {
-            Input = (input is string || input is IList<TInput>) ? input : new Memoizer<TInput>(input);
+            InputList = input switch
+            {
+                IList<TInput> list => list,
+                _ => new Slice<TInput>(input),
+            };
+            InputString = input switch
+            {
+                string str => str,
+                Slice<TInput> slice => slice.GetStringIfCheap(),
+                _ => null,
+            };
             Results = new Stack<MatchItem<TInput, TResult>>();
             ArgResults = new Stack<MatchItem<TInput, TResult>>();
             CallStack = new Stack<LRRecord<MatchItem<TInput, TResult>>>();

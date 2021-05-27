@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net48;netcoreapp3.1;net5.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>IronMeta</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
@@ -33,7 +34,7 @@
       <PackagePath>tools\net48</PackagePath>
     </Content>
 
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.exe">
+    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.exe" Condition=" '$(OS)' == 'Windows_NT' ">
       <PackagePath>tools\net5.0</PackagePath>
     </Content>
     <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.dll">
