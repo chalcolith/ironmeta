@@ -6,6 +6,9 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IronMeta.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <PackageId>IronMeta</PackageId>
     <Version>4.4.6</Version>
     <Authors>Gordon Tisher</Authors>
@@ -13,7 +16,7 @@
     <Product>IronMeta</Product>
     <Description>The IronMeta parser generator provides a programming language and application for generating pattern matchers on arbitrary streams of objects. It is an implementation of Alessandro Warth's OMeta system for C#.</Description>
     <Copyright>IronMeta Copyright © Gordon Tisher</Copyright>
-    <PackageLicenseUrl>https://github.com/kulibali/ironmeta/blob/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/kulibali/ironmeta</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kulibali/ironmeta</RepositoryUrl>
     <PackageTags>PEG parser parsergenerator</PackageTags>
@@ -22,31 +25,35 @@
     <FileVersion>4.4.6.0</FileVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="../../License.txt" Pack="true" PackagePath="" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <Content Include="..\IronMeta.App\bin\Release\net48\IronMeta.App.exe">
-      <PackagePath>tools\net48</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net48/IronMeta.App.exe">
+      <PackagePath>tools/net48</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net48\IronMeta.Library.dll">
-      <PackagePath>tools\net48</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net48/IronMeta.Library.dll">
+      <PackagePath>tools/net48</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net48\Verophyle.Regexp.dll">
-      <PackagePath>tools\net48</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net48/Verophyle.Regexp.dll">
+      <PackagePath>tools/net48</PackagePath>
     </Content>
 
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.exe">
-      <PackagePath>tools\net5.0</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net5.0/IronMeta.App.exe">
+      <PackagePath>tools/net5.0</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.dll">
-      <PackagePath>tools\net5.0</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net5.0/IronMeta.App.dll">
+      <PackagePath>tools/net5.0</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.App.runtimeconfig.json">
-      <PackagePath>tools\net5.0</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net5.0/IronMeta.App.runtimeconfig.json">
+      <PackagePath>tools/net5.0</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\IronMeta.Library.dll">
-      <PackagePath>tools\net5.0</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net5.0/IronMeta.Library.dll">
+      <PackagePath>tools/net5.0</PackagePath>
     </Content>
-    <Content Include="..\IronMeta.App\bin\Release\net5.0\Verophyle.Regexp.dll">
-      <PackagePath>tools\net5.0</PackagePath>
+    <Content Include="../IronMeta.App/bin/Release/net5.0/Verophyle.Regexp.dll">
+      <PackagePath>tools/net5.0</PackagePath>
     </Content>
   </ItemGroup>
 

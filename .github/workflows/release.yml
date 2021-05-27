@@ -1,0 +1,32 @@
+name: Release
+on:
+  release:
+    types: [created]
+
+jobs:
+  build_and_test:
+    runs-on: windows-2019
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    strategy:
+      matrix:
+        dotnet-version: [ '5.0.x' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up .NET Core ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install Dependencies
+        run: dotnet restore
+      - name: Get SNK
+        run: cd Source/IronMeta.Library && 7z e -p${{ secrets.SNK_DECRYPTION_KEY }} IronMeta.snk.zip
+      - name: Build
+        run: dotnet build -c Release --no-restore IronMeta.sln
+      - name: Test
+        run: dotnet test -c Release --no-build --no-restore --verbosity normal
+      - name: Package
+        run: dotnet pack -c Release --no-build --no-restore Source/IronMeta.Library/IronMeta.Library.csproj
+      - name: Push to NuGet
+        run: gci Source/IronMeta.Library/bin/Release/*.nupkg | %{ dotnet nuget push $_ --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json }
